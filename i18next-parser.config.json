@@ -1,0 +1,40 @@
+{
+  "contextSeparator": "_",
+  "createOldCatalogs": true,
+  "defaultNamespace": "translation",
+  "defaultValue": "",
+  "indentation": 2,
+  "keepRemoved": false,
+  "keySeparator": false,
+  "lexers": {
+    "hbs": ["HandlebarsLexer"],
+    "handlebars": ["HandlebarsLexer"],
+    "htm": ["HTMLLexer"],
+    "html": ["HTMLLexer"],
+    "mjs": ["JavascriptLexer"],
+    "js": ["JavascriptLexer"],
+    "ts": ["JavascriptLexer"],
+    "jsx": ["JsxLexer"],
+    "tsx": ["JsxLexer"],
+    "default": ["JavascriptLexer"]
+  },
+
+  "lineEnding": "auto",
+  "locales": ["en-US", "tr-TR"],
+  "namespaceSeparator": false,
+  "output": "src/features/i18n/translations/$LOCALE/$NAMESPACE.json",
+  "pluralSeparator": "_",
+  "input": null,
+  "sort": false,
+  "skipDefaultValues": false,
+  "useKeysAsDefaultValue": false,
+  "verbose": false,
+  "failOnWarnings": false,
+  "failOnUpdate": false,
+  "customValueTemplate": null,
+  "resetDefaultValueLocale": null,
+  "i18nextOptions": null,
+  "react": {
+    "useSuspense": false
+  }
+}

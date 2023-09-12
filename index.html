@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
+    <meta name="msapplication-TileColor" content="#da532c" />
+    <meta name="theme-color" content="#ffffff" />
+    <!--
+      manifest.json provides metadata used when your web app is installed on a
+      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
+    -->
+    <link rel="manifest" href="/manifest.json" />
+    <title> </title>
+    <style type="text/css">
+      .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        min-height: 100vh;
+        width: 100%;
+        height: auto;
+        background: black;
+        margin: 0;
+        padding: 0;
+        top: 0;
+        left: 0;
+        position: absolute;
+        box-shadow: inset -0px 0px 40px -10px #eef;
+      }
+
+      .loading {
+        display: block;
+        height: 200px;
+        position: relative;
+        letter-spacing: 0.5px;
+      }
+      .spinner {
+        color: #808080;
+      }
+      .spinner::after {
+        content: '';
+        box-sizing: border-box;
+        width: 40px;
+        height: 40px;
+        position: absolute;
+        top: calc(50% - 20px);
+        left: calc(50% - 20px);
+        border-radius: 50%;
+      }
+
+      .spinner.grow-pulse::after {
+        background-color: rgba(255, 255, 255, 1);
+        animation: grow-pulse 1.5s ease-out infinite;
+      }
+
+      @keyframes spinner {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      @keyframes grow-pulse {
+        0% {
+          transform: scale(0.1);
+          opacity: 0;
+        }
+        30% {
+          opacity: 0.5;
+        }
+        60% {
+          transform: scale(1.2);
+          opacity: 0;
+        }
+        100% {
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root">
+      <div class="container">
+        <div class="loading">
+          <span class="grow-pulse spinner"
+            >dApp is loading.<br />Please wait.</span
+          >
+        </div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

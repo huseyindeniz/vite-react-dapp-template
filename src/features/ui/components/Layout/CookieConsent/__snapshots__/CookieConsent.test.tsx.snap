@@ -1,0 +1,85 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Feature: UI Component: Layout/CookieConsent should render with debug enabled 1`] = `
+<DocumentFragment>
+  <div
+    class="CookieConsent"
+    style="align-items: baseline; background: rgb(53, 53, 53); color: white; display: flex; flex-wrap: wrap; justify-content: space-between; left: 0px; position: fixed; width: 100%; z-index: 999; opacity: 0.8; margin-bottom: 1rem; bottom: 0px;"
+  >
+    <div
+      class=""
+      style="flex: 1 0 300px; margin: 15px;"
+    >
+      <p
+        class="chakra-text css-0"
+      >
+        This website uses cookies to enhance the user experience.
+      </p>
+    </div>
+    <div
+      class=""
+    >
+      <button
+        aria-label="Decline cookies"
+        class="chakra-button css-4xx2wk"
+        id="rcc-decline-button"
+        style="background: rgb(193, 42, 42); border: 0px; border-radius: 0px; box-shadow: none; color: rgb(229, 229, 229); cursor: pointer; flex: 0 0 auto; padding: 5px 10px; margin: 15px;"
+        type="button"
+      >
+        Refuse non-essential cookies
+      </button>
+      <button
+        aria-label="Accept cookies"
+        class="chakra-button css-4xx2wk"
+        id="rcc-confirm-button"
+        style="background: rgb(255, 212, 45); border: 0px; border-radius: 0px; box-shadow: none; color: black; cursor: pointer; flex: 0 0 auto; padding: 5px 10px; margin: 15px;"
+        type="button"
+      >
+        Accept all cookies
+      </button>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`Feature: UI Component: Layout/CookieConsent should render with default props 1`] = `
+<DocumentFragment>
+  <div
+    class="CookieConsent"
+    style="align-items: baseline; background: rgb(53, 53, 53); color: white; display: flex; flex-wrap: wrap; justify-content: space-between; left: 0px; position: fixed; width: 100%; z-index: 999; opacity: 0.8; margin-bottom: 1rem; bottom: 0px;"
+  >
+    <div
+      class=""
+      style="flex: 1 0 300px; margin: 15px;"
+    >
+      <p
+        class="chakra-text css-0"
+      >
+        This website uses cookies to enhance the user experience.
+      </p>
+    </div>
+    <div
+      class=""
+    >
+      <button
+        aria-label="Decline cookies"
+        class="chakra-button css-4xx2wk"
+        id="rcc-decline-button"
+        style="background: rgb(193, 42, 42); border: 0px; border-radius: 0px; box-shadow: none; color: rgb(229, 229, 229); cursor: pointer; flex: 0 0 auto; padding: 5px 10px; margin: 15px;"
+        type="button"
+      >
+        Refuse non-essential cookies
+      </button>
+      <button
+        aria-label="Accept cookies"
+        class="chakra-button css-4xx2wk"
+        id="rcc-confirm-button"
+        style="background: rgb(255, 212, 45); border: 0px; border-radius: 0px; box-shadow: none; color: black; cursor: pointer; flex: 0 0 auto; padding: 5px 10px; margin: 15px;"
+        type="button"
+      >
+        Accept all cookies
+      </button>
+    </div>
+  </div>
+</DocumentFragment>
+`;

@@ -1,0 +1,52 @@
+@startuml WalletState
+
+title "Wallet State"
+
+state step0 {
+[*] -[#blue]-> INIT_REQUESTED: AcConnectWallet
+INIT_REQUESTED -[#red,dashed]-> INIT_FAILED: EvInitFailed
+INIT_REQUESTED -[#red,dashed]-> NOT_SUPPORTED: EvNotSupported
+}
+
+state step1 {
+INIT_REQUESTED -[#blue,dashed]-> NETWORK_REQUESTED : EvNetworkRequested
+NETWORK_REQUESTED -[#red,dashed]-> NETWORK_DETECTION_FAILED: EvNetworkDetectionFailed
+NETWORK_REQUESTED -[#red,dashed]-> WRONG_NETWORK: EvWrongNetwork
+
+[*] -[#blue]-> NETWORK_SWITCH_REQUESTED: AcSwitchNetwork
+NETWORK_SWITCH_REQUESTED -[#red,dashed]-> NETWORK_SWITCH_REJECTED: EvNetworkSwitchRejected
+NETWORK_SWITCH_REQUESTED -[#red,dashed]-> NETWORK_SWITCH_FAILED: EvNetworkSwitchTimedOut
+}
+
+state step2 {
+[*] -[#blue]-> UNLOCK_REQUESTED: AcUnlockWallet
+NETWORK_REQUESTED -[#blue,dashed]-> ACCOUNT_REQUESTED: EvAccountRequested
+NETWORK_SWITCH_REQUESTED -[#blue,dashed]-> ACCOUNT_REQUESTED: EvAccountRequested
+ACCOUNT_REQUESTED -[#red,dashed]-> ACCOUNT_DETECTION_FAILED: EvAccountDetectionFailed
+ACCOUNT_REQUESTED -[#red,dashed]-> LOCKED: EvLocked
+UNLOCK_REQUESTED -[#red,dashed]-> UNLOCK_REJECTED: EvUnlockRejected
+UNLOCK_REQUESTED -[#red,dashed]-> UNLOCK_FAILED: EvUnlockTimedOut
+}
+
+state step3 {
+[*] -[#blue]-> SIGN_REQUESTED: AcSignIn
+UNLOCK_REQUESTED -[#blue,dashed]-> NOT_SIGNED: EvUnlocked
+ACCOUNT_REQUESTED -[#blue,dashed]-> NOT_SIGNED: EvUnlocked
+
+NOT_SIGNED -[#blue]-> SIGN_REQUESTED: AcSignIn
+
+SIGN_REQUESTED -[#red,dashed]-> SIGN_REJECTED: EvSignRejected
+SIGN_REJECTED -[#blue]-> SIGN_REQUESTED: AcSignIn
+SIGN_REQUESTED -[#red,dashed]-> SIGN_TIMED_OUT: EvSignTimedOut
+SIGN_TIMED_OUT -[#blue]-> SIGN_REQUESTED: AcSignIn
+SIGN_REQUESTED -[#blue,dashed]-> SIGNED: EvSignSigned
+
+SIGNED -[#blue,dashed]-> AUTHENTICATED: EvUserAuthenticated
+}
+
+state authenticated {
+[*] -[#blue]-> DISCONNECT_REQUESTED: AcDisconnectWallet
+DISCONNECT_REQUESTED -[#red,dashed]-> NOT_INITIALIZED: EvReset
+}
+
+@enduml

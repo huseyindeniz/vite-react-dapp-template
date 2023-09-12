@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Feature: UI Component: Layout/Footer/FooterContent Scenario: Default should be visible and show both rows of content 1`] = `[Function]`;
+
+exports[`Feature: UI Component: Layout/Footer/FooterContent Scenario: Only First Row should be visible and show only the first row of content 1`] = `[Function]`;
+
+exports[`Feature: UI Component: Layout/Footer/FooterContent Scenario: Only Second Row should be visible and show only the second row of content 1`] = `[Function]`;

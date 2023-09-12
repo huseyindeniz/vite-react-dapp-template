@@ -1,0 +1,52 @@
+@startuml connect wallet sequence
+autonumber
+
+User -> ConnectButton: clicks
+ConnectButton -> WalletStore: Dispatch(CONNECT)
+WalletStore -> WalletSaga: connectWallet()
+
+== SAGA OPS == 
+
+WalletSaga -> WalletSaga: ActionEffectConnectWallet()
+WalletSaga -> WalletSaga: HandleStateInitRequested()
+
+WalletSaga -> EthersWalletAPI: loadProvider()
+
+alt provider loaded
+WalletSaga -> WalletSaga: HandleStateAccountRequested()
+
+WalletSaga -> EthersWalletAPI: isUnlocked()
+
+alt unlocked
+WalletSaga -> WalletSaga: HandleStateNetworkRequested()
+
+WalletSaga -> EthersWalletAPI: loadNetwork()
+
+alt network loaded
+WalletSaga -> WalletSaga: HandleStateNotSigned()
+
+WalletSaga -> EthersWalletAPI: sign()
+
+
+else network not loaded
+
+alt is wrong network
+WalletSaga -> WalletSaga: HandleStateWrongNetwork()
+else 
+WalletSaga -> WalletSaga: HandleStateNetworkDetectionFailed()
+end
+
+end
+
+else locked
+WalletSaga -> WalletSaga: HandleStateLocked()
+end
+
+else provider not loaded
+alt failed
+WalletSaga -> WalletSaga: HandleStateInitFailed()
+else not loaded
+WalletSaga -> WalletSaga: HandleStateNotSupported()
+end
+end
+@enduml

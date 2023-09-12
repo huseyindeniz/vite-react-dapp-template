@@ -1,0 +1,7 @@
+export enum ProviderLoadState {
+  IDLE = 'IDLE',
+  REQUESTED = 'REQUESTED',
+  NOT_SUPPORTED = 'NOT_SUPPORTED',
+  FAILED = 'FAILED',
+  INITIALIZED = 'INITIALIZED',
+}

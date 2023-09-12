@@ -1,0 +1,68 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 100vh;
+  width: 100%;
+  height: auto;
+  background: black;
+  margin: 0;
+  padding: 0;
+  top: 0;
+  left: 0;
+  position: absolute;
+  box-shadow: inset -0px 0px 40px -10px #eef;
+}
+
+.loading {
+  display: block;
+  height: 200px;
+  position: relative;
+  letter-spacing: 0.5px;
+}
+.spinner {
+  color: #808080;
+}
+.spinner::after {
+  content: '';
+  box-sizing: border-box;
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  top: calc(50% - 20px);
+  left: calc(50% - 20px);
+  border-radius: 50%;
+}
+
+.spinner.pulse::after {
+  background-color: rgba(255, 255, 255, 1);
+  animation: grow-pulse 1s ease-out infinite;
+}
+
+@keyframes spinner {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.1);
+    opacity: 0;
+  }
+  30% {
+    opacity: 0.5;
+  }
+  60% {
+    transform: scale(1.2);
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+Dropdown.Menu {
+  margin: 0;
+}
