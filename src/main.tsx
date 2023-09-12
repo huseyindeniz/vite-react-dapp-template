@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 
 import './index.css';
 
+// eslint-disable-next-line react-refresh/only-export-components
 const App = React.lazy(() =>
   import(/* webpackChunkName: "App" */ './App').then(module => ({
     default: module.App,
