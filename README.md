@@ -1,6 +1,6 @@
 # Vite React dApp Template
 
-![build](https://img.shields.io/github/actions/workflow/status/huseyindeniz/https://github.com/huseyindeniz/Vite-React-dApp-Template/CI.yml)
+![build](https://img.shields.io/github/actions/workflow/status/huseyindeniz/Vite-React-dApp-Template/CI.yml)
 
 A Vite React template specifically designed for decentralized application (dApp) frontend development.
 
