@@ -8,7 +8,7 @@ A Vite React template specifically designed for decentralized application (dApp)
 Quick start
 
 ```sh
-npx degit huseyindeniz/Vite-React-dApp-Template my-project
+npx degit huseyindeniz/vite-react-dapp-template my-project
 cd my-project
 
 npm install
