@@ -10,13 +10,13 @@ describe('HomePage', () => {
         <HomePage />
       </HelmetProvider>
     );
-    const title = getByText('Vite React dApp Template');
+    const title = getByText('React dApp Template (Vite)');
     const description = getByText(
-      'Vite React dApp Template is a Vite React template specifically designed for decentralized application (dApp) frontend development.'
+      'React dApp Template (Vite) is a Vite React template specifically designed for decentralized application (dApp) frontend development.'
     );
     const learnReactButton = getByText('Learn React');
     const learnDappCraTemplateButton = getByText(
-      'Learn Vite React dApp Template'
+      'Learn React dApp Template (Vite)'
     );
 
     expect(title).toBeInTheDocument();
