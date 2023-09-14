@@ -74,7 +74,7 @@ Vite React dApp Template is an easy-to-use foundation for efficiently building h
 
 ## Getting Started
 
-Please visit the [Official CRA Tamplate: dApp Documentation Page](https://huseyindeniz.github.io/react-dapp-template-documentation/) to start your dApp frontend development journey.
+Please visit the [Official Vite React dApp Tamplate Documentation Page](https://huseyindeniz.github.io/react-dapp-template-documentation/) to start your dApp frontend development journey.
 
 ## Contributions
 
