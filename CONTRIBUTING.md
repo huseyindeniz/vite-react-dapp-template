@@ -1,4 +1,4 @@
-# Contributing to Vite React dApp Template
+# Contributing to React dApp Template (Vite)
 
 We love your input! We want to make contributing to this project as easy and transparent as possible, whether it's:
 

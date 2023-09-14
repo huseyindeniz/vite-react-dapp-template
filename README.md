@@ -1,7 +1,7 @@
-# Vite React dApp Template
+# React dApp Template (Vite)
 
-![version](https://img.shields.io/github/package-json/version/huseyindeniz/Vite-React-dApp-Template)
-![build](https://img.shields.io/github/actions/workflow/status/huseyindeniz/Vite-React-dApp-Template/CI.yml)
+![version](https://img.shields.io/github/package-json/version/huseyindeniz/vite-react-dapp-template)
+![build](https://img.shields.io/github/actions/workflow/status/huseyindeniz/vite-react-dapp-template/CI.yml)
 
 A Vite React template specifically designed for decentralized application (dApp) frontend development.
 
@@ -15,15 +15,17 @@ npm install
 npm run dev
 ```
 
+There is also a CRA version of this template [here](https://github.com/huseyindeniz/cra-template-dapp)
+
 ### Tired of searching for and configuring multiple React packages?
 
-Vite React dApp Template solves this challenge. It includes preconfigured packages for core functionality like routing and state management, as well as specialized features like internationalization. These packages are carefully selected and integrated, eliminating the need for developers to spend time researching and configuring individual packages. With the Vite React dApp Template, developers can quickly build powerful and feature-rich applications without repetitive boilerplate code.
+React dApp Template (Vite) solves this challenge. It includes preconfigured packages for core functionality like routing and state management, as well as specialized features like internationalization. These packages are carefully selected and integrated, eliminating the need for developers to spend time researching and configuring individual packages. With the React dApp Template (Vite), developers can quickly build powerful and feature-rich applications without repetitive boilerplate code.
 
-### Benefits of Vite React dApp Template?
+### Benefits of React dApp Template (Vite)?
 
-Compared to React-based frameworks, Vite React dApp Template allows decentralized hosting, eliminating reliance on a single server. It provides flexibility in tool and technology choices, supporting various React libraries and decentralized storage solutions.
+Compared to React-based frameworks, React dApp Template (Vite) allows decentralized hosting, eliminating reliance on a single server. It provides flexibility in tool and technology choices, supporting various React libraries and decentralized storage solutions.
 
-Vite React dApp Template is an easy-to-use foundation for efficiently building high-quality dApps with React, suitable for developers seeking customization and quick development.
+React dApp Template (Vite) is an easy-to-use foundation for efficiently building high-quality dApps with React, suitable for developers seeking customization and quick development.
 
 ## Features
 
@@ -74,12 +76,12 @@ Vite React dApp Template is an easy-to-use foundation for efficiently building h
 
 ## Getting Started
 
-Please visit the [Official Vite React dApp Tamplate Documentation Page](https://huseyindeniz.github.io/react-dapp-template-documentation/) to start your dApp frontend development journey.
+Please visit the [Official React dApp Tamplate Documentation Page](https://huseyindeniz.github.io/react-dapp-template-documentation/) to start your dApp frontend development journey.
 
 ## Contributions
 
-Vite React dApp Template is an open-source project and we welcome contributions from the community. If you have any suggestions, please use the [discussion](https://github.com/huseyindeniz/Vite-React-dApp-Template/discussions) tab. If you have any bug reports, please [open an issue](https://github.com/huseyindeniz/Vite-React-dApp-Template/issues) or [submit a pull request](https://github.com/huseyindeniz/Vite-React-dApp-Template/pulls).
+React dApp Template (Vite) is an open-source project and we welcome contributions from the community. If you have any suggestions, please use the [discussion](https://github.com/huseyindeniz/vite-react-dapp-template/discussions) tab. If you have any bug reports, please [open an issue](https://github.com/huseyindeniz/vite-react-dapp-template/issues) or [submit a pull request](https://github.com/huseyindeniz/vite-react-dapp-template/pulls).
 
 ## License
 
-Vite React dApp Template is licensed under the [MIT License](./LICENSE).
+React dApp Template (Vite) is licensed under the [MIT License](./LICENSE).

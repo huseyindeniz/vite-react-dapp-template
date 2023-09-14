@@ -19,9 +19,9 @@ import logo from './assets/images/logo.svg';
 
 export const HomePage: React.FC = () => {
   const { t } = useTranslation('PageHome');
-  const title: string = t('Vite React dApp Template');
+  const title: string = t('React dApp Template (Vite)');
   const description: string = t(
-    'Vite React dApp Template is a Vite React template specifically designed for decentralized application (dApp) frontend development.'
+    'React dApp Template (Vite) is a Vite React template specifically designed for decentralized application (dApp) frontend development.'
   );
   return (
     <>
@@ -97,14 +97,14 @@ export const HomePage: React.FC = () => {
             </Button>
             <Button
               as={Link}
-              href="https://github.com/huseyindeniz/Vite-React-dApp-Template"
+              href="https://github.com/huseyindeniz/vite-react-dapp-template"
               rel="noopener noreferrer"
               isExternal
               variant="ghost"
               size="xs"
               rightIcon={<FaExternalLinkAlt />}
             >
-              {t('Learn Vite React dApp Template')}
+              {t('Learn React dApp Template (Vite)')}
             </Button>
           </Stack>
         </Stack>
