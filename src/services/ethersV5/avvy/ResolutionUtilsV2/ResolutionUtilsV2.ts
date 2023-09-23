@@ -19,7 +19,7 @@ import type {
   TypedListener,
   OnEvent,
   PromiseOrValue,
-} from '../../../blockchain/types/common';
+} from '../../types/common';
 
 export interface ResolutionUtilsV2Interface extends utils.Interface {
   functions: {

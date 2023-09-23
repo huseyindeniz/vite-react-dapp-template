@@ -1,7 +1,7 @@
 import { Box, Link, Image, VStack, Button, Text } from '@chakra-ui/react';
-import { FaExternalLinkAlt } from '@react-icons/all-files/fa/FaExternalLinkAlt';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { FaExternalLinkAlt } from 'react-icons/fa';
 
 import { AlertMessage } from '../../../../ui/components/AlertMessage/AlertMessage';
 import imageMetamaskLogo from '../../../assets/images/mm-logo.webp';

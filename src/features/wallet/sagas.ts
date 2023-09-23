@@ -1,5 +1,7 @@
 import { takeLatest } from 'redux-saga/effects';
 
+import { IWalletAPI } from '../../services/interfaces/IWalletAPI';
+
 import { ActionEffectDisconnectWallet } from './models/account/actionEffects/disconnectWallet';
 import { ActionEffectLoadAccount } from './models/account/actionEffects/loadAccount';
 import {
@@ -8,7 +10,6 @@ import {
 } from './models/account/actionEffects/signIn';
 import { ActionEffectUnlockWallet } from './models/account/actionEffects/unlockWallet';
 import * as accountActions from './models/account/actions';
-import { IWalletAPI } from './models/IWalletAPI';
 import { ActionEffectLatestBlock } from './models/network/actionEffects/latestBlock';
 import { ActionEffectLoadNetwork } from './models/network/actionEffects/loadNetwork';
 import { ActionEffectSwitchNetwork } from './models/network/actionEffects/switchNetwork';

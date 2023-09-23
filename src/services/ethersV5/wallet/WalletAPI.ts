@@ -1,27 +1,30 @@
-import { SignatureLike } from "@ethersproject/bytes";
-import { ethers } from "ethers";
-import log from "loglevel";
-import { eventChannel, EventChannel } from "redux-saga";
+import { SignatureLike } from '@ethersproject/bytes';
+import { ethers } from 'ethers';
+import log from 'loglevel';
+import { eventChannel, EventChannel } from 'redux-saga';
 
-import { AvalancheChain } from "../../../features/wallet/chains/avalanche";
-import { EthereumMainnetChain } from "../../../features/wallet/chains/ethereum";
+import { AvalancheChain } from '../../../features/wallet/chains/avalanche';
+import { EthereumMainnetChain } from '../../../features/wallet/chains/ethereum';
 import {
   DISABLE_WALLET_SIGN,
   SUPPORTED_NETWORKS,
-} from "../../../features/wallet/config";
-import { AccountType } from "../../../features/wallet/models/account/types/Account";
-import { IWalletAPI } from "../../../features/wallet/models/IWalletAPI";
-import { AvvyAPI } from "../../Avvy/AvvyAPI";
+} from '../../../features/wallet/config';
+import { AccountType } from '../../../features/wallet/models/account/types/Account';
+import { IWalletAPI } from '../../interfaces/IWalletAPI';
+import { AvvyAPI } from '../avvy/AvvyAPI';
+import { IWalletEthersV5ProviderApi } from '../interfaces/IWalletEthersV5ProviderApi';
 
 enum MetamaskRPCErrors {
-  ACTION_REJECTED = "ACTION_REJECTED",
+  ACTION_REJECTED = 'ACTION_REJECTED',
 }
 
 class MetamaskError extends Error {
   code: string | undefined;
 }
 
-export class EthersWalletAPI implements IWalletAPI {
+export class EthersV5WalletAPI
+  implements IWalletAPI, IWalletEthersV5ProviderApi
+{
   private static _instance: IWalletAPI | null = null;
   private _isUnlocked: boolean = false;
   private _isSigned: boolean = false;
@@ -35,8 +38,8 @@ export class EthersWalletAPI implements IWalletAPI {
 
   public static getInstance(): IWalletAPI {
     if (this._instance === null) {
-      log.debug("ethers init");
-      this._instance = new EthersWalletAPI();
+      log.debug('ethers init');
+      this._instance = new EthersV5WalletAPI();
     }
     return this._instance;
   }
@@ -47,7 +50,7 @@ export class EthersWalletAPI implements IWalletAPI {
       if (window.ethereum.isMetaMask) {
         this._provider = new ethers.providers.Web3Provider(
           window.ethereum,
-          "any"
+          'any'
         );
       }
       // metamask and others installed, select Metamask
@@ -74,7 +77,7 @@ export class EthersWalletAPI implements IWalletAPI {
 
   public getNetwork = () => {
     return SUPPORTED_NETWORKS.find(
-      (chain) => chain.chainId === this._network?.chainId
+      chain => chain.chainId === this._network?.chainId
     );
   };
 
@@ -84,19 +87,19 @@ export class EthersWalletAPI implements IWalletAPI {
       return false;
     }
     await this._provider?.ready;
-    log.debug("0x" + networkId.toString(16));
+    log.debug('0x' + networkId.toString(16));
     try {
-      await this._provider?.send("wallet_switchEthereumChain", [
-        { chainId: "0x" + networkId.toString(16) },
+      await this._provider?.send('wallet_switchEthereumChain', [
+        { chainId: '0x' + networkId.toString(16) },
       ]);
       return true;
     } catch {
       const networkDetails = SUPPORTED_NETWORKS.find(
-        (chain) => chain.chainId === networkId
+        chain => chain.chainId === networkId
       );
-      await this._provider?.send("wallet_addEthereumChain", [
+      await this._provider?.send('wallet_addEthereumChain', [
         {
-          chainId: "0x" + networkId.toString(16),
+          chainId: '0x' + networkId.toString(16),
           rpcUrls: networkDetails?.rpcUrls,
           chainName: networkDetails?.chainName,
           nativeCurrency: networkDetails?.nativeCurrency,
@@ -110,12 +113,12 @@ export class EthersWalletAPI implements IWalletAPI {
   private _isNetworkSupported = async (chainId: number | null) => {
     if (chainId) {
       // check if chainId is in the supported list
-      log.debug("isSupported for:", chainId);
-      return SUPPORTED_NETWORKS.some((chain) => chain.chainId === chainId);
+      log.debug('isSupported for:', chainId);
+      return SUPPORTED_NETWORKS.some(chain => chain.chainId === chainId);
     } else {
-      log.debug("isNetworkSupported", this._network);
+      log.debug('isNetworkSupported', this._network);
       return SUPPORTED_NETWORKS.some(
-        (chain) => chain.chainId === this._network?.chainId
+        chain => chain.chainId === this._network?.chainId
       );
     }
   };
@@ -125,11 +128,11 @@ export class EthersWalletAPI implements IWalletAPI {
     log.debug(chainId);
     if (chainId) {
       return SUPPORTED_NETWORKS.some(
-        (chain) => chain.chainId === chainId && chain.isDomainNameSupported
+        chain => chain.chainId === chainId && chain.isDomainNameSupported
       );
     } else {
       const network = SUPPORTED_NETWORKS.find(
-        (chain) => chain.chainId === this._network?.chainId
+        chain => chain.chainId === this._network?.chainId
       );
       if (network) {
         return network.isDomainNameSupported;
@@ -140,7 +143,7 @@ export class EthersWalletAPI implements IWalletAPI {
   };
 
   public isUnlocked = async () => {
-    const accounts: string[] = await this._provider?.send("eth_accounts", []);
+    const accounts: string[] = await this._provider?.send('eth_accounts', []);
     this._isUnlocked = accounts.length > 0;
     if (DISABLE_WALLET_SIGN) {
       const address = await this._provider?.getSigner()?.getAddress();
@@ -153,7 +156,7 @@ export class EthersWalletAPI implements IWalletAPI {
 
   public unlock = async () => {
     const accounts: string[] = await this._provider?.send(
-      "eth_requestAccounts",
+      'eth_requestAccounts',
       []
     );
     this._isUnlocked = accounts.length > 0;
@@ -172,7 +175,7 @@ export class EthersWalletAPI implements IWalletAPI {
 
   public sign = async (message: string | ethers.utils.Bytes) => {
     const signer = this._provider?.getSigner();
-    log.debug("signer", signer);
+    log.debug('signer', signer);
     message += this._newUUID();
     let signature: string | undefined = undefined;
     try {
@@ -180,7 +183,7 @@ export class EthersWalletAPI implements IWalletAPI {
     } catch (error: unknown) {
       const metamaskError: MetamaskError = error as MetamaskError;
       if (metamaskError.code === MetamaskRPCErrors.ACTION_REJECTED) {
-        throw new Error("sign_rejected");
+        throw new Error('sign_rejected');
       }
     }
     const address: string | undefined = await signer?.getAddress();
@@ -194,7 +197,7 @@ export class EthersWalletAPI implements IWalletAPI {
     }
   };
 
-  public getSigner = () => {
+  public getSignerAddress = () => {
     return this._signerAddress;
   };
 
@@ -210,7 +213,7 @@ export class EthersWalletAPI implements IWalletAPI {
         address: this._signerAddress,
         shortAddress:
           this._signerAddress.slice(0, 6) +
-          "..." +
+          '...' +
           this._signerAddress.slice(-4),
         domainName: null,
       };
@@ -245,15 +248,15 @@ export class EthersWalletAPI implements IWalletAPI {
       this._accountChangeListener.close();
       this._accountChangeListener = null;
     }
-    this._accountChangeListener = eventChannel<string[]>((emit) => {
-      log.debug("listening for account changes");
-      window.ethereum.addListener("accountsChanged", (accounts: string[]) => {
+    this._accountChangeListener = eventChannel<string[]>(emit => {
+      log.debug('listening for account changes');
+      window.ethereum.addListener('accountsChanged', (accounts: string[]) => {
         emit(accounts);
       });
 
       return (): void => {
-        log.debug("account listener closed");
-        window.ethereum.removeListener("accountsChanged", emit);
+        log.debug('account listener closed');
+        window.ethereum.removeListener('accountsChanged', emit);
       };
     });
     return this._accountChangeListener;
@@ -264,15 +267,15 @@ export class EthersWalletAPI implements IWalletAPI {
       this._networkChangeListener.close();
       this._networkChangeListener = null;
     }
-    this._networkChangeListener = eventChannel<string>((emit) => {
-      log.debug("listening for network changes");
-      window.ethereum.on("chainChanged", (chainId: string) => {
+    this._networkChangeListener = eventChannel<string>(emit => {
+      log.debug('listening for network changes');
+      window.ethereum.on('chainChanged', (chainId: string) => {
         emit(chainId);
       });
 
       return (): void => {
-        log.debug("network listener closed");
-        window.ethereum.removeListener("chainChanged", emit);
+        log.debug('network listener closed');
+        window.ethereum.removeListener('chainChanged', emit);
       };
     });
     return this._networkChangeListener;
@@ -287,32 +290,32 @@ export class EthersWalletAPI implements IWalletAPI {
   };
 
   public getLatestBlock = async () => {
-    log.debug("get latest block called");
+    log.debug('get latest block called');
     const blockNumber = await this._provider?.getBlockNumber();
-    log.debug("block:", blockNumber);
+    log.debug('block:', blockNumber);
     return blockNumber;
   };
 
   public getBalance = async () => {
-    log.debug("get balance called");
+    log.debug('get balance called');
     if (this._signerAddress) {
       const balance = await this._provider?.getBalance(this._signerAddress);
       if (balance) {
         return ethers.utils.formatEther(balance);
       }
     }
-    return "";
+    return '';
   };
 
   // this is a client side secret value for signing login
   // if you have a backend application
   // you could get this value from your backend
   private _newUUID = () => {
-    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
       /[xy]/g,
       function (c) {
         const r = (Math.random() * 16) | 0,
-          v = c === "x" ? r : (r & 0x3) | 0x8;
+          v = c === 'x' ? r : (r & 0x3) | 0x8;
         return v.toString(16);
       }
     );

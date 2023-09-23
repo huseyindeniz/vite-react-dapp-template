@@ -1,19 +1,57 @@
-import { Box } from '@chakra-ui/react';
-import { useTranslation } from 'react-i18next';
-
-import { AlertMessage } from '../../AlertMessage/AlertMessage';
+import './styles.css';
 
 export interface ErrorFallbackProps {
   error: Error;
 }
 
 export const ErrorFallback: React.FC<ErrorFallbackProps> = ({ error }) => {
-  const { t } = useTranslation('Layout');
   return (
-    <Box m={10}>
-      <AlertMessage status="error" title={t('An error occured!')}>
-        {error.message}
-      </AlertMessage>
-    </Box>
+    <div id="errorFallback">
+      <div className="alert">
+        <p>
+          <strong>Opps!</strong> An unexpected error occured!
+        </p>
+      </div>
+      <div className="errorlinks">
+        <p>Back To Home?</p>
+        <p>
+          <a className="errorlink" href="/">
+            Yes
+          </a>
+          <a
+            className="errorlink"
+            href="https://www.youtube.com/watch?v=M230r6CLZUA"
+          >
+            No
+          </a>
+        </p>
+      </div>
+      <hr />
+      <div>
+        <a id="hide1" href="#hide1" className="hide">
+          Show Full Error Message
+        </a>
+        <a id="show1" href="#show1" className="show">
+          Hide Full Error Message
+        </a>
+        <table className="fullErrorMessage">
+          <caption> Full Error Message</caption>
+          <tbody>
+            <tr>
+              <th>Name</th>
+              <td>{error.name}</td>
+            </tr>
+            <tr>
+              <th>Message</th>
+              <td>{error.message}</td>
+            </tr>
+            <tr>
+              <th>Stack</th>
+              <td>{error.stack}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   );
 };

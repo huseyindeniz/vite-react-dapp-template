@@ -1,17 +1,17 @@
-import { END, EventChannel } from "redux-saga";
-import { put, call, take, spawn } from "redux-saga/effects";
+import { END, EventChannel } from 'redux-saga';
+import { put, call, take, spawn } from 'redux-saga/effects';
 
-import { DISABLE_WALLET_SIGN } from "../../../config";
-import { SlowDown } from "../../../utils";
-import * as accountActions from "../../account/actions";
-import * as connectWallet from "../../provider/actions";
-import * as walletStateSliceActions from "../../slice";
-import { LoadingStatusType } from "../../types/LoadingStatus";
-import { WalletState } from "../../types/WalletState";
-import { IWalletNetworkApi } from "../IWalletNetworkApi";
-import * as slicesActions from "../slice";
-import { Network } from "../types/Network";
-import { NetworkLoadState } from "../types/NetworkLoadState";
+import { IWalletNetworkApi } from '../../../../../services/interfaces/IWalletNetworkApi';
+import { DISABLE_WALLET_SIGN } from '../../../config';
+import { SlowDown } from '../../../utils';
+import * as accountActions from '../../account/actions';
+import * as connectWallet from '../../provider/actions';
+import * as walletStateSliceActions from '../../slice';
+import { LoadingStatusType } from '../../types/LoadingStatus';
+import { WalletState } from '../../types/WalletState';
+import * as slicesActions from '../slice';
+import { Network } from '../types/Network';
+import { NetworkLoadState } from '../types/NetworkLoadState';
 
 export function* ActionEffectLoadNetwork(walletApi: IWalletNetworkApi) {
   yield put(walletStateSliceActions.setLoading(LoadingStatusType.PENDING));
@@ -41,7 +41,7 @@ export function* HandleStateNetworkRequested(
     yield call(SlowDown);
     const network: Network = yield call(walletNetworkApi.loadNetwork);
     if (network === undefined || network === null) {
-      throw new Error("Wrong network");
+      throw new Error('Wrong network');
     }
     yield put(slicesActions.setNetwork(network));
     yield put(
@@ -51,7 +51,7 @@ export function* HandleStateNetworkRequested(
     return true;
   } catch (error) {
     const errorMessage: string = (error as Error).message;
-    if (errorMessage === "Wrong network") {
+    if (errorMessage === 'Wrong network') {
       yield call(HandleStateWrongNetwork);
     } else {
       yield call(HandleStateNetworkDetectionFailed, errorMessage);

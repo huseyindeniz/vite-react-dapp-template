@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Feature: UI Component: Layout/CookieConsent should render with debug enabled 1`] = `
+exports[`Feature: UI Component: Layout/CookieConsentMessage should render with debug enabled 1`] = `
 <DocumentFragment>
   <div
     class="CookieConsent"
@@ -42,7 +42,7 @@ exports[`Feature: UI Component: Layout/CookieConsent should render with debug en
 </DocumentFragment>
 `;
 
-exports[`Feature: UI Component: Layout/CookieConsent should render with default props 1`] = `
+exports[`Feature: UI Component: Layout/CookieConsentMessage should render with default props 1`] = `
 <DocumentFragment>
   <div
     class="CookieConsent"

@@ -1,7 +1,7 @@
 import { Box, Flex, IconButton, Tag } from '@chakra-ui/react';
-import { MdRefresh } from '@react-icons/all-files/md/MdRefresh';
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { MdRefresh } from 'react-icons/md';
 
 import useTypedSelector from '../../../../hooks/useTypedSelector';
 import { useActions } from '../../hooks/useActions';

@@ -1,4 +1,4 @@
-import { Box, ScaleFade } from '@chakra-ui/react';
+import { Box, ChakraProvider, ScaleFade } from '@chakra-ui/react';
 import log from 'loglevel';
 import React from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
@@ -9,34 +9,14 @@ import { useLocation, Outlet } from 'react-router-dom';
 import { usePageLink } from '../../../../pages/usePageLink';
 import { usePages } from '../../../../pages/usePages';
 
+import { CookieConsentMessage } from './CookieConsent/CookieConsentMessage';
 import { ErrorFallback } from './ErrorFallback/ErrorFallback';
+import { Footer } from './Footer/Footer';
+import { Header } from './Header/Header';
 import { PageLoading } from './PageLoding/PageLoading';
+import { ScrollToTopButton } from './ScrollToTopButton/ScrollToTopButton';
 import { SiteMeta } from './SiteMeta/SiteMeta';
-
-const Header = React.lazy(() =>
-  import(/* webpackChunkName: "Header" */ './Header/Header').then(module => ({
-    default: module.Header,
-  }))
-);
-const Footer = React.lazy(() =>
-  import(/* webpackChunkName: "Footer" */ './Footer/Footer').then(module => ({
-    default: module.Footer,
-  }))
-);
-const ScrollToTopButton = React.lazy(() =>
-  import(
-    /* webpackChunkName: "ScrollToTopButton" */ './ScrollToTopButton/ScrollToTopButton'
-  ).then(module => ({
-    default: module.ScrollToTopButton,
-  }))
-);
-const CookieConsent = React.lazy(() =>
-  import(
-    /* webpackChunkName: "CookieConsent" */ './CookieConsent/CookieConsent'
-  ).then(module => ({
-    default: module.CookieConsent,
-  }))
-);
+import { theme } from './Theme/theme';
 
 const myErrorHandler = (error: Error, info: { componentStack: string }) => {
   // Do something with the error
@@ -56,31 +36,33 @@ export const Layout: React.FC = () => {
   const baseUrl = pageLink('/');
 
   return (
-    <ErrorBoundary FallbackComponent={ErrorFallback} onError={myErrorHandler}>
-      <HelmetProvider>
-        <SiteMeta siteName={siteName} siteDescription={siteDescription} />
-        <Box minH="100vh" flexDirection="column" display="flex">
-          <Header
-            siteName={siteName}
-            baseUrl={baseUrl}
-            mainMenuItems={mainMenuItems}
-          />
-          <Box p={0} flex={1}>
-            <React.Suspense fallback={<PageLoading />}>
-              <ScaleFade key={location.pathname} initialScale={0.9} in={true}>
-                <Outlet />
-              </ScaleFade>
-            </React.Suspense>
+    <ChakraProvider theme={theme}>
+      <ErrorBoundary FallbackComponent={ErrorFallback} onError={myErrorHandler}>
+        <HelmetProvider>
+          <SiteMeta siteName={siteName} siteDescription={siteDescription} />
+          <Box minH="100vh" flexDirection="column" display="flex">
+            <Header
+              siteName={siteName}
+              baseUrl={baseUrl}
+              mainMenuItems={mainMenuItems}
+            />
+            <Box p={0} flex={1}>
+              <React.Suspense fallback={<PageLoading />}>
+                <ScaleFade key={location.pathname} initialScale={0.9} in={true}>
+                  <Outlet />
+                </ScaleFade>
+              </React.Suspense>
+            </Box>
+            <Footer
+              siteName={siteName}
+              baseUrl={baseUrl}
+              secondaryMenuItems={secondaryMenuItems}
+            />
+            <ScrollToTopButton />
+            <CookieConsentMessage />
           </Box>
-          <Footer
-            siteName={siteName}
-            baseUrl={baseUrl}
-            secondaryMenuItems={secondaryMenuItems}
-          />
-          <ScrollToTopButton />
-          <CookieConsent />
-        </Box>
-      </HelmetProvider>
-    </ErrorBoundary>
+        </HelmetProvider>
+      </ErrorBoundary>
+    </ChakraProvider>
   );
 };

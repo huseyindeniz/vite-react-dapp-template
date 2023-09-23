@@ -1,4 +1,4 @@
-import { END, EventChannel, Task } from "redux-saga";
+import { END, EventChannel, Task } from 'redux-saga';
 import {
   put,
   spawn,
@@ -7,20 +7,20 @@ import {
   select,
   cancel,
   take,
-} from "redux-saga/effects";
+} from 'redux-saga/effects';
 
-import { RootState } from "../../../../../store/store";
-import { DISABLE_WALLET_SIGN, SIGN_TIMEOUT_IN_SEC } from "../../../config";
-import { SlowDown } from "../../../utils";
-import { connectWallet } from "../../provider/actions";
-import * as walletStateSliceActions from "../../slice";
-import { LoadingStatusType } from "../../types/LoadingStatus";
-import { WalletState } from "../../types/WalletState";
-import * as actions from "../actions";
-import { IWalletAccountApi } from "../IWalletAccountApi";
-import * as slicesActions from "../slice";
-import { AccountType } from "../types/Account";
-import { AccountSignState } from "../types/AccountSignState";
+import { IWalletAccountApi } from '../../../../../services/interfaces/IWalletAccountApi';
+import { RootState } from '../../../../../store/store';
+import { DISABLE_WALLET_SIGN, SIGN_TIMEOUT_IN_SEC } from '../../../config';
+import { SlowDown } from '../../../utils';
+import { connectWallet } from '../../provider/actions';
+import * as walletStateSliceActions from '../../slice';
+import { LoadingStatusType } from '../../types/LoadingStatus';
+import { WalletState } from '../../types/WalletState';
+import * as actions from '../actions';
+import * as slicesActions from '../slice';
+import { AccountType } from '../types/Account';
+import { AccountSignState } from '../types/AccountSignState';
 
 // ACTION EFFECTS
 export function* ActionEffectWaitSignIn() {
@@ -89,7 +89,7 @@ export function* HandleStateSignRequested(
       isSigned = yield call(walletSignApi.isSigned);
     }
   } catch (error) {
-    if ((error as Error).message === "sign_rejected") {
+    if ((error as Error).message === 'sign_rejected') {
       isRejected = true;
     }
     isSigned = false;
@@ -102,7 +102,7 @@ export function* HandleStateSignRequested(
     if (isRejected) {
       yield call(HandleStateSignRejected);
     } else {
-      yield call(HandleStateSignFailed, "SIGN_FAILED");
+      yield call(HandleStateSignFailed, 'SIGN_FAILED');
     }
     return false;
   }

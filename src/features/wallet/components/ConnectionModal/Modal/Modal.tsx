@@ -18,14 +18,12 @@ import {
   Spinner,
   Container,
 } from '@chakra-ui/react';
-import { FaFileSignature } from '@react-icons/all-files/fa/FaFileSignature';
-import { GiChoice } from '@react-icons/all-files/gi/GiChoice';
-import { IoMdUnlock } from '@react-icons/all-files/io/IoMdUnlock';
-import { MdAccountBalanceWallet } from '@react-icons/all-files/md/MdAccountBalanceWallet';
-import { MdError } from '@react-icons/all-files/md/MdError';
-import { MdExtension } from '@react-icons/all-files/md/MdExtension';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { FaFileSignature } from 'react-icons/fa';
+import { GiChoice } from 'react-icons/gi';
+import { IoMdUnlock } from 'react-icons/io';
+import { MdAccountBalanceWallet, MdError, MdExtension } from 'react-icons/md';
 
 import { DISABLE_WALLET_SIGN } from '../../../config';
 

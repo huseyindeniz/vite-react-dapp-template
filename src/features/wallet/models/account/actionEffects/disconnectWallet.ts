@@ -1,8 +1,8 @@
 import { call, put } from 'redux-saga/effects';
 
+import { IWalletAccountApi } from '../../../../../services/interfaces/IWalletAccountApi';
 import * as walletStateSliceActions from '../../slice';
 import { LoadingStatusType } from '../../types/LoadingStatus';
-import { IWalletAccountApi } from '../IWalletAccountApi';
 
 export function* ActionEffectDisconnectWallet(walletApi: IWalletAccountApi) {
   yield put(walletStateSliceActions.setLoading(LoadingStatusType.PENDING));

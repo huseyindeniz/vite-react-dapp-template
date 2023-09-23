@@ -3,19 +3,10 @@ import {
   Stack,
   useColorModeValue,
   VisuallyHidden,
+  Spinner,
 } from '@chakra-ui/react';
 import React, { ReactNode } from 'react';
-
-const FaGithub = React.lazy(() =>
-  import('@react-icons/all-files/fa/FaGithub').then(module => ({
-    default: module.FaGithub,
-  }))
-);
-const FaLinkedin = React.lazy(() =>
-  import('@react-icons/all-files/fa/FaLinkedin').then(module => ({
-    default: module.FaLinkedin,
-  }))
-);
+import { FaTwitter, FaDiscord, FaInstagram } from 'react-icons/fa';
 
 const SocialButton = ({
   children,
@@ -51,27 +42,34 @@ const SocialButton = ({
   );
 };
 
-// Replace social links here
-
 export const SocialMenu: React.FC = React.memo(() => {
   return (
     <Stack direction="row" spacing={6}>
       <SocialButton
-        label="GitHub"
-        href="https://github.com/huseyindeniz"
-        key="GitHub"
+        label="Twitter"
+        href="https://twitter.com/randora_avax_sh"
+        key="Twitter"
       >
-        <React.Suspense fallback="">
-          <FaGithub />
+        <React.Suspense fallback={<Spinner size={'xs'} />}>
+          <FaTwitter />
         </React.Suspense>
       </SocialButton>
       <SocialButton
-        label="Linkedin"
-        href="https://linkedin.com/in/huseyindenizkivrak/en-us"
-        key="Linkedin"
+        label="Discord"
+        href="https://discord.gg/qx7YM3NAkR"
+        key="Discord"
       >
-        <React.Suspense fallback="">
-          <FaLinkedin />
+        <React.Suspense fallback={<Spinner size={'xs'} />}>
+          <FaDiscord />
+        </React.Suspense>
+      </SocialButton>
+      <SocialButton
+        label="Instagram"
+        href="https://www.instagram.com/randora_avax_sh/"
+        key="Instagram"
+      >
+        <React.Suspense fallback={<Spinner size={'xs'} />}>
+          <FaInstagram />
         </React.Suspense>
       </SocialButton>
     </Stack>

@@ -1,13 +1,13 @@
-import { put, call } from "redux-saga/effects";
+import { put, call } from 'redux-saga/effects';
 
-import { SlowDown } from "../../../utils";
-import * as networkActions from "../../network/actions";
-import * as walletStateSliceActions from "../../slice";
-import { LoadingStatusType } from "../../types/LoadingStatus";
-import { WalletState } from "../../types/WalletState";
-import { IWalletAccountApi } from "../IWalletAccountApi";
-import * as slicesActions from "../slice";
-import { AccountLoadState } from "../types/AccountLoadState";
+import { IWalletAccountApi } from '../../../../../services/interfaces/IWalletAccountApi';
+import { SlowDown } from '../../../utils';
+import * as networkActions from '../../network/actions';
+import * as walletStateSliceActions from '../../slice';
+import { LoadingStatusType } from '../../types/LoadingStatus';
+import { WalletState } from '../../types/WalletState';
+import * as slicesActions from '../slice';
+import { AccountLoadState } from '../types/AccountLoadState';
 
 // ACTION EFFECTS
 export function* ActionEffectLoadAccount(walletApi: IWalletAccountApi) {
