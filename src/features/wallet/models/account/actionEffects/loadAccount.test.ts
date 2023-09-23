@@ -2,8 +2,8 @@ import { call } from 'redux-saga/effects';
 import { expectSaga, testSaga } from 'redux-saga-test-plan';
 import { throwError } from 'redux-saga-test-plan/providers';
 
+import { IWalletAccountApi } from '../../../../../services/interfaces/IWalletAccountApi';
 import { SlowDown } from '../../../utils';
-import { IWalletAccountApi } from '../IWalletAccountApi';
 import * as slicesActions from '../slice';
 import { AccountLoadState } from '../types/AccountLoadState';
 

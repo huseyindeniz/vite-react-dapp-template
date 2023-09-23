@@ -2,11 +2,11 @@ import { call, spawn, put, delay, select } from 'redux-saga/effects';
 import { expectSaga, testSaga } from 'redux-saga-test-plan';
 import { throwError } from 'redux-saga-test-plan/providers';
 
+import { IWalletAccountApi } from '../../../../../services/interfaces/IWalletAccountApi';
 import { SIGN_TIMEOUT_IN_SEC } from '../../../config';
 import { SlowDown } from '../../../utils';
 import * as walletStateSliceActions from '../../slice';
 import { WalletState } from '../../types/WalletState';
-import { IWalletAccountApi } from '../IWalletAccountApi';
 import * as slicesActions from '../slice';
 import { AccountSignState } from '../types/AccountSignState';
 

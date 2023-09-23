@@ -1,7 +1,7 @@
 import { Box, IconButton } from '@chakra-ui/react';
-import { IoChevronUp } from '@react-icons/all-files/io5/IoChevronUp';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { IoChevronUp } from 'react-icons/io5';
 
 export const ScrollToTopButton: React.FC = () => {
   const { t } = useTranslation('Layout');
@@ -13,7 +13,7 @@ export const ScrollToTopButton: React.FC = () => {
   };
 
   const handleScroll = () => {
-    const position = window.pageYOffset;
+    const position = window.scrollY;
     setScrollPosition(position);
   };
 

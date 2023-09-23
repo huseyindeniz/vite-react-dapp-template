@@ -9,9 +9,9 @@ import {
   Tag,
   Image,
 } from '@chakra-ui/react';
-import { FaExternalLinkAlt } from '@react-icons/all-files/fa/FaExternalLinkAlt';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { FaExternalLinkAlt } from 'react-icons/fa';
 
 import { PageMeta } from '../../features/ui/components/PageMeta/PageMeta';
 

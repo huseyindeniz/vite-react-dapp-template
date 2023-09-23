@@ -17,8 +17,8 @@ jest.mock('./ScrollToTopButton/ScrollToTopButton', () => ({
   ),
 }));
 
-jest.mock('./CookieConsent/CookieConsent', () => ({
-  CookieConsent: () => (
+jest.mock('./CookieConsent/CookieConsentMessage', () => ({
+  CookieConsentMessage: () => (
     <div data-testid="mock-cookie-consent">Mock CookieConsent</div>
   ),
 }));

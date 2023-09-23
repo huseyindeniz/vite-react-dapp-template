@@ -1,20 +1,13 @@
-import { Spinner, useDisclosure } from '@chakra-ui/react';
+import { useDisclosure } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 
 import useTypedSelector from '../../../../hooks/useTypedSelector';
 import { useActions } from '../../hooks/useActions';
 import { LoadingStatusType } from '../../models/types/LoadingStatus';
 import { WalletState } from '../../models/types/WalletState';
+import { ConnectionModal } from '../ConnectionModal/ConnectionModal';
 
 import { Button } from './Button/Button';
-
-const ConnectionModal = React.lazy(() =>
-  import(
-    /* webpackChunkName: "../ConnectionModal" */ '../ConnectionModal/ConnectionModal'
-  ).then(module => ({
-    default: module.ConnectionModal,
-  }))
-);
 
 export const ConnectButton: React.FC = () => {
   const actions = useActions();
@@ -36,11 +29,7 @@ export const ConnectButton: React.FC = () => {
         isLoading={loadingState === LoadingStatusType.PENDING}
         onClick={actions.connectWallet}
       />
-      {isOpen ? (
-        <React.Suspense fallback={<Spinner size="xs" />}>
-          <ConnectionModal onDisconnect={onClose} />
-        </React.Suspense>
-      ) : null}
+      {isOpen ? <ConnectionModal onDisconnect={onClose} /> : null}
     </>
   );
 };

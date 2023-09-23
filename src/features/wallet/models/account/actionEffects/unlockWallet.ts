@@ -1,16 +1,16 @@
-import log from "loglevel";
-import { put, call, select } from "redux-saga/effects";
+import log from 'loglevel';
+import { put, call, select } from 'redux-saga/effects';
 
-import { RootState } from "../../../../../store/store";
-import { SlowDown } from "../../../utils";
-import { IWalletAPI } from "../../IWalletAPI";
-import * as walletStateSliceActions from "../../slice";
-import { LoadingStatusType } from "../../types/LoadingStatus";
-import { WalletState } from "../../types/WalletState";
-import * as actions from "../actions";
-import { IWalletAccountApi } from "../IWalletAccountApi";
-import * as slicesActions from "../slice";
-import { AccountLoadState } from "../types/AccountLoadState";
+import { IWalletAccountApi } from '../../../../../services/interfaces/IWalletAccountApi';
+import { IWalletAPI } from '../../../../../services/interfaces/IWalletAPI';
+import { RootState } from '../../../../../store/store';
+import { SlowDown } from '../../../utils';
+import * as walletStateSliceActions from '../../slice';
+import { LoadingStatusType } from '../../types/LoadingStatus';
+import { WalletState } from '../../types/WalletState';
+import * as actions from '../actions';
+import * as slicesActions from '../slice';
+import { AccountLoadState } from '../types/AccountLoadState';
 
 export function* ActionEffectUnlockWallet(walletApi: IWalletAPI) {
   yield put(walletStateSliceActions.setLoading(LoadingStatusType.PENDING));
@@ -56,7 +56,7 @@ export function* HandleStateUnlockRequested(
     }
   } catch (error: unknown) {
     log.debug(error);
-    const strError: string = error instanceof Error ? error.message : "";
+    const strError: string = error instanceof Error ? error.message : '';
     if (strError.match(/unlock_rejected/i)) {
       isRejected = true;
     }

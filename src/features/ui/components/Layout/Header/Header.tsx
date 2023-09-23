@@ -7,18 +7,25 @@ import {
   useColorModeValue,
   Stack,
   Divider,
+  Spinner,
 } from '@chakra-ui/react';
-import { IoClose } from '@react-icons/all-files/io5/IoClose';
-import { IoEllipsisVertical } from '@react-icons/all-files/io5/IoEllipsisVertical';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { IoClose, IoEllipsisVertical } from 'react-icons/io5';
 
 import { MenuType } from '../../../../../pages/types';
 import { LangMenu } from '../../../../i18n/components/LangMenu/LangMenu';
 import { MainMenu } from '../MainMenu/MainMenu';
-import { ProfileMenu } from '../ProfileMenu/ProfileMenu';
 import { SiteLogo } from '../SiteLogo/SiteLogo';
 import { ThemeSwitcher } from '../ThemeSwitcher/ThemeSwitcher';
+
+const ProfileMenu = React.lazy(() =>
+  import(
+    /* webpackChunkName: "ProfileMenu" */ '../ProfileMenu/ProfileMenu'
+  ).then(module => ({
+    default: module.ProfileMenu,
+  }))
+);
 
 export interface HeaderProps {
   siteName: string;
@@ -59,7 +66,9 @@ export const Header: React.FC<HeaderProps> = React.memo(
             <HStack as="nav" m={0} display={{ base: 'none', md: 'flex' }}>
               {toolsMenu}
             </HStack>
-            <ProfileMenu />
+            <React.Suspense fallback={<Spinner size="xs" />}>
+              <ProfileMenu />
+            </React.Suspense>
           </Flex>
         </Flex>
 

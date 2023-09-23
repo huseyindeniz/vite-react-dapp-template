@@ -1,19 +1,19 @@
 import { Button, Text } from '@chakra-ui/react';
-import { CookieConsent as CookieConsetMessage } from 'react-cookie-consent';
+import { CookieConsent } from 'react-cookie-consent';
 import { useTranslation } from 'react-i18next';
 
-export interface CookieConsentProps {
+export interface CookieConsentMessageProps {
   debug?: boolean;
   expires?: number;
 }
 
-export const CookieConsent: React.FC<CookieConsentProps> = ({
+export const CookieConsentMessage: React.FC<CookieConsentMessageProps> = ({
   debug = false,
   expires = 365,
 }) => {
   const { t } = useTranslation('Layout');
   return (
-    <CookieConsetMessage
+    <CookieConsent
       location="bottom"
       enableDeclineButton
       ButtonComponent={Button}
@@ -29,6 +29,6 @@ export const CookieConsent: React.FC<CookieConsentProps> = ({
       <Text>
         {t('This website uses cookies to enhance the user experience.')}
       </Text>
-    </CookieConsetMessage>
+    </CookieConsent>
   );
 };

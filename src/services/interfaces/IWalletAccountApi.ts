@@ -1,6 +1,6 @@
 import { EventChannel } from 'redux-saga';
 
-import { AccountType } from './types/Account';
+import { AccountType } from '../../features/wallet/models/account/types/Account';
 
 export interface IWalletAccountApi {
   isUnlocked(): Promise<boolean>;

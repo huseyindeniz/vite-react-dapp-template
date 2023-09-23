@@ -1,7 +1,6 @@
 import { IconButton, useColorMode } from '@chakra-ui/react';
-import { IoMdMoon } from '@react-icons/all-files/io/IoMdMoon';
-import { IoMdSunny } from '@react-icons/all-files/io/IoMdSunny';
 import { useTranslation } from 'react-i18next';
+import { IoMdMoon, IoMdSunny } from 'react-icons/io';
 
 export const ThemeSwitcher: React.FC = () => {
   const { t } = useTranslation('Layout');

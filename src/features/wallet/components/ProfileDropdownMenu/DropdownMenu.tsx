@@ -11,12 +11,11 @@ import {
   VStack,
   Link,
 } from '@chakra-ui/react';
-import { FaExternalLinkAlt } from '@react-icons/all-files/fa/FaExternalLinkAlt';
-import { IoIosLogOut } from '@react-icons/all-files/io/IoIosLogOut';
-import { MdContentCopy } from '@react-icons/all-files/md/MdContentCopy';
-import { MdDashboard } from '@react-icons/all-files/md/MdDashboard';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { FaExternalLinkAlt } from 'react-icons/fa';
+import { IoIosLogOut } from 'react-icons/io';
+import { MdContentCopy, MdDashboard } from 'react-icons/md';
 import { Link as RouterLink } from 'react-router-dom';
 
 import { Network } from '../../models/network/types/Network';

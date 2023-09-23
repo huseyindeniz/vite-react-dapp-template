@@ -2,9 +2,9 @@ import { call } from 'redux-saga/effects';
 import { expectSaga, testSaga } from 'redux-saga-test-plan';
 import { throwError } from 'redux-saga-test-plan/providers';
 
+import { IWalletProviderApi } from '../../../../../services/interfaces/IWalletProviderApi';
 import { SlowDown } from '../../../utils';
 import * as walletStateSliceActions from '../../slice';
-import { IWalletProviderApi } from '../IWalletProviderApi';
 import * as slicesActions from '../slice';
 import { ProviderLoadState } from '../types/ProviderLoadState';
 
@@ -16,8 +16,6 @@ import {
 
 const mockWalletInitApi: IWalletProviderApi = {
   loadProvider: jest.fn(),
-  getProvider: jest.fn(),
-  getSigner: jest.fn(),
 };
 
 describe('Feature: Wallet', () => {

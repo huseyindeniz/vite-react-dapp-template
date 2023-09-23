@@ -1,16 +1,16 @@
 import { render } from '@testing-library/react';
 
-import { CookieConsent } from './CookieConsent';
+import { CookieConsentMessage } from './CookieConsentMessage';
 
 describe('Feature: UI', () => {
-  describe('Component: Layout/CookieConsent', () => {
+  describe('Component: Layout/CookieConsentMessage', () => {
     it('should render with default props', () => {
-      const { asFragment } = render(<CookieConsent />);
+      const { asFragment } = render(<CookieConsentMessage />);
       expect(asFragment()).toMatchSnapshot();
     });
 
     it('should render with debug enabled', () => {
-      const { asFragment } = render(<CookieConsent debug />);
+      const { asFragment } = render(<CookieConsentMessage debug />);
       expect(asFragment()).toMatchSnapshot();
     });
   });

@@ -1,13 +1,13 @@
-import { put, call } from "redux-saga/effects";
+import { put, call } from 'redux-saga/effects';
 
-import { SlowDown } from "../../../utils";
-import * as actions from "../../account/actions";
-import * as walletStateSliceActions from "../../slice";
-import { LoadingStatusType } from "../../types/LoadingStatus";
-import { WalletState } from "../../types/WalletState";
-import { IWalletProviderApi } from "../IWalletProviderApi";
-import * as sliceActions from "../slice";
-import { ProviderLoadState } from "../types/ProviderLoadState";
+import { IWalletProviderApi } from '../../../../../services/interfaces/IWalletProviderApi';
+import { SlowDown } from '../../../utils';
+import * as actions from '../../account/actions';
+import * as walletStateSliceActions from '../../slice';
+import { LoadingStatusType } from '../../types/LoadingStatus';
+import { WalletState } from '../../types/WalletState';
+import * as sliceActions from '../slice';
+import { ProviderLoadState } from '../types/ProviderLoadState';
 
 // ACTION EFFECTS
 
@@ -45,7 +45,7 @@ export function* HandleStateProviderRequested(
     return true;
   } else {
     if (isError) {
-      yield call(HandleStateProviderFailed, "Wallet detection failed");
+      yield call(HandleStateProviderFailed, 'Wallet detection failed');
     } else {
       yield call(HandleStateProviderNotSupported);
     }
