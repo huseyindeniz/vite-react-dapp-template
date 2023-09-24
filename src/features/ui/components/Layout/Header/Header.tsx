@@ -1,3 +1,5 @@
+import React from 'react';
+
 import {
   Box,
   Flex,
@@ -9,12 +11,12 @@ import {
   Divider,
   Spinner,
 } from '@chakra-ui/react';
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { IoClose, IoEllipsisVertical } from 'react-icons/io5';
 
-import { MenuType } from '../../../../../pages/types';
-import { LangMenu } from '../../../../i18n/components/LangMenu/LangMenu';
+import { LangMenu } from '@/features/i18n/components/LangMenu/LangMenu';
+import { MenuType } from '@/pages/types';
+
 import { MainMenu } from '../MainMenu/MainMenu';
 import { SiteLogo } from '../SiteLogo/SiteLogo';
 import { ThemeSwitcher } from '../ThemeSwitcher/ThemeSwitcher';

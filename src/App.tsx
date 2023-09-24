@@ -1,11 +1,12 @@
-import log from 'loglevel';
 import React from 'react';
+
+import log from 'loglevel';
 import { Provider } from 'react-redux';
 
-import { Router } from './pages/Router';
-import store from './store/store';
+import { Router } from '@/pages/Router';
+import store from '@/store/store';
 
-import './features/i18n/i18n';
+import '@/features/i18n/i18n';
 
 log.setDefaultLevel('silent');
 

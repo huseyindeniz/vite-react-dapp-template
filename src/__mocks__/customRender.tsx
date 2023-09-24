@@ -1,10 +1,11 @@
 /* eslint-disable react-refresh/only-export-components */
+import * as React from 'react';
+
 import { ChakraProvider } from '@chakra-ui/react';
 import { render, RenderOptions } from '@testing-library/react';
-import * as React from 'react';
 import { I18nextProvider } from 'react-i18next';
 
-import { theme } from '../features/ui/components/Layout/Theme/theme';
+import { theme } from '@/features/ui/components/Layout/Theme/theme';
 
 import i18n from './i18nextMock';
 

@@ -1,13 +1,14 @@
+import React from 'react';
+
 import { Box, ChakraProvider, ScaleFade } from '@chakra-ui/react';
 import log from 'loglevel';
-import React from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { HelmetProvider } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
 import { useLocation, Outlet } from 'react-router-dom';
 
-import { usePageLink } from '../../../../pages/usePageLink';
-import { usePages } from '../../../../pages/usePages';
+import { usePageLink } from '@/pages/usePageLink';
+import { usePages } from '@/pages/usePages';
 
 import { CookieConsentMessage } from './CookieConsent/CookieConsentMessage';
 import { ErrorFallback } from './ErrorFallback/ErrorFallback';

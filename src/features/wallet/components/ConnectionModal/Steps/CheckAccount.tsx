@@ -1,8 +1,10 @@
-import { Box, Button, Text, Progress } from '@chakra-ui/react';
 import React from 'react';
+
+import { Box, Button, Text, Progress } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
-import { AlertMessage } from '../../../../ui/components/AlertMessage/AlertMessage';
+import { AlertMessage } from '@/features/ui/components/AlertMessage/AlertMessage';
+
 import { AccountLoadState } from '../../../models/account/types/AccountLoadState';
 
 export interface CheckAccountProps {

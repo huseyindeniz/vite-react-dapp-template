@@ -1,8 +1,9 @@
-import { Link, Stack, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
+
+import { Link, Stack, useColorModeValue } from '@chakra-ui/react';
 import { NavLink as RouterLink } from 'react-router-dom';
 
-import { MenuType } from '../../../../../pages/types';
+import { MenuType } from '@/pages/types';
 
 export interface SecondaryMenuProps {
   secondaryMenuItems: MenuType[];

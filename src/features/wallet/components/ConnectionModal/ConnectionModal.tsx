@@ -1,7 +1,9 @@
-import { useSteps } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 
-import useTypedSelector from '../../../../hooks/useTypedSelector';
+import { useSteps } from '@chakra-ui/react';
+
+import useTypedSelector from '@/hooks/useTypedSelector';
+
 import { SUPPORTED_NETWORKS, DEFAULT_NETWORK } from '../../config';
 import { useActions } from '../../hooks/useActions';
 import { AccountLoadState } from '../../models/account/types/AccountLoadState';

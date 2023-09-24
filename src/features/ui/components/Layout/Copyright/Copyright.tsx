@@ -1,5 +1,6 @@
-import { Box, Link, Button, Image, Tooltip } from '@chakra-ui/react';
 import React from 'react';
+
+import { Box, Link, Button, Image, Tooltip } from '@chakra-ui/react';
 
 import reactDappTemplateLogo from '../../../assets/images/react-dapp-template-logo.webp';
 
@@ -7,7 +8,7 @@ import reactDappTemplateLogo from '../../../assets/images/react-dapp-template-lo
 export const Copyright: React.FC = React.memo(() => {
   return (
     <Box>
-      <Tooltip label="Powered by React dApp Template (Vite) v0.1.0">
+      <Tooltip label="Powered by React dApp Template (Vite) v0.2.0">
         <Button
           as={Link}
           href="https://github.com/huseyindeniz/vite-react-dapp-template"

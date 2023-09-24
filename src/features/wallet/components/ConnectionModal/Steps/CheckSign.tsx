@@ -1,3 +1,5 @@
+import React from 'react';
+
 import {
   Box,
   Button,
@@ -6,10 +8,10 @@ import {
   CircularProgress,
   CircularProgressLabel,
 } from '@chakra-ui/react';
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { AlertMessage } from '../../../../ui/components/AlertMessage/AlertMessage';
+import { AlertMessage } from '@/features/ui/components/AlertMessage/AlertMessage';
+
 import { DISABLE_WALLET_SIGN } from '../../../config';
 import { AccountSignState } from '../../../models/account/types/AccountSignState';
 

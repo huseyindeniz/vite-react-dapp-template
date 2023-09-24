@@ -1,3 +1,5 @@
+import React from 'react';
+
 import {
   Modal as ChakraModal,
   ModalOverlay,
@@ -18,7 +20,6 @@ import {
   Spinner,
   Container,
 } from '@chakra-ui/react';
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { FaFileSignature } from 'react-icons/fa';
 import { GiChoice } from 'react-icons/gi';

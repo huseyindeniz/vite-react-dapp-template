@@ -1,10 +1,12 @@
-import { useToast } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
+
+import { useToast } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
-import useTypedSelector from '../../../../hooks/useTypedSelector';
-import { usePageLink } from '../../../../pages/usePageLink';
+import useTypedSelector from '@/hooks/useTypedSelector';
+import { usePageLink } from '@/pages/usePageLink';
+
 import { useActions } from '../../hooks/useActions';
 
 import { DropdownMenu } from './DropdownMenu';

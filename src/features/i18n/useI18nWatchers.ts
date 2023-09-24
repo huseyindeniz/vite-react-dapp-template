@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
+
 import { useTranslation } from 'react-i18next';
 import { useLocation, useParams, useNavigate } from 'react-router-dom';
 
-import { usePages } from '../../pages/usePages';
+import { usePages } from '@/pages/usePages';
 
 import { i18nConfig } from './config';
 

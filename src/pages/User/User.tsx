@@ -1,8 +1,9 @@
-import { Box, Container, Stack } from '@chakra-ui/react';
 import React from 'react';
+
+import { Box, Container, Stack } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
-import { withWalletProtection } from '../../features/wallet/hocs/withWalletProtection';
+import { withWalletProtection } from '@/features/wallet/hocs/withWalletProtection';
 
 import { Header } from './components/Header';
 

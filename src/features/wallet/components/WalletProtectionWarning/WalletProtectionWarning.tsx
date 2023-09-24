@@ -8,7 +8,7 @@ import {
 } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
-import { AlertMessage } from '../../../ui/components/AlertMessage/AlertMessage';
+import { AlertMessage } from '@/features/ui/components/AlertMessage/AlertMessage';
 
 export const WalletProtectionWarning: React.FC = () => {
   const { t } = useTranslation('FeatureWallet');

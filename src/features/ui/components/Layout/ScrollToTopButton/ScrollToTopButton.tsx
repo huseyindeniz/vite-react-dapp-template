@@ -1,5 +1,6 @@
-import { Box, IconButton } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
+
+import { Box, IconButton } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import { IoChevronUp } from 'react-icons/io5';
 

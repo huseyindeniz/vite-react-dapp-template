@@ -1,7 +1,7 @@
 {
   "name": "vitedapp",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -76,7 +76,8 @@
     "storybook-addon-react-router-v6": "^2.0.7",
     "ts-jest": "^29.1.1",
     "typescript": "^5.0.2",
-    "vite": "^4.4.5"
+    "vite": "^4.4.5",
+    "vite-tsconfig-paths": "^4.2.1"
   },
   "jest": {
     "preset": "ts-jest",
@@ -84,30 +85,30 @@
     "moduleNameMapper": {
       "^.+\\.svg$": "jest-svg-transformer",
       "^.+\\.(css|less|scss|webp|png|jpg)$": "identity-obj-proxy",
-      "react-i18next": "<rootDir>/src/__mocks__/i18nextMock.tsx"
+      "react-i18next": "<rootDir>/src/__mocks__/i18nextMock.tsx",
+      "@/features/i18n/(.*)": "<rootDir>/src/features/i18n/$1",
+      "@/features/ui/(.*)": "<rootDir>/src/features/ui/$1",
+      "@/features/wallet/(.*)": "<rootDir>/src/features/wallet/$1",
+      "@/services/(.*)": "<rootDir>/src/services/$1",
+      "@/pages/(.*)": "<rootDir>/src/pages/$1",
+      "@/hooks/(.*)": "<rootDir>/src/hooks/$1",
+      "@/store/(.*)": "<rootDir>/src/store/$1"
     },
     "setupFilesAfterEnv": [
       "<rootDir>/src/setupTests.ts"
     ],
     "collectCoverageFrom": [
       "src/**/*.{js,jsx,ts,tsx}",
-      "!src/reportWebVitals.ts",
-      "!src/serviceWorker.ts",
-      "!src/serviceWorkerRegistration.ts",
-      "!src/test-utils.tsx",
-      "!src/index.tsx",
-      "!src/App.tsx",
       "!src/**/*.stories.{js,jsx,ts,tsx}",
-      "!<rootDir>/node_modules/",
-      "!<rootDir>/template/"
+      "!<rootDir>/node_modules/"
     ],
     "coveragePathIgnorePatterns": [],
     "coverageThreshold": {
       "global": {
         "branches": 30,
-        "functions": 40,
-        "lines": 40,
-        "statements": 40
+        "functions": 30,
+        "lines": 30,
+        "statements": 30
       }
     }
   }

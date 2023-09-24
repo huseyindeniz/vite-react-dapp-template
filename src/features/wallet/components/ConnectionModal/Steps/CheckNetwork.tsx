@@ -1,8 +1,10 @@
-import { Box, VStack, Button, Text, Progress, Select } from '@chakra-ui/react';
 import React from 'react';
+
+import { Box, VStack, Button, Text, Progress, Select } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
-import { AlertMessage } from '../../../../ui/components/AlertMessage/AlertMessage';
+import { AlertMessage } from '@/features/ui/components/AlertMessage/AlertMessage';
+
 import { NetworkLoadState } from '../../../models/network/types/NetworkLoadState';
 
 export interface CheckNetworkProps {
