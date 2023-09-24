@@ -1,3 +1,5 @@
+import React from 'react';
+
 import {
   Box,
   Text,
@@ -11,7 +13,6 @@ import {
   VStack,
   Link,
 } from '@chakra-ui/react';
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { FaExternalLinkAlt } from 'react-icons/fa';
 import { IoIosLogOut } from 'react-icons/io';

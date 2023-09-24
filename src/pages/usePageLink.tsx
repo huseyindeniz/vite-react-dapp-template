@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 
-import { i18nConfig } from '../features/i18n/config';
+import { i18nConfig } from '@/features/i18n/config';
 
 export const usePageLink = () => {
   const { i18n } = useTranslation();

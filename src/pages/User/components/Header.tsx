@@ -1,11 +1,13 @@
-import { Heading, Divider, Text, HStack, Flex } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
+
+import { Heading, Divider, Text, HStack, Flex } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
-import { BlockInfo } from '../../../features/wallet/components/BlockInfo/BlockInfo';
-import { NetworkLogo } from '../../../features/wallet/components/NetworkLogo/NetworkLogo';
-import { useActions } from '../../../features/wallet/hooks/useActions';
-import useTypedSelector from '../../../hooks/useTypedSelector';
+
+import { BlockInfo } from '@/features/wallet/components/BlockInfo/BlockInfo';
+import { NetworkLogo } from '@/features/wallet/components/NetworkLogo/NetworkLogo';
+import { useActions } from '@/features/wallet/hooks/useActions';
+import useTypedSelector from '@/hooks/useTypedSelector';
 
 export const Header: React.FC = () => {
   const { t } = useTranslation('PageUser');

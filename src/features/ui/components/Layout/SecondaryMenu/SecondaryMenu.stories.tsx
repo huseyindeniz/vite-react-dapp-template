@@ -2,7 +2,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { withRouter } from 'storybook-addon-react-router-v6';
 
-import { MenuType } from '../../../../../pages/types';
+import { MenuType } from '@/pages/types';
 
 import { SecondaryMenu } from './SecondaryMenu';
 

@@ -3,14 +3,14 @@ import { ethers } from 'ethers';
 import log from 'loglevel';
 import { eventChannel, EventChannel } from 'redux-saga';
 
-import { AvalancheChain } from '../../../features/wallet/chains/avalanche';
-import { EthereumMainnetChain } from '../../../features/wallet/chains/ethereum';
+import { AvalancheChain } from '@/features/wallet/chains/avalanche';
+import { EthereumMainnetChain } from '@/features/wallet/chains/ethereum';
 import {
   DISABLE_WALLET_SIGN,
   SUPPORTED_NETWORKS,
-} from '../../../features/wallet/config';
-import { AccountType } from '../../../features/wallet/models/account/types/Account';
-import { IWalletAPI } from '../../interfaces/IWalletAPI';
+} from '@/features/wallet/config';
+import { AccountType } from '@/features/wallet/models/account/types/Account';
+
 import { AvvyAPI } from '../avvy/AvvyAPI';
 import { IWalletEthersV5ProviderApi } from '../interfaces/IWalletEthersV5ProviderApi';
 
@@ -22,10 +22,8 @@ class MetamaskError extends Error {
   code: string | undefined;
 }
 
-export class EthersV5WalletAPI
-  implements IWalletAPI, IWalletEthersV5ProviderApi
-{
-  private static _instance: IWalletAPI | null = null;
+export class EthersV5WalletAPI implements IWalletEthersV5ProviderApi {
+  private static _instance: IWalletEthersV5ProviderApi | null = null;
   private _isUnlocked: boolean = false;
   private _isSigned: boolean = false;
   private _signerAddress: string | null = null;
@@ -36,7 +34,7 @@ export class EthersV5WalletAPI
 
   private constructor() {}
 
-  public static getInstance(): IWalletAPI {
+  public static getInstance(): IWalletEthersV5ProviderApi {
     if (this._instance === null) {
       log.debug('ethers init');
       this._instance = new EthersV5WalletAPI();

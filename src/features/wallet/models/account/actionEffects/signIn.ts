@@ -9,8 +9,9 @@ import {
   take,
 } from 'redux-saga/effects';
 
-import { IWalletAccountApi } from '../../../../../services/interfaces/IWalletAccountApi';
-import { RootState } from '../../../../../store/store';
+import { IWalletAccountApi } from '@/services/interfaces/IWalletAccountApi';
+import { RootState } from '@/store/store';
+
 import { DISABLE_WALLET_SIGN, SIGN_TIMEOUT_IN_SEC } from '../../../config';
 import { SlowDown } from '../../../utils';
 import { connectWallet } from '../../provider/actions';

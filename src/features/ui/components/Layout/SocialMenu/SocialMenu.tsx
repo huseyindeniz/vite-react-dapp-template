@@ -1,3 +1,5 @@
+import React, { ReactNode } from 'react';
+
 import {
   chakra,
   Stack,
@@ -5,7 +7,6 @@ import {
   VisuallyHidden,
   Spinner,
 } from '@chakra-ui/react';
-import React, { ReactNode } from 'react';
 import { FaTwitter, FaDiscord, FaInstagram } from 'react-icons/fa';
 
 const SocialButton = ({

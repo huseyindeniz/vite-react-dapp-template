@@ -21,7 +21,31 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/features/i18n/*": [
+        "./src/features/i18n/*"
+      ],
+      "@/features/ui/*": [
+        "./src/features/ui/*"
+      ],
+      "@/features/wallet/*": [
+        "./src/features/wallet/*"
+      ],
+      "@/services/*": [
+        "./src/services/*"
+      ],
+      "@/pages/*": [
+        "./src/pages/*"
+      ],
+      "@/hooks/*": [
+        "./src/hooks/*"
+      ],
+      "@/store/*": [
+        "./src/store/*"
+      ],
+    }
   },
   "include": [
     "src"

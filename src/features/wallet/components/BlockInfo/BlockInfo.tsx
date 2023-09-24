@@ -1,9 +1,11 @@
-import { Box, Flex, IconButton, Tag } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
+
+import { Box, Flex, IconButton, Tag } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import { MdRefresh } from 'react-icons/md';
 
-import useTypedSelector from '../../../../hooks/useTypedSelector';
+import useTypedSelector from '@/hooks/useTypedSelector';
+
 import { useActions } from '../../hooks/useActions';
 import { LoadingStatusType } from '../../models/types/LoadingStatus';
 

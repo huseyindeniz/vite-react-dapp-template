@@ -1,4 +1,4 @@
-import { Wallet } from '../../../../wallet/components/Wallet';
+import { Wallet } from '@/features/wallet/components/Wallet';
 
 export const ProfileMenu: React.FC = () => {
   return <Wallet />;

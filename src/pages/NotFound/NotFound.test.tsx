@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 
-import { NotFoundPage } from './NoteFound';
+import { NotFoundPage } from './NotFound';
 
 jest.mock('../usePageLink', () => {
   return {
@@ -9,7 +9,7 @@ jest.mock('../usePageLink', () => {
   };
 });
 
-describe.skip('NoteFoundPage', () => {
+describe.skip('NotFoundPage', () => {
   it('should render the component', () => {
     const { getByText } = render(
       <MemoryRouter>

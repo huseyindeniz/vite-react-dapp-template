@@ -5,7 +5,8 @@ import { all, fork } from 'redux-saga/effects';
 
 import {
   watchWalletSaga /*announceWalletLoaded*/,
-} from '../features/wallet/sagas';
+} from '@/features/wallet/sagas';
+
 import { EthersV5WalletAPI } from '../services/ethersV5/wallet/WalletAPI';
 
 import RootReducer from './rootReducer';

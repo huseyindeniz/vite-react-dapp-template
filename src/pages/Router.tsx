@@ -1,7 +1,8 @@
 import React from 'react';
+
 import { RouteObject, useRoutes } from 'react-router-dom';
 
-import { i18nConfig } from '../features/i18n/config';
+import { i18nConfig } from '@/features/i18n/config';
 
 import { usePages } from './usePages';
 
@@ -21,14 +22,14 @@ const BrowserRouter = React.lazy(() =>
 
 const Layout = React.lazy(() =>
   import(
-    /* webpackChunkName: "Layout" */ '../features/ui/components/Layout/Layout'
+    /* webpackChunkName: "Layout" */ '@/features/ui/components/Layout/Layout'
   ).then(module => ({
     default: module.Layout,
   }))
 );
 
 const NotFoundPage = React.lazy(() =>
-  import(/* webpackChunkName: "NotFoundPage" */ './NotFound/NoteFound').then(
+  import(/* webpackChunkName: "NotFoundPage" */ './NotFound/NotFound').then(
     module => ({ default: module.NotFoundPage })
   )
 );

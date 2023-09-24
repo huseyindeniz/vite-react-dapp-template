@@ -1,10 +1,11 @@
 /* eslint-disable react-refresh/only-export-components */
 import React from 'react';
+
 import { useTranslation } from 'react-i18next';
 import { RouteObject } from 'react-router-dom';
 
-import { i18nConfig } from '../features/i18n/config';
-import { useWalletAuthentication } from '../features/wallet/hooks/useWalletAuthentication';
+import { i18nConfig } from '@/features/i18n/config';
+import { useWalletAuthentication } from '@/features/wallet/hooks/useWalletAuthentication';
 
 import { MenuType, PageType } from './types';
 

@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { MenuType } from '../../../../../pages/types';
+import { MenuType } from '@/pages/types';
+
 import { Copyright } from '../Copyright/Copyright';
 import { SecondaryMenu } from '../SecondaryMenu/SecondaryMenu';
 import { SiteLogo } from '../SiteLogo/SiteLogo';

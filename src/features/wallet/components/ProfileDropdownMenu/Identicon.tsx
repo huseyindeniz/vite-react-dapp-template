@@ -1,6 +1,7 @@
+import React, { useEffect, useRef } from "react";
+
 import styled from "@emotion/styled";
 import Jazzicon from "@metamask/jazzicon";
-import React, { useEffect, useRef } from "react";
 
 const StyledIdenticon = styled.div`
   border-radius: 1.125rem;

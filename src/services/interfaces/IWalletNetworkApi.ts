@@ -1,6 +1,6 @@
 import { EventChannel } from 'redux-saga';
 
-import { Network } from '../../features/wallet/models/network/types/Network';
+import { Network } from '@/features/wallet/models/network/types/Network';
 
 export interface IWalletNetworkApi {
   loadNetwork(): Promise<Network | undefined>;

@@ -1,7 +1,9 @@
-import { useDisclosure } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 
-import useTypedSelector from '../../../../hooks/useTypedSelector';
+import { useDisclosure } from '@chakra-ui/react';
+
+import useTypedSelector from '@/hooks/useTypedSelector';
+
 import { useActions } from '../../hooks/useActions';
 import { LoadingStatusType } from '../../models/types/LoadingStatus';
 import { WalletState } from '../../models/types/WalletState';

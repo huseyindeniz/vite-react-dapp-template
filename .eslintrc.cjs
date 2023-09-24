@@ -27,6 +27,16 @@ module.exports = {
         ],
         "pathGroups": [
           {
+            "pattern": "react",
+            "group": "builtin",
+            "position": "before"
+          },
+          {
+            "pattern": "@/**",
+            "group": "parent",
+            "position": "before"
+          },
+          {
             "pattern": "**/*.stories.ts?",
             "group": "external",
             "position": "before"
