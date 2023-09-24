@@ -38,10 +38,9 @@ React dApp Template (Vite) is an easy-to-use foundation for efficiently building
 
 ## What's Included and Preconfigured
 
-### Web3 Related Packages
+### Web3 Packages
 
-- ethers.js
-- typechain
+- ethers.js (v5)
 
 ### Testing Infrastucture
 
@@ -66,17 +65,17 @@ React dApp Template (Vite) is an easy-to-use foundation for efficiently building
 
 **React Error Boundary**: A feature in React for handling and containing errors within specific components.
 
-**React Helmet**: A library for managing metadata in React applications, optimizing SEO and discoverability.
+**React Helmet Async**: A library for managing metadata in React applications, optimizing SEO and discoverability.
 
 **I18Next**: An internationalization library for easily translating JavaScript applications into different languages.
 
-**React Icon All Files**: A library providing a collection of high-quality SVG icons for React applications.
+**React Icons**: A library providing a collection of high-quality SVG icons for React applications.
 
 **React Cookie Consent**: A library simplifying the implementation of cookie consent banners in React applications.
 
 ## Getting Started
 
-Please visit the [Official React dApp Tamplate Documentation Page](https://huseyindeniz.github.io/react-dapp-template-documentation/) to start your dApp frontend development journey.
+Please visit the [Official React dApp Template Documentation Page](https://huseyindeniz.github.io/react-dapp-template-documentation/) to start your dApp frontend development journey.
 
 ## Contributions
 
