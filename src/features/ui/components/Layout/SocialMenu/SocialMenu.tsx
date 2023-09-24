@@ -5,7 +5,6 @@ import {
   Stack,
   useColorModeValue,
   VisuallyHidden,
-  Spinner,
 } from '@chakra-ui/react';
 import { FaTwitter, FaDiscord, FaInstagram } from 'react-icons/fa';
 
@@ -51,27 +50,21 @@ export const SocialMenu: React.FC = React.memo(() => {
         href="https://twitter.com/randora_avax_sh"
         key="Twitter"
       >
-        <React.Suspense fallback={<Spinner size={'xs'} />}>
-          <FaTwitter />
-        </React.Suspense>
+        <FaTwitter />
       </SocialButton>
       <SocialButton
         label="Discord"
         href="https://discord.gg/qx7YM3NAkR"
         key="Discord"
       >
-        <React.Suspense fallback={<Spinner size={'xs'} />}>
-          <FaDiscord />
-        </React.Suspense>
+        <FaDiscord />
       </SocialButton>
       <SocialButton
         label="Instagram"
         href="https://www.instagram.com/randora_avax_sh/"
         key="Instagram"
       >
-        <React.Suspense fallback={<Spinner size={'xs'} />}>
-          <FaInstagram />
-        </React.Suspense>
+        <FaInstagram />
       </SocialButton>
     </Stack>
   );
