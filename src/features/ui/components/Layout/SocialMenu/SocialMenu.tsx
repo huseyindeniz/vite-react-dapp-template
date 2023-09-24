@@ -6,7 +6,7 @@ import {
   useColorModeValue,
   VisuallyHidden,
 } from '@chakra-ui/react';
-import { FaTwitter, FaDiscord, FaInstagram } from 'react-icons/fa';
+import { FaGithub, FaReadme } from 'react-icons/fa';
 
 const SocialButton = ({
   children,
@@ -46,25 +46,18 @@ export const SocialMenu: React.FC = React.memo(() => {
   return (
     <Stack direction="row" spacing={6}>
       <SocialButton
-        label="Twitter"
-        href="https://twitter.com/randora_avax_sh"
-        key="Twitter"
+        label="GitHub"
+        href="https://github.com/huseyindeniz/vite-react-dapp-template"
+        key="GitHub"
       >
-        <FaTwitter />
+        <FaGithub />
       </SocialButton>
       <SocialButton
-        label="Discord"
-        href="https://discord.gg/qx7YM3NAkR"
-        key="Discord"
+        label="GitHub"
+        href="https://huseyindeniz.github.io/react-dapp-template-documentation/"
+        key="GitHub"
       >
-        <FaDiscord />
-      </SocialButton>
-      <SocialButton
-        label="Instagram"
-        href="https://www.instagram.com/randora_avax_sh/"
-        key="Instagram"
-      >
-        <FaInstagram />
+        <FaReadme />
       </SocialButton>
     </Stack>
   );
