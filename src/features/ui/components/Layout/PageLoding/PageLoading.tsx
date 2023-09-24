@@ -9,7 +9,7 @@ export const PageLoading: React.FC = () => {
         {t('Please wait while the requested page is loading...')}
       </Box>
       <Box w="sm">
-        <Progress size="xs" isIndeterminate />
+        <Progress title="Page loading" size="xs" isIndeterminate />
       </Box>
     </VStack>
   );

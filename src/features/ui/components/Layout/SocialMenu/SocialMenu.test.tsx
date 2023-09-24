@@ -13,10 +13,8 @@ describe('Feature: UI', () => {
           render(<Default {...Default.args} />)
         );
         // Assert
-        expect(getByRole('button', { name: 'Twitter' })).toBeInTheDocument();
-        expect(getByRole('button', { name: 'Discord' })).toBeInTheDocument();
-        expect(getByRole('button', { name: 'Instagram' })).toBeInTheDocument();
-        //expect(getByRole('button', { name: 'Linkedin' })).toBeInTheDocument();
+        expect(getByRole('button', { name: 'GitHub' })).toBeInTheDocument();
+        expect(getByRole('button', { name: 'Readme' })).toBeInTheDocument();
         expect(asFragment).toMatchSnapshot();
       });
     });

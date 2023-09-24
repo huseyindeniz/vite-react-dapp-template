@@ -5,9 +5,8 @@ import {
   Stack,
   useColorModeValue,
   VisuallyHidden,
-  Spinner,
 } from '@chakra-ui/react';
-import { FaTwitter, FaDiscord, FaInstagram } from 'react-icons/fa';
+import { FaGithub, FaReadme } from 'react-icons/fa';
 
 const SocialButton = ({
   children,
@@ -23,6 +22,7 @@ const SocialButton = ({
       bg={useColorModeValue('blackAlpha.100', 'whiteAlpha.100')}
       rounded="full"
       role="button"
+      name={label}
       w={8}
       h={8}
       cursor="pointer"
@@ -47,31 +47,18 @@ export const SocialMenu: React.FC = React.memo(() => {
   return (
     <Stack direction="row" spacing={6}>
       <SocialButton
-        label="Twitter"
-        href="https://twitter.com/randora_avax_sh"
-        key="Twitter"
+        label="GitHub"
+        href="https://github.com/huseyindeniz/vite-react-dapp-template"
+        key="GitHub"
       >
-        <React.Suspense fallback={<Spinner size={'xs'} />}>
-          <FaTwitter />
-        </React.Suspense>
+        <FaGithub />
       </SocialButton>
       <SocialButton
-        label="Discord"
-        href="https://discord.gg/qx7YM3NAkR"
-        key="Discord"
+        label="Readme"
+        href="https://huseyindeniz.github.io/react-dapp-template-documentation/"
+        key="Documentation"
       >
-        <React.Suspense fallback={<Spinner size={'xs'} />}>
-          <FaDiscord />
-        </React.Suspense>
-      </SocialButton>
-      <SocialButton
-        label="Instagram"
-        href="https://www.instagram.com/randora_avax_sh/"
-        key="Instagram"
-      >
-        <React.Suspense fallback={<Spinner size={'xs'} />}>
-          <FaInstagram />
-        </React.Suspense>
+        <FaReadme />
       </SocialButton>
     </Stack>
   );
