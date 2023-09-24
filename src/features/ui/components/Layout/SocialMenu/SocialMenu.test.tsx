@@ -14,7 +14,7 @@ describe('Feature: UI', () => {
         );
         // Assert
         expect(getByRole('button', { name: 'GitHub' })).toBeInTheDocument();
-        expect(getByRole('button', { name: 'FaReadme' })).toBeInTheDocument();
+        expect(getByRole('button', { name: 'Readme' })).toBeInTheDocument();
         expect(asFragment).toMatchSnapshot();
       });
     });

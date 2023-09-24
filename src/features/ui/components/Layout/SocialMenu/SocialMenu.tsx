@@ -22,6 +22,7 @@ const SocialButton = ({
       bg={useColorModeValue('blackAlpha.100', 'whiteAlpha.100')}
       rounded="full"
       role="button"
+      name={label}
       w={8}
       h={8}
       cursor="pointer"
@@ -53,9 +54,9 @@ export const SocialMenu: React.FC = React.memo(() => {
         <FaGithub />
       </SocialButton>
       <SocialButton
-        label="GitHub"
+        label="Readme"
         href="https://huseyindeniz.github.io/react-dapp-template-documentation/"
-        key="GitHub"
+        key="Documentation"
       >
         <FaReadme />
       </SocialButton>
