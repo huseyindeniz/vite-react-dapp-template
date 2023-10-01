@@ -7,6 +7,7 @@ import { HelmetProvider } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
 import { useLocation, Outlet } from 'react-router-dom';
 
+import { useI18nWatcher } from '@/features/i18n/useI18nWatchers';
 import { usePageLink } from '@/pages/usePageLink';
 import { usePages } from '@/pages/usePages';
 
@@ -29,6 +30,7 @@ const myErrorHandler = (error: Error, info: { componentStack: string }) => {
 export const Layout: React.FC = () => {
   const location = useLocation();
   const { t } = useTranslation('Layout');
+  useI18nWatcher();
   const { pageLink } = usePageLink();
   const { mainMenuItems, secondaryMenuItems } = usePages();
   const siteName = t('SITE_NAME');

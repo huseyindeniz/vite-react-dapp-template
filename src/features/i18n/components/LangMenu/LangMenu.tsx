@@ -6,7 +6,6 @@ import { useLocation } from 'react-router-dom';
 
 import { i18nConfig } from '../../config';
 import { useChangeLanguage } from '../../useChangeLanguage';
-import { useI18nWatcher } from '../../useI18nWatchers';
 
 const LangModal = React.lazy(() =>
   import(/* webpackChunkName: "LangModal" */ './LangModal').then(module => ({
@@ -17,7 +16,6 @@ const LangModal = React.lazy(() =>
 export const LangMenu: React.FC = () => {
   const location = useLocation();
   const { i18n } = useTranslation('Layout');
-  useI18nWatcher();
   const { changeLanguage } = useChangeLanguage(
     location.pathname,
     i18n.resolvedLanguage ?? i18nConfig.fallbackLang.code
