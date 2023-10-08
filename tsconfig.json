@@ -51,7 +51,9 @@
   "include": [
     "src"
   ],
-  "exclude": [],
+  "exclude": [
+    "src/services/ethersV5"
+  ],
   "references": [
     {
       "path": "./tsconfig.node.json"
