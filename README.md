@@ -40,14 +40,14 @@ React dApp Template (Vite) is an easy-to-use foundation for efficiently building
 
 ### Web3 Packages
 
-- ethers.js (v5)
+- ethers.js (v6 and v5)
 
 ### Testing Infrastucture
 
 - Unit Tests: jest
 - Component Unit Tests: React Testing Library + Storybook
 - Integration Tests: React Testing Library + Storybook
-- E2E Tests: Cypress + Synpress + Cucumber
+- E2E Tests: Cypress + Synpress + Cucumber (todo)
 
 ### Other Packages
 

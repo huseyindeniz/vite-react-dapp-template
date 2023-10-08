@@ -1,5 +1,7 @@
-import { SignatureLike } from '@ethersproject/bytes';
-import { ethers } from 'ethers';
+import { SignatureLike } from 'ethers/crypto';
+import { verifyMessage } from 'ethers/hash';
+import { BrowserProvider, Network } from 'ethers/providers';
+import { formatEther } from 'ethers/utils';
 import log from 'loglevel';
 import { eventChannel, EventChannel } from 'redux-saga';
 
@@ -12,7 +14,7 @@ import {
 import { AccountType } from '@/features/wallet/models/account/types/Account';
 
 import { AvvyAPI } from '../avvy/AvvyAPI';
-import { IWalletEthersV5ProviderApi } from '../interfaces/IWalletEthersV5ProviderApi';
+import { IWalletEthersV6ProviderApi } from '../interfaces/IWalletEthersV6ProviderApi';
 
 enum MetamaskRPCErrors {
   ACTION_REJECTED = 'ACTION_REJECTED',
@@ -22,22 +24,22 @@ class MetamaskError extends Error {
   code: string | undefined;
 }
 
-export class EthersV5WalletAPI implements IWalletEthersV5ProviderApi {
-  private static _instance: IWalletEthersV5ProviderApi | null = null;
+export class EthersV6WalletAPI implements IWalletEthersV6ProviderApi {
+  private static _instance: IWalletEthersV6ProviderApi | null = null;
   private _isUnlocked: boolean = false;
   private _isSigned: boolean = false;
   private _signerAddress: string | null = null;
-  private _provider: ethers.providers.Web3Provider | null = null;
-  private _network: ethers.providers.Network | null = null;
+  private _provider: BrowserProvider | null = null;
+  private _network: Network | null = null;
   private _accountChangeListener: EventChannel<string[]> | null = null;
   private _networkChangeListener: EventChannel<string> | null = null;
 
   private constructor() {}
 
-  public static getInstance(): IWalletEthersV5ProviderApi {
+  public static getInstance(): IWalletEthersV6ProviderApi {
     if (this._instance === null) {
       log.debug('ethers init');
-      this._instance = new EthersV5WalletAPI();
+      this._instance = new EthersV6WalletAPI();
     }
     return this._instance;
   }
@@ -46,12 +48,10 @@ export class EthersV5WalletAPI implements IWalletEthersV5ProviderApi {
     if (window.ethereum) {
       // only metamask installed
       if (window.ethereum.isMetaMask) {
-        this._provider = new ethers.providers.Web3Provider(
-          window.ethereum,
-          'any'
-        );
+        this._provider = new BrowserProvider(window.ethereum, 'any');
       }
       // metamask and others installed, select Metamask
+      /*
       if (window.ethereum.providers) {
         this._provider = new ethers.providers.Web3Provider(
           window.ethereum.providers.find(
@@ -59,6 +59,7 @@ export class EthersV5WalletAPI implements IWalletEthersV5ProviderApi {
           )
         );
       }
+      */
     }
     return this._provider !== null;
   };
@@ -75,7 +76,7 @@ export class EthersV5WalletAPI implements IWalletEthersV5ProviderApi {
 
   public getNetwork = () => {
     return SUPPORTED_NETWORKS.find(
-      chain => chain.chainId === this._network?.chainId
+      chain => chain.chainId === Number(this._network?.chainId)
     );
   };
 
@@ -116,7 +117,7 @@ export class EthersV5WalletAPI implements IWalletEthersV5ProviderApi {
     } else {
       log.debug('isNetworkSupported', this._network);
       return SUPPORTED_NETWORKS.some(
-        chain => chain.chainId === this._network?.chainId
+        chain => chain.chainId === Number(this._network?.chainId)
       );
     }
   };
@@ -130,7 +131,7 @@ export class EthersV5WalletAPI implements IWalletEthersV5ProviderApi {
       );
     } else {
       const network = SUPPORTED_NETWORKS.find(
-        chain => chain.chainId === this._network?.chainId
+        chain => chain.chainId === Number(this._network?.chainId)
       );
       if (network) {
         return network.isDomainNameSupported;
@@ -144,7 +145,7 @@ export class EthersV5WalletAPI implements IWalletEthersV5ProviderApi {
     const accounts: string[] = await this._provider?.send('eth_accounts', []);
     this._isUnlocked = accounts.length > 0;
     if (this._isUnlocked && DISABLE_WALLET_SIGN) {
-      const address = await this._provider?.getSigner()?.getAddress();
+      const address = await (await this._provider?.getSigner())?.getAddress();
       if (address) {
         this._signerAddress = address;
       }
@@ -159,7 +160,7 @@ export class EthersV5WalletAPI implements IWalletEthersV5ProviderApi {
     );
     this._isUnlocked = accounts.length > 0;
     if (this._isUnlocked && DISABLE_WALLET_SIGN) {
-      const address = await this._provider?.getSigner()?.getAddress();
+      const address = await (await this._provider?.getSigner())?.getAddress();
       if (address) {
         this._signerAddress = address;
       }
@@ -170,8 +171,8 @@ export class EthersV5WalletAPI implements IWalletEthersV5ProviderApi {
     return this._isSigned;
   };
 
-  public sign = async (message: string | ethers.utils.Bytes) => {
-    const signer = this._provider?.getSigner();
+  public sign = async (message: string) => {
+    const signer = await this._provider?.getSigner();
     log.debug('signer', signer);
     message += this._newUUID();
     let signature: string | undefined = undefined;
@@ -221,9 +222,9 @@ export class EthersV5WalletAPI implements IWalletEthersV5ProviderApi {
   public getDomainName = async () => {
     log.debug(this._network?.chainId);
     if (this._provider && this._network && this._signerAddress) {
-      if (this._network.chainId === EthereumMainnetChain.chainId) {
+      if (Number(this._network.chainId) === EthereumMainnetChain.chainId) {
         return await this._provider.lookupAddress(this._signerAddress);
-      } else if (this._network.chainId === AvalancheChain.chainId) {
+      } else if (Number(this._network.chainId) === AvalancheChain.chainId) {
         const avvyApi = AvvyAPI.getInstance(this._provider);
         return avvyApi.addressToDomain(this._signerAddress);
       }
@@ -298,7 +299,7 @@ export class EthersV5WalletAPI implements IWalletEthersV5ProviderApi {
     if (this._signerAddress) {
       const balance = await this._provider?.getBalance(this._signerAddress);
       if (balance) {
-        return ethers.utils.formatEther(balance);
+        return formatEther(balance);
       }
     }
     return '';
@@ -321,15 +322,12 @@ export class EthersV5WalletAPI implements IWalletEthersV5ProviderApi {
   // this is a client side verification for login signature
   // if you have backend, you could verify signature in your backend
   private _verifyLogingSignature = async (
-    message: string | ethers.utils.Bytes,
+    message: string,
     signature?: SignatureLike,
     address?: string
   ) => {
     if (signature && address) {
-      const signerAddress: string = await ethers.utils.verifyMessage(
-        message,
-        signature
-      );
+      const signerAddress: string = verifyMessage(message, signature);
       return signerAddress === address;
     } else {
       return false;
