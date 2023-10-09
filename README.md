@@ -5,6 +5,8 @@
 
 A Vite React template specifically designed for decentralized application (dApp) frontend development.
 
+See how it looks/works here: [https://snazzy-sorbet-15dcef.netlify.app](https://snazzy-sorbet-15dcef.netlify.app)
+
 Quick start
 
 ```sh
