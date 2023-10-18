@@ -8,7 +8,7 @@ import reactDappTemplateLogo from '../../../assets/images/react-dapp-template-lo
 export const Copyright: React.FC = React.memo(() => {
   return (
     <Box>
-      <Tooltip label="Powered by React dApp Template (Vite) v0.4.0">
+      <Tooltip label="Powered by React dApp Template (Vite) v0.4.1">
         <Button
           as={Link}
           href="https://github.com/huseyindeniz/vite-react-dapp-template"
