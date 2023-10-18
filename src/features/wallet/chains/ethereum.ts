@@ -15,5 +15,5 @@ export const EthereumMainnetChain: Network = {
   multicallAddress: '0xeefba1e63905ef1d7acba5a8513c70307c1ce441',
   isTestChain: false,
   isLocalChain: false,
-  isDomainNameSupported: true,
+  isDomainNameSupported: false,
 };

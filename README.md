@@ -32,7 +32,7 @@ React dApp Template (Vite) is an easy-to-use foundation for efficiently building
 ## Features
 
 - Authentication with Metamask Wallet
-- Wallet Domain Name Support ([ENS](https://ens.domains/) and [AVVY Domains](https://avvy.domains/))
+- Wallet Domain Name Support ([AVVY Domains](https://avvy.domains/))
 - Internationalization
 - Dark Theme
 - Page load optimizations

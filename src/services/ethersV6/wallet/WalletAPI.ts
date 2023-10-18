@@ -6,7 +6,6 @@ import log from 'loglevel';
 import { eventChannel, EventChannel } from 'redux-saga';
 
 import { AvalancheChain } from '@/features/wallet/chains/avalanche';
-import { EthereumMainnetChain } from '@/features/wallet/chains/ethereum';
 import {
   DISABLE_WALLET_SIGN,
   SUPPORTED_NETWORKS,
@@ -222,9 +221,7 @@ export class EthersV6WalletAPI implements IWalletEthersV6ProviderApi {
   public getDomainName = async () => {
     log.debug(this._network?.chainId);
     if (this._provider && this._network && this._signerAddress) {
-      if (Number(this._network.chainId) === EthereumMainnetChain.chainId) {
-        return await this._provider.lookupAddress(this._signerAddress);
-      } else if (Number(this._network.chainId) === AvalancheChain.chainId) {
+      if (Number(this._network.chainId) === AvalancheChain.chainId) {
         const avvyApi = AvvyAPI.getInstance(this._provider);
         return avvyApi.addressToDomain(this._signerAddress);
       }
