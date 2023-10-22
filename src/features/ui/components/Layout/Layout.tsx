@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ErrorInfo } from 'react';
 
 import { Box, ChakraProvider, ScaleFade } from '@chakra-ui/react';
 import log from 'loglevel';
@@ -20,7 +20,7 @@ import { ScrollToTopButton } from './ScrollToTopButton/ScrollToTopButton';
 import { SiteMeta } from './SiteMeta/SiteMeta';
 import { theme } from './Theme/theme';
 
-const myErrorHandler = (error: Error, info: { componentStack: string }) => {
+const myErrorHandler = (error: Error, info: ErrorInfo) => {
   // Do something with the error
   // E.g. log to an error logging client here
   log.error(error.message);
