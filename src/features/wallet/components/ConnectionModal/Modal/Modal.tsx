@@ -19,6 +19,7 @@ import {
   Stepper,
   Spinner,
   Container,
+  Text,
 } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import { FaFileSignature } from 'react-icons/fa';
@@ -52,8 +53,8 @@ export const Modal: React.FC<ModalProps> = ({
   const { t } = useTranslation('FeatureWallet');
 
   const connectionSteps = (
-    <Stepper index={activeStep} orientation="vertical" gap={'40px'}>
-      <Step key="installation">
+    <Stepper index={activeStep} orientation="vertical" gap={4}>
+      <Step key="installation" style={{ width: '100%' }}>
         <StepIndicator>
           <StepStatus
             complete={<StepIcon />}
@@ -61,7 +62,9 @@ export const Modal: React.FC<ModalProps> = ({
             active={
               stepState !== undefined ? (
                 stepState === 'error' ? (
-                  <MdError />
+                  <Text color="darkred">
+                    <MdError />
+                  </Text>
                 ) : (
                   <Spinner />
                 )
@@ -71,22 +74,18 @@ export const Modal: React.FC<ModalProps> = ({
             }
           />
         </StepIndicator>
-        <Box>
-          <StepTitle>{t('Check Metamask Extension')}</StepTitle>
+        <Box w="full">
+          <StepTitle>{t('Check Web3 Wallet Extension')}</StepTitle>
           <StepDescription>
-            {
-              t(
-                'The Metamask wallet extension needs to be installed.'
-              ) as string
-            }
+            {t('A supported Web3 wallet extension needs to be installed.')}
           </StepDescription>
-          <Container my={2} p={0} centerContent>
+          <Container my={2} p={0}>
             {checkWalletContent}
           </Container>
         </Box>
         <StepSeparator />
       </Step>
-      <Step key="unlock">
+      <Step key="unlock" style={{ width: '100%' }}>
         <StepIndicator>
           <StepStatus
             complete={<StepIcon />}
@@ -94,7 +93,9 @@ export const Modal: React.FC<ModalProps> = ({
             active={
               stepState !== undefined ? (
                 stepState === 'error' ? (
-                  <MdError />
+                  <Text color="darkred">
+                    <MdError />
+                  </Text>
                 ) : (
                   <Spinner />
                 )
@@ -104,18 +105,18 @@ export const Modal: React.FC<ModalProps> = ({
             }
           />
         </StepIndicator>
-        <Box>
-          <StepTitle>{t('Check Metamask Status')}</StepTitle>
+        <Box w="full">
+          <StepTitle>{t('Check Web3 Wallet Status')}</StepTitle>
           <StepDescription>
-            {t('The Metamask wallet needs to be unlocked.') as string}
+            {t('The Web3 wallet needs to be unlocked.') as string}
           </StepDescription>
-          <Container my={2} p={0} centerContent>
+          <Container my={2} p={0}>
             {checkAccountContent}
           </Container>
         </Box>
         <StepSeparator />
       </Step>
-      <Step key="network">
+      <Step key="network" style={{ width: '100%' }}>
         <StepIndicator>
           <StepStatus
             complete={<StepIcon />}
@@ -123,7 +124,9 @@ export const Modal: React.FC<ModalProps> = ({
             active={
               stepState !== undefined ? (
                 stepState === 'error' ? (
-                  <MdError />
+                  <Text color="darkred">
+                    <MdError />
+                  </Text>
                 ) : (
                   <Spinner />
                 )
@@ -133,12 +136,12 @@ export const Modal: React.FC<ModalProps> = ({
             }
           />
         </StepIndicator>
-        <Box>
-          <StepTitle>{t('Check Metamask Network')}</StepTitle>
+        <Box w="full">
+          <StepTitle>{t('Check Web3 Wallet Network')}</StepTitle>
           <StepDescription>
             {
               t(
-                'A supported network needs to be selected in the Metamask wallet.'
+                'A supported network needs to be selected in the Web3 wallet.'
               ) as string
             }
           </StepDescription>
@@ -148,7 +151,7 @@ export const Modal: React.FC<ModalProps> = ({
         </Box>
         <StepSeparator />
       </Step>
-      <Step key="signin">
+      <Step key="signin" style={{ width: '100%' }}>
         <StepIndicator>
           <StepStatus
             complete={<StepIcon />}
@@ -162,7 +165,9 @@ export const Modal: React.FC<ModalProps> = ({
             active={
               stepState !== undefined ? (
                 stepState === 'error' ? (
-                  <MdError />
+                  <Text color="darkred">
+                    <MdError />
+                  </Text>
                 ) : (
                   <Spinner />
                 )
@@ -174,15 +179,15 @@ export const Modal: React.FC<ModalProps> = ({
             }
           />
         </StepIndicator>
-        <Box>
+        <Box w="full">
           <StepTitle>
             {DISABLE_WALLET_SIGN
-              ? t('Load Wallet Account')
-              : t('Check Metamask Signature')}
+              ? t('Load Web3 Wallet Account')
+              : t('Check Web3 Wallet Signature')}
           </StepTitle>
           <StepDescription>
             {DISABLE_WALLET_SIGN ??
-              t('The login request needs to be signed in the Metamask wallet.')}
+              t('The login request needs to be signed in the Web3 wallet.')}
           </StepDescription>
           <Container my={2} p={0} centerContent>
             {checkSignContent}
@@ -203,7 +208,7 @@ export const Modal: React.FC<ModalProps> = ({
       <ModalOverlay />
       <ModalContent mx={4} maxWidth={{ base: '90%', md: '600px' }}>
         <ModalHeader>
-          {t('Connecting to Metamask')}:
+          {t('Connecting to Web3 Wallet')}:
           <Divider mt={1} />
         </ModalHeader>
         <ModalCloseButton />

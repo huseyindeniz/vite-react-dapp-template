@@ -21,13 +21,14 @@ export const AlertMessage: React.FC<AlertMessageProps> = ({
       status={status}
       rounded="md"
       boxShadow="md"
-      fontSize="sm"
       textAlign="center"
       variant={'left-accent'}
     >
       <AlertIcon />
-      <AlertTitle w={'30%'}>{title}</AlertTitle>
-      <AlertDescription overflow={'auto'} w="full">
+      <AlertTitle fontSize={'xs'} w={'30%'}>
+        {title}
+      </AlertTitle>
+      <AlertDescription fontSize={'xs'} overflow={'auto'} w="full">
         {children}
       </AlertDescription>
     </Alert>

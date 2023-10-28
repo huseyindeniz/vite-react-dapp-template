@@ -1,0 +1,22 @@
+{
+  "An error has occured during the wallet status check.<1></1>Please try again later.<3></3>The error code was: {errorMessage}": "Cüzdan kontrolü sırasında bir hata oluştu.<1></1>Lütfen daha sonra tekrar deneyin.<3></3>Hata kodu: {{errorMessage}}",
+  "Please install any compatible <1>Web3 wallet extension</1> for your browser from the official links below and try again to use this dapp.": "Lütfen aşağıdaki resmi bağlantılardan birini kullanarak tarayıcınızla uyumlu bir <1>Web3 cüzdan eklentisi</1> yükleyin ve bağlanmayı tekrar deneyin.",
+  "An error has occured during the wallet status check.<1></1>Please try again later.<3></3>The error code was: {{errorMessage}}": "Cüzdan kontrolü sırasında bir hata oluştu.<1></1>Lütfen daha sonra tekrar deneyin.<3></3>Hata kodu: {{errorMessage}}",
+  "An error has occured during the unlock wallet check.<1></1>Please try again later.<3></3>The error code was: {errorMessage}": "Cüzdan kilidi kontrolü sırasında bir hata oluştu.<1></1>Lütfen daha sonra tekrar deneyin.<3></3>Hata kodu: {errorMessage}",
+  "You rejected the unlock wallet request.<1></1>Please try again if you want to continue.": "Cüzdan kilidi açma isteğini reddettiniz.<1></1>Devam etmek istiyorsanız tekrar deneyin.",
+  "Waiting for the unlock wallet request to be accepted.<1></1>Please check your Web3 wallet.": "Cüzdan kilidi açma isteğini kabul etmeniz bekleniyor.<1></1>Lütfen Web3 cüzdanınızı kontrol edin.",
+  "You haven't unlocked your wallet yet.<1></1>Please close this window, open your wallet, unlock it, and click connect button again.": "Henüz cüzdan kilidini açmadınız.<1></1>Lütfen bu pencereyi kapatın, cüzdanınızın kilidini açın, ve tekrar Bağlan'a tıklayın.",
+  "An error has occured during the network check.<1></1>Please try again later.<3></3>The error code was: {errorMessage}": "Ağ kontrolü sırasında bir hata oluştu.<1></1>Lütfen daha sonra tekrar deneyin.<3></3>Hata kodu: {errorMessage}",
+  "An error has occured during the network switch request.<1></1>Please try again later.<3></3>The error code was: {errorMessage}": "Ağ değiştirme isteği sırasında bir hata oluştu.<1></1>Lütfen daha sonra tekrar deneyin.<3></3>Hata kodu: {errorMessage}",
+  "You rejected the network switch request.<1></1>Please try again if you want to continue.": "Ağ değşitirme isteğini reddettiniz.<1></1>Devam etmek istiyorsanız tekrar deneyin.",
+  "Waiting for the network switch request to be accepted.<1></1>Please check your Web3 wallet.": "Ağ değiştirme isteğini kabul etmeniz bekleniyor.<1></1>Lütfen Web3 cüzdanınızı kontrol edin.",
+  "Current network is not supported by this app.<1></1>If you want to continue, please switch to any supported network.": "Bağlı olduğunuz ağ bu uygulama tarafından desteklenmiyor.<1></1>Devam etmek istiyorsanız, lütfen desteklenen bir ağa geçiniz.",
+  "You have successfully signed the login request.<1></1>Redirecting to app...": "Giriş isteğini başarılı bir şekilde imzaladınız.<1></1>Uygulamaya yönlendiriliyorsunuz...",
+  "An error has occured during the sign check.<1></1>Please try again later.<3></3>The error code was: {errorMessage}": "İmza kontrolü sırasında bir hata oluştu.<1></1>Lütfen daha sonra tekrar deneyin.<3></3>Hata kodu: {errorMessage}",
+  "You rejected the sign request.<1></1>Please try again if you want to continue.": "İmza isteğini reddettiniz.<1></1>Devam etmek istiyorsanız lütfen tekrar deneyin.",
+  "Waiting for the login request to be signed.<1></1>Please check your Web3 wallet.": "Giriş isteğinin imzalanması bekleniyor.<1></1>Lütfen Web3 cüzdanınızı kontrol edin.",
+  "You didn't respond to the sign request in time.<1></1>Please try again if you want to continue.": "Giriş isteğini izin verilen süre içinde imzalamadınız.<1></1>Devam etmek istiyorsanız lütfen tekrar deneyin.",
+  "Your wallet account connected successfuly.<1></1>Redirecting to app...": "Cüzdan hesabınıza başarıyla bağlanıldı.<1></1>Uygulamaya yönlendiriliyorsunuz...",
+  "An error has occured during the wallet extension check.<1></1>Please try again later.<3></3>The error code was: {errorMessage}": "Cüzdan eklentisi algılanırken bir hata oluştu.<1></1>Lütfen daha sonra tekrar deneyin.<3></3>Hata kodu: {errorMessage}",
+  "Please install any compatible <1>Web3 wallet extension</1>for your browser from the official links below and try again to use this dapp.": "Lütfen aşağıdaki resmi bağlantılardan birini kullanarak tarayıcınızla uyumlu bir <1>Web3 cüzdan eklentisi</1> yükleyin ve bağlanmayı tekrar deneyin."
+}

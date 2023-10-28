@@ -10,7 +10,11 @@ const config: StorybookConfig = {
     '@storybook/addon-a11y',
     '@chakra-ui/storybook-addon',
     'storybook-addon-react-router-v6',
+    'storybook-react-i18next',
   ],
+  refs: {
+    '@chakra-ui/react': { disable: true },
+  },
   framework: {
     name: '@storybook/react-vite',
     options: {},

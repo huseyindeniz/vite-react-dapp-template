@@ -1,3 +1,14 @@
+import { BrowserProvider } from 'ethers';
+
+export enum SupportedWallets {
+  METAMASK = 'metamask',
+  CORE = 'core',
+  COINBASE = 'coinbase',
+}
+
+export type InstalledWallets = Record<SupportedWallets, BrowserProvider>;
+
 export interface IWalletProviderApi {
-  loadProvider(): Promise<boolean>;
+  detectWallets(): Promise<InstalledWallets>;
+  loadProvider(wallet?: SupportedWallets): Promise<boolean>;
 }
