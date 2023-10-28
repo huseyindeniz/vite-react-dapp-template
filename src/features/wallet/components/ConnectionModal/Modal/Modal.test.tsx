@@ -36,8 +36,8 @@ describe('Feature: Wallet', () => {
     });
 
     describe.skip('Scenario: CheckWallet', () => {
-      const stateTitle = 'Check Metamask Extension';
-      const stateDesc = 'The Metamask wallet extension needs to be installed.';
+      const stateTitle = 'Check Web3 Extension';
+      const stateDesc = 'The Web3 wallet extension needs to be installed.';
       const stateContent = 'My Mock Check Wallet Step Content';
 
       it('when stepState is undefined it should show plain step logo', () => {
@@ -105,8 +105,8 @@ describe('Feature: Wallet', () => {
     });
 
     describe.skip('Scenario: CheckAccount', () => {
-      const stateTitle = 'Check Metamask Status';
-      const stateDesc = 'The Metamask wallet needs to be unlocked.';
+      const stateTitle = 'Check Web3 Status';
+      const stateDesc = 'The Web3 wallet needs to be unlocked.';
       const stateContent = 'My Mock Check Account Step Content';
 
       it('when stepState is undefined it should show plain step logo', () => {
@@ -174,9 +174,9 @@ describe('Feature: Wallet', () => {
     });
 
     describe.skip('Scenario: CheckNetwork', () => {
-      const stateTitle = 'Check Metamask Network';
+      const stateTitle = 'Check Web3 Network';
       const stateDesc =
-        'A supported network needs to be selected in the Metamask wallet.';
+        'A supported network needs to be selected in the Web3 wallet.';
       const stateContent = 'My Mock Check Network Step Content';
 
       it('when stepState is undefined it should show plain step logo', () => {
@@ -244,9 +244,9 @@ describe('Feature: Wallet', () => {
     });
 
     describe.skip('Scenario: CheckSign', () => {
-      const stateTitle = 'Check Metamask Signature';
+      const stateTitle = 'Check Web3 Signature';
       const stateDesc =
-        'The login request needs to be signed in the Metamask wallet.';
+        'The login request needs to be signed in the Web3 wallet.';
       const stateContent = 'My Mock Check Sign Step Content';
 
       it('when stepState is undefined it should show plain step logo', () => {

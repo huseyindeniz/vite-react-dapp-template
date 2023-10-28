@@ -1,16 +1,21 @@
 import { SignatureLike } from 'ethers/crypto';
 import { verifyMessage } from 'ethers/hash';
-import { BrowserProvider, Network } from 'ethers/providers';
+import { BrowserProvider, Eip1193Provider, Network } from 'ethers/providers';
 import { formatEther } from 'ethers/utils';
 import log from 'loglevel';
 import { eventChannel, EventChannel } from 'redux-saga';
 
 import { AvalancheChain } from '@/features/wallet/chains/avalanche';
+import { EthereumMainnetChain } from '@/features/wallet/chains/ethereum';
 import {
   DISABLE_WALLET_SIGN,
   SUPPORTED_NETWORKS,
 } from '@/features/wallet/config';
 import { AccountType } from '@/features/wallet/models/account/types/Account';
+import {
+  InstalledWallets,
+  SupportedWallets,
+} from '@/services/interfaces/IWalletProviderApi';
 
 import { AvvyAPI } from '../avvy/AvvyAPI';
 import { IWalletEthersV6ProviderApi } from '../interfaces/IWalletEthersV6ProviderApi';
@@ -29,6 +34,7 @@ export class EthersV6WalletAPI implements IWalletEthersV6ProviderApi {
   private _isSigned: boolean = false;
   private _signerAddress: string | null = null;
   private _provider: BrowserProvider | null = null;
+  private _detectedWallets: InstalledWallets = {} as InstalledWallets;
   private _network: Network | null = null;
   private _accountChangeListener: EventChannel<string[]> | null = null;
   private _networkChangeListener: EventChannel<string> | null = null;
@@ -43,28 +49,51 @@ export class EthersV6WalletAPI implements IWalletEthersV6ProviderApi {
     return this._instance;
   }
 
-  public loadProvider = async () => {
+  public detectWallets = async () => {
+    this._detectedWallets = {} as InstalledWallets;
     if (window.ethereum) {
-      // only metamask installed
-      if (window.ethereum.isMetaMask) {
-        this._provider = new BrowserProvider(window.ethereum, 'any');
+      log.debug('ethereum dedected', window.ethereum);
+      if (window.ethereum.providers && window.ethereum.providers.length > 0) {
+        log.debug('multiple provider dedected');
+        window.ethereum.providers.map((p: Eip1193Provider) => {
+          const detectedWallet = this._identifyWallet(p);
+          if (detectedWallet !== null) {
+            this._detectedWallets[detectedWallet] = new BrowserProvider(p);
+          }
+        });
+      } else {
+        log.debug('single provider dedected');
+        const detectedWallet = this._identifyWallet(window.ethereum);
+        if (detectedWallet !== null) {
+          this._detectedWallets[detectedWallet] = new BrowserProvider(
+            window.ethereum
+          );
+        }
       }
-      // metamask and others installed, select Metamask
-      /*
-      if (window.ethereum.providers) {
-        this._provider = new ethers.providers.Web3Provider(
-          window.ethereum.providers.find(
-            (provider: ethers.providers.ExternalProvider) => provider.isMetaMask
-          )
-        );
-      }
-      */
+    }
+    return this._detectedWallets;
+  };
+
+  private _identifyWallet = (p: any) => {
+    const wallet = p.coreProvider?.isAvalanche
+      ? SupportedWallets.CORE
+      : p.isCoinbaseWallet
+      ? SupportedWallets.COINBASE
+      : p.isMetaMask && !p.isRabby
+      ? SupportedWallets.METAMASK
+      : null;
+    return wallet;
+  };
+
+  public loadProvider = async (wallet: SupportedWallets) => {
+    log.debug('load wallet', wallet);
+    if (Object.keys(this._detectedWallets).includes(wallet)) {
+      this._provider = this._detectedWallets[wallet];
     }
     return this._provider !== null;
   };
 
   public loadNetwork = async () => {
-    await this._provider?.ready;
     this._network = this._provider ? await this._provider.getNetwork() : null;
     const isSupported: boolean = await this._isNetworkSupported(null);
     if (!isSupported) {
@@ -224,6 +253,10 @@ export class EthersV6WalletAPI implements IWalletEthersV6ProviderApi {
       if (Number(this._network.chainId) === AvalancheChain.chainId) {
         const avvyApi = AvvyAPI.getInstance(this._provider);
         return avvyApi.addressToDomain(this._signerAddress);
+      } else if (
+        Number(this._network.chainId) === EthereumMainnetChain.chainId
+      ) {
+        return await this._provider.lookupAddress(this._signerAddress);
       }
     }
   };

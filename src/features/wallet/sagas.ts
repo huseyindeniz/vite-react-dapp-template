@@ -14,7 +14,10 @@ import { ActionEffectLatestBlock } from './models/network/actionEffects/latestBl
 import { ActionEffectLoadNetwork } from './models/network/actionEffects/loadNetwork';
 import { ActionEffectSwitchNetwork } from './models/network/actionEffects/switchNetwork';
 import * as networkActions from './models/network/actions';
-import { ActionEffectLoadProvider } from './models/provider/actionEffects/loadProvider';
+import {
+  ActionEffectLoadProvider,
+  ActionEffectSelectProvider,
+} from './models/provider/actionEffects/loadProvider';
 import * as providerActions from './models/provider/actions';
 
 // ACTION EFFECTS
@@ -22,6 +25,11 @@ export function* watchWalletSaga(walletApi: IWalletAPI) {
   yield takeLatest(
     providerActions.connectWallet.type,
     ActionEffectLoadProvider,
+    walletApi
+  );
+  yield takeLatest(
+    providerActions.selectWallet.type,
+    ActionEffectSelectProvider,
     walletApi
   );
   yield takeLatest(

@@ -1,6 +1,8 @@
 // ConnectionModal.stories.ts|tsx
 import type { Meta, StoryObj } from '@storybook/react';
 
+import { SUPPORTED_WALLETS } from '@/features/wallet/config';
+
 import { ProviderLoadState } from '../../../models/provider/types/ProviderLoadState';
 
 import { CheckWallet } from './CheckWallet';
@@ -12,6 +14,28 @@ type Story = StoryObj<typeof CheckWallet>;
 
 // IDLE
 export const CheckWalletIdle: Story = { args: {} };
+
+// DETECTING_WALLETS
+export const DetectingWallets: Story = {
+  args: {
+    stepState: ProviderLoadState.DETECTING_WALLETS,
+  },
+};
+
+// WALLET_DEDECTION_FAILED
+export const WalletDetectionFailed: Story = {
+  args: {
+    stepState: ProviderLoadState.WALLET_DEDECTION_FAILED,
+  },
+};
+
+// WAITING_SELECTION
+export const WaitingSelection: Story = {
+  args: {
+    stepState: ProviderLoadState.WAITING_WALLET_SELECTION,
+    installedWallets: SUPPORTED_WALLETS,
+  },
+};
 
 // INIT_REQUESTED
 export const InitRequested: Story = {
@@ -31,6 +55,7 @@ export const NotSupported: Story = {
 export const InitFailed: Story = {
   args: {
     stepState: ProviderLoadState.FAILED,
+    errorMessage: 'Mock init failed error message',
   },
 };
 

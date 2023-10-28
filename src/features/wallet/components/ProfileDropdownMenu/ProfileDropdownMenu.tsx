@@ -21,6 +21,9 @@ export const ProfileDropdownMenu: React.FC = () => {
   const currentNetwork = useTypedSelector(
     state => state.wallet.network.network
   );
+  const connectedWallet = useTypedSelector(
+    state => state.wallet.provider.connectedWallet
+  );
 
   const [addressExplorerUrl, setAddressExplorerUrl] = useState<string>('');
   const [ensOrAddressTruncated, setensOrAddressTruncated] =
@@ -72,6 +75,7 @@ export const ProfileDropdownMenu: React.FC = () => {
       address={account.address}
       ensOrAddressTruncated={ensOrAddressTruncated ?? ''}
       currentNetwork={currentNetwork}
+      connectedWallet={connectedWallet}
       addressExplorerUrl={addressExplorerUrl}
       userPageLink={pageLink('/user')}
       onCopyAddressClicked={onCopyClicked}

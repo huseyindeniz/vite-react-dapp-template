@@ -20,7 +20,9 @@ import { MdContentCopy, MdDashboard } from 'react-icons/md';
 import { Link as RouterLink } from 'react-router-dom';
 
 import { Network } from '../../models/network/types/Network';
+import { Web3Wallet } from '../../models/provider/types/Web3Wallet';
 import { NetworkLogo } from '../NetworkLogo/NetworkLogo';
+import { WalletLogo } from '../WalletLogo/WalletLogo';
 
 import { Identicon } from './Identicon';
 
@@ -28,6 +30,7 @@ export interface DropdownMenuProps {
   address: string;
   ensOrAddressTruncated: string;
   currentNetwork: Network | null;
+  connectedWallet: Web3Wallet | null;
   addressExplorerUrl: string | undefined;
   userPageLink: string;
   onCopyAddressClicked: () => void;
@@ -38,6 +41,7 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
   address,
   ensOrAddressTruncated,
   currentNetwork,
+  connectedWallet,
   addressExplorerUrl,
   userPageLink,
   onCopyAddressClicked,
@@ -58,6 +62,12 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
         ml={2}
       >
         <HStack>
+          {connectedWallet ? (
+            <WalletLogo
+              label={connectedWallet.label}
+              wallet={connectedWallet.name}
+            />
+          ) : null}
           {currentNetwork ? (
             <NetworkLogo
               networkId={currentNetwork?.chainId}
