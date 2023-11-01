@@ -59,7 +59,7 @@ export function* HandleStateDetectingWallets(
     );
     const detectedProviderCount = Object.keys(detectedWallets).length;
     if (detectedProviderCount == 0) {
-      throw new Error('No wallet found');
+      yield call(HandleStateProviderNotSupported);
     }
     if (detectedProviderCount == 1) {
       let singleWallet;
