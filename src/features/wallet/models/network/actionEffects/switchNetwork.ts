@@ -26,7 +26,7 @@ export function* ActionEffectSwitchNetwork(
   if (networkSwitchResult) {
     yield put(walletStateSliceActions.setState(WalletState.CHECKING_SIGN));
     // TODO: dispatch an action instead of calling state handler below
-    yield put({ type: accountActions.waitSignIn });
+    yield put({ type: accountActions.waitSignIn.type });
   }
   yield put(walletStateSliceActions.setLoading(LoadingStatusType.IDLE));
 }
