@@ -1,18 +1,26 @@
-import i18n from "i18next";
-import LanguageDetector from "i18next-browser-languagedetector";
-import { initReactI18next } from "react-i18next";
+import i18n from 'i18next';
+import LanguageDetector from 'i18next-browser-languagedetector';
+import { initReactI18next } from 'react-i18next';
 
-import { i18nConfig } from "./config";
-import { resources } from "./i18nResources";
+import { i18nConfig } from './config';
+import { resources } from './i18nResources';
 
 const detectionOptions = {
   lookupFromPathIndex: 0,
-  order: ["path", "navigator"],
+  order: ['path', 'navigator'],
   lookupQuerystring: i18nConfig.urlParam,
-  lookupCookie: "i18next",
-  lookupLocalStorage: "i18nextLng",
-  whitelist: i18nConfig.supportedLanguages.map((l) => l.code),
-  checkWhitelist: true,
+  lookupCookie: 'i18next',
+  lookupLocalStorage: 'i18nextLng',
+  convertDetectedLanguage: (lng: string) => {
+    const fullLang = i18nConfig.supportedLanguages.find(l =>
+      l.code.startsWith(lng)
+    );
+    if (fullLang === undefined) {
+      return lng;
+    } else {
+      return fullLang.code;
+    }
+  },
 };
 
 i18n.use(LanguageDetector).use(initReactI18next).init({
