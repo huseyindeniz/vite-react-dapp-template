@@ -4,7 +4,7 @@ import { IWalletAPI } from '@/services/interfaces/IWalletAPI';
 import { IWalletNetworkApi } from '@/services/interfaces/IWalletNetworkApi';
 
 import { SlowDown } from '../../../utils';
-import * as accountActions from '../../account/actions';
+import * as providerActions from '../../provider/actions';
 import * as walletStateSliceActions from '../../slice';
 import { LoadingStatusType } from '../../types/LoadingStatus';
 import { WalletState } from '../../types/WalletState';
@@ -24,9 +24,8 @@ export function* ActionEffectSwitchNetwork(
     walletApi
   );
   if (networkSwitchResult) {
-    yield put(walletStateSliceActions.setState(WalletState.CHECKING_SIGN));
-    // TODO: dispatch an action instead of calling state handler below
-    yield put({ type: accountActions.waitSignIn.type });
+    // ethers needs to reconstruct provider
+    yield put({ type: providerActions.connectWallet.type });
   }
   yield put(walletStateSliceActions.setLoading(LoadingStatusType.IDLE));
 }
@@ -49,7 +48,6 @@ export function* HandleStateNetworkSwitchRequested(
     if (!isNetworkSwitched) {
       throw new Error('Network switch failed');
     }
-    yield put({ type: actions.loadNetwork.type });
     return true;
   } catch (error) {
     const errorMessage: string = (error as Error).message;

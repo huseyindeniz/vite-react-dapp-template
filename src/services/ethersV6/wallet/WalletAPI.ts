@@ -94,7 +94,7 @@ export class EthersV6WalletAPI implements IWalletEthersV6ProviderApi {
   };
 
   public loadNetwork = async () => {
-    this._network = this._provider ? await this._provider.getNetwork() : null;
+    this._network = (await this._provider?.getNetwork()) ?? null;
     const isSupported: boolean = await this._isNetworkSupported(null);
     if (!isSupported) {
       this._network = null;
