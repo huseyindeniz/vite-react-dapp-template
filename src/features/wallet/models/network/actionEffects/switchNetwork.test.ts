@@ -7,7 +7,6 @@ import { IWalletNetworkApi } from '@/services/interfaces/IWalletNetworkApi';
 import { HardhatChain } from '../../../chains/hardhat';
 import { SlowDown } from '../../../utils';
 import * as walletStateSliceActions from '../../slice';
-import * as actions from '../actions';
 import * as slicesActions from '../slice';
 import { NetworkLoadState } from '../types/NetworkLoadState';
 
@@ -49,8 +48,6 @@ describe('Feature: Wallet', () => {
         )
         .call(SlowDown)
         .call(mockWalletNetworkApi.switchNetwork, HardhatChain.chainId)
-        .put({ type: actions.loadNetwork.type })
-        .returns(true)
         .run();
     });
     it('network can not switched without Exception', () => {

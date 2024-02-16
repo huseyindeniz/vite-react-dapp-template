@@ -24,7 +24,7 @@ export function* ActionEffectSwitchNetwork(
     walletApi
   );
   if (networkSwitchResult) {
-    yield put(walletStateSliceActions.setState(WalletState.CHECKING_WALLET));
+    // ethers needs to reconstruct provider
     yield put({ type: providerActions.connectWallet.type });
   }
   yield put(walletStateSliceActions.setLoading(LoadingStatusType.IDLE));
