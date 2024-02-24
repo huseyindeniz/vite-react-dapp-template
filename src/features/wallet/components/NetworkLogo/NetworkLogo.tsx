@@ -4,6 +4,7 @@ import { Image } from '@chakra-ui/react';
 
 import imageEthereumMainnet from '../../assets/images/chains/1.webp';
 import imageGanache from '../../assets/images/chains/1337.webp';
+import imageSepolia from '../../assets/images/chains/11155111.webp';
 import imagePolygon from '../../assets/images/chains/137.webp';
 import imageHardhat from '../../assets/images/chains/31337.webp';
 import imageAvalancheFuji from '../../assets/images/chains/43113.webp';
@@ -26,6 +27,7 @@ const imagesNetwork: Record<number, string> = {
   97: imageBscTest,
   1: imageEthereumMainnet,
   1337: imageGanache,
+  11155111: imageSepolia,
   5: imageGoerli,
   31337: imageHardhat,
   137: imagePolygon,

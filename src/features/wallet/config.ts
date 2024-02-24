@@ -4,6 +4,7 @@ import { BinanceSmartChain } from './chains/bsc';
 import { BSCTestChain } from './chains/bscTest';
 import { EthereumMainnetChain } from './chains/ethereum';
 import { GanacheChain } from './chains/ganache';
+import { SepoliaChain } from './chains/sepolia';
 import { GoerliTestChain } from './chains/goerliTest';
 import { HardhatChain } from './chains/hardhat';
 import { PolygonChain } from './chains/polygon';
@@ -24,6 +25,7 @@ export const SUPPORTED_NETWORKS: Network[] = [
   PolygonMumbaiChain,
   GoerliTestChain,
   GanacheChain,
+  SepoliaChain,
   HardhatChain,
 ];
 export const DEFAULT_NETWORK = AvalancheChain;
