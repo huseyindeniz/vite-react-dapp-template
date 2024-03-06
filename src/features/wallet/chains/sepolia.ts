@@ -9,7 +9,7 @@ export const SepoliaChain: Network = {
     decimals: 18,
   },
   rpcUrls: ['https://ethereum-sepolia-rpc.publicnode.com'],
-  blockExplorerUrls: ['https://sepolia.etherscan.io/'],
+  blockExplorerUrls: ['https://sepolia.etherscan.io'],
   addressExplorerUrl: 'address',
   transactionExplorerUrl: 'tx',
   multicallAddress: '',
