@@ -8,6 +8,7 @@ import { GoerliTestChain } from './chains/goerliTest';
 import { HardhatChain } from './chains/hardhat';
 import { PolygonChain } from './chains/polygon';
 import { PolygonMumbaiChain } from './chains/polygonMumbai';
+import { SepoliaChain } from './chains/sepolia';
 import { Network } from './models/network/types/Network';
 import { Web3Wallet } from './models/provider/types/Web3Wallet';
 import { Core } from './web3Wallets/core';
@@ -24,6 +25,7 @@ export const SUPPORTED_NETWORKS: Network[] = [
   PolygonMumbaiChain,
   GoerliTestChain,
   GanacheChain,
+  SepoliaChain,
   HardhatChain,
 ];
 export const DEFAULT_NETWORK = AvalancheChain;
