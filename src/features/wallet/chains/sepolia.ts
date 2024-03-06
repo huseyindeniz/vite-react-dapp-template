@@ -14,6 +14,6 @@ export const SepoliaChain: Network = {
   transactionExplorerUrl: 'tx',
   multicallAddress: '',
   isTestChain: true,
-  isLocalChain: true,
+  isLocalChain: false,
   isDomainNameSupported: false,
 };
