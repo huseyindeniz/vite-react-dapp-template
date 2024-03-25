@@ -12,6 +12,7 @@ import {
   HStack,
   VStack,
   Link,
+  Avatar,
 } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import { FaExternalLinkAlt } from 'react-icons/fa';
@@ -28,7 +29,8 @@ import { Identicon } from './Identicon';
 
 export interface DropdownMenuProps {
   address: string;
-  ensOrAddressTruncated: string;
+  domainOrAddressTruncated: string;
+  avatarURL: string;
   currentNetwork: Network | null;
   connectedWallet: Web3Wallet | null;
   addressExplorerUrl: string | undefined;
@@ -39,7 +41,8 @@ export interface DropdownMenuProps {
 
 export const DropdownMenu: React.FC<DropdownMenuProps> = ({
   address,
-  ensOrAddressTruncated,
+  domainOrAddressTruncated,
+  avatarURL,
   currentNetwork,
   connectedWallet,
   addressExplorerUrl,
@@ -75,18 +78,26 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
             />
           ) : null}
           <Text color="white" fontSize="md" fontWeight="medium" mr="2">
-            {ensOrAddressTruncated}
+            {domainOrAddressTruncated}
           </Text>
-          <Identicon size={24} account={address} />
+          {avatarURL !== '' ? (
+            <Avatar name={address} src={avatarURL} size="sm" />
+          ) : (
+            <Identicon size={24} account={address} />
+          )}
         </HStack>
       </MenuButton>
       <MenuList alignItems="center" m={0}>
         <VStack align="center">
           <Box>
-            <Identicon size={64} account={address} />
+            {avatarURL !== '' ? (
+              <Avatar name={address} src={avatarURL} size="lg" />
+            ) : (
+              <Identicon size={64} account={address} />
+            )}
           </Box>
           <Box>
-            <Text>{ensOrAddressTruncated}</Text>
+            <Text>{domainOrAddressTruncated}</Text>
           </Box>
         </VStack>
         <MenuDivider />

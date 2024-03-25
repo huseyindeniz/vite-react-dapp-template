@@ -9,7 +9,7 @@ export const AvalancheChain: Network = {
     decimals: 18,
   },
   rpcUrls: ['https://api.avax.network/ext/bc/C/rpc'],
-  blockExplorerUrls: ['https://avascan.info/blockchain/c'],
+  blockExplorerUrls: ['https://snowtrace.io'],
   addressExplorerUrl: 'address',
   transactionExplorerUrl: 'tx',
   multicallAddress: '',

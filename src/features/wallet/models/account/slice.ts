@@ -47,6 +47,11 @@ const accountSlice = createSlice({
         state.account.domainName = payload;
       }
     },
+    setAccountAvatarURL: (state, { payload }: PayloadAction<string>) => {
+      if (state.account) {
+        state.account.avatarURL = payload;
+      }
+    },
   },
   extraReducers: builder => {
     builder.addCase(disconnectWallet.type, state => {
@@ -62,6 +67,7 @@ export const {
   setAccountLoadState,
   setAccount,
   setAccountDomainName,
+  setAccountAvatarURL,
   setAccountSignState,
   decSignCounter,
   resetSignCounter,

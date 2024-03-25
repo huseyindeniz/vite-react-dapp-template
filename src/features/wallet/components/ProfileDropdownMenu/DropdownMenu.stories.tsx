@@ -17,13 +17,13 @@ export const Default: Story = { args: {} };
 export const Address: Story = {
   args: {
     address: '0x0000000000000000000000000000000000000000',
-    ensOrAddressTruncated: '0x0000...0000',
+    domainOrAddressTruncated: '0x0000...0000',
   },
 };
 
 export const Ens: Story = {
   args: {
     address: '0x0000000000000000000000000000000000000000',
-    ensOrAddressTruncated: 'mockEnsName.eth',
+    domainOrAddressTruncated: 'mockEnsName.eth',
   },
 };

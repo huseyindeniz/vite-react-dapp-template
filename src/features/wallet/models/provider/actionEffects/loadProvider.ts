@@ -1,8 +1,9 @@
 import { put, call } from 'redux-saga/effects';
 
+import { Coinbase } from '@/features/wallet/web3Wallets/coinbase';
 import { Core } from '@/features/wallet/web3Wallets/core';
-import { Coinbase } from '@/features/wallet/web3Wallets/corinbase';
 import { Metamask } from '@/features/wallet/web3Wallets/metamask';
+import { Rabby } from '@/features/wallet/web3Wallets/rabby';
 import {
   IWalletProviderApi,
   InstalledWallets,
@@ -73,6 +74,9 @@ export function* HandleStateDetectingWallets(
         case SupportedWallets.METAMASK:
           singleWallet = Metamask;
           break;
+        case SupportedWallets.RABBY:
+          singleWallet = Rabby;
+          break;
       }
       if (singleWallet) {
         yield put(sliceActions.setInstalledWallets([singleWallet]));
@@ -96,6 +100,9 @@ export function* HandleStateDetectingWallets(
             break;
           case SupportedWallets.COINBASE:
             installedWallets.push(Coinbase);
+            break;
+          case SupportedWallets.RABBY:
+            installedWallets.push(Rabby);
             break;
         }
       });
@@ -135,6 +142,9 @@ export function* HandleStateProviderRequested(
           break;
         case SupportedWallets.COINBASE:
           connectedWallet = Coinbase;
+          break;
+        case SupportedWallets.RABBY:
+          connectedWallet = Rabby;
           break;
       }
       if (connectedWallet) {
