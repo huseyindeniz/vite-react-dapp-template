@@ -37,4 +37,10 @@ export class AvvyAPI {
     log.debug(address);
     return address;
   };
+
+  public getAvatar = async (domain: string) => {
+    const avatar = await this.resolutionUtilsV2.resolveStandard(domain, 7);
+    log.debug(avatar);
+    return avatar;
+  };
 }

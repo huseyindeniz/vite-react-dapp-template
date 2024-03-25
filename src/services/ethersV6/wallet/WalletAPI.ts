@@ -38,6 +38,7 @@ export class EthersV6WalletAPI implements IWalletEthersV6ProviderApi {
   private _network: Network | null = null;
   private _accountChangeListener: EventChannel<string[]> | null = null;
   private _networkChangeListener: EventChannel<string> | null = null;
+  private _accessToken: string | null = null;
 
   private constructor() {}
 
@@ -71,18 +72,27 @@ export class EthersV6WalletAPI implements IWalletEthersV6ProviderApi {
         }
       }
     }
+    log.debug(this._detectedWallets);
     return this._detectedWallets;
   };
 
   private _identifyWallet = (p: any) => {
-    const wallet = p.coreProvider?.isAvalanche
-      ? SupportedWallets.CORE
-      : p.isCoinbaseWallet
-      ? SupportedWallets.COINBASE
-      : p.isMetaMask && !p.isRabby
-      ? SupportedWallets.METAMASK
-      : null;
-    return wallet;
+    if (p.coreProvider?.isAvalanche) {
+      return SupportedWallets.CORE;
+    }
+
+    if (p.isCoinbaseWallet) {
+      return SupportedWallets.COINBASE;
+    }
+
+    if (p.isRabby) {
+      return SupportedWallets.RABBY;
+    }
+
+    if (p.isMetaMask) {
+      return SupportedWallets.METAMASK;
+    }
+    return null;
   };
 
   public loadProvider = async (wallet: SupportedWallets) => {
@@ -199,26 +209,42 @@ export class EthersV6WalletAPI implements IWalletEthersV6ProviderApi {
     return this._isSigned;
   };
 
+  public prepareSignMessage = async (message: string) => {
+    const signer = await this._provider?.getSigner();
+    if (!signer) {
+      throw new Error('signer not dedected');
+    }
+    log.debug('signer', signer);
+    const address: string = await signer?.getAddress();
+    if (!address) {
+      throw new Error('address not dedected');
+    }
+    this._accessToken = await this._newUUID(address);
+    message += this._accessToken;
+    return message;
+  };
+
   public sign = async (message: string) => {
     const signer = await this._provider?.getSigner();
-    log.debug('signer', signer);
-    message += this._newUUID();
-    let signature: string | undefined = undefined;
+    if (!signer) {
+      throw new Error('signer not dedected');
+    }
+    const address: string = await signer?.getAddress();
+    let signature: string = '';
     try {
-      signature = await signer?.signMessage(message);
+      signature = await signer.signMessage(message);
     } catch (error: unknown) {
       const metamaskError: MetamaskError = error as MetamaskError;
       if (metamaskError.code === MetamaskRPCErrors.ACTION_REJECTED) {
         throw new Error('sign_rejected');
       }
     }
-    const address: string | undefined = await signer?.getAddress();
     this._isSigned = await this._verifyLogingSignature(
       message,
       signature,
       address
     );
-    if (this._isSigned && address) {
+    if (this._isSigned) {
       this._signerAddress = address;
     }
   };
@@ -237,11 +263,13 @@ export class EthersV6WalletAPI implements IWalletEthersV6ProviderApi {
     if (this._signerAddress) {
       result = {
         address: this._signerAddress,
+        accessToken: this._accessToken,
         shortAddress:
           this._signerAddress.slice(0, 6) +
           '...' +
           this._signerAddress.slice(-4),
         domainName: null,
+        avatarURL: null,
       };
     }
     return result;
@@ -259,6 +287,18 @@ export class EthersV6WalletAPI implements IWalletEthersV6ProviderApi {
         return await this._provider.lookupAddress(this._signerAddress);
       }
     }
+  };
+
+  public getAvatarURL = async (domain: string) => {
+    log.debug(this._network?.chainId);
+    if (this._provider && this._network && this._signerAddress) {
+      if (Number(this._network.chainId) === AvalancheChain.chainId) {
+        const avvyApi = AvvyAPI.getInstance(this._provider);
+        return avvyApi.getAvatar(domain);
+      }
+      return '';
+    }
+    return '';
   };
 
   // reset
@@ -338,15 +378,12 @@ export class EthersV6WalletAPI implements IWalletEthersV6ProviderApi {
   // this is a client side secret value for signing login
   // if you have a backend application
   // you could get this value from your backend
-  private _newUUID = () => {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
-      /[xy]/g,
-      function (c) {
-        const r = (Math.random() * 16) | 0,
-          v = c === 'x' ? r : (r & 0x3) | 0x8;
-        return v.toString(16);
-      }
-    );
+  private _newUUID = async (address: string) => {
+    return address.replace(/[xy]/g, function (c) {
+      const r = (Math.random() * 16) | 0,
+        v = c === 'x' ? r : (r & 0x3) | 0x8;
+      return v.toString(16);
+    });
   };
 
   // this is a client side verification for login signature
