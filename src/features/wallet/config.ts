@@ -11,8 +11,8 @@ import { PolygonMumbaiChain } from './chains/polygonMumbai';
 import { SepoliaChain } from './chains/sepolia';
 import { Network } from './models/network/types/Network';
 import { Web3Wallet } from './models/provider/types/Web3Wallet';
+import { Coinbase } from './web3Wallets/coinbase';
 import { Core } from './web3Wallets/core';
-import { Coinbase } from './web3Wallets/corinbase';
 import { Metamask } from './web3Wallets/metamask';
 
 export const SUPPORTED_NETWORKS: Network[] = [

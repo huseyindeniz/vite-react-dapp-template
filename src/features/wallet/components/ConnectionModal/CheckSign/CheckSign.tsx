@@ -6,6 +6,7 @@ import { AccountSignState } from '../../../models/account/types/AccountSignState
 import { NotSigned } from './NotSigned';
 import { Signed } from './Signed';
 import { SignFailed } from './SignFailed';
+import { SignInitialized } from './SignInitialized';
 import { SignRejected } from './SignRejected';
 import { SignRequested } from './SignRequested';
 import { SignTimedOut } from './SignTimedOut';
@@ -29,6 +30,8 @@ export const CheckSign: React.FC<CheckSignProps> = ({
   switch (stepState) {
     case AccountSignState.NOT_SIGNED:
       return <NotSigned onSign={onSign} onDisconnect={onDisconnect} />;
+    case AccountSignState.SIGN_INITIALIZED:
+      return <SignInitialized />;
     case AccountSignState.SIGN_REQUESTED:
       return <SignRequested signCounter={signCounter} />;
     case AccountSignState.SIGN_REJECTED:

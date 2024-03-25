@@ -26,8 +26,9 @@ export const ProfileDropdownMenu: React.FC = () => {
   );
 
   const [addressExplorerUrl, setAddressExplorerUrl] = useState<string>('');
-  const [ensOrAddressTruncated, setensOrAddressTruncated] =
+  const [domainOrAddressTruncated, setDomainOrAddressTruncated] =
     useState<string>('');
+  const [avatarURL, setAvatarURL] = useState<string>('');
 
   useEffect(() => {
     if (currentNetwork) {
@@ -43,13 +44,14 @@ export const ProfileDropdownMenu: React.FC = () => {
         account.domainName && account.domainName !== ''
           ? account.domainName
           : account.shortAddress;
-      setensOrAddressTruncated(
+      setDomainOrAddressTruncated(
         domainNameOrAddress && domainNameOrAddress.length > 20
           ? domainNameOrAddress?.slice(0, 4) +
               '...' +
               domainNameOrAddress?.slice(-6)
           : domainNameOrAddress
       );
+      setAvatarURL(account.avatarURL ?? '');
     }
   }, [account]);
 
@@ -73,7 +75,8 @@ export const ProfileDropdownMenu: React.FC = () => {
   return account && account.address && account.address !== '' ? (
     <DropdownMenu
       address={account.address}
-      ensOrAddressTruncated={ensOrAddressTruncated ?? ''}
+      domainOrAddressTruncated={domainOrAddressTruncated ?? ''}
+      avatarURL={avatarURL}
       currentNetwork={currentNetwork}
       connectedWallet={connectedWallet}
       addressExplorerUrl={addressExplorerUrl}

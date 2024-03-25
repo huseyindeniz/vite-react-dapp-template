@@ -1,3 +1,4 @@
+import log from 'loglevel';
 import { END, EventChannel, Task } from 'redux-saga';
 import {
   put,
@@ -69,14 +70,21 @@ export function* HandleStateSignRequested(
   message: string
 ) {
   let isSigned: boolean = false;
-  let isRejected: boolean = false;
+  let error: Error | undefined;
   try {
+    yield put(
+      slicesActions.setAccountSignState(AccountSignState.SIGN_INITIALIZED)
+    );
+    yield call(SlowDown);
+    const preparedMessage: string = yield call(
+      walletSignApi.prepareSignMessage,
+      message
+    );
     yield put(
       slicesActions.setAccountSignState(AccountSignState.SIGN_REQUESTED)
     );
-    yield call(SlowDown);
     yield spawn(CheckSignTimeout);
-    yield call(walletSignApi.sign, message);
+    yield call(walletSignApi.sign, preparedMessage);
     const walletState: WalletState = yield select(
       (state: RootState) => state.wallet.state.state
     );
@@ -89,10 +97,8 @@ export function* HandleStateSignRequested(
     ) {
       isSigned = yield call(walletSignApi.isSigned);
     }
-  } catch (error) {
-    if ((error as Error).message === 'sign_rejected') {
-      isRejected = true;
-    }
+  } catch (e) {
+    error = e as Error;
     isSigned = false;
   }
   if (isSigned) {
@@ -100,10 +106,10 @@ export function* HandleStateSignRequested(
     yield call(HandleStateSigned, walletSignApi);
     return true;
   } else {
-    if (isRejected) {
+    if (error?.message === 'sign_rejected') {
       yield call(HandleStateSignRejected);
     } else {
-      yield call(HandleStateSignFailed, 'SIGN_FAILED');
+      yield call(HandleStateSignFailed, error?.message || '0');
     }
     return false;
   }
@@ -190,6 +196,14 @@ function* updateDomainNameWithAPI(walletAuthenticatedApi: IWalletAccountApi) {
     );
     if (domainName) {
       yield put(slicesActions.setAccountDomainName(domainName));
+      const avatarURL: string = yield call(
+        walletAuthenticatedApi.getAvatarURL,
+        domainName
+      );
+      log.debug(avatarURL);
+      if (avatarURL !== '') {
+        yield put(slicesActions.setAccountAvatarURL(avatarURL));
+      }
     }
   } catch (error) {
     yield put(walletStateSliceActions.setError(error as string));
