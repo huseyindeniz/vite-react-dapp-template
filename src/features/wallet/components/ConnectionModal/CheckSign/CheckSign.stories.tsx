@@ -19,6 +19,14 @@ export const NotSigned: Story = {
     stepState: AccountSignState.NOT_SIGNED,
   },
 };
+
+// SIGN_REQUESTED
+export const SignInitialized: Story = {
+  args: {
+    stepState: AccountSignState.SIGN_INITIALIZED,
+  },
+};
+
 // SIGN_REQUESTED
 export const SignRequested: Story = {
   args: {

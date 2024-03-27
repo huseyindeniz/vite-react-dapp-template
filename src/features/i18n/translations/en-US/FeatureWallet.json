@@ -38,6 +38,7 @@
   "You have successfully signed the login request.": "You have successfully signed the login request.",
   "Redirecting to app...": "Redirecting to app...",
   "An error has occured during the sign check.": "An error has occured during the sign check.",
+  "Preparing Sign Request": "Preparing Sign Request",
   "Sign Rejected": "Sign Rejected",
   "You rejected the sign request.": "You rejected the sign request.",
   "Waiting Signature": "Waiting Signature",
