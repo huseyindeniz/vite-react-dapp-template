@@ -4,7 +4,7 @@ import { Modal } from './Modal';
 
 describe('Feature: Wallet', () => {
   describe('Component: ConnectionModal/Modal', () => {
-    const onClickSpy = jest.fn();
+    const onClickSpy = vi.fn();
 
     describe('Scenario: isOpen=false', () => {
       it('should be empty', () => {

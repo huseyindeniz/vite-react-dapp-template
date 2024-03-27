@@ -3,21 +3,21 @@ import { MemoryRouter } from 'react-router-dom';
 
 import { Layout } from './Layout';
 
-jest.mock('./Header/Header', () => ({
+vi.mock('./Header/Header', () => ({
   Header: () => <div data-testid="mock-header">Mock Header</div>,
 }));
 
-jest.mock('./Footer/Footer', () => ({
+vi.mock('./Footer/Footer', () => ({
   Footer: () => <div data-testid="mock-footer">Mock Footer</div>,
 }));
 
-jest.mock('./ScrollToTopButton/ScrollToTopButton', () => ({
+vi.mock('./ScrollToTopButton/ScrollToTopButton', () => ({
   ScrollToTopButton: () => (
     <div data-testid="mock-scroll-to-top-button">Mock ScrollToTopButton</div>
   ),
 }));
 
-jest.mock('./CookieConsent/CookieConsentMessage', () => ({
+vi.mock('./CookieConsent/CookieConsentMessage', () => ({
   CookieConsentMessage: () => (
     <div data-testid="mock-cookie-consent">Mock CookieConsent</div>
   ),

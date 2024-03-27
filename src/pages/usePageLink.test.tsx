@@ -3,7 +3,7 @@ import { usePageLink } from './usePageLink';
 describe.skip('usePageLink', () => {
   it('returns the correct path for the default language', () => {
     // Mock useTranslation hook to return the default language
-    jest.mock('react-i18next', () => ({
+    vi.mock('react-i18next', () => ({
       // this mock makes sure any components using the translate hook can use it without a warning being shown
       useTranslation: () => {
         return {
@@ -16,7 +16,7 @@ describe.skip('usePageLink', () => {
       },
       initReactI18next: {
         type: '3rdParty',
-        init: jest.fn(),
+        init: vi.fn(),
       },
     }));
     //const originalPath = '/test';
@@ -27,7 +27,7 @@ describe.skip('usePageLink', () => {
 
   it('returns the correct path for a non-default language', () => {
     // Mock useTranslation hook to return a non-default language
-    jest.mock('react-i18next', () => ({
+    vi.mock('react-i18next', () => ({
       // this mock makes sure any components using the translate hook can use it without a warning being shown
       useTranslation: () => {
         return {

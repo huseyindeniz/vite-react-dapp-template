@@ -4,10 +4,10 @@ import { i18nConfig } from './config';
 import { useChangeLanguage } from './useChangeLanguage';
 
 // Mock the navigate function
-const mockedUsedNavigate = jest.fn();
+const mockedUsedNavigate = vi.fn();
 
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
+vi.mock('react-router-dom', () => ({
+  // ...jest.requireActual('react-router-dom'),
   useNavigate: () => mockedUsedNavigate,
 }));
 

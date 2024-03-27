@@ -7,8 +7,8 @@ describe('SiteMeta', () => {
   it('should render the component', async () => {
     const siteName = 'My Site';
     const siteDescription = 'This is my site';
-    const image = 'localhost/default.png';
-    const url = 'localhost';
+    const image = 'localhost:3000/default.png';
+    const url = 'localhost:3000';
 
     render(
       <HelmetProvider>

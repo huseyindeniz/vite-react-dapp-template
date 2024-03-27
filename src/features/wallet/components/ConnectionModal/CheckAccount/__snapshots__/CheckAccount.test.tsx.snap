@@ -1,11 +1,11 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Feature: Wallet Component: ConnectionModal/Steps/CheckAccount Scenario: AccountDetectionFailed should be visible and show error 1`] = `[Function]`;
+exports[`Feature: Wallet > Component: ConnectionModal/Steps/CheckAccount > Scenario: AccountDetectionFailed > should be visible and show error 1`] = `[Function]`;
 
-exports[`Feature: Wallet Component: ConnectionModal/Steps/CheckAccount Scenario: Locked should be visible and show error 1`] = `[Function]`;
+exports[`Feature: Wallet > Component: ConnectionModal/Steps/CheckAccount > Scenario: Locked > should be visible and show error 1`] = `[Function]`;
 
-exports[`Feature: Wallet Component: ConnectionModal/Steps/CheckAccount Scenario: UnlockFailed should be visible and show error 1`] = `[Function]`;
+exports[`Feature: Wallet > Component: ConnectionModal/Steps/CheckAccount > Scenario: UnlockFailed > should be visible and show error 1`] = `[Function]`;
 
-exports[`Feature: Wallet Component: ConnectionModal/Steps/CheckAccount Scenario: UnlockRejected should be visible and show error 1`] = `[Function]`;
+exports[`Feature: Wallet > Component: ConnectionModal/Steps/CheckAccount > Scenario: UnlockRejected > should be visible and show error 1`] = `[Function]`;
 
-exports[`Feature: Wallet Component: ConnectionModal/Steps/CheckAccount Scenario: UnlockRequested should be visible and show error 1`] = `[Function]`;
+exports[`Feature: Wallet > Component: ConnectionModal/Steps/CheckAccount > Scenario: UnlockRequested > should be visible and show error 1`] = `[Function]`;

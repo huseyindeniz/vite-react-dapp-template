@@ -46,13 +46,13 @@
       "@/store/*": [
         "./src/store/*"
       ],
-    }
+    },
+    "types": [
+      "vitest/globals"
+    ]
   },
   "include": [
     "src"
-  ],
-  "exclude": [
-    "src/services/ethersV5"
   ],
   "references": [
     {

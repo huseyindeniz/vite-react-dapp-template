@@ -12,7 +12,7 @@ describe('Feature: Wallet', () => {
       InitFailed,
       Initialized,
     } = composeStories(stories);
-    const onClickSpy = jest.fn();
+    const onClickSpy = vi.fn();
 
     describe('Scenario: CheckWalletIdle, InitRequested, Initialized', () => {
       it('should be empty', () => {

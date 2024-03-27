@@ -4,7 +4,7 @@
 // learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom';
 
-jest.mock('react-i18next', () => ({
+vi.mock('react-i18next', () => ({
   // this mock makes sure any components using the translate hook can use it without a warning being shown
   useTranslation: () => {
     return {
@@ -16,6 +16,6 @@ jest.mock('react-i18next', () => ({
   },
   initReactI18next: {
     type: '3rdParty',
-    init: jest.fn(),
+    init: vi.fn(),
   },
 }));

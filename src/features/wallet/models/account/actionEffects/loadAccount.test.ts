@@ -11,18 +11,18 @@ import { AccountLoadState } from '../types/AccountLoadState';
 import { HandleStateAccountRequested, HandleStateLocked } from './loadAccount';
 
 const mockWalletAccountApi: IWalletAccountApi = {
-  isUnlocked: jest.fn(),
-  unlock: jest.fn(),
-  isSigned: jest.fn(),
-  prepareSignMessage: jest.fn(),
-  sign: jest.fn(),
-  getAccount: jest.fn(),
-  isDomainNameSupported: jest.fn(),
-  getDomainName: jest.fn(),
-  getAvatarURL: jest.fn(),
-  listenAccountChange: jest.fn(),
-  handleAccountChange: jest.fn(),
-  reset: jest.fn(),
+  isUnlocked: vi.fn(),
+  unlock: vi.fn(),
+  isSigned: vi.fn(),
+  prepareSignMessage: vi.fn(),
+  sign: vi.fn(),
+  getAccount: vi.fn(),
+  isDomainNameSupported: vi.fn(),
+  getDomainName: vi.fn(),
+  getAvatarURL: vi.fn(),
+  listenAccountChange: vi.fn(),
+  handleAccountChange: vi.fn(),
+  reset: vi.fn(),
 };
 
 describe('Feature: Wallet', () => {

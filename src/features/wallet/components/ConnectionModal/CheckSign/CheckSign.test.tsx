@@ -14,7 +14,7 @@ describe('Feature: Wallet', () => {
       SignFailed,
       Signed,
     } = composeStories(stories);
-    const onClickSpy = jest.fn();
+    const onClickSpy = vi.fn();
 
     describe('Scenario: CheckSignIdle, Signed', () => {
       it('should be empty', () => {
