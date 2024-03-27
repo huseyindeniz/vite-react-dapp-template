@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Feature: Wallet Component: ProfileDropdownMenu/DropdownMenu renders address 1`] = `
+exports[`Feature: Wallet > Component: ProfileDropdownMenu/DropdownMenu > renders address 1`] = `
 {
   "debug": [Function],
   "findAllByAltText": [Function],
@@ -55,7 +55,7 @@ exports[`Feature: Wallet Component: ProfileDropdownMenu/DropdownMenu renders add
 }
 `;
 
-exports[`Feature: Wallet Component: ProfileDropdownMenu/DropdownMenu renders ens 1`] = `
+exports[`Feature: Wallet > Component: ProfileDropdownMenu/DropdownMenu > renders ens 1`] = `
 {
   "debug": [Function],
   "findAllByAltText": [Function],

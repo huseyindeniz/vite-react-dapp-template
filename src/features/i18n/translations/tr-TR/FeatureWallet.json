@@ -38,6 +38,7 @@
   "You have successfully signed the login request.": "Giriş isteğini başarılı bir şekilde imzaladınız.",
   "Redirecting to app...": "Uygulamaya yönleniliyor...",
   "An error has occured during the sign check.": "İmza kontrolü sırasında bir hata oluştu.",
+  "Preparing Sign Request": "İmzalanacak mesaj hazırlanıyor.",
   "Sign Rejected": "İmza Reddedildi",
   "You rejected the sign request.": "İmza isteğini reddettiniz.",
   "Waiting Signature": "İmza Bekleniyor",

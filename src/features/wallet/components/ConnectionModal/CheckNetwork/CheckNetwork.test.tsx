@@ -15,7 +15,7 @@ describe('Feature: Wallet', () => {
       NetworkSwitchFailed,
       NetworkLoaded,
     } = composeStories(stories);
-    const onClickSpy = jest.fn();
+    const onClickSpy = vi.fn();
 
     describe('Scenario: CheckNetworkIdle, NetworkRequested, NetworkLoaded', () => {
       it('should be empty', () => {

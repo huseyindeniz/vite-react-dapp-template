@@ -276,6 +276,7 @@ export const CheckNetworkLoaded: Story = {
 const {
   CheckSignIdle,
   NotSigned,
+  SignInitialized,
   SignRequested,
   SignRejected,
   SignTimedOut,
@@ -297,6 +298,15 @@ export const CheckSignNotSigned: Story = {
     activeStep: 3,
     stepState: 'error',
     checkSignContent: <NotSigned />,
+  },
+};
+
+export const CheckSignSignInitialized: Story = {
+  args: {
+    isOpen: true,
+    activeStep: 3,
+    stepState: 'loading',
+    checkSignContent: <SignInitialized />,
   },
 };
 

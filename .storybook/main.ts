@@ -9,7 +9,7 @@ const config: StorybookConfig = {
     '@storybook/addon-interactions',
     '@storybook/addon-a11y',
     '@chakra-ui/storybook-addon',
-    'storybook-addon-react-router-v6',
+    'storybook-addon-remix-react-router',
     'storybook-react-i18next',
   ],
   refs: {

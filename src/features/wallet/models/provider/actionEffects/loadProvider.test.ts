@@ -19,8 +19,8 @@ import {
 } from './loadProvider';
 
 const mockWalletInitApi: IWalletProviderApi = {
-  detectWallets: jest.fn(),
-  loadProvider: jest.fn(),
+  detectWallets: vi.fn(),
+  loadProvider: vi.fn(),
 };
 
 describe.skip('Feature: Wallet', () => {

@@ -1,11 +1,11 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Feature: Wallet Component: ConnectionModal/Steps/CheckSign Scenario: NotSigned should be visible and show info 1`] = `[Function]`;
+exports[`Feature: Wallet > Component: ConnectionModal/Steps/CheckSign > Scenario: NotSigned > should be visible and show info 1`] = `[Function]`;
 
-exports[`Feature: Wallet Component: ConnectionModal/Steps/CheckSign Scenario: SignFailed should be visible and show error 1`] = `[Function]`;
+exports[`Feature: Wallet > Component: ConnectionModal/Steps/CheckSign > Scenario: SignFailed > should be visible and show error 1`] = `[Function]`;
 
-exports[`Feature: Wallet Component: ConnectionModal/Steps/CheckSign Scenario: SignRejected should be visible and show error 1`] = `[Function]`;
+exports[`Feature: Wallet > Component: ConnectionModal/Steps/CheckSign > Scenario: SignRejected > should be visible and show error 1`] = `[Function]`;
 
-exports[`Feature: Wallet Component: ConnectionModal/Steps/CheckSign Scenario: SignRequested should be visible and show information 1`] = `[Function]`;
+exports[`Feature: Wallet > Component: ConnectionModal/Steps/CheckSign > Scenario: SignRequested > should be visible and show information 1`] = `[Function]`;
 
-exports[`Feature: Wallet Component: ConnectionModal/Steps/CheckSign Scenario: SignTimedOut should be visible and show error 1`] = `[Function]`;
+exports[`Feature: Wallet > Component: ConnectionModal/Steps/CheckSign > Scenario: SignTimedOut > should be visible and show error 1`] = `[Function]`;

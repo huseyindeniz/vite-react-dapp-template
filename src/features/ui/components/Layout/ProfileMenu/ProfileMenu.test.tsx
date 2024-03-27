@@ -2,7 +2,7 @@ import { render } from '@testing-library/react';
 
 import { ProfileMenu } from './ProfileMenu';
 
-jest.mock('@/features/wallet/components/Wallet', () => ({
+vi.mock('@/features/wallet/components/Wallet', () => ({
   Wallet: () => <div data-testid="mock-wallet" />,
 }));
 

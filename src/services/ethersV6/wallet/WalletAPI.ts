@@ -221,6 +221,13 @@ export class EthersV6WalletAPI implements IWalletEthersV6ProviderApi {
     }
     this._accessToken = await this._newUUID(address);
     message += this._accessToken;
+
+    /*
+    const domain = window.location.host;
+    const from = address;
+    const siweMessage = `${domain} wants you to sign in with your Ethereum account:\n${from}\n\nI accept the MetaMask Terms of Service: https://community.metamask.io/tos\n\nURI: https://${domain}\nVersion: 1\nChain ID: 1\nNonce: 32891757\nIssued At: 2021-09-30T16:25:24.000Z`;
+    */
+
     return message;
   };
 

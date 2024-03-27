@@ -9,13 +9,13 @@ import { BlockInfo } from '../types/BlockInfo';
 import { HandleStateBlockRequested } from './latestBlock';
 
 const mockWalletNetworkApi: IWalletNetworkApi = {
-  loadNetwork: jest.fn(),
-  getNetwork: jest.fn(),
-  switchNetwork: jest.fn(),
-  listenNetworkChange: jest.fn(),
-  handleNetworkChange: jest.fn(),
-  getLatestBlock: jest.fn(),
-  getBalance: jest.fn(),
+  loadNetwork: vi.fn(),
+  getNetwork: vi.fn(),
+  switchNetwork: vi.fn(),
+  listenNetworkChange: vi.fn(),
+  handleNetworkChange: vi.fn(),
+  getLatestBlock: vi.fn(),
+  getBalance: vi.fn(),
 };
 
 describe('Feature: Wallet', () => {

@@ -3,9 +3,9 @@ import { MemoryRouter } from 'react-router-dom';
 
 import { NotFoundPage } from './NotFound';
 
-jest.mock('../usePageLink', () => {
+vi.mock('../usePageLink', () => {
   return {
-    usePageLink: jest.fn(() => '/'),
+    usePageLink: vi.fn(() => '/'),
   };
 });
 

@@ -15,7 +15,7 @@ describe('Feature: Wallet', () => {
       UnlockFailed,
       AccountLoaded,
     } = composeStories(stories);
-    const onClickSpy = jest.fn();
+    const onClickSpy = vi.fn();
 
     describe('Scenario: CheckAccountIdle, AccountRequested, AccountLoaded', () => {
       it('should be empty', () => {

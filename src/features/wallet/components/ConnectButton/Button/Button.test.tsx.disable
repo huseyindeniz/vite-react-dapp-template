@@ -6,7 +6,7 @@ import * as stories from './Button.stories';
 describe('Feature: Wallet', () => {
   describe('Component: ConnectButton/Button', () => {
     const { Default, Loading } = composeStories(stories);
-    const onClickSpy = jest.fn();
+    const onClickSpy = vi.fn();
     describe('Scenario: NotLoading', () => {
       it('should be visible and clickable', () => {
         // Act

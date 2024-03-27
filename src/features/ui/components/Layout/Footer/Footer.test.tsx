@@ -2,19 +2,19 @@ import { render } from '@testing-library/react';
 
 import { Footer } from './Footer';
 
-jest.mock('../Copyright/Copyright', () => ({
+vi.mock('../Copyright/Copyright', () => ({
   Copyright: () => <div data-testid="mock-copyright" />,
 }));
 
-jest.mock('../SecondaryMenu/SecondaryMenu', () => ({
+vi.mock('../SecondaryMenu/SecondaryMenu', () => ({
   SecondaryMenu: () => <div data-testid="mock-secondary-menu" />,
 }));
 
-jest.mock('../SiteLogo/SiteLogo', () => ({
+vi.mock('../SiteLogo/SiteLogo', () => ({
   SiteLogo: () => <div data-testid="mock-site-logo" />,
 }));
 
-jest.mock('../SocialMenu/SocialMenu', () => ({
+vi.mock('../SocialMenu/SocialMenu', () => ({
   SocialMenu: () => <div data-testid="mock-social-menu" />,
 }));
 

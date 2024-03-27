@@ -35,7 +35,7 @@ describe('PageMeta', () => {
       );
       expect(document.querySelector('meta[property="og:url"]')).toHaveAttribute(
         'content',
-        `localhost${url}`
+        `localhost:3000${url}`
       );
       expect(
         document.querySelector('meta[property="og:type"]')
