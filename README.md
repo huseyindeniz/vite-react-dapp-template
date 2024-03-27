@@ -32,7 +32,7 @@ React dApp Template (Vite) is an easy-to-use foundation for efficiently building
 
 ## Features
 
-- Authentication with Web3 Wallet ([Metamask](https://metamask.io), [Core](https://core.app), [Coinbase](https://www.coinbase.com), more wallets can be added)
+- Authentication with Web3 Wallet ([Metamask](https://metamask.io), [Core](https://core.app), [Coinbase](https://www.coinbase.com), [Rabby](https://www.rabby.io) more wallets can be added)
 - Wallet Domain Name Support ([AVVY Domains](https://avvy.domains) and ENS)
 - Internationalization
 - UI
@@ -43,11 +43,11 @@ React dApp Template (Vite) is an easy-to-use foundation for efficiently building
 
 ### Web3 Packages
 
-- ethers.js (v6 and v5)
+- ethers.js (v6)
 
 ### Testing Infrastucture
 
-- Unit Tests: jest
+- Unit Tests: Vitest
 - Component Unit Tests: React Testing Library + Storybook
 - Integration Tests: React Testing Library + Storybook
 - E2E Tests: Cypress + Synpress + Cucumber (todo)
