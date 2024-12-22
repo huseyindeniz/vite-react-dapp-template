@@ -1,0 +1,29 @@
+name: Publish Release
+on:
+  workflow_dispatch:
+  push:
+    branches: 
+      - main
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+  
+      - name: Get version from package.json
+        id: get_version
+        run: |
+          VERSION=$(jq -r .version < package.json)
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+  
+      - name: Create release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.github_token }}
+        with:
+          tag_name: ${{ env.VERSION }}
+          release_name: Release ${{ env.VERSION }}
+          body: New release for commit ${{ github.sha }}. Release notes on the documentation site
+          draft: true
+          prerelease: true
