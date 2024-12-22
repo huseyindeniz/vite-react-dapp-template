@@ -24,7 +24,7 @@ jobs:
         id: extract-version
         run: |
           VERSION=$(jq -r .version < package.json)
-          echo "version=VERSION" >> "$GITHUB_OUTPUT"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
           
       - name: Build project
         run: |
