@@ -3,8 +3,7 @@ name: Check Version Label
 on:
   pull_request:
     branches: [main]
-    types: [labeled, unlabeled]
-  workflow_call:
+    types: [opened, labeled, unlabeled, synchronize]
   workflow_dispatch:
 
 jobs:

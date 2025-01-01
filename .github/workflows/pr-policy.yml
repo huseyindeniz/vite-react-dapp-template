@@ -12,7 +12,3 @@ jobs:
   check-translations:
     name: Check Translations
     uses: ./.github/workflows/check-translations.yml
-
-  check-label:
-    name: Check Version Label
-    uses: ./.github/workflows/check-version-label.yml
