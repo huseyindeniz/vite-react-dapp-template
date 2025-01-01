@@ -1,7 +1,6 @@
 # React dApp Template (Vite)
 
 ![version](https://img.shields.io/github/package-json/version/huseyindeniz/vite-react-dapp-template)
-![build](https://img.shields.io/github/actions/workflow/status/huseyindeniz/vite-react-dapp-template/CI.yml)
 [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fhuseyindeniz%2Fvite-react-dapp-template&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=page+views&edge_flat=false)](https://hits.seeyoufarm.com)
 
 A Vite React template specifically designed for decentralized application (dApp) frontend development.
@@ -19,6 +18,9 @@ npm run dev
 ```
 
 There is also a CRA version of this template [here](https://github.com/huseyindeniz/cra-template-dapp)
+
+> **⚠️ Important Notice: UI Library Change:**
+> Starting from version 0.7.0, this project uses Mantine as the UI library. All previous versions (v0.6.x and earlier) used Chakra UI. If you're working with older versions, please be aware of the library change in the latest release.
 
 ### Tired of searching for and configuring multiple React packages?
 
