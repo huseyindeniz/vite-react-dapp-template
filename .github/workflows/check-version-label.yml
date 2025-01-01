@@ -17,8 +17,12 @@ jobs:
           LABELS=$(echo "${{ toJson(github.event.pull_request.labels.*.name) }}")
           echo "Labels: $LABELS"
 
+          # Parse VALID_LABELS to ensure it's treated as JSON
+          VALID_LABELS_JSON=$(echo "$VALID_LABELS" | jq '.')
+          echo "Valid labels: $VALID_LABELS_JSON"
+
           # Filter for valid labels
-          VERSION_LABELS=$(echo "$LABELS" | jq --argjson valid_labels "$VALID_LABELS" -r '.[] | select(. as $label | $valid_labels | index($label))')
+          VERSION_LABELS=$(echo "$LABELS" | jq --argjson valid_labels "$VALID_LABELS_JSON" -r '.[] | select(. | IN($valid_labels[]))')
           echo "Version labels: $VERSION_LABELS"
 
           # Count valid labels
