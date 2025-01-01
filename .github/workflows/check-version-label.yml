@@ -26,8 +26,11 @@ jobs:
             exit 1
           fi
 
+          # Convert LABELS into a proper JSON array format for jq processing
+          LABELS_JSON=$(echo "$LABELS" | jq -c .)
+
           # Filter for valid labels using jq
-          VERSION_LABELS=$(echo "$LABELS" | jq -r --argjson valid_labels "$VALID_LABELS_JSON" \
+          VERSION_LABELS=$(echo "$LABELS_JSON" | jq -r --argjson valid_labels "$VALID_LABELS_JSON" \
             '[.[] | select($valid_labels | index(.))] | join(",")')
 
           # Count valid labels
