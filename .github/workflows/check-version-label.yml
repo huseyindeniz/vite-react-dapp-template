@@ -11,20 +11,20 @@ jobs:
   check-label:
     runs-on: ubuntu-latest
     steps:
-      - name: Validate Version Label
+      - name: Extract and Validate Version Label
         run: |
           # Extract labels from the pull request
           LABELS="${{ toJson(github.event.pull_request.labels.*.name) }}"
 
-          # Print the labels for debugging
+          # Print labels for debugging
           echo "PR Labels: $LABELS"
           echo "Valid labels: $VALID_LABELS"
 
-          # Convert the PR labels into a simple string, no quotes, to make comparison easier
-          LABELS_ARRAY=$(echo "$LABELS" | jq -r '. | join(",")')
+          # Convert the VALID_LABELS into an array
+          VALID_LABELS_ARRAY=($(echo "$VALID_LABELS" | tr ',' '\n'))
 
-          # Split the labels and match against valid labels
-          MATCHED_LABELS=$(echo "$LABELS_ARRAY" | tr ',' '\n' | grep -E "\b($(echo $VALID_LABELS | tr ',' '|'))\b")
+          # Check for valid labels in the PR
+          MATCHED_LABELS=$(echo "$LABELS" | jq -r '.[] | select(. as $label | $valid_labels | index($label))' --argjson valid_labels "$(echo ${VALID_LABELS_ARRAY[@]} | jq -R . | jq -s .)")
 
           # Count the number of matched valid labels
           COUNT=$(echo "$MATCHED_LABELS" | wc -l)
