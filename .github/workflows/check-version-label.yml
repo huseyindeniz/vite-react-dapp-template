@@ -1,9 +1,6 @@
 name: Check Version Label
 
 on:
-  pull_request:
-    branches: [main]
-    types: [labeled, unlabeled]
   workflow_call:
   workflow_dispatch:
 
