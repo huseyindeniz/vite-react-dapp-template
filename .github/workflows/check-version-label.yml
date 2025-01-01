@@ -13,18 +13,21 @@ jobs:
     steps:
       - name: Extract and Validate Version Label
         run: |
-          # Extract labels from the pull request
+          # Extract labels from the pull request (PR)
           LABELS="${{ toJson(github.event.pull_request.labels.*.name) }}"
 
-          # Print labels for debugging
+          # Print PR and valid labels for debugging
           echo "PR Labels: $LABELS"
           echo "Valid labels: $VALID_LABELS"
 
-          # Convert the VALID_LABELS into an array
-          VALID_LABELS_ARRAY=($(echo "$VALID_LABELS" | tr ',' '\n'))
+          # Convert VALID_LABELS from comma-separated string to JSON array
+          VALID_LABELS_JSON=$(echo "$VALID_LABELS" | tr ',' '\n' | jq -R . | jq -s .)
 
-          # Check for valid labels in the PR
-          MATCHED_LABELS=$(echo "$LABELS" | jq -r '.[] | select(. as $label | $valid_labels | index($label))' --argjson valid_labels "$(echo ${VALID_LABELS_ARRAY[@]} | jq -R . | jq -s .)")
+          # Ensure the PR labels are in the correct format for comparison
+          PR_LABELS=$(echo "$LABELS" | jq -r '. | join(" ")')
+
+          # Compare PR labels against valid labels
+          MATCHED_LABELS=$(echo "$PR_LABELS" | jq -r 'split(" ") | map(select(. as $label | $valid_labels | index($label)))' --argjson valid_labels "$VALID_LABELS_JSON")
 
           # Count the number of matched valid labels
           COUNT=$(echo "$MATCHED_LABELS" | wc -l)
