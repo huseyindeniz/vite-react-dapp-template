@@ -1,3 +1,0 @@
-// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
-
-exports[`Feature: UI > Component: Layout/ThemeSwitcher > Scenario: Default > renders a ThemeSwitch button 1`] = `[Function]`;

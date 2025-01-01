@@ -1,6 +1,6 @@
 {
   "contextSeparator": "_",
-  "createOldCatalogs": true,
+  "createOldCatalogs": false,
   "defaultNamespace": "translation",
   "defaultValue": "",
   "indentation": 2,

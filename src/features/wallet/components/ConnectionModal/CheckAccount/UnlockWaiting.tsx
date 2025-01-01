@@ -1,16 +1,20 @@
+import { Alert, Container, Text } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
-
-import { AlertMessage } from '@/features/ui/components/AlertMessage/AlertMessage';
+import { IoIosWarning } from 'react-icons/io';
 
 export const UnlockWaiting = () => {
   const { t } = useTranslation('FeatureWallet');
   return (
-    <AlertMessage status="warning" title={t('Waiting Unlock')}>
-      {t("You haven't unlocked your wallet yet.")}
-      <br />
-      {t(
-        'Please close this dialog, open your Web3 wallet, unlock it, and click connect button again.'
-      )}
-    </AlertMessage>
+    <Container>
+      <Alert icon={<IoIosWarning />} title={t('Waiting Unlock')} color="yellow">
+        <Text size="sm">
+          {t("You haven't unlocked your wallet yet.")}
+          <br />
+          {t(
+            'Please close this dialog, open your Web3 wallet, unlock it, and click connect button again.'
+          )}
+        </Text>
+      </Alert>
+    </Container>
   );
 };

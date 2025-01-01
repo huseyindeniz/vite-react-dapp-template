@@ -42,8 +42,8 @@ export const NetworkDetectionFailed: Story = {
 // WRONG_NETWORK
 export const WrongNetwork: Story = {
   args: {
-    supportedNetworks: supportedNetworks,
-    defaultNetwork: defaultNetwork,
+    supportedNetworks,
+    defaultNetwork,
     onSwitchNetwork: () => null,
     errorMessage: null,
     stepState: NetworkLoadState.WRONG_NETWORK,
@@ -60,8 +60,8 @@ export const NetworkSwitchRequested: Story = {
 // NETWORK_SWITCH_REJECTED
 export const NetworkSwitchRejected: Story = {
   args: {
-    supportedNetworks: supportedNetworks,
-    defaultNetwork: defaultNetwork,
+    supportedNetworks,
+    defaultNetwork,
     onSwitchNetwork: () => null,
     errorMessage: null,
     stepState: NetworkLoadState.NETWORK_SWITCH_REJECTED,

@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 
-import { Heading, Divider, Text, HStack, Flex } from '@chakra-ui/react';
+import { Title, Divider, Text, Group, Container } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
-
 
 import { BlockInfo } from '@/features/wallet/components/BlockInfo/BlockInfo';
 import { NetworkLogo } from '@/features/wallet/components/NetworkLogo/NetworkLogo';
@@ -22,31 +21,28 @@ export const Header: React.FC = () => {
       actions.latestBlock();
     }, 15000);
     return () => clearInterval(interval);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentNetwork]);
 
   return (
     <>
       {account ? (
-        <>
-          <Heading size="xs" textAlign="center">
-            {t('User Dashboard')}
-          </Heading>
+        <Container>
+          <Title size="xs">{t('User Dashboard')}</Title>
           <Divider />
-          <Flex alignItems="center" justifyContent="space-between">
-            <HStack mr={1}>
+          <Group>
+            <Group>
               {currentNetwork ? (
                 <NetworkLogo
                   networkId={currentNetwork?.chainId}
                   networkName={currentNetwork?.chainName}
                 />
               ) : null}
-              <Text fontSize="xs">{currentNetwork?.chainName}</Text>
-            </HStack>
+              <Text fs="xs">{currentNetwork?.chainName}</Text>
+            </Group>
             <BlockInfo />
-          </Flex>
+          </Group>
           <Divider />
-        </>
+        </Container>
       ) : null}
     </>
   );

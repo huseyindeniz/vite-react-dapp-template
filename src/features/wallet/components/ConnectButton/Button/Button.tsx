@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Button as ChakraButton } from '@chakra-ui/react';
+import { Button as MantineButton } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import { FaWallet } from 'react-icons/fa';
 
@@ -12,16 +12,17 @@ export interface ButtonProps {
 export const Button: React.FC<ButtonProps> = ({ onClick, isLoading }) => {
   const { t } = useTranslation('FeatureWallet');
   return (
-    <ChakraButton
+    <MantineButton
       ml={2}
-      variant="solid"
-      isLoading={isLoading}
-      colorScheme="yellow"
-      leftIcon={<FaWallet />}
+      variant="filled"
+      loading={isLoading}
+      color="yellow"
+      leftSection={<FaWallet />}
       onClick={() => onClick()}
       role="button"
+      autoContrast
     >
       {t('Connect')}
-    </ChakraButton>
+    </MantineButton>
   );
 };

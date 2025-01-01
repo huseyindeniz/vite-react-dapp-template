@@ -1,0 +1,3 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Feature: UI > Component: Layout/PageLoading > Scenario: Error > should render correctly 1`] = `[Function]`;

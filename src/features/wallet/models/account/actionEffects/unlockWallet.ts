@@ -71,16 +71,15 @@ export function* HandleStateUnlockRequested(
       slicesActions.setAccountLoadState(AccountLoadState.ACCOUNT_LOADED)
     );
     return true;
-  } else {
-    if (isRejected) {
-      yield call(HandleStateUnlockRejected);
-    } else if (isWaiting) {
-      yield call(HandleStateUnlockWaiting);
-    } else {
-      yield call(HandleStateUnlockFailed);
-    }
-    return false;
   }
+  if (isRejected) {
+    yield call(HandleStateUnlockRejected);
+  } else if (isWaiting) {
+    yield call(HandleStateUnlockWaiting);
+  } else {
+    yield call(HandleStateUnlockFailed);
+  }
+  return false;
 }
 
 export function* HandleStateUnlockRejected() {

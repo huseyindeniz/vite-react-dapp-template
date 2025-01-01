@@ -1,9 +1,8 @@
 import React from 'react';
 
-import { Box, VStack } from '@chakra-ui/react';
+import { Alert, Stack, Text } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
-
-import { AlertMessage } from '@/features/ui/components/AlertMessage/AlertMessage';
+import { IoIosWarning } from 'react-icons/io';
 
 import { SwitchNetworkMenu } from './SwitchNetworkMenu';
 
@@ -24,19 +23,19 @@ export const NetworkSwitchRejected: React.FC<NetworkSwitchRejectedProps> = ({
 }) => {
   const { t } = useTranslation('FeatureWallet');
   return (
-    <AlertMessage status="warning" title={t('Switch Rejected')}>
-      <VStack>
-        <Box>
+    <Alert icon={<IoIosWarning />} title={t('Switch Rejected')} color="yellow">
+      <Stack>
+        <Text size="sm">
           {t('You rejected the network switch request.')}
           <br />
           {t('Please try again if you want to continue.')}
-        </Box>
+        </Text>
         <SwitchNetworkMenu
           defaultNetwork={defaultNetwork}
           supportedNetworks={supportedNetworks}
           onSwitchNetwork={onSwitchNetwork}
         />
-      </VStack>
-    </AlertMessage>
+      </Stack>
+    </Alert>
   );
 };

@@ -1,22 +1,21 @@
 import React from 'react';
 
-import { VStack, Progress, Box } from '@chakra-ui/react';
+import { Alert, Stack, Progress, Text } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
-
-import { AlertMessage } from '@/features/ui/components/AlertMessage/AlertMessage';
+import { IoIosWarning } from 'react-icons/io';
 
 export const NetworkSwitchRequested: React.FC = () => {
   const { t } = useTranslation('FeatureWallet');
   return (
-    <AlertMessage status="info" title={t('Network Switch Requested')}>
-      <VStack>
-        <Box>
+    <Alert icon={<IoIosWarning />} title={t('Network Switch Requested')}>
+      <Stack>
+        <Text size="sm">
           {t('Waiting for the network switch request to be accepted.')}
           <br />
           {t('Please check your Web3 wallet.')}
-        </Box>
-        <Progress w="full" size="xs" isIndeterminate colorScheme="blue" />
-      </VStack>
-    </AlertMessage>
+        </Text>
+        <Progress w="full" size="xs" animated color="blue" value={100} />
+      </Stack>
+    </Alert>
   );
 };

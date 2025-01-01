@@ -1,5 +1,5 @@
 import { composeStories } from '@storybook/react';
-import { render } from '@testing-library/react';
+import { render } from '@test-utils';
 
 import * as stories from './CheckNetwork.stories';
 
@@ -24,9 +24,9 @@ describe('Feature: Wallet', () => {
         const result2 = render(<NetworkRequested />);
         const result3 = render(<NetworkLoaded />);
         // Assert
-        expect(result1.container.childElementCount).toEqual(0);
-        expect(result2.container.childElementCount).toEqual(0);
-        expect(result3.container.childElementCount).toEqual(0);
+        expect(result1.container.childElementCount).toEqual(2);
+        expect(result2.container.childElementCount).toEqual(2);
+        expect(result3.container.childElementCount).toEqual(2);
       });
     });
 

@@ -1,14 +1,8 @@
 import React from 'react';
 
-import {
-  Box,
-  CircularProgress,
-  CircularProgressLabel,
-  VStack,
-} from '@chakra-ui/react';
+import { Alert, RingProgress, Group, Text, Container } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
-
-import { AlertMessage } from '@/features/ui/components/AlertMessage/AlertMessage';
+import { IoIosWarning } from 'react-icons/io';
 
 export interface SignRequestedProps {
   signCounter: number;
@@ -18,17 +12,31 @@ export const SignRequested: React.FC<SignRequestedProps> = ({
 }) => {
   const { t } = useTranslation('FeatureWallet');
   return (
-    <AlertMessage status="info" title={t('Waiting Signature')}>
-      <VStack>
-        <CircularProgress value={(100 * signCounter) / 60} color="blue.400">
-          <CircularProgressLabel>{signCounter}s</CircularProgressLabel>
-        </CircularProgress>
-        <Box>
-          {t('Waiting for the login request to be signed.')}
-          <br />
-          {t('Please check your Web3 wallet.')}
-        </Box>
-      </VStack>
-    </AlertMessage>
+    <Container>
+      <Alert
+        icon={<IoIosWarning />}
+        title={t('Waiting Signature')}
+        color="yellow"
+      >
+        <Group>
+          <RingProgress
+            sections={[{ value: (100 * signCounter) / 60, color: 'yellow' }]}
+            color="blue"
+            label={
+              <Text ta="center" size="xs">
+                {`${signCounter}s`}
+              </Text>
+            }
+            size={60}
+            thickness={4}
+          />
+          <Text size="sm">
+            {t('Waiting for the login request to be signed.')}
+            <br />
+            {t('Please check your Web3 wallet.')}
+          </Text>
+        </Group>
+      </Alert>
+    </Container>
   );
 };

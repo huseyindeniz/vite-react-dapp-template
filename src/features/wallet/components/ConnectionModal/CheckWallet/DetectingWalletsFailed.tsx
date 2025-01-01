@@ -1,12 +1,14 @@
+import { Alert, Container, Text } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
-
-import { AlertMessage } from '@/features/ui/components/AlertMessage/AlertMessage';
+import { IoIosWarning } from 'react-icons/io';
 
 export const DetectingWalletsFailed = () => {
   const { t } = useTranslation('FeatureWallet');
   return (
-    <AlertMessage status="warning" title={t('Detection Failed')}>
-      {t('Web3 wallet detection failed.')}
-    </AlertMessage>
+    <Container>
+      <Alert icon={<IoIosWarning />} title={t('Detection Failed')} color="red">
+        <Text size="sm">{t('Web3 wallet detection failed.')}</Text>
+      </Alert>
+    </Container>
   );
 };

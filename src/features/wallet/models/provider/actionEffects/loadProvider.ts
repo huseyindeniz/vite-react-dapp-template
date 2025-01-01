@@ -59,10 +59,10 @@ export function* HandleStateDetectingWallets(
       walletProviderApi.detectWallets
     );
     const detectedProviderCount = Object.keys(detectedWallets).length;
-    if (detectedProviderCount == 0) {
+    if (detectedProviderCount === 0) {
       yield call(HandleStateProviderNotSupported);
     }
-    if (detectedProviderCount == 1) {
+    if (detectedProviderCount === 1) {
       let singleWallet;
       switch (Object.keys(detectedWallets)[0]) {
         case SupportedWallets.COINBASE:
@@ -105,6 +105,7 @@ export function* HandleStateDetectingWallets(
             installedWallets.push(Rabby);
             break;
         }
+        return null;
       });
       yield put(sliceActions.setInstalledWallets(installedWallets));
       yield put(
@@ -160,14 +161,13 @@ export function* HandleStateProviderRequested(
   if (isProviderLoaded) {
     yield put(sliceActions.setProviderLoadState(ProviderLoadState.INITIALIZED));
     return true;
-  } else {
-    if (isError) {
-      yield call(HandleStateProviderFailed, 'Wallet detection failed');
-    } else {
-      yield call(HandleStateProviderNotSupported);
-    }
-    return false;
   }
+  if (isError) {
+    yield call(HandleStateProviderFailed, 'Wallet detection failed');
+  } else {
+    yield call(HandleStateProviderNotSupported);
+  }
+  return false;
 }
 
 export function* HandleStateProviderFailed(error: string) {

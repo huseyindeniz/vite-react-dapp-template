@@ -1,5 +1,5 @@
 import { composeStories } from '@storybook/react';
-import { render } from '@testing-library/react';
+import { render } from '@test-utils';
 
 import * as stories from './WalletProtectionWarning.stories';
 

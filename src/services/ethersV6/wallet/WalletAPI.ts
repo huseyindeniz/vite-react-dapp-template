@@ -40,7 +40,9 @@ export class EthersV6WalletAPI implements IWalletEthersV6ProviderApi {
   private _networkChangeListener: EventChannel<string> | null = null;
   private _accessToken: string | null = null;
 
-  private constructor() {}
+  private constructor() {
+    log.debug('ethers constructor private');
+  }
 
   public static getInstance(): IWalletEthersV6ProviderApi {
     if (this._instance === null) {
@@ -61,6 +63,7 @@ export class EthersV6WalletAPI implements IWalletEthersV6ProviderApi {
           if (detectedWallet !== null) {
             this._detectedWallets[detectedWallet] = new BrowserProvider(p);
           }
+          return null;
         });
       } else {
         log.debug('single provider dedected');
@@ -76,6 +79,7 @@ export class EthersV6WalletAPI implements IWalletEthersV6ProviderApi {
     return this._detectedWallets;
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private _identifyWallet = (p: any) => {
     if (p.coreProvider?.isAvalanche) {
       return SupportedWallets.CORE;
@@ -124,10 +128,10 @@ export class EthersV6WalletAPI implements IWalletEthersV6ProviderApi {
       return false;
     }
     await this._provider?.ready;
-    log.debug('0x' + networkId.toString(16));
+    log.debug(`0x${networkId.toString(16)}`);
     try {
       await this._provider?.send('wallet_switchEthereumChain', [
-        { chainId: '0x' + networkId.toString(16) },
+        { chainId: `0x${networkId.toString(16)}` },
       ]);
       return true;
     } catch {
@@ -136,7 +140,7 @@ export class EthersV6WalletAPI implements IWalletEthersV6ProviderApi {
       );
       await this._provider?.send('wallet_addEthereumChain', [
         {
-          chainId: '0x' + networkId.toString(16),
+          chainId: `0x${networkId.toString(16)}`,
           rpcUrls: networkDetails?.rpcUrls,
           chainName: networkDetails?.chainName,
           nativeCurrency: networkDetails?.nativeCurrency,
@@ -152,12 +156,11 @@ export class EthersV6WalletAPI implements IWalletEthersV6ProviderApi {
       // check if chainId is in the supported list
       log.debug('isSupported for:', chainId);
       return SUPPORTED_NETWORKS.some(chain => chain.chainId === chainId);
-    } else {
-      log.debug('isNetworkSupported', this._network);
-      return SUPPORTED_NETWORKS.some(
-        chain => chain.chainId === Number(this._network?.chainId)
-      );
     }
+    log.debug('isNetworkSupported', this._network);
+    return SUPPORTED_NETWORKS.some(
+      chain => chain.chainId === Number(this._network?.chainId)
+    );
   };
 
   public isDomainNameSupported = async (chainId: number | null) => {
@@ -167,16 +170,14 @@ export class EthersV6WalletAPI implements IWalletEthersV6ProviderApi {
       return SUPPORTED_NETWORKS.some(
         chain => chain.chainId === chainId && chain.isDomainNameSupported
       );
-    } else {
-      const network = SUPPORTED_NETWORKS.find(
-        chain => chain.chainId === Number(this._network?.chainId)
-      );
-      if (network) {
-        return network.isDomainNameSupported;
-      } else {
-        return false;
-      }
     }
+    const network = SUPPORTED_NETWORKS.find(
+      chain => chain.chainId === Number(this._network?.chainId)
+    );
+    if (network) {
+      return network.isDomainNameSupported;
+    }
+    return false;
   };
 
   public isUnlocked = async () => {
@@ -220,7 +221,7 @@ export class EthersV6WalletAPI implements IWalletEthersV6ProviderApi {
       throw new Error('address not dedected');
     }
     this._accessToken = await this._newUUID(address);
-    message += this._accessToken;
+    const messageWithToken = message + this._accessToken;
 
     /*
     const domain = window.location.host;
@@ -228,7 +229,7 @@ export class EthersV6WalletAPI implements IWalletEthersV6ProviderApi {
     const siweMessage = `${domain} wants you to sign in with your Ethereum account:\n${from}\n\nI accept the MetaMask Terms of Service: https://community.metamask.io/tos\n\nURI: https://${domain}\nVersion: 1\nChain ID: 1\nNonce: 32891757\nIssued At: 2021-09-30T16:25:24.000Z`;
     */
 
-    return message;
+    return messageWithToken;
   };
 
   public sign = async (message: string) => {
@@ -271,10 +272,10 @@ export class EthersV6WalletAPI implements IWalletEthersV6ProviderApi {
       result = {
         address: this._signerAddress,
         accessToken: this._accessToken,
-        shortAddress:
-          this._signerAddress.slice(0, 6) +
-          '...' +
-          this._signerAddress.slice(-4),
+        shortAddress: `${this._signerAddress.slice(
+          0,
+          6
+        )}...${this._signerAddress.slice(-4)}`,
         domainName: null,
         avatarURL: null,
       };
@@ -315,7 +316,6 @@ export class EthersV6WalletAPI implements IWalletEthersV6ProviderApi {
     this._isSigned = false;
     this._signerAddress = null;
     this._network = null;
-    return;
   };
 
   public listenAccountChange = (): EventChannel<string[]> | undefined => {
@@ -386,7 +386,7 @@ export class EthersV6WalletAPI implements IWalletEthersV6ProviderApi {
   // if you have a backend application
   // you could get this value from your backend
   private _newUUID = async (address: string) => {
-    return address.replace(/[xy]/g, function (c) {
+    return address.replace(/[xy]/g, c => {
       const r = (Math.random() * 16) | 0,
         v = c === 'x' ? r : (r & 0x3) | 0x8;
       return v.toString(16);
@@ -403,8 +403,7 @@ export class EthersV6WalletAPI implements IWalletEthersV6ProviderApi {
     if (signature && address) {
       const signerAddress: string = verifyMessage(message, signature);
       return signerAddress === address;
-    } else {
-      return false;
     }
+    return false;
   };
 }

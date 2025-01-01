@@ -1,5 +1,5 @@
 import { composeStories } from '@storybook/react';
-import { render } from '@testing-library/react';
+import { render } from '@test-utils';
 
 import * as stories from './CheckSign.stories';
 
@@ -22,8 +22,8 @@ describe('Feature: Wallet', () => {
         const result1 = render(<CheckSignIdle />);
         const result2 = render(<Signed />);
         // Assert
-        expect(result1.container.childElementCount).toEqual(0);
-        expect(result2.container.childElementCount).toEqual(1);
+        expect(result1.container.childElementCount).toEqual(2);
+        expect(result2.container.childElementCount).toEqual(3);
       });
     });
 

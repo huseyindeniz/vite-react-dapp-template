@@ -9,7 +9,7 @@ export default defineConfig({
     outDir: 'build',
     sourcemap: false,
     modulePreload: {
-      resolveDependencies: (url, deps, context) => {
+      resolveDependencies: (_url, _deps, _context) => {
         return [];
       },
     },
@@ -21,7 +21,7 @@ export default defineConfig({
           router: ['react-router-dom'],
           rtk: ['@reduxjs/toolkit'],
           redux: ['react-redux'],
-          chakra: ['@chakra-ui/react'],
+          mantine: ['@mantine/core', '@mantine/hooks'],
         },
       },
     },

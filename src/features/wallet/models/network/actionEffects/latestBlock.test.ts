@@ -25,7 +25,7 @@ describe('Feature: Wallet', () => {
       const signerAccountBalance = '1000';
       const payload: BlockInfo = {
         blockNumber: latestBlockNumber.toString(),
-        signerAccountBalance: signerAccountBalance,
+        signerAccountBalance,
       };
       return expectSaga(HandleStateBlockRequested, mockWalletNetworkApi)
         .provide([
@@ -39,7 +39,7 @@ describe('Feature: Wallet', () => {
       const signerAccountBalance = '1000';
       const payload: BlockInfo = {
         blockNumber: '',
-        signerAccountBalance: signerAccountBalance,
+        signerAccountBalance,
       };
       return expectSaga(HandleStateBlockRequested, mockWalletNetworkApi)
         .provide([

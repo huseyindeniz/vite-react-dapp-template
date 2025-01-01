@@ -1,19 +1,19 @@
 import {
-  Heading,
+  Title,
   Divider,
   Box,
   Container,
   Stack,
   Text,
   Image,
-  VStack,
   Center,
-  Link,
-} from '@chakra-ui/react';
+  Anchor,
+  Group,
+} from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 
-import { usePageLink } from '../usePageLink';
+import { usePageLink } from '@/features/router/usePageLink';
 
 import imageBackToHomePage from './assets/images/backToTheHomepage.webp';
 import imageDelorean from './assets/images/delorean.webp';
@@ -24,49 +24,58 @@ export const NotFoundPage: React.FC = () => {
 
   return (
     <Box>
-      <Container maxW="7xl" py={2} as={Stack} spacing={12}>
-        <Stack spacing={0} align="center">
-          <Heading>{t('404 Page Not Found')}</Heading>
-          <Divider />
-        </Stack>
+      <Container maw="7xl" py={2} component={Stack}>
+        <Title ta="center">{t('404 Page Not Found')}</Title>
+        <Divider />
         <Center>
-          <VStack bgColor="blackAlpha.800">
+          <Stack
+            bg="rgba(0, 0, 0, 0.8)"
+            p={10}
+            m={5}
+            style={{ width: '70%' }}
+            align="center"
+          >
             <Image
-              width="50%"
               src={imageBackToHomePage}
               alt="not found"
-              m={2}
+              style={{ width: '50%' }}
             />
-            <Image width="50%" src={imageDelorean} alt="not found" m={2} />
-          </VStack>
+            <Image
+              src={imageDelorean}
+              alt="not found"
+              style={{ width: '50%' }}
+            />
+          </Stack>
         </Center>
         <Center>
-          <VStack>
+          <Stack ta="center">
             <Text>{t('Back To Home?')}</Text>
-            <Box>
-              <Link
-                as={RouterLink}
+            <Group gap={4} justify="center">
+              <Anchor
+                component={RouterLink}
                 to={pageLink('/')}
-                border="1px"
-                borderColor="gray.200"
-                borderRadius="md"
-                p={1}
-                m={1}
+                p={2}
+                m={2}
+                style={{
+                  border: '1px solid var(--mantine-color-blue-6)',
+                  borderRadius: '4px',
+                }}
               >
                 {t('Yes')}
-              </Link>
-              <Link
-                border="1px"
-                borderColor="gray.200"
-                borderRadius="md"
-                p={1}
-                m={1}
+              </Anchor>
+              <Anchor
+                p={2}
+                m={2}
                 href="https://www.youtube.com/watch?v=M230r6CLZUA"
+                style={{
+                  border: '1px solid var(--mantine-color-blue-6)',
+                  borderRadius: '4px',
+                }}
               >
                 {t('No')}
-              </Link>
-            </Box>
-          </VStack>
+              </Anchor>
+            </Group>
+          </Stack>
         </Center>
       </Container>
     </Box>

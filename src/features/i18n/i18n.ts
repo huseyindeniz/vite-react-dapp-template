@@ -17,16 +17,15 @@ const detectionOptions = {
     );
     if (fullLang === undefined) {
       return lng;
-    } else {
-      return fullLang.code;
     }
+    return fullLang.code;
   },
 };
 
 i18n.use(LanguageDetector).use(initReactI18next).init({
   //debug: process.env.NODE_ENV === "development",
   debug: i18nConfig.debug,
-  resources: resources,
+  resources,
   fallbackLng: i18nConfig.fallbackLang.code,
   detection: detectionOptions,
   keySeparator: false,

@@ -1,9 +1,8 @@
 import React from 'react';
 
-import { VStack, Box } from '@chakra-ui/react';
+import { Alert, Container, Text } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
-
-import { AlertMessage } from '@/features/ui/components/AlertMessage/AlertMessage';
+import { IoIosWarning } from 'react-icons/io';
 
 import { UnlockButton } from './UnlockButton';
 
@@ -13,11 +12,17 @@ interface LockedProps {
 export const Locked: React.FC<LockedProps> = ({ onUnlock }) => {
   const { t } = useTranslation('FeatureWallet');
   return (
-    <AlertMessage status="warning" title={t('Wallet Is Locked')}>
-      <VStack>
-        <Box>{t('Please unlock your wallet if you want to continue.')}</Box>
+    <Container>
+      <Alert
+        icon={<IoIosWarning />}
+        title={t('Wallet Is Locked')}
+        color="yellow"
+      >
+        <Text size="sm">
+          {t('Please unlock your wallet if you want to continue.')}
+        </Text>
         <UnlockButton onUnlock={onUnlock} />
-      </VStack>
-    </AlertMessage>
+      </Alert>
+    </Container>
   );
 };

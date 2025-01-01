@@ -44,10 +44,9 @@ export function* HandleStateAccountRequested(
       slicesActions.setAccountLoadState(AccountLoadState.ACCOUNT_LOADED)
     );
     return true;
-  } else {
-    yield call(HandleStateLocked);
-    return false;
   }
+  yield call(HandleStateLocked);
+  return false;
 }
 
 export function* HandleStateLocked() {

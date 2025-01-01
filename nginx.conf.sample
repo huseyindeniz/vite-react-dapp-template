@@ -1,0 +1,39 @@
+worker_processes 1;
+
+events {
+    worker_connections 1024;
+}
+
+http {
+    
+    include mime.types; # Include MIME types for static assets
+    default_type application/octet-stream;
+
+    server {
+        listen 80;
+        server_name _;
+
+        root /usr/share/nginx/html;
+        index index.html;
+
+        # Handle SPA routing
+        location / {
+            try_files $uri /index.html;
+        }
+
+        # Serve static files with caching
+        location ~* \.(?:ico|css|js|json|jpg|jpeg|png|gif|woff|woff2|ttf|otf|eot|svg|mp4|webm|wav|mp3|m4a|aac|oga)$ {
+            expires 6M; # Cache static assets for 6 months, vite will generate new names in each build
+            access_log off;
+            add_header Cache-Control "public";
+        }
+
+        # Gzip compression for text-based files
+        gzip on;
+        gzip_types text/plain text/css application/json application/javascript application/x-javascript text/xml application/xml application/xml+rss text/javascript;
+        gzip_min_length 256;
+
+        # Error pages
+        error_page 404 /index.html;
+    }
+}

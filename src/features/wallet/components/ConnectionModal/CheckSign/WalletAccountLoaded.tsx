@@ -1,20 +1,19 @@
-import { Box, Progress, VStack } from '@chakra-ui/react';
+import { Alert, Box, Progress, Stack } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
-
-import { AlertMessage } from '@/features/ui/components/AlertMessage/AlertMessage';
+import { IoIosWarning } from 'react-icons/io';
 
 export const WalletAccountLoaded = () => {
   const { t } = useTranslation('FeatureWallet');
   return (
-    <AlertMessage status="success" title={t('Load Account')}>
-      <VStack>
+    <Alert icon={<IoIosWarning />} title={t('Load Account')}>
+      <Stack>
         <Box>
           {t('Your wallet account connected successfuly.')}
           <br />
           {t('Redirecting to app...')}
         </Box>
-        <Progress w="full" size="xs" colorScheme="green" isIndeterminate />
-      </VStack>
-    </AlertMessage>
+        <Progress w="full" size="xs" color="green" animated value={100} />
+      </Stack>
+    </Alert>
   );
 };

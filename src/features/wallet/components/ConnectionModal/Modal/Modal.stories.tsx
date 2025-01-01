@@ -1,5 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { composeStories } from '@storybook/react';
+import { composeStories, Meta, StoryObj } from '@storybook/react';
 
 import * as checkAccountStories from '../CheckAccount/CheckAccount.stories';
 import * as checkNetworkStories from '../CheckNetwork/CheckNetwork.stories';

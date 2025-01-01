@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { render } from '@test-utils';
 import { MemoryRouter } from 'react-router-dom';
 
 import { NotFoundPage } from './NotFound';
