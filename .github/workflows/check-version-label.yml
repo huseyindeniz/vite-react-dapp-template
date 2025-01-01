@@ -20,10 +20,10 @@ jobs:
           echo "PR Labels: $LABELS"
           echo "Valid labels: $VALID_LABELS"
 
-          # Ensure LABELS is properly formatted as a CSV string (remove quotes)
-          LABELS_ARRAY=$(echo "$LABELS" | jq -r '. | @csv' | tr -d '"')
+          # Convert the PR labels into a simple string, no quotes, to make comparison easier
+          LABELS_ARRAY=$(echo "$LABELS" | jq -r '. | join(",")')
 
-          # Count how many valid labels are present
+          # Split the labels and match against valid labels
           MATCHED_LABELS=$(echo "$LABELS_ARRAY" | tr ',' '\n' | grep -E "\b($(echo $VALID_LABELS | tr ',' '|'))\b")
 
           # Count the number of matched valid labels
