@@ -1,11 +1,10 @@
 import React from 'react';
 
-import { Box, VStack } from '@chakra-ui/react';
+import { Alert, Box, Stack } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
+import { IoIosWarning } from 'react-icons/io';
 
-import { AlertMessage } from '@/features/ui/components/AlertMessage/AlertMessage';
-
-import { SignButton } from './SignButtonProps';
+import { SignButton } from './SignButton';
 import { WhySignNeeded } from './WhySignNeeded';
 
 export interface NotSignedProps {
@@ -18,8 +17,8 @@ export const NotSigned: React.FC<NotSignedProps> = ({
 }) => {
   const { t } = useTranslation('FeatureWallet');
   return (
-    <AlertMessage status="warning" title={t('Sign Required')}>
-      <VStack>
+    <Alert icon={<IoIosWarning />} title={t('Sign Required')}>
+      <Stack>
         <Box>
           {t(
             'In order to use this app, you need to sign the login request in your wallet.'
@@ -31,7 +30,7 @@ export const NotSigned: React.FC<NotSignedProps> = ({
         <Box>
           <WhySignNeeded />
         </Box>
-      </VStack>
-    </AlertMessage>
+      </Stack>
+    </Alert>
   );
 };

@@ -1,20 +1,18 @@
 import {
-  Divider,
   Image,
   Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalHeader,
-  ModalOverlay,
   Radio,
   RadioGroup,
   Stack,
-} from '@chakra-ui/react';
+  Group,
+  Text,
+} from '@mantine/core';
 
 import imageTrFlag from '../../assets/images/flags/tr.webp';
 import imageUsFlag from '../../assets/images/flags/us.webp';
 import { LangCode, SupportedLang } from '../../types';
+
+import classes from './LangModal.module.css';
 
 const imagesFlag: Record<LangCode, string> = {
   [LangCode.TR_TR]: imageTrFlag,
@@ -37,23 +35,23 @@ export const LangModal: React.FC<LangModalProps> = ({
   supportedLanguages,
 }) => {
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
-      <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>
-          Language Selection
-          <Divider mt={1} />
-        </ModalHeader>
-        <ModalCloseButton />
-        <ModalBody mb={3}>
-          <RadioGroup
-            defaultValue={defaultValue}
-            onChange={onChange}
-            onClick={() => null}
-          >
-            <Stack>
-              {supportedLanguages.map(l => (
-                <Radio key={l.code} value={l.code}>
+    <Modal opened={isOpen} onClose={onClose} title="Language Selection">
+      <RadioGroup
+        defaultValue={defaultValue}
+        onChange={onChange}
+        onClick={() => null}
+      >
+        <Stack>
+          {supportedLanguages.map(l => (
+            <Radio.Card
+              radius="md"
+              value={l.code}
+              key={l.code}
+              className={classes.root}
+            >
+              <Group wrap="nowrap" align="flex-start">
+                <Radio.Indicator />
+                <Text>
                   <Image
                     src={imagesFlag[l.code]}
                     style={{
@@ -64,12 +62,12 @@ export const LangModal: React.FC<LangModalProps> = ({
                     }}
                   />
                   {l.label}
-                </Radio>
-              ))}
-            </Stack>
-          </RadioGroup>
-        </ModalBody>
-      </ModalContent>
+                </Text>
+              </Group>
+            </Radio.Card>
+          ))}
+        </Stack>
+      </RadioGroup>
     </Modal>
   );
 };

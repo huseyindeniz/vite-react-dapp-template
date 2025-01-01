@@ -3,20 +3,20 @@ import React from 'react';
 import {
   Container,
   Stack,
-  Box,
-  Heading,
+  Title,
   Text,
-  Button,
-  Link,
-  Tag,
   Image,
-} from '@chakra-ui/react';
+  Center,
+  Anchor,
+  Badge,
+} from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import { FaExternalLinkAlt } from 'react-icons/fa';
 
-import { PageMeta } from '@/features/ui/components/PageMeta/PageMeta';
+import { PageMeta } from '@/features/ui/mantine/components/PageMeta/PageMeta';
 
 import logo from './assets/images/logo.svg';
+import { Environment } from './components/Environment';
 
 export const HomePage: React.FC = () => {
   const { t } = useTranslation('PageHome');
@@ -27,12 +27,7 @@ export const HomePage: React.FC = () => {
   return (
     <>
       <style>
-        {`
-          .App-logo {
-            height: 20vmin;
-            pointer-events: none;
-          }
-          
+        {`         
           @media (prefers-reduced-motion: no-preference) {
             .App-logo {
               animation: App-logo-spin infinite 20s linear;
@@ -49,64 +44,53 @@ export const HomePage: React.FC = () => {
       `}
       </style>
       <PageMeta title={title} description={description} url="" />
-      <Container maxW="3xl">
-        <Stack
-          as={Box}
-          textAlign="center"
-          spacing={{ base: 2, md: 4 }}
-          py={{ base: 10, md: 16 }}
-        >
-          <Image src={logo} className="App-logo" />
-          <Heading
-            fontWeight={600}
-            fontSize={{ base: '1xl', sm: '2xl', md: '3xl' }}
-            lineHeight="110%"
-            textAlign="center"
+      <Container maw="3xl">
+        <Stack ta="center" py={{ base: 10, md: 16 }}>
+          <Center>
+            <Image src={logo} className="App-logo" w={100} />
+          </Center>
+          <Title
+            fw={600}
+            fs={{ base: '1xl', sm: '2xl', md: '3xl' }}
+            ta="center"
           >
             {t('experience the full power of React for dApp development')}
             <br />
-            <Text as="span" color="blue.400">
+            <Text component="span" c="blue">
               {title}
             </Text>
-          </Heading>
+          </Title>
           <Text>{description}</Text>
-          <Text>
-            <Tag size="lg" colorScheme="orange">
+          <Center>
+            <Badge size="lg" color="orange.2" radius="sm" autoContrast>
               {t('Edit {{path}} and save to reload.', {
                 path: 'src/pages/Home/Home.tsx',
                 interpolation: { escapeValue: false },
               })}
-            </Tag>
-          </Text>
-          <Stack
-            direction="column"
-            spacing={3}
-            align="center"
-            alignSelf="center"
-            position="relative"
-          >
-            <Button
-              as={Link}
+            </Badge>
+          </Center>
+          <Environment />
+          <Stack gap={6}>
+            <Anchor
               href="https://reactjs.org"
               rel="noopener noreferrer"
-              isExternal
-              variant="ghost"
+              target="_blank"
+              variant="default"
               size="xs"
-              rightIcon={<FaExternalLinkAlt />}
             >
-              {t('Learn React')}
-            </Button>
-            <Button
-              as={Link}
+              {t('Learn React')}&nbsp;
+              <FaExternalLinkAlt />
+            </Anchor>
+            <Anchor
               href="https://github.com/huseyindeniz/vite-react-dapp-template"
               rel="noopener noreferrer"
-              isExternal
-              variant="ghost"
+              target="_blank"
+              variant="default"
               size="xs"
-              rightIcon={<FaExternalLinkAlt />}
             >
-              {t('Learn React dApp Template (Vite)')}
-            </Button>
+              {t('Learn React dApp Template (Vite)')}&nbsp;
+              <FaExternalLinkAlt />
+            </Anchor>
           </Stack>
         </Stack>
       </Container>

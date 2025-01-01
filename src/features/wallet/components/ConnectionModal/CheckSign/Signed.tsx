@@ -1,20 +1,21 @@
-import { Box, Progress, VStack } from '@chakra-ui/react';
+import { Alert, Text, Container, Progress, Stack } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
-
-import { AlertMessage } from '@/features/ui/components/AlertMessage/AlertMessage';
+import { IoIosWarning } from 'react-icons/io';
 
 export const Signed = () => {
   const { t } = useTranslation('FeatureWallet');
   return (
-    <AlertMessage status="success" title={t('Signed In')}>
-      <VStack>
-        <Box>
-          {t('You have successfully signed the login request.')}
-          <br />
-          {t('Redirecting to app...')}
-        </Box>
-        <Progress w="full" size="xs" colorScheme="green" isIndeterminate />
-      </VStack>
-    </AlertMessage>
+    <Container>
+      <Alert icon={<IoIosWarning />} title={t('Signed In')} color="green">
+        <Stack>
+          <Text size="sm">
+            {t('You have successfully signed the login request.')}
+            <br />
+            {t('Redirecting to app...')}
+          </Text>
+          <Progress w="full" size="xs" color="green" animated value={100} />
+        </Stack>
+      </Alert>
+    </Container>
   );
 };

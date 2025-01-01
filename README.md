@@ -58,7 +58,7 @@ React dApp Template (Vite) is an easy-to-use foundation for efficiently building
 
 **TypeScript**: A typed superset of JavaScript that improves code quality and catch errors, particularly beneficial for complex projects.
 
-**Chakra-UI**: A customizable component library for creating accessible user interfaces in React.
+**Mantine**: A customizable UI component library for creating accessible user interfaces in React.
 
 **React Router**: A declarative routing library for building single-page applications.
 

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Image } from '@chakra-ui/react';
+import { Image } from '@mantine/core';
 
 export interface NetworkLogoProps {
   networkId: number;
@@ -15,8 +15,7 @@ export const NetworkLogo: React.FC<NetworkLogoProps> = ({
 }) => {
   return (
     <Image
-      boxSize={boxSize}
-      objectFit="cover"
+      w={boxSize}
       src={`assets/images/chains/${networkId}.webp`}
       alt={networkName}
     />

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, VStack, Button, Select } from '@chakra-ui/react';
+import { Box, Stack, Button, Select, ComboboxData } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 
 export interface SwitchNetworkMenuProps {
@@ -22,39 +22,36 @@ export const SwitchNetworkMenu: React.FC<SwitchNetworkMenuProps> = ({
   const { t } = useTranslation('FeatureWallet');
   const [selectedNetwork, setSelectedNetwork] =
     React.useState<number>(defaultNetwork);
+
+  const networkOptions: ComboboxData = supportedNetworks.map(network => {
+    let networkName = network.name;
+    networkName = network.isLocalChain
+      ? `(Local) ${networkName}`
+      : network.isTestChain
+        ? `(TestNet) ${networkName}`
+        : networkName;
+    return { value: network.id.toString(), label: networkName };
+  });
+
   return (
-    <VStack spacing={2}>
+    <Stack gap="sm">
       <Select
-        size="md"
-        outline="filled"
-        bg="tomato"
-        borderColor="tomato"
-        defaultValue={defaultNetwork}
-        onChange={event => setSelectedNetwork(parseInt(event.target.value))}
-      >
-        {supportedNetworks.map(network => {
-          let networkName = network.name;
-          networkName = network.isLocalChain
-            ? `(Local) ${networkName}`
-            : network.isTestChain
-            ? `(TestNet) ${networkName}`
-            : networkName;
-          return (
-            <option key={network.id} value={network.id}>
-              {networkName}
-            </option>
-          );
-        })}
-      </Select>
+        defaultValue={defaultNetwork.toString()}
+        onChange={(value, _option) =>
+          value ? setSelectedNetwork(parseInt(value, 10)) : null
+        }
+        data={networkOptions}
+      />
       <Box>
         <Button
-          variant="solid"
-          colorScheme="yellow"
+          variant="filled"
+          color="yellow"
+          autoContrast
           onClick={() => onSwitchNetwork(selectedNetwork)}
         >
           {t('Switch Network')}
         </Button>
       </Box>
-    </VStack>
+    </Stack>
   );
 };

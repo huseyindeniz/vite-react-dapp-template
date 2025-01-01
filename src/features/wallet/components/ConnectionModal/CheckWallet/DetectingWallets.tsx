@@ -1,16 +1,21 @@
-import { Progress, VStack, Box } from '@chakra-ui/react';
+import { Alert, Container, Progress, Stack, Text } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
-
-import { AlertMessage } from '@/features/ui/components/AlertMessage/AlertMessage';
+import { IoIosInformationCircle } from 'react-icons/io';
 
 export const DetectingWallets = () => {
   const { t } = useTranslation('FeatureWallet');
   return (
-    <AlertMessage status="info" title={t('Detecting wallets')}>
-      <VStack>
-        <Box>{t('Detecting installed Web3 wallets.')}</Box>
-        <Progress w="full" size="xs" colorScheme="blue" isIndeterminate />
-      </VStack>
-    </AlertMessage>
+    <Container>
+      <Alert
+        icon={<IoIosInformationCircle />}
+        title={t('Detecting wallets')}
+        color="blue"
+      >
+        <Stack>
+          <Text size="sm">{t('Detecting installed Web3 wallets.')}</Text>
+          <Progress w="full" size="xs" color="blue" value={100} animated />
+        </Stack>
+      </Alert>
+    </Container>
   );
 };

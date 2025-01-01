@@ -1,30 +1,18 @@
-import {
-  Box,
-  Center,
-  Container,
-  Stack,
-  Heading,
-  Divider,
-} from '@chakra-ui/react';
+import { Alert, Container, Stack, Title, Divider } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
-
-import { AlertMessage } from '@/features/ui/components/AlertMessage/AlertMessage';
+import { IoIosWarning } from 'react-icons/io';
 
 export const WalletProtectionWarning: React.FC = () => {
   const { t } = useTranslation('FeatureWallet');
   return (
-    <Box>
-      <Container maxW="7xl" py={2} as={Stack} spacing={12}>
-        <Stack spacing={0} align="center">
-          <Heading mb={2}>{t('401 Unauthorized')}</Heading>
-          <Divider />
-        </Stack>
-        <Center>
-          <AlertMessage status="error" title="Access Denied">
-            {t('You need to connect your wallet to see this page.')}
-          </AlertMessage>
-        </Center>
-      </Container>
-    </Box>
+    <Container>
+      <Stack gap={5} align="center">
+        <Title>{t('401 Unauthorized')}</Title>
+        <Divider />
+        <Alert icon={<IoIosWarning />} title="Access Denied">
+          {t('You need to connect your wallet to see this page.')}
+        </Alert>
+      </Stack>
+    </Container>
   );
 };

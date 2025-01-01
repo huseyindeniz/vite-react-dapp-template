@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-import { Box, Flex, IconButton, Tag } from '@chakra-ui/react';
+import { Group, ActionIcon, Badge } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import { MdRefresh } from 'react-icons/md';
 
@@ -28,35 +28,31 @@ export const BlockInfo: React.FC = () => {
       }, 15000);
       return () => clearInterval(interval);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentNetwork]);
 
   return (
     <>
       {blockInfo ? (
-        <Flex>
-          <Box fontSize="xs" mr={1}>
-            <Tag>
-              {t('Block')}: {blockInfo.blockNumber}
-            </Tag>
-          </Box>
-          <Box fontSize="xs" mr={1}>
-            <Tag>
-              {t('Balance')}
-              {`: ${parseFloat(blockInfo.signerAccountBalance).toFixed(
-                2
-              )} ${currentNetwork?.nativeCurrency.symbol}`}
-            </Tag>
-          </Box>
-          <IconButton
-            isLoading={blockInfoLoading === LoadingStatusType.PENDING}
-            icon={<MdRefresh />}
+        <Group justify="flex-end" style={{ flex: 1 }}>
+          <Badge color="gray.2" autoContrast>
+            {t('Block')}: {blockInfo.blockNumber}
+          </Badge>
+          <Badge color="gray.2" autoContrast>
+            {t('Balance')}
+            {`: ${parseFloat(blockInfo.signerAccountBalance).toFixed(
+              2
+            )} ${currentNetwork?.nativeCurrency.symbol}`}
+          </Badge>
+          <ActionIcon
+            loading={blockInfoLoading === LoadingStatusType.PENDING}
             variant="outline"
             size="xs"
             aria-label="refresh"
             onClick={() => actions.latestBlock()}
-          />
-        </Flex>
+          >
+            <MdRefresh />
+          </ActionIcon>
+        </Group>
       ) : null}
     </>
   );

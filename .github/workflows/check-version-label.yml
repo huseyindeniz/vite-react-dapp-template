@@ -1,0 +1,20 @@
+name: Check Version Label
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, labeled, unlabeled, synchronize]
+  workflow_dispatch:
+
+jobs:
+  label:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: mheap/github-action-required-labels@v5
+        with:
+          mode: exactly
+          count: 1
+          labels: |
+            semver:patch
+            semver:minor
+            semver:major

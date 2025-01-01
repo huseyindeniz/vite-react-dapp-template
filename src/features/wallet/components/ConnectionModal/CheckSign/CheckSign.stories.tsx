@@ -30,7 +30,7 @@ export const SignInitialized: Story = {
 // SIGN_REQUESTED
 export const SignRequested: Story = {
   args: {
-    signCounter: 60,
+    signCounter: 45,
     stepState: AccountSignState.SIGN_REQUESTED,
   },
 };

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 
-import { useToast } from '@chakra-ui/react';
+import { notifications } from '@mantine/notifications';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
+import { usePageLink } from '@/features/router/usePageLink';
 import useTypedSelector from '@/hooks/useTypedSelector';
-import { usePageLink } from '@/pages/usePageLink';
 
 import { useActions } from '../../hooks/useActions';
 
@@ -15,7 +15,6 @@ export const ProfileDropdownMenu: React.FC = () => {
   const { t } = useTranslation('FeatureWallet');
   const navigate = useNavigate();
   const { pageLink } = usePageLink();
-  const toast = useToast();
   const actions = useActions();
   const account = useTypedSelector(state => state.wallet.account.account);
   const currentNetwork = useTypedSelector(
@@ -46,9 +45,9 @@ export const ProfileDropdownMenu: React.FC = () => {
           : account.shortAddress;
       setDomainOrAddressTruncated(
         domainNameOrAddress && domainNameOrAddress.length > 20
-          ? domainNameOrAddress?.slice(0, 4) +
-              '...' +
-              domainNameOrAddress?.slice(-6)
+          ? `${domainNameOrAddress?.slice(0, 4)}...${domainNameOrAddress?.slice(
+              -6
+            )}`
           : domainNameOrAddress
       );
       setAvatarURL(account.avatarURL ?? '');
@@ -57,13 +56,11 @@ export const ProfileDropdownMenu: React.FC = () => {
 
   const onCopyClicked = () => {
     navigator.clipboard.writeText(account?.address ?? '');
-    toast({
+    notifications.show({
       title: t('Address copied.'),
-      description: t(
+      message: t(
         'The address of your account has been copied to the clipboard.'
       ),
-      status: 'info',
-      isClosable: true,
     });
   };
 

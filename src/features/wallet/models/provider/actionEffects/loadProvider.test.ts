@@ -33,7 +33,10 @@ describe.skip('Feature: Wallet', () => {
         SupportedWallets.METAMASK
       )
         .provide([
-          [call(mockWalletInitApi.loadProvider), throwError(error)],
+          [
+            call(mockWalletInitApi.loadProvider, SupportedWallets.METAMASK),
+            throwError(error),
+          ],
           [call(SlowDown), null],
         ])
         .put(slicesActions.setProviderLoadState(ProviderLoadState.REQUESTED))
@@ -48,7 +51,10 @@ describe.skip('Feature: Wallet', () => {
         SupportedWallets.METAMASK
       )
         .provide([
-          [call(mockWalletInitApi.loadProvider), false],
+          [
+            call(mockWalletInitApi.loadProvider, SupportedWallets.METAMASK),
+            false,
+          ],
           [call(SlowDown), null],
         ])
         .put(slicesActions.setProviderLoadState(ProviderLoadState.REQUESTED))
@@ -63,7 +69,10 @@ describe.skip('Feature: Wallet', () => {
         SupportedWallets.METAMASK
       )
         .provide([
-          [call(mockWalletInitApi.loadProvider), true],
+          [
+            call(mockWalletInitApi.loadProvider, SupportedWallets.METAMASK),
+            true,
+          ],
           [call(SlowDown), null],
         ])
         .put(slicesActions.setProviderLoadState(ProviderLoadState.REQUESTED))

@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { Loader } from '@mantine/core';
+
 import { useWalletAuthentication } from '../hooks/useWalletAuthentication';
 
 import { ConnectButton } from './ConnectButton/ConnectButton';
@@ -15,14 +17,8 @@ const ProfileDropdownMenu = React.lazy(() =>
 export const Wallet: React.FC = () => {
   const { isAuthenticated } = useWalletAuthentication();
   return (
-    <>
-      {isAuthenticated ? (
-        <ProfileDropdownMenu />
-      ) : (
-        <>
-          <ConnectButton />
-        </>
-      )}
-    </>
+    <React.Suspense fallback={<Loader size="xs" />}>
+      {isAuthenticated ? <ProfileDropdownMenu /> : <ConnectButton />}
+    </React.Suspense>
   );
 };

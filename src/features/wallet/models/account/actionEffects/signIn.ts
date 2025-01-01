@@ -59,7 +59,7 @@ export function* ActionEffectSignIn(
 // STATE HANDLERS
 
 // Cancellable Task Handlers
-let taskSign: Task;
+let taskSign!: Task;
 
 export function* HandleStateNotSigned() {
   yield put(slicesActions.setAccountSignState(AccountSignState.NOT_SIGNED));
@@ -105,14 +105,13 @@ export function* HandleStateSignRequested(
     yield put({ type: actions.announceWalletLoaded.type });
     yield call(HandleStateSigned, walletSignApi);
     return true;
-  } else {
-    if (error?.message === 'sign_rejected') {
-      yield call(HandleStateSignRejected);
-    } else {
-      yield call(HandleStateSignFailed, error?.message || '0');
-    }
-    return false;
   }
+  if (error?.message === 'sign_rejected') {
+    yield call(HandleStateSignRejected);
+  } else {
+    yield call(HandleStateSignFailed, error?.message || '0');
+  }
+  return false;
 }
 
 export function* CheckSignTimeout() {

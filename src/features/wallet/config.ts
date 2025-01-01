@@ -38,6 +38,10 @@ export const SUPPORTED_WALLETS: Web3Wallet[] = [
   Rabby,
 ];
 
-export const SIGN_TIMEOUT_IN_SEC = 60;
-export const SLOW_DOWN_IN_MS = 1000;
-export const DISABLE_WALLET_SIGN = true;
+export const SIGN_TIMEOUT_IN_SEC: number = import.meta.env
+  .VITE_WALLET_SIGN_TIMEOUT_IN_SEC;
+export const SLOW_DOWN_IN_MS: number = import.meta.env
+  .VITE_WALLET_SLOW_DOWN_IN_MS;
+export const DISABLE_WALLET_SIGN: boolean = JSON.parse(
+  import.meta.env.VITE_WALLET_DISABLE_SIGN || 'false'
+);

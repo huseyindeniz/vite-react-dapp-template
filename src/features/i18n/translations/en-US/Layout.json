@@ -2,10 +2,8 @@
   "Accept all cookies": "Accept all cookies",
   "Refuse non-essential cookies": "Refuse non-essential cookies",
   "This website uses cookies to enhance the user experience.": "This website uses cookies to enhance the user experience.",
-  "Open Menu": "Open Menu",
-  "SITE_NAME": "My Awesome dApp",
-  "SITE_DESCRIPTION": "dApp demonstration website that created with React dApp Template (Vite)",
   "Please wait while the requested page is loading...": "Please wait while the requested page is loading...",
   "Go To Top": "Go To Top",
-  "Toggle Color Mode": "Toggle Color Mode"
+  "SITE_NAME": "My Awesome dApp",
+  "SITE_DESCRIPTION": "dApp demonstration website that created with React dApp Template (Vite)"
 }

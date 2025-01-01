@@ -1,0 +1,39 @@
+name: Version Bump on PR Merge
+
+on:
+  pull_request:
+    types: [closed]
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'Pull Request Number'
+        required: true
+
+jobs:
+  version_bump:
+    # This job will only run if the PR has been merged
+    if: github.event.pull_request.merged == true || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+
+    steps:
+      # Get PR Number (from input if manually triggered, from event payload if triggered by PR)
+      - name: Set PR Number
+        id: pr_number
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            PR_NUMBER="${{ github.event.inputs.pr_number }}"
+          else
+            PR_NUMBER="${{ github.event.pull_request.number }}"
+          fi
+          echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_ENV
+
+      # Get PR Labels (manual trigger or PR closed)
+      - name: Get PR Labels
+        id: pr_labels
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            PR_LABELS=$(gh pr view $PR_NUMBER --json labels --jq '.labels[].name')
+            echo "PR_LABELS=$PR_LABELS" >> $GITHUB_ENV
+          else
+            PR_LABELS="${{ github.event.pull_request.labels }}"
+            echo "PR_LABELS=$PR_LABELS" >> $GITHUB_ENV

@@ -1,11 +1,10 @@
 import React from 'react';
 
-import { Box, VStack } from '@chakra-ui/react';
+import { Alert, Text, Container, Stack } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
+import { IoIosWarning } from 'react-icons/io';
 
-import { AlertMessage } from '@/features/ui/components/AlertMessage/AlertMessage';
-
-import { SignButton } from './SignButtonProps';
+import { SignButton } from './SignButton';
 
 export interface SignRejectedProps {
   onSign: (message: string) => void;
@@ -17,15 +16,17 @@ export const SignRejected: React.FC<SignRejectedProps> = ({
 }) => {
   const { t } = useTranslation('FeatureWallet');
   return (
-    <AlertMessage status="warning" title={t('Sign Rejected')}>
-      <VStack>
-        <Box>
-          {t('You rejected the sign request.')}
-          <br />
-          {t('Please try again if you want to continue.')}
-        </Box>
-        <SignButton onSign={onSign} onDisconnect={onDisconnect} />
-      </VStack>
-    </AlertMessage>
+    <Container>
+      <Alert icon={<IoIosWarning />} title={t('Sign Rejected')} color="yellow">
+        <Stack>
+          <Text size="sm">
+            {t('You rejected the sign request.')}
+            <br />
+            {t('Please try again if you want to continue.')}
+          </Text>
+          <SignButton onSign={onSign} onDisconnect={onDisconnect} />
+        </Stack>
+      </Alert>
+    </Container>
   );
 };

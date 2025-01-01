@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-import { useSteps } from '@chakra-ui/react';
-
 import useTypedSelector from '@/hooks/useTypedSelector';
 
 import { SUPPORTED_NETWORKS, DEFAULT_NETWORK } from '../../config';
@@ -46,10 +44,8 @@ export const ConnectionModal: React.FC<ConnectionModalProps> = ({
   const signCounter = useTypedSelector(
     state => state.wallet.account.signCounter
   );
-  const { activeStep, setActiveStep } = useSteps({
-    index: 0,
-    count: 4,
-  });
+
+  const [active, setActive] = useState(0);
 
   const [stepState, setStepState] = useState<'error' | 'loading' | undefined>(
     undefined
@@ -158,25 +154,24 @@ export const ConnectionModal: React.FC<ConnectionModalProps> = ({
       // STEP 0: Initialization
       case WalletState.NOT_INITIALIZED:
       case WalletState.CHECKING_WALLET:
-        setActiveStep(0);
+        setActive(0);
         break;
       // STEP 1: Account Check
       case WalletState.CHECKING_ACCOUNT:
-        setActiveStep(1);
+        setActive(1);
         break;
       // STEP 2: Network Check
       case WalletState.CHECKING_NETWORK:
-        setActiveStep(2);
+        setActive(2);
         break;
       // STEP 3: Sign Check
       case WalletState.CHECKING_SIGN:
-        setActiveStep(3);
+        setActive(3);
         break;
       default:
-        setActiveStep(0);
+        setActive(0);
         break;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [walletState]);
 
   return (
@@ -215,8 +210,8 @@ export const ConnectionModal: React.FC<ConnectionModalProps> = ({
           errorMessage={error}
         />
       }
-      activeStep={activeStep}
-      isOpen={true}
+      activeStep={active}
+      isOpen
       onDisconnect={handleDisconnect}
       stepState={stepState}
     />

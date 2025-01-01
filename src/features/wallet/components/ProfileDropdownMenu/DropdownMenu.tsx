@@ -1,19 +1,15 @@
 import React from 'react';
 
 import {
-  Box,
   Text,
   Button,
   Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
   MenuDivider,
-  HStack,
-  VStack,
-  Link,
+  Group,
   Avatar,
-} from '@chakra-ui/react';
+  Anchor,
+  Center,
+} from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import { FaExternalLinkAlt } from 'react-icons/fa';
 import { IoIosLogOut } from 'react-icons/io';
@@ -53,80 +49,75 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
   const { t } = useTranslation('FeatureWallet');
 
   return (
-    <Menu placement="bottom-end">
-      <MenuButton
-        as={Button}
-        cursor="pointer"
-        bg="gray.800"
-        _hover={{
-          backgroundColor: 'gray.700',
-        }}
-        variant="outline"
-        ml={2}
-      >
-        <HStack>
-          {connectedWallet ? (
-            <WalletLogo
-              label={connectedWallet.label}
-              wallet={connectedWallet.name}
-            />
-          ) : null}
-          {currentNetwork ? (
-            <NetworkLogo
-              networkId={currentNetwork?.chainId}
-              networkName={currentNetwork?.chainName}
-            />
-          ) : null}
-          <Text color="white" fontSize="md" fontWeight="medium" mr="2">
-            {domainOrAddressTruncated}
-          </Text>
-          {avatarURL !== '' ? (
-            <Avatar name={address} src={avatarURL} size="sm" />
-          ) : (
-            <Identicon size={24} account={address} />
-          )}
-        </HStack>
-      </MenuButton>
-      <MenuList alignItems="center" m={0}>
-        <VStack align="center">
-          <Box>
+    <Menu position="bottom-end">
+      <Menu.Target>
+        <Button bg="gray" variant="outline" ml={2}>
+          <Group>
+            {connectedWallet ? (
+              <WalletLogo
+                label={connectedWallet.label}
+                wallet={connectedWallet.name}
+              />
+            ) : null}
+            {currentNetwork ? (
+              <NetworkLogo
+                networkId={currentNetwork?.chainId}
+                networkName={currentNetwork?.chainName}
+              />
+            ) : null}
+            <Text color="white" fz="md" fw="medium" mr="2">
+              {domainOrAddressTruncated}
+            </Text>
+            {avatarURL !== '' ? (
+              <Avatar name={address} src={avatarURL} size="sm" />
+            ) : (
+              <Identicon size={24} account={address} />
+            )}
+          </Group>
+        </Button>
+      </Menu.Target>
+      <Menu.Dropdown m={0}>
+        <Menu.Item disabled>
+          <Center>
             {avatarURL !== '' ? (
               <Avatar name={address} src={avatarURL} size="lg" />
             ) : (
               <Identicon size={64} account={address} />
             )}
-          </Box>
-          <Box>
-            <Text>{domainOrAddressTruncated}</Text>
-          </Box>
-        </VStack>
-        <MenuDivider />
-        <MenuItem icon={<MdDashboard />} as={RouterLink} to={userPageLink}>
+          </Center>
+        </Menu.Item>
+        <Menu.Item disabled ta="center">
+          <Text>{domainOrAddressTruncated}</Text>
+        </Menu.Item>
+        <Menu.Divider />
+        <Menu.Item
+          leftSection={<MdDashboard />}
+          component={RouterLink}
+          to={userPageLink}
+        >
           {t('Dashboard')}
-        </MenuItem>
-        <MenuItem
-          icon={<MdContentCopy />}
+        </Menu.Item>
+        <Menu.Item
+          leftSection={<MdContentCopy />}
           onClick={() => onCopyAddressClicked()}
         >
           {t('Copy Address')}
-        </MenuItem>
-        <MenuItem
-          as={Link}
-          href={`${addressExplorerUrl}/${address}`}
-          isExternal
-          _hover={{
-            textDecoration: 'none',
-            border: 'none',
-          }}
-          icon={<FaExternalLinkAlt />}
+        </Menu.Item>
+        <Menu.Item
+          component={Anchor}
+          ref={`${addressExplorerUrl}/${address}`}
+          leftSection={<FaExternalLinkAlt />}
         >
           {t('View on Explorer')}
-        </MenuItem>
+        </Menu.Item>
         <MenuDivider />
-        <MenuItem icon={<IoIosLogOut />} onClick={() => onDisconnectClicked()}>
+        <Menu.Item
+          leftSection={<IoIosLogOut />}
+          onClick={() => onDisconnectClicked()}
+        >
           {t('Disconnect')}
-        </MenuItem>
-      </MenuList>
+        </Menu.Item>
+      </Menu.Dropdown>
     </Menu>
   );
 };

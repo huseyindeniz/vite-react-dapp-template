@@ -1,22 +1,18 @@
 import React from 'react';
 
 import {
+  Alert,
   Box,
   Button,
   Text,
-  HStack,
+  Group,
   Divider,
-  TableContainer,
   Table,
-  Tr,
-  Thead,
-  Th,
-  Tbody,
-  Td,
-} from '@chakra-ui/react';
+  Container,
+} from '@mantine/core';
 import { useTranslation } from 'react-i18next';
+import { IoIosInformationCircle } from 'react-icons/io';
 
-import { AlertMessage } from '@/features/ui/components/AlertMessage/AlertMessage';
 import { Web3Wallet } from '@/features/wallet/models/provider/types/Web3Wallet';
 import { SupportedWallets } from '@/services/interfaces/IWalletProviderApi';
 
@@ -34,50 +30,56 @@ export const WaitingSelection: React.FC<WaitingSelectionProps> = ({
 }) => {
   const { t } = useTranslation('FeatureWallet');
   return (
-    <>
-      <AlertMessage status="info" title={t('Multiple Web3 Wallet Detected')}>
-        {t(
-          'The following Web3 wallet extensions dedected in your browser. You can select the wallet you want to connect.'
-        )}
-      </AlertMessage>
-      <TableContainer mt={2}>
-        <Table variant="simple" size={'sm'}>
-          <Thead>
-            <Tr>
-              <Th>{t('Wallet')}</Th>
-              <Th>{t('Select')}</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {wallets.map(w => (
-              <Tr key={w.name}>
-                <Td>
-                  <HStack>
-                    <WalletLogo label={w.label} wallet={w.name} />
-                    <Text fontSize="xs">{w.label}</Text>
-                  </HStack>
-                </Td>
-                <Td>
-                  <Button
-                    size="xs"
-                    onClick={() => onWalletSelect(w.name)}
-                    variant="solid"
-                    colorScheme="yellow"
-                  >
-                    {t('Select')}
-                  </Button>
-                </Td>
-              </Tr>
-            ))}
-          </Tbody>
-        </Table>
-      </TableContainer>
-      <Divider />
-      <Box textAlign="right" mt={2}>
-        <Button size="xs" onClick={() => onCancel()} variant="solid">
-          {t('Cancel')}
-        </Button>
-      </Box>
-    </>
+    <Container mb={4}>
+      <Alert
+        icon={<IoIosInformationCircle />}
+        title={t('Multiple Web3 Wallet Detected')}
+      >
+        <Text size="sm">
+          {t(
+            'The following Web3 wallet extensions dedected in your browser. You can select the wallet you want to connect.'
+          )}
+        </Text>
+        <Table.ScrollContainer minWidth={300}>
+          <Table mt={10} withTableBorder={false}>
+            <Table.Thead>
+              <Table.Tr>
+                <Table.Th>{t('Wallet')}</Table.Th>
+                <Table.Th>{t('Select')}</Table.Th>
+              </Table.Tr>
+            </Table.Thead>
+            <Table.Tbody>
+              {wallets.map(w => (
+                <Table.Tr key={w.name}>
+                  <Table.Td>
+                    <Group>
+                      <WalletLogo label={w.label} wallet={w.name} />
+                      <Text size="xs">{w.label}</Text>
+                    </Group>
+                  </Table.Td>
+                  <Table.Td>
+                    <Button
+                      size="xs"
+                      onClick={() => onWalletSelect(w.name)}
+                      variant="filled"
+                      color="yellow"
+                      autoContrast
+                    >
+                      {t('Select')}
+                    </Button>
+                  </Table.Td>
+                </Table.Tr>
+              ))}
+            </Table.Tbody>
+          </Table>
+        </Table.ScrollContainer>
+        <Divider />
+        <Box mt="sm" ta="right">
+          <Button size="xs" onClick={() => onCancel()} variant="default">
+            {t('Cancel')}
+          </Button>
+        </Box>
+      </Alert>
+    </Container>
   );
 };

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-import { useDisclosure } from '@chakra-ui/react';
+import { useDisclosure } from '@mantine/hooks';
 
 import useTypedSelector from '@/hooks/useTypedSelector';
 
@@ -13,7 +13,7 @@ import { Button } from './Button/Button';
 
 export const ConnectButton: React.FC = () => {
   const actions = useActions();
-  const { onOpen, onClose, isOpen } = useDisclosure();
+  const [opened, { open, close }] = useDisclosure();
   const loadingState = useTypedSelector(state => state.wallet.state.loading);
   const walletState = useTypedSelector(state => state.wallet.state.state);
 
@@ -21,9 +21,8 @@ export const ConnectButton: React.FC = () => {
     walletState !== undefined &&
     walletState !== WalletState.NOT_INITIALIZED &&
     walletState !== WalletState.AUTHENTICATED
-      ? onOpen()
-      : onClose();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+      ? open()
+      : close();
   }, [walletState]);
   return (
     <>
@@ -31,7 +30,7 @@ export const ConnectButton: React.FC = () => {
         isLoading={loadingState === LoadingStatusType.PENDING}
         onClick={actions.connectWallet}
       />
-      {isOpen ? <ConnectionModal onDisconnect={onClose} /> : null}
+      {opened ? <ConnectionModal onDisconnect={close} /> : null}
     </>
   );
 };

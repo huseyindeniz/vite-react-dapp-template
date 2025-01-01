@@ -14,7 +14,7 @@ export const initialState = Object.freeze({
 
 const providerSlice = createSlice({
   name: 'wallet/provider',
-  initialState: initialState,
+  initialState,
   reducers: {
     setProviderLoadState: (
       state,

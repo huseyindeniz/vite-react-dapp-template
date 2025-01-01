@@ -1,9 +1,8 @@
 import React from 'react';
 
-import { Box, VStack } from '@chakra-ui/react';
+import { Stack, Alert, Container, Text } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
-
-import { AlertMessage } from '@/features/ui/components/AlertMessage/AlertMessage';
+import { IoIosWarning } from 'react-icons/io';
 
 import { UnlockButton } from './UnlockButton';
 
@@ -13,15 +12,17 @@ interface UnlockRejectedProps {
 export const UnlockRejected: React.FC<UnlockRejectedProps> = ({ onUnlock }) => {
   const { t } = useTranslation('FeatureWallet');
   return (
-    <AlertMessage status="warning" title={t('Unlock Rejected')}>
-      <VStack>
-        <Box>
-          {t('You rejected the unlock wallet request.')}
-          <br />
-          {t('Please try again if you want to continue.')}
-        </Box>
-        <UnlockButton onUnlock={onUnlock} />
-      </VStack>
-    </AlertMessage>
+    <Container>
+      <Alert icon={<IoIosWarning />} title={t('Unlock Rejected')} color="red">
+        <Stack>
+          <Text size="sm">
+            {t('You rejected the unlock wallet request.')}
+            <br />
+            {t('Please try again if you want to continue.')}
+          </Text>
+          <UnlockButton onUnlock={onUnlock} />
+        </Stack>
+      </Alert>
+    </Container>
   );
 };

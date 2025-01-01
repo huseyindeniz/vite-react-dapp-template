@@ -1,6 +1,7 @@
 import i18n from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import { initReactI18next } from 'react-i18next';
+
 import { resources } from '../src/features/i18n/i18nResources';
 
 i18n
@@ -12,7 +13,7 @@ i18n
     fallbackLng: 'en-US',
     interpolation: { escapeValue: false },
     react: { useSuspense: false },
-    resources: resources,
+    resources,
   });
 
 export default i18n;

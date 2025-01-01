@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { Button, Spinner, useDisclosure } from '@chakra-ui/react';
+import { Button, Loader } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 
@@ -20,22 +21,20 @@ export const LangMenu: React.FC = () => {
     location.pathname,
     i18n.resolvedLanguage ?? i18nConfig.fallbackLang.code
   );
-  const { onOpen, onClose, isOpen } = useDisclosure();
+  const [opened, { open, close }] = useDisclosure();
 
   return i18nConfig.supportedLanguages.length > 1 ? (
-    <React.Suspense fallback={<Spinner size="xs" />}>
-      <>
-        <Button onClick={onOpen} variant="outline">
-          {i18n.resolvedLanguage}
-        </Button>
-        <LangModal
-          isOpen={isOpen}
-          onClose={onClose}
-          onChange={changeLanguage}
-          defaultValue={i18n.resolvedLanguage ?? i18nConfig.fallbackLang.code}
-          supportedLanguages={i18nConfig.supportedLanguages}
-        />
-      </>
+    <React.Suspense fallback={<Loader size="xs" />}>
+      <Button onClick={open} variant="outline">
+        {i18n.resolvedLanguage}
+      </Button>
+      <LangModal
+        isOpen={opened}
+        onClose={close}
+        onChange={changeLanguage}
+        defaultValue={i18n.resolvedLanguage ?? i18nConfig.fallbackLang.code}
+        supportedLanguages={i18nConfig.supportedLanguages}
+      />
     </React.Suspense>
   ) : null;
 };

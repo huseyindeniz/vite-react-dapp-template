@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Button } from '@chakra-ui/react';
+import { Box, Button } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 
 interface UnlockButtonProps {
@@ -10,8 +10,13 @@ interface UnlockButtonProps {
 export const UnlockButton: React.FC<UnlockButtonProps> = ({ onUnlock }) => {
   const { t } = useTranslation('FeatureWallet');
   return (
-    <Box>
-      <Button variant="solid" colorScheme="yellow" onClick={() => onUnlock()}>
+    <Box ta="right" mt="sm">
+      <Button
+        variant="filled"
+        color="yellow"
+        autoContrast
+        onClick={() => onUnlock()}
+      >
         {t('Unlock Wallet')}
       </Button>
     </Box>

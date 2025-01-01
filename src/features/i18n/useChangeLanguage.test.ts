@@ -1,4 +1,4 @@
-import { cleanup } from '@testing-library/react';
+import { cleanup } from '@test-utils';
 
 import { i18nConfig } from './config';
 import { useChangeLanguage } from './useChangeLanguage';

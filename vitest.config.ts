@@ -1,14 +1,15 @@
 import path from 'path';
 
 import react from '@vitejs/plugin-react';
-import { defineConfig } from 'vitest/config';
+import tsconfigPaths from 'vite-tsconfig-paths';
+import { defineConfig, ViteUserConfig } from 'vitest/config';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), tsconfigPaths()] as ViteUserConfig['plugins'],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
+      '@test-utils': path.resolve(__dirname, './src/test-utils'),
     },
   },
   test: {

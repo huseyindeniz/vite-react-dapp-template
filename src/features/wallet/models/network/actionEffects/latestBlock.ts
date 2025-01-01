@@ -21,7 +21,7 @@ export function* HandleStateBlockRequested(
   const signerAccountBalance: string = yield call(walletNetworkApi.getBalance);
   const payload: BlockInfo = {
     blockNumber: latestBlockNumber ? latestBlockNumber.toString() : '',
-    signerAccountBalance: signerAccountBalance,
+    signerAccountBalance,
   };
   yield put(slicesActions.setBlockInfo(payload));
 }

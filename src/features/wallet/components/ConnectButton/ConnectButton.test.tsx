@@ -1,4 +1,4 @@
-import { render, cleanup } from '@testing-library/react';
+import { cleanup, render } from '@test-utils';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 

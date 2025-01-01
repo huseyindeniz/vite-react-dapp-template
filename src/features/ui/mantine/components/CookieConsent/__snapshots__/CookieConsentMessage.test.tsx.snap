@@ -1,0 +1,137 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Feature: UI > Component: Layout/CookieConsentMessage > should render with debug enabled 1`] = `
+<DocumentFragment>
+  <style
+    data-mantine-styles="true"
+  >
+    :root{--mantine-font-family: Open Sans, sans-serif;--mantine-font-family-headings: Open Sans, sans-serif;}
+  </style>
+  <style
+    data-mantine-styles="classes"
+  >
+    @media (max-width: 35.99375em) {.mantine-visible-from-xs {display: none !important;}}@media (min-width: 36em) {.mantine-hidden-from-xs {display: none !important;}}@media (max-width: 47.99375em) {.mantine-visible-from-sm {display: none !important;}}@media (min-width: 48em) {.mantine-hidden-from-sm {display: none !important;}}@media (max-width: 61.99375em) {.mantine-visible-from-md {display: none !important;}}@media (min-width: 62em) {.mantine-hidden-from-md {display: none !important;}}@media (max-width: 74.99375em) {.mantine-visible-from-lg {display: none !important;}}@media (min-width: 75em) {.mantine-hidden-from-lg {display: none !important;}}@media (max-width: 87.99375em) {.mantine-visible-from-xl {display: none !important;}}@media (min-width: 88em) {.mantine-hidden-from-xl {display: none !important;}}
+  </style>
+  <div
+    class="CookieConsent"
+    style="align-items: baseline; background: rgb(53, 53, 53); color: white; display: flex; flex-wrap: wrap; justify-content: space-between; left: 0px; position: fixed; width: 100%; z-index: 999; opacity: 0.8; margin-bottom: 1rem; bottom: 0px;"
+  >
+    <div
+      class=""
+      style="flex: 1 0 300px; margin: 15px;"
+    >
+      <p
+        class="mantine-focus-auto m_b6d8b162 mantine-Text-root"
+      >
+        This website uses cookies to enhance the user experience.
+      </p>
+    </div>
+    <div
+      class=""
+    >
+      <button
+        aria-label="Decline cookies"
+        class="mantine-focus-auto mantine-active m_77c9d27d mantine-Button-root m_87cf2631 mantine-UnstyledButton-root"
+        id="rcc-decline-button"
+        style="--button-color: var(--mantine-color-white); background: rgb(193, 42, 42); border: 0px; border-radius: 0px; box-shadow: none; color: rgb(229, 229, 229); cursor: pointer; flex: 0 0 auto; padding: 5px 10px; margin: 15px;"
+        type="button"
+      >
+        <span
+          class="m_80f1301b mantine-Button-inner"
+        >
+          <span
+            class="m_811560b9 mantine-Button-label"
+          >
+            Refuse non-essential cookies
+          </span>
+        </span>
+      </button>
+      <button
+        aria-label="Accept cookies"
+        class="mantine-focus-auto mantine-active m_77c9d27d mantine-Button-root m_87cf2631 mantine-UnstyledButton-root"
+        id="rcc-confirm-button"
+        style="--button-color: var(--mantine-color-white); background: rgb(255, 212, 45); border: 0px; border-radius: 0px; box-shadow: none; color: black; cursor: pointer; flex: 0 0 auto; padding: 5px 10px; margin: 15px;"
+        type="button"
+      >
+        <span
+          class="m_80f1301b mantine-Button-inner"
+        >
+          <span
+            class="m_811560b9 mantine-Button-label"
+          >
+            Accept all cookies
+          </span>
+        </span>
+      </button>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`Feature: UI > Component: Layout/CookieConsentMessage > should render with default props 1`] = `
+<DocumentFragment>
+  <style
+    data-mantine-styles="true"
+  >
+    :root{--mantine-font-family: Open Sans, sans-serif;--mantine-font-family-headings: Open Sans, sans-serif;}
+  </style>
+  <style
+    data-mantine-styles="classes"
+  >
+    @media (max-width: 35.99375em) {.mantine-visible-from-xs {display: none !important;}}@media (min-width: 36em) {.mantine-hidden-from-xs {display: none !important;}}@media (max-width: 47.99375em) {.mantine-visible-from-sm {display: none !important;}}@media (min-width: 48em) {.mantine-hidden-from-sm {display: none !important;}}@media (max-width: 61.99375em) {.mantine-visible-from-md {display: none !important;}}@media (min-width: 62em) {.mantine-hidden-from-md {display: none !important;}}@media (max-width: 74.99375em) {.mantine-visible-from-lg {display: none !important;}}@media (min-width: 75em) {.mantine-hidden-from-lg {display: none !important;}}@media (max-width: 87.99375em) {.mantine-visible-from-xl {display: none !important;}}@media (min-width: 88em) {.mantine-hidden-from-xl {display: none !important;}}
+  </style>
+  <div
+    class="CookieConsent"
+    style="align-items: baseline; background: rgb(53, 53, 53); color: white; display: flex; flex-wrap: wrap; justify-content: space-between; left: 0px; position: fixed; width: 100%; z-index: 999; opacity: 0.8; margin-bottom: 1rem; bottom: 0px;"
+  >
+    <div
+      class=""
+      style="flex: 1 0 300px; margin: 15px;"
+    >
+      <p
+        class="mantine-focus-auto m_b6d8b162 mantine-Text-root"
+      >
+        This website uses cookies to enhance the user experience.
+      </p>
+    </div>
+    <div
+      class=""
+    >
+      <button
+        aria-label="Decline cookies"
+        class="mantine-focus-auto mantine-active m_77c9d27d mantine-Button-root m_87cf2631 mantine-UnstyledButton-root"
+        id="rcc-decline-button"
+        style="--button-color: var(--mantine-color-white); background: rgb(193, 42, 42); border: 0px; border-radius: 0px; box-shadow: none; color: rgb(229, 229, 229); cursor: pointer; flex: 0 0 auto; padding: 5px 10px; margin: 15px;"
+        type="button"
+      >
+        <span
+          class="m_80f1301b mantine-Button-inner"
+        >
+          <span
+            class="m_811560b9 mantine-Button-label"
+          >
+            Refuse non-essential cookies
+          </span>
+        </span>
+      </button>
+      <button
+        aria-label="Accept cookies"
+        class="mantine-focus-auto mantine-active m_77c9d27d mantine-Button-root m_87cf2631 mantine-UnstyledButton-root"
+        id="rcc-confirm-button"
+        style="--button-color: var(--mantine-color-white); background: rgb(255, 212, 45); border: 0px; border-radius: 0px; box-shadow: none; color: black; cursor: pointer; flex: 0 0 auto; padding: 5px 10px; margin: 15px;"
+        type="button"
+      >
+        <span
+          class="m_80f1301b mantine-Button-inner"
+        >
+          <span
+            class="m_811560b9 mantine-Button-label"
+          >
+            Accept all cookies
+          </span>
+        </span>
+      </button>
+    </div>
+  </div>
+</DocumentFragment>
+`;

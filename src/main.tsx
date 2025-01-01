@@ -6,7 +6,7 @@ import './index.css';
 
 // eslint-disable-next-line react-refresh/only-export-components
 const App = React.lazy(() =>
-  import(/* webpackChunkName: "App" */ './App').then(module => ({
+  import(/* webpackChunkName: "App" */ '@/features/app/App').then(module => ({
     default: module.App,
   }))
 );

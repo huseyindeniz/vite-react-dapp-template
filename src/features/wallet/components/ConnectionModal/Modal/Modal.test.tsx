@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { render } from '@test-utils';
 
 import { Modal } from './Modal';
 
@@ -17,8 +17,8 @@ describe('Feature: Wallet', () => {
           <Modal activeStep={0} isOpen={false} onDisconnect={onClickSpy} />
         );
         // Assert
-        expect(result1.container.childElementCount).toEqual(0);
-        expect(result2.container.childElementCount).toEqual(0);
+        expect(result1.container.childElementCount).toEqual(2);
+        expect(result2.container.childElementCount).toEqual(2);
       });
     });
 
@@ -27,7 +27,7 @@ describe('Feature: Wallet', () => {
         // Arrange
         // Act
         const { getByRole } = render(
-          <Modal activeStep={0} isOpen={true} onDisconnect={onClickSpy} />
+          <Modal activeStep={0} isOpen onDisconnect={onClickSpy} />
         );
         getByRole('button').click();
         // Assert
@@ -47,7 +47,7 @@ describe('Feature: Wallet', () => {
           <Modal
             activeStep={0}
             checkWalletContent={stateContent}
-            isOpen={true}
+            isOpen
             onDisconnect={onClickSpy}
           />
         );
@@ -68,7 +68,7 @@ describe('Feature: Wallet', () => {
             activeStep={0}
             checkWalletContent={stateContent}
             stepState="error"
-            isOpen={true}
+            isOpen
             onDisconnect={onClickSpy}
           />
         );
@@ -81,7 +81,7 @@ describe('Feature: Wallet', () => {
         expect(asFragment).toMatchSnapshot();
       });
 
-      // Loading state is failing, probably a bug in Chakra-Steps package
+      // Loading state is failing
       it.skip('when stepState is loading it should show loading icon', () => {
         // Arrange
         // Act
@@ -90,7 +90,7 @@ describe('Feature: Wallet', () => {
             activeStep={0}
             checkWalletContent={stateContent}
             stepState="loading"
-            isOpen={true}
+            isOpen
             onDisconnect={onClickSpy}
           />
         );
@@ -116,7 +116,7 @@ describe('Feature: Wallet', () => {
           <Modal
             activeStep={1}
             checkAccountContent={stateContent}
-            isOpen={true}
+            isOpen
             onDisconnect={onClickSpy}
           />
         );
@@ -137,7 +137,7 @@ describe('Feature: Wallet', () => {
             activeStep={1}
             checkAccountContent={stateContent}
             stepState="error"
-            isOpen={true}
+            isOpen
             onDisconnect={onClickSpy}
           />
         );
@@ -150,7 +150,7 @@ describe('Feature: Wallet', () => {
         expect(asFragment).toMatchSnapshot();
       });
 
-      // Loading state is failing, probably a bug in Chakra-Steps package
+      // Loading state is failing
       it.skip('when stepState is loading it should show loading icon', () => {
         // Arrange
         // Act
@@ -159,7 +159,7 @@ describe('Feature: Wallet', () => {
             activeStep={1}
             checkAccountContent={stateContent}
             stepState="loading"
-            isOpen={true}
+            isOpen
             onDisconnect={onClickSpy}
           />
         );
@@ -186,7 +186,7 @@ describe('Feature: Wallet', () => {
           <Modal
             activeStep={2}
             checkNetworkContent={stateContent}
-            isOpen={true}
+            isOpen
             onDisconnect={onClickSpy}
           />
         );
@@ -207,7 +207,7 @@ describe('Feature: Wallet', () => {
             activeStep={2}
             checkNetworkContent={stateContent}
             stepState="error"
-            isOpen={true}
+            isOpen
             onDisconnect={onClickSpy}
           />
         );
@@ -220,7 +220,7 @@ describe('Feature: Wallet', () => {
         expect(asFragment).toMatchSnapshot();
       });
 
-      // Loading state is failing, probably a bug in Chakra-Steps package
+      // Loading state is failing
       it.skip('when stepState is loading it should show loading icon', () => {
         // Arrange
         // Act
@@ -229,7 +229,7 @@ describe('Feature: Wallet', () => {
             activeStep={2}
             checkNetworkContent={stateContent}
             stepState="loading"
-            isOpen={true}
+            isOpen
             onDisconnect={onClickSpy}
           />
         );
@@ -256,7 +256,7 @@ describe('Feature: Wallet', () => {
           <Modal
             activeStep={3}
             checkSignContent={stateContent}
-            isOpen={true}
+            isOpen
             onDisconnect={onClickSpy}
           />
         );
@@ -277,7 +277,7 @@ describe('Feature: Wallet', () => {
             activeStep={3}
             checkSignContent={stateContent}
             stepState="error"
-            isOpen={true}
+            isOpen
             onDisconnect={onClickSpy}
           />
         );
@@ -290,7 +290,7 @@ describe('Feature: Wallet', () => {
         expect(asFragment).toMatchSnapshot();
       });
 
-      // Loading state is failing, probably a bug in Chakra-Steps package
+      // Loading state is failing
       it.skip('when stepState is loading it should show loading icon', () => {
         // Arrange
         // Act
@@ -299,7 +299,7 @@ describe('Feature: Wallet', () => {
             activeStep={3}
             checkSignContent={stateContent}
             stepState="loading"
-            isOpen={true}
+            isOpen
             onDisconnect={onClickSpy}
           />
         );
