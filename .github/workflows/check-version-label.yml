@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
 
 env:
-  VALID_LABELS: '["major", "minor", "patch"]'
+  VALID_LABELS: 'major,minor,patch'
 
 jobs:
   check-label:
@@ -16,34 +16,28 @@ jobs:
           # Extract labels from the pull request
           LABELS="${{ toJson(github.event.pull_request.labels.*.name) }}"
 
+          # Print the labels for debugging
           echo "PR Labels: $LABELS"
           echo "Valid labels: $VALID_LABELS"
 
-          # Validate that VALID_LABELS is valid JSON (array format)
-          VALID_LABELS_JSON=$(echo "$VALID_LABELS" | jq -e .)
-          if [ $? -ne 0 ]; then
-            echo "Error: VALID_LABELS is not a valid JSON array."
-            exit 1
-          fi
+          # Ensure LABELS is properly formatted as a CSV string (remove quotes)
+          LABELS_ARRAY=$(echo "$LABELS" | jq -r '. | @csv' | tr -d '"')
 
-          # Convert LABELS into a proper JSON array format for jq processing
-          LABELS_JSON=$(echo "$LABELS" | jq -c .)
+          # Count how many valid labels are present
+          MATCHED_LABELS=$(echo "$LABELS_ARRAY" | tr ',' '\n' | grep -E "\b($(echo $VALID_LABELS | tr ',' '|'))\b")
 
-          # Filter for valid labels using jq
-          VERSION_LABELS=$(echo "$LABELS_JSON" | jq -r --argjson valid_labels "$VALID_LABELS_JSON" \
-            '[.[] | select($valid_labels | index(.))] | join(",")')
+          # Count the number of matched valid labels
+          COUNT=$(echo "$MATCHED_LABELS" | wc -l)
 
-          # Count valid labels
-          COUNT=$(echo "$VERSION_LABELS" | grep -o ',' | wc -l)
-          COUNT=$((COUNT + 1))
-
-          # Ensure exactly one valid label
+          # If no valid label is found
           if [ "$COUNT" -eq 0 ]; then
             echo "Error: No valid version label found. Please add one of: $VALID_LABELS."
             exit 1
+          # If more than one valid label is found
           elif [ "$COUNT" -gt 1 ]; then
-            echo "Error: Multiple version labels found: $VERSION_LABELS. Please ensure only one version label is used."
+            echo "Error: Multiple version labels found: $MATCHED_LABELS. Please ensure only one version label is used."
             exit 1
           fi
 
-          echo "Valid version label: $VERSION_LABELS"
+          # If exactly one valid label is found
+          echo "Valid version label: $MATCHED_LABELS"
