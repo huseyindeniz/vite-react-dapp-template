@@ -1,32 +1,21 @@
 const fs = require('fs');
 const path = require('path');
 const semver = require('semver');
-const prompts = require('prompts');
 
-const packagePath = path.resolve(__dirname, 'package.json');
+const packagePath = path.resolve(__dirname, '../package.json');
 const pkg = JSON.parse(fs.readFileSync(packagePath, 'utf8'));
 
-(async () => {
-    const response = await prompts({
-        type: 'select',
-        name: 'versionType',
-        message: 'Select the type of version bump:',
-        choices: [
-            { title: 'Patch (e.g., 0.7.1 -> 0.7.2)', value: 'patch' },
-            { title: 'Minor (e.g., 0.7.1 -> 0.8.0)', value: 'minor' },
-            { title: 'Major (e.g., 0.7.1 -> 1.0.0)', value: 'major' },
-        ],
-    });
+// Get the versionType from command line arguments
+const versionType = process.argv[2];
 
-    if (!response.versionType) {
-        console.log('No version bump selected. Exiting...');
-        process.exit(0);
-    }
+if (!versionType || !['patch', 'minor', 'major'].includes(versionType)) {
+    console.log('Invalid or missing version bump type. Please specify "patch", "minor", or "major".');
+    process.exit(1);
+}
 
-    const newVersion = semver.inc(pkg.version, response.versionType);
-    pkg.version = newVersion;
+const newVersion = semver.inc(pkg.version, versionType);
+pkg.version = newVersion;
 
-    fs.writeFileSync(packagePath, JSON.stringify(pkg, null, 2) + '\n');
+fs.writeFileSync(packagePath, JSON.stringify(pkg, null, 2) + '\n');
 
-    console.log(`Version updated to ${newVersion}`);
-})();
+console.log(`Version updated to ${newVersion}`);
