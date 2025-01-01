@@ -89,14 +89,14 @@ jobs:
         run: npm ci
 
       - name: bump version
-        run: npm run release ${{$VERSION_TYPE}}
+        run: npm run release "${{ env.VERSION_TYPE }}"
 
       - name: Commit and push version bump changes
         uses: EndBug/add-and-commit@v10
         with:
           author_name: "GitHub Actions"
           author_email: "actions@github.com"
-          message: "chore: bump version to ${{$VERSION_TYPE}}"
+          message: "chore: bump version to ${{ env.VERSION_TYPE }}"
           add: "package.json"
           push: true
           branch: "main"
