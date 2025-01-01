@@ -16,6 +16,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
       # Get PR Number (from input if manually triggered, from event payload if triggered by PR)
       - name: Set PR Number
         id: pr_number
