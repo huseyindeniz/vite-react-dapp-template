@@ -39,4 +39,5 @@ jobs:
           else
             PR_LABELS="${{ github.event.pull_request.labels }}"
             echo "PR_LABELS=$PR_LABELS" >> $GITHUB_ENV
+          fi
           echo "PR_LABELS=$PR_LABELS"
