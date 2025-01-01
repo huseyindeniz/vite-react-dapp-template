@@ -11,13 +11,15 @@ on:
 
 permissions:
   contents: write
+
+env: 
+  HUSKY: 0
   
 jobs:
   version_bump:
     # This job will only run if the PR has been merged
     if: github.event.pull_request.merged == true || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -97,8 +99,7 @@ jobs:
       - name: Commit and push version bump changes
         uses: EndBug/add-and-commit@v9
         with:
-          author_name: "GitHub Actions"
-          author_email: "actions@github.com"
+          default_author: github_actions
           message: "chore: bump version to ${{ env.VERSION_TYPE }}"
           add: "package.json"
           push: true
