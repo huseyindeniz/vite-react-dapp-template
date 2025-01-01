@@ -99,7 +99,6 @@ jobs:
           message: "chore: bump version to ${{ env.VERSION_TYPE }}"
           add: "package.json"
           push: true
-          branch: "main"
 
 
 
