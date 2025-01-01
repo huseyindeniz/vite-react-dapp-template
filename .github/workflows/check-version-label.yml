@@ -15,9 +15,11 @@ jobs:
         run: |
           # Extract labels from the pull request
           LABELS=$(echo "${{ toJson(github.event.pull_request.labels.*.name) }}")
+          echo "Labels: $LABELS"
 
           # Filter for valid labels
           VERSION_LABELS=$(echo "$LABELS" | jq --argjson valid_labels "$VALID_LABELS" -r '.[] | select(. as $label | $valid_labels | index($label))')
+          echo "Version labels: $VERSION_LABELS"
 
           # Count valid labels
           COUNT=$(echo "$VERSION_LABELS" | grep -o '^[^ ]*' | wc -l)
