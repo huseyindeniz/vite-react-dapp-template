@@ -1,7 +1,7 @@
 {
   "name": "vitedapp",
   "private": true,
-  "version": "0.6.1",
+  "version": "0.7.0",
   "type": "module",
   "volta": {
     "node": "20.18.1",
