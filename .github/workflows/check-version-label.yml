@@ -1,46 +1,23 @@
 name: Check Version Label
 
 on:
+  pull_request:
+    types: [labeled, unlabeled]
   workflow_call:
   workflow_dispatch:
 
-env:
-  VALID_LABELS: '["major", "minor", "patch"]'
-
 jobs:
-  check-label:
+  label:
     runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
     steps:
-      - name: Extract and Validate Version Label
-        run: |
-          # Extract labels from the pull request (PR)
-          LABELS="${{ toJson(github.event.pull_request.labels.*.name) }}"
-
-          # Print PR and valid labels for debugging
-          echo "PR Labels: $LABELS"
-          echo "Valid labels: $VALID_LABELS"
-
-          # Convert VALID_LABELS from comma-separated string to JSON array
-          VALID_LABELS_JSON=$(echo "$VALID_LABELS" | tr ',' '\n' | jq -R . | jq -s .)
-
-          # Ensure the PR labels are in the correct format for comparison
-          PR_LABELS=$(echo "$LABELS" | jq -r '. | join(" ")')
-
-          # Compare PR labels against valid labels
-          MATCHED_LABELS=$(echo "$PR_LABELS" | jq -r 'split(" ") | map(select(. as $label | $valid_labels | index($label)))' --argjson valid_labels "$VALID_LABELS_JSON")
-
-          # Count the number of matched valid labels
-          COUNT=$(echo "$MATCHED_LABELS" | wc -l)
-
-          # If no valid label is found
-          if [ "$COUNT" -eq 0 ]; then
-            echo "Error: No valid version label found. Please add one of: $VALID_LABELS."
-            exit 1
-          # If more than one valid label is found
-          elif [ "$COUNT" -gt 1 ]; then
-            echo "Error: Multiple version labels found: $MATCHED_LABELS. Please ensure only one version label is used."
-            exit 1
-          fi
-
-          # If exactly one valid label is found
-          echo "Valid version label: $MATCHED_LABELS"
+      - uses: mheap/github-action-required-labels@v5
+        with:
+          mode: exactly
+          count: 1
+          labels: |
+            semver:patch
+            semver:minor
+            semver:major
