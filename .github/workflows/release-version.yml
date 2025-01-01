@@ -26,14 +26,17 @@ jobs:
             PR_NUMBER="${{ github.event.pull_request.number }}"
           fi
           echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_ENV
+          echo "PR_NUMBER=$PR_NUMBER"
 
       # Get PR Labels (manual trigger or PR closed)
       - name: Get PR Labels
         id: pr_labels
         run: |
+          echo "PR_NUMBER=$PR_NUMBER"
           if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
             PR_LABELS=$(gh pr view $PR_NUMBER --json labels --jq '.labels[].name')
             echo "PR_LABELS=$PR_LABELS" >> $GITHUB_ENV
           else
             PR_LABELS="${{ github.event.pull_request.labels }}"
             echo "PR_LABELS=$PR_LABELS" >> $GITHUB_ENV
+          echo "PR_LABELS=$PR_LABELS"
