@@ -22,7 +22,7 @@ jobs:
           echo "Valid labels: $VALID_LABELS_JSON"
 
           # Filter for valid labels
-          VERSION_LABELS=$(echo "$LABELS" | jq --argjson valid_labels "$VALID_LABELS_JSON" -r '.[] | select(. | IN($valid_labels[]))')
+          VERSION_LABELS=$(echo "$LABELS" | jq --argjson valid_labels "$VALID_LABELS_JSON" -r '[.[] | select(. == ($valid_labels[]))] | join(",")')
           echo "Version labels: $VERSION_LABELS"
 
           # Count valid labels
