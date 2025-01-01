@@ -18,6 +18,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: 'main'
+        
       # Get PR Number (from input if manually triggered, from event payload if triggered by PR)
       - name: Set PR Number
         id: pr_number
@@ -29,6 +32,7 @@ jobs:
           fi
           echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_ENV
           echo "PR_NUMBER=$PR_NUMBER"
+          
       # Get PR Labels (manual trigger or PR closed)
       - name: Get PR Labels
         id: pr_labels
@@ -44,6 +48,7 @@ jobs:
             echo "PR_LABELS=$PR_LABELS" >> $GITHUB_ENV
           fi
           echo "PR_LABELS=$PR_LABELS"
+          
       # Check for semver labels and extract the value
       - name: Check semver labels and extract version type
         id: check_semver
@@ -74,4 +79,27 @@ jobs:
           VERSION_TYPE="${MATCHED_LABEL#semver:}"
           echo "VERSION_TYPE=$VERSION_TYPE" >> $GITHUB_ENV
           echo "VERSION_TYPE=$VERSION_TYPE"
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.18.1'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: bump version
+        run: npm run release ${{$VERSION_TYPE}}
+
+      - name: Commit and push version bump changes
+        uses: EndBug/add-and-commit@v10
+        with:
+          author_name: "GitHub Actions"
+          author_email: "actions@github.com"
+          message: "chore: bump version to ${{$VERSION_TYPE}}"
+          add: "package.json"
+          push: true
+          branch: "main"
+
+
 
