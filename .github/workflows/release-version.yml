@@ -9,6 +9,9 @@ on:
         description: 'Pull Request Number'
         required: true
 
+permissions:
+  contents: write
+  
 jobs:
   version_bump:
     # This job will only run if the PR has been merged
