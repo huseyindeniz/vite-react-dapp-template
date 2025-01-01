@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
 
 env:
-  VALID_LABELS: '["major", "minor", "patch"]'
+  VALID_LABELS: 'major,minor,patch'
 
 jobs:
   check-label:
@@ -13,20 +13,20 @@ jobs:
     steps:
       - name: Validate Version Label
         run: |
+          echo "Valid labels: $VALID_LABELS"
+
           # Extract labels from the pull request
           LABELS=$(echo "${{ toJson(github.event.pull_request.labels.*.name) }}")
-          echo "Labels: $LABELS"
-
-          # Parse VALID_LABELS to ensure it's treated as JSON
-          VALID_LABELS_JSON=$(echo "$VALID_LABELS" | jq '.')
-          echo "Valid labels: $VALID_LABELS_JSON"
+          echo "PR Labels: $LABELS"
 
           # Filter for valid labels
-          VERSION_LABELS=$(echo "$LABELS" | jq --argjson valid_labels "$VALID_LABELS_JSON" -r '[.[] | select(. == ($valid_labels[]))] | join(",")')
-          echo "Version labels: $VERSION_LABELS"
+          VERSION_LABELS=$(echo "$LABELS" | jq -r --arg valid_labels "$VALID_LABELS" \
+            '[.[] | select($valid_labels | contains(.) )] | join(",")')
+          echo "Version labels found: $VERSION_LABELS"
 
           # Count valid labels
-          COUNT=$(echo "$VERSION_LABELS" | grep -o '^[^ ]*' | wc -l)
+          COUNT=$(echo "$VERSION_LABELS" | grep -o ',' | wc -l)
+          COUNT=$((COUNT + 1))
 
           # Ensure exactly one valid label
           if [ "$COUNT" -eq 0 ]; then
