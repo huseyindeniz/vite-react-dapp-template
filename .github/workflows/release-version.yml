@@ -29,7 +29,6 @@ jobs:
           fi
           echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_ENV
           echo "PR_NUMBER=$PR_NUMBER"
-
       # Get PR Labels (manual trigger or PR closed)
       - name: Get PR Labels
         id: pr_labels
@@ -45,3 +44,34 @@ jobs:
             echo "PR_LABELS=$PR_LABELS" >> $GITHUB_ENV
           fi
           echo "PR_LABELS=$PR_LABELS"
+      # Check for semver labels and extract the value
+      - name: Check semver labels and extract version type
+        id: check_semver
+        run: |
+          # Define the allowed labels
+          ALLOWED_LABELS=("semver:major" "semver:minor" "semver:patch")
+          # Initialize a variable to track the matched label
+          MATCHED_LABEL=""
+          # Loop through the allowed labels and check if they are in PR_LABELS
+          for label in "${ALLOWED_LABELS[@]}"; do
+            if [[ "$PR_LABELS" == *"$label"* ]]; then
+              # If we already found a match, check for multiple matches
+              if [[ -n "$MATCHED_LABEL" ]]; then
+                echo "Error: Multiple semver labels found. Only one semver label is allowed."
+                exit 1
+              fi
+              MATCHED_LABEL="$label"
+            fi
+          done
+          
+          # Check if no label is found
+          if [[ -z "$MATCHED_LABEL" ]]; then
+            echo "Error: No semver labels found. Please add one of the following labels: semver:major, semver:minor, semver:patch."
+            exit 1
+          fi
+          
+          # Extract the version type (major, minor, patch)
+          VERSION_TYPE="${MATCHED_LABEL#semver:}"
+          echo "VERSION_TYPE=$VERSION_TYPE" >> $GITHUB_ENV
+          echo "VERSION_TYPE=$VERSION_TYPE"
+
