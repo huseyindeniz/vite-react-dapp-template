@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
 
 env:
-  VALID_LABELS: 'major minor patch'
+  VALID_LABELS: '["major", "minor", "patch"]'
 
 jobs:
   check-label:
@@ -14,13 +14,13 @@ jobs:
       - name: Validate Version Label
         run: |
           # Extract labels from the pull request
-          LABELS="${{ toJson(github.event.pull_request.labels.*.name) }}"
+          LABELS=$(echo "${{ toJson(github.event.pull_request.labels.*.name) }}")
 
           # Filter for valid labels
-          VERSION_LABELS=$(echo "$LABELS" | jq -r '.[] | select(. | IN(${VALID_LABELS// /, }))')
+          VERSION_LABELS=$(echo "$LABELS" | jq --argjson valid_labels "$VALID_LABELS" -r '.[] | select(. as $label | $valid_labels | index($label))')
 
           # Count valid labels
-          COUNT=$(echo "$VERSION_LABELS" | wc -l)
+          COUNT=$(echo "$VERSION_LABELS" | grep -o '^[^ ]*' | wc -l)
 
           # Ensure exactly one valid label
           if [ "$COUNT" -eq 0 ]; then
