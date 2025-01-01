@@ -1,0 +1,23 @@
+name: Check Missing Translations
+
+on:
+  workflow_call:
+  workflow_dispatch:
+
+jobs:
+  check-translations:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.18.1'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check translations
+        run: npm run check-translations

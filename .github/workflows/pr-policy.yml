@@ -1,0 +1,18 @@
+name: PR Policy
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  test-build:
+    name: Run Tests
+    uses: ./.github/workflows/test-build.yml
+
+  check-translations:
+    name: Check Translations
+    uses: ./.github/workflows/check-translations.yml
+
+  check-label:
+    name: Check Version Label
+    uses: ./.github/workflows/check-version-label.yml

@@ -1,0 +1,34 @@
+name: Check Version Label
+
+on:
+  workflow_call:
+  workflow_dispatch:
+
+env:
+  VALID_LABELS: 'major minor patch'
+
+jobs:
+  check-label:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate Version Label
+        run: |
+          # Extract labels from the pull request
+          LABELS="${{ toJson(github.event.pull_request.labels.*.name) }}"
+
+          # Filter for valid labels
+          VERSION_LABELS=$(echo "$LABELS" | jq -r '.[] | select(. | IN(${VALID_LABELS// /, }))')
+
+          # Count valid labels
+          COUNT=$(echo "$VERSION_LABELS" | wc -l)
+
+          # Ensure exactly one valid label
+          if [ "$COUNT" -eq 0 ]; then
+            echo "Error: No valid version label found. Please add one of: $VALID_LABELS."
+            exit 1
+          elif [ "$COUNT" -gt 1 ]; then
+            echo "Error: Multiple version labels found: $VERSION_LABELS. Please ensure only one version label is used."
+            exit 1
+          fi
+
+          echo "Valid version label: $VERSION_LABELS"
