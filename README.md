@@ -4,6 +4,8 @@
 
 ![GitHub stars](https://img.shields.io/github/stars/huseyindeniz/vite-react-dapp-template?style=social) ![GitHub forks](https://img.shields.io/github/forks/huseyindeniz/vite-react-dapp-template?style=social)
 
+![GitHub repo size](https://img.shields.io/github/repo-size/huseyindeniz/vite-react-dapp-template?style=plastic) ![GitHub language count](https://img.shields.io/github/languages/count/huseyindeniz/vite-react-dapp-template?style=plastic) ![GitHub top language](https://img.shields.io/github/languages/top/huseyindeniz/vite-react-dapp-template?style=plastic) ![GitHub last commit](https://img.shields.io/github/last-commit/huseyindeniz/vite-react-dapp-template?color=red&style=plastic)
+
 A Vite React template specifically designed for decentralized application (dApp) frontend development.
 
 See how it looks/works here: [https://snazzy-sorbet-15dcef.netlify.app](https://snazzy-sorbet-15dcef.netlify.app)
