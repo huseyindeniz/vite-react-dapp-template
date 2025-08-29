@@ -1,4 +1,3 @@
-/* eslint-disable react-refresh/only-export-components */
 import React from 'react';
 
 import { useTranslation } from 'react-i18next';

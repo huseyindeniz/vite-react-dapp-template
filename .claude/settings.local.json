@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ncu)",
+      "Bash(npm run lint)",
+      "Bash(npm run test:*)",
+      "Bash(npm run build:*)",
+      "Bash(npx ncu:*)",
+      "Bash(npx npm-check-updates:*)",
+      "Bash(ncu:*)",
+      "Bash(npm install)",
+      "Bash(npx vitest run:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
