@@ -9,7 +9,9 @@
       "Bash(npx npm-check-updates:*)",
       "Bash(ncu:*)",
       "Bash(npm install)",
-      "Bash(npx vitest run:*)"
+      "Bash(npx vitest run:*)",
+      "Bash(npm info:*)",
+      "Bash(npm install:*)"
     ],
     "deny": [],
     "ask": []
