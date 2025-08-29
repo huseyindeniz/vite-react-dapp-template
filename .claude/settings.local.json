@@ -11,7 +11,8 @@
       "Bash(npm install)",
       "Bash(npx vitest run:*)",
       "Bash(npm info:*)",
-      "Bash(npm install:*)"
+      "Bash(npm install:*)",
+      "Bash(npm outdated:*)"
     ],
     "deny": [],
     "ask": []
