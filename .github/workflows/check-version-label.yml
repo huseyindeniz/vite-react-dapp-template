@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: mheap/github-action-required-labels@v5
         with:
-          mode: exactly
+          mode: minimum
           count: 1
           labels: |
             semver:patch

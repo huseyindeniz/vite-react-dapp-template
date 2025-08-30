@@ -46,44 +46,55 @@ jobs:
         run: |
           echo "PR_NUMBER=$PR_NUMBER"
           if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
-            PR_LABELS=$(gh pr view $PR_NUMBER --json labels --jq '.labels[].name')
+            PR_LABELS=$(gh pr view $PR_NUMBER --json labels --jq '.labels[].name' | tr '\n' ' ')
             echo "PR_LABELS=$PR_LABELS" >> $GITHUB_ENV
           else
-            PR_LABELS="${{ github.event.pull_request.labels }}"
+            PR_LABELS=$(echo '${{ toJson(github.event.pull_request.labels) }}' | jq -r '.[].name' | tr '\n' ' ')
             echo "PR_LABELS=$PR_LABELS" >> $GITHUB_ENV
           fi
           echo "PR_LABELS=$PR_LABELS"
           
-      # Check for semver labels and extract the value
-      - name: Check semver labels and extract version type
+      # Check for semver labels and extract all version types
+      - name: Check semver labels and extract version types
         id: check_semver
         run: |
-          # Define the allowed labels
+          # Define the allowed labels in priority order (major > minor > patch)
           ALLOWED_LABELS=("semver:major" "semver:minor" "semver:patch")
-          # Initialize a variable to track the matched label
-          MATCHED_LABEL=""
+          # Initialize array to track matched labels
+          MATCHED_LABELS=()
+          
           # Loop through the allowed labels and check if they are in PR_LABELS
           for label in "${ALLOWED_LABELS[@]}"; do
             if [[ "$PR_LABELS" == *"$label"* ]]; then
-              # If we already found a match, check for multiple matches
-              if [[ -n "$MATCHED_LABEL" ]]; then
-                echo "Error: Multiple semver labels found. Only one semver label is allowed."
-                exit 1
-              fi
-              MATCHED_LABEL="$label"
+              MATCHED_LABELS+=("$label")
             fi
           done
           
           # Check if no label is found
-          if [[ -z "$MATCHED_LABEL" ]]; then
-            echo "Error: No semver labels found. Please add one of the following labels: semver:major, semver:minor, semver:patch."
+          if [[ ${#MATCHED_LABELS[@]} -eq 0 ]]; then
+            echo "Error: No semver labels found. Please add at least one of the following labels: semver:major, semver:minor, semver:patch."
             exit 1
           fi
           
-          # Extract the version type (major, minor, patch)
-          VERSION_TYPE="${MATCHED_LABEL#semver:}"
-          echo "VERSION_TYPE=$VERSION_TYPE" >> $GITHUB_ENV
-          echo "VERSION_TYPE=$VERSION_TYPE"
+          # If multiple labels exist, apply them in order of highest precedence
+          # Major > Minor > Patch
+          VERSION_TYPES=""
+          if [[ " ${MATCHED_LABELS[@]} " =~ " semver:major " ]]; then
+            VERSION_TYPES="${VERSION_TYPES} major"
+          fi
+          if [[ " ${MATCHED_LABELS[@]} " =~ " semver:minor " ]]; then
+            VERSION_TYPES="${VERSION_TYPES} minor"
+          fi
+          if [[ " ${MATCHED_LABELS[@]} " =~ " semver:patch " ]]; then
+            VERSION_TYPES="${VERSION_TYPES} patch"
+          fi
+          
+          # Trim leading space
+          VERSION_TYPES=$(echo "$VERSION_TYPES" | sed 's/^ *//')
+          
+          echo "Found semver labels: ${MATCHED_LABELS[@]}"
+          echo "VERSION_TYPES=$VERSION_TYPES" >> $GITHUB_ENV
+          echo "VERSION_TYPES=$VERSION_TYPES"
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -94,13 +105,18 @@ jobs:
         run: npm ci
 
       - name: bump version
-        run: npm run release "${{ env.VERSION_TYPE }}"
+        run: |
+          # Apply all version types in sequence
+          for version_type in ${{ env.VERSION_TYPES }}; do
+            echo "Applying $version_type version bump"
+            npm run release "$version_type"
+          done
 
       - name: Commit and push version bump changes
         uses: EndBug/add-and-commit@v9
         with:
           default_author: github_actions
-          message: "chore: bump version to ${{ env.VERSION_TYPE }}"
+          message: "chore: bump version (${{ env.VERSION_TYPES }})"
           add: "package.json"
           push: true
 
