@@ -1,4 +1,3 @@
-/* eslint-disable react-refresh/only-export-components */
 import React from 'react';
 
 import { useTranslation } from 'react-i18next';
@@ -31,6 +30,20 @@ const Page2 = React.lazy(() =>
   }))
 );
 
+const BlogPage = React.lazy(() =>
+  import(/* webpackChunkName: "BlogPage" */ './Blog/Blog').then(module => ({
+    default: module.Blog,
+  }))
+);
+
+const BlogPostPage = React.lazy(() =>
+  import(/* webpackChunkName: "BlogPostPage" */ './Blog/BlogPost').then(
+    module => ({
+      default: module.BlogPost,
+    })
+  )
+);
+
 export const routes = () => {
   const { t } = useTranslation('Menu');
 
@@ -60,8 +73,35 @@ export const routes = () => {
     isProtected: true,
   };
 
+  // Blog Route
+  const BlogHome: PageType = {
+    id: 'blog-home',
+    path: 'blog',
+    element: <BlogPage />,
+    menuLabel: t('Blog', { ns: 'Menu' }),
+    isShownInMainMenu: true,
+    isShownInSecondaryMenu: true,
+    isProtected: false,
+  };
+
+  // Blog Post Route
+  const BlogPostRoute: PageType = {
+    id: 'blog-post',
+    path: 'blog/:postId',
+    element: <BlogPostPage />,
+    menuLabel: t('Post', { ns: 'Menu' }),
+    isShownInMainMenu: false,
+    isShownInSecondaryMenu: false,
+    isProtected: false,
+  };
+
   // do not forget add your page routes into this array
-  const PageRoutes: PageType[] = [Page1Route, Page2Route];
+  const PageRoutes: PageType[] = [
+    Page1Route,
+    Page2Route,
+    BlogHome,
+    BlogPostRoute,
+  ];
 
   // Special Routes
   const HomeRoute: PageType = {

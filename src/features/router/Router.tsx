@@ -1,10 +1,11 @@
-import React, { JSX } from 'react';
+import React, { JSX, useEffect } from 'react';
 
 import { RouteObject, useRoutes } from 'react-router-dom';
 
+import { configureBlogFeature } from '@/features/blog-demo/configureBlogFeature';
 import { i18nConfig } from '@/features/i18n/config';
-
-import { withWalletProtection } from '../wallet/hocs/withWalletProtection';
+import { useSliceManagerInit } from '@/features/slice-manager/hooks/useSliceManagerInit';
+import { withWalletProtection } from '@/features/wallet/hocs/withWalletProtection';
 
 import { isHashRouter } from './config';
 import { AppRoutes } from './types';
@@ -33,7 +34,7 @@ const Layout = React.lazy(() =>
 
 const NotFoundPage = React.lazy(() =>
   import(
-    /* webpackChunkName: "NotFoundPage" */ '../../pages/NotFound/NotFound'
+    /* webpackChunkName: "NotFoundPage" */ '@/pages/NotFound/NotFound'
   ).then(module => ({ default: module.NotFoundPage }))
 );
 
@@ -42,6 +43,17 @@ export interface RoutesProps {
 }
 
 const Routes: React.FC<RoutesProps> = ({ routes }) => {
+  // Initialize the slice manager
+  const sliceManager = useSliceManagerInit();
+
+  useEffect(() => {
+    if (sliceManager) {
+      // Configure all your features
+      configureBlogFeature();
+      // configureProductFeature();
+    }
+  }, [sliceManager]);
+
   const { homeRoute, userRoute, pageRoutes } = routes;
 
   const protectedRoutes = pageRoutes.map(p => {

@@ -6,6 +6,10 @@ exports[`Feature: UI > Component: Layout/CookieConsentMessage > should render wi
     data-mantine-styles="true"
   >
     :root{--mantine-font-family: Open Sans, sans-serif;--mantine-font-family-headings: Open Sans, sans-serif;}
+
+
+
+
   </style>
   <style
     data-mantine-styles="classes"
@@ -74,6 +78,10 @@ exports[`Feature: UI > Component: Layout/CookieConsentMessage > should render wi
     data-mantine-styles="true"
   >
     :root{--mantine-font-family: Open Sans, sans-serif;--mantine-font-family-headings: Open Sans, sans-serif;}
+
+
+
+
   </style>
   <style
     data-mantine-styles="classes"

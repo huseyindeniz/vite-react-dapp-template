@@ -23,6 +23,7 @@ export default tseslint.config(
         ignores: ['dist', 'build', 'node_modules', '.storybook', '**/*.{mjs,cjs,js,d.ts,d.mts}'],
     },
     {
+        files: ['src/**/*'],
         languageOptions: {
             globals: {
                 browser: true,
@@ -30,7 +31,9 @@ export default tseslint.config(
             },
             parserOptions: {
                 parser: "@typescript-eslint/parser",
-                sourceType: "module"
+                sourceType: "module",
+                tsconfigRootDir: import.meta.dirname,
+                project: "./tsconfig.json"
             }
         },
 
@@ -89,6 +92,29 @@ export default tseslint.config(
                     }
                 }
             ]
+        },
+    },
+    {
+        files: ['*.config.ts', '*.config.js', '*.config.mjs'],
+        languageOptions: {
+            globals: {
+                node: true,
+                es2020: true,
+            },
+            parserOptions: {
+                parser: "@typescript-eslint/parser",
+                sourceType: "module",
+                tsconfigRootDir: import.meta.dirname,
+                project: "./tsconfig.node.json"
+            }
+        },
+        plugins: {
+            "import": eslintpluginimport
+        },
+        rules: {
+            "@typescript-eslint/no-explicit-any": "warn",
+            'no-unused-vars': "off",
+            "@typescript-eslint/no-unused-vars": "warn",
         },
     }
 )

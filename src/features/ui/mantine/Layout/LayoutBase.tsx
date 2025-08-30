@@ -2,7 +2,7 @@ import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
 import React, { ErrorInfo } from 'react';
 
-import { Burger, Center, Divider, Group, Container } from '@mantine/core';
+import { Burger, Center, Divider, Group, Container, Stack } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Notifications } from '@mantine/notifications';
 import log from 'loglevel';
@@ -68,7 +68,7 @@ export const LayoutBase: React.FC = () => {
                 <MainMenu mainMenuItems={mainMenuItems} onClick={close} />
               </Group>
             </Group>
-            <Group>
+            <Group visibleFrom="sm">
               <LangMenu />
               <ColorSchemeSwitch />
               <Wallet />
@@ -76,7 +76,13 @@ export const LayoutBase: React.FC = () => {
           </Layout.Header>
 
           <Layout.Navbar>
-            <MainMenu mainMenuItems={mainMenuItems} onClick={close} />
+            <MainMenu mainMenuItems={mainMenuItems} onClick={close} vertical />
+            <Divider my="sm" />
+            <Stack align="center" gap="sm">
+              <LangMenu />
+              <ColorSchemeSwitch />
+              <Wallet />
+            </Stack>
           </Layout.Navbar>
 
           <Layout.Content>

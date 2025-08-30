@@ -3,29 +3,24 @@ import { enableMapSet } from 'immer';
 import saga from 'redux-saga';
 import { all, fork } from 'redux-saga/effects';
 
+import { watchBlogDemoSaga } from '@/features/blog-demo/sagas';
 import {
   watchWalletSaga /*announceWalletLoaded*/,
 } from '@/features/wallet/sagas';
 
-/*
-If you need to use Ethers V5, 
-just uninstall ethers and install ethers v5
-npm uninstall ethers
-npm i ethers@5.*
-use EthersV5WalletAPI in this file
-*/
-// import { EthersV5WalletAPI } from '../services/ethersV5/wallet/WalletAPI';
 import { EthersV6WalletAPI } from '../services/ethersV6/wallet/WalletAPI';
+import { BlogDemoApi } from '../services/jsonplaceholder/BlogDemoApi';
 
 import RootReducer from './rootReducer';
 
 enableMapSet();
 
-// const walletApi = EthersV5WalletAPI.getInstance();
 const walletApi = EthersV6WalletAPI.getInstance();
+const blogDemoApi = BlogDemoApi.getInstance();
 
 function* RootSaga() {
   yield all([fork(watchWalletSaga, walletApi)]);
+  yield all([fork(watchBlogDemoSaga, blogDemoApi)]);
 }
 
 const sagaMiddleware = saga();
