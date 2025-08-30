@@ -19,20 +19,19 @@ export const MainMenu: React.FC<MainMenuProps> = ({
   vertical = false,
 }) => {
   const Container = vertical ? Stack : Group;
-  
+
   return (
     <div className={classes.inner}>
-      <Container gap={vertical ? "xs" : 6}>
+      <Container gap={vertical ? 'xs' : 6}>
         {mainMenuItems?.length > 0
           ? mainMenuItems.map((link, index) => (
               <NavLink
                 key={index}
                 to={link.path ?? ''}
                 onClick={onClick}
-                className={({ isActive }) => 
+                className={({ isActive }) =>
                   `${classes.link} ${isActive ? classes.active : ''}`
                 }
-                end={true}
               >
                 {link.menuLabel}
               </NavLink>
