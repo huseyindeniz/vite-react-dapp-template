@@ -27,6 +27,7 @@
     "@mantine/notifications": "^8.2.7",
     "@metamask/jazzicon": "^2.0.0",
     "@reduxjs/toolkit": "^2.8.2",
+    "axios": "^1.11.0",
     "ethers": "^6.15.0",
     "i18next": "^25.4.2",
     "i18next-browser-languagedetector": "^8.2.0",
@@ -101,7 +102,7 @@
       "vite": "$vite"
     },
     "@storybook/builder-vite": {
-      "vite": "$vite" 
+      "vite": "$vite"
     }
   }
 }

@@ -19,3 +19,8 @@
       background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-6));
     }
   }
+  
+  .active {
+    background-color: light-dark(var(--mantine-color-blue-1), var(--mantine-color-blue-9));
+    color: light-dark(var(--mantine-color-blue-9), var(--mantine-color-blue-1));
+  }

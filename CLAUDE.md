@@ -8,8 +8,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `npm run dev` - Start development server
 - `npm run build` - Build for production (runs TypeScript compilation and Vite build)
 - `npm run lint` - Run ESLint with zero warnings tolerance
-- `npm run test` - Run unit tests with Vitest
+- `npm run test` - Run unit tests with Vitest (supports `vitest run` for single run)
 - `npm run coverage` - Run tests with coverage report
+- `npm run preview` - Preview production build locally
 
 ### Storybook
 - `npm run storybook` - Start Storybook development server on port 6006
@@ -88,3 +89,17 @@ Uses TypeScript path mapping for clean imports:
 - Provider composition pattern for context management
 - Redux Saga for complex async flows
 - Supports both Ethers v5 and v6 (currently configured for v6)
+
+### Advanced Architecture
+
+#### Slice Manager System
+The codebase includes a sophisticated slice management system for automatic Redux state cleanup:
+- **SliceLifecycleManager**: Manages feature-based Redux slices with automatic cleanup strategies
+- **Cleanup Strategies**: `component` (cleanup when components unmount), `route` (cleanup when leaving routes), `cached` (time-based cleanup), `persistent` (never cleanup), `manual` (explicit cleanup only)
+- **Feature Registration**: Register features with route patterns and associated slices using `FeatureRouteConfig`
+- Use `configureBlogFeature.ts` as a reference for setting up new features with slice management
+
+#### External API Integration
+- JSONPlaceholder service (`src/services/jsonplaceholder/`) demonstrates REST API integration patterns
+- Blog demo feature shows complete feature architecture with models, actions, sagas, and components
+- Services layer uses dependency injection pattern with interface definitions (`IApi` types)

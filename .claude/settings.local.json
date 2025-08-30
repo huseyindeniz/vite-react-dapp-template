@@ -12,7 +12,11 @@
       "Bash(npx vitest run:*)",
       "Bash(npm info:*)",
       "Bash(npm install:*)",
-      "Bash(npm outdated:*)"
+      "Bash(npm outdated:*)",
+      "Bash(tree:*)",
+      "Bash(wc:*)",
+      "Bash(mkdir:*)",
+      "Bash(npm run lint:*)"
     ],
     "deny": [],
     "ask": []
