@@ -1,0 +1,92 @@
+@startuml system-overview
+!theme plain
+title Vite React dApp Template - System Architecture Overview
+
+package "Frontend Application" {
+  package "Presentation Layer" {
+    component [React App] as ReactApp
+    component [Mantine UI] as MantineUI
+    component [Layout Components] as Layout
+    component [Feature Components] as FeatureComponents
+  }
+
+  package "Business Logic Layer" {
+    component [Redux Store] as ReduxStore
+    component [Redux Saga] as ReduxSaga
+    component [Slice Lifecycle Manager] as SliceManager
+    component [Wallet State Machine] as WalletSM
+  }
+
+  package "Service Layer" {
+    component [Ethers.js Service] as EthersService
+    component [JSONPlaceholder API] as JsonAPI
+    component [i18n Service] as i18nService
+  }
+
+  package "Infrastructure Layer" {
+    component [Vite Build System] as Vite
+    component [TypeScript] as TypeScript
+    component [Testing Framework] as Testing
+  }
+}
+
+package "External Services" {
+  component [Web3 Wallets] as Web3Wallets
+  component [Blockchain Networks] as BlockchainNetworks
+  component [REST APIs] as RestAPIs
+}
+
+' Connections within Frontend
+ReactApp --> MantineUI
+ReactApp --> Layout
+Layout --> FeatureComponents
+FeatureComponents --> ReduxStore
+ReduxStore --> ReduxSaga
+ReduxSaga --> SliceManager
+ReduxSaga --> WalletSM
+ReduxSaga --> EthersService
+ReduxSaga --> JsonAPI
+ReactApp --> i18nService
+
+' External connections
+EthersService --> Web3Wallets
+EthersService --> BlockchainNetworks
+JsonAPI --> RestAPIs
+WalletSM --> Web3Wallets
+
+' Infrastructure connections
+Vite --> ReactApp
+TypeScript --> ReactApp
+Testing --> ReactApp
+
+note right of SliceManager
+  Advanced Redux slice 
+  lifecycle management with
+  automatic cleanup strategies
+end note
+
+note right of WalletSM
+  Three-model state machine:
+  - Provider Management
+  - Network Switching
+  - Account Authentication
+end note
+
+note right of Web3Wallets
+  Supported wallets:
+  - MetaMask
+  - Core
+  - Coinbase  
+  - Rabby
+end note
+
+note right of BlockchainNetworks
+  Supported networks:
+  - Ethereum Mainnet
+  - Polygon
+  - Avalanche
+  - BSC
+  + Testnets
+end note
+
+@enduml

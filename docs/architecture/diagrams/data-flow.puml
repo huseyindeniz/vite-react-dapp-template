@@ -1,0 +1,167 @@
+@startuml data-flow
+!theme plain
+title Application Data Flow and API Integration
+
+actor "User" as User
+participant "React Component" as Component
+participant "Custom Hook" as Hook
+participant "Redux Store" as Store
+participant "Redux Saga" as Saga
+participant "Service Layer" as Service
+participant "External API" as API
+database "Blockchain" as Blockchain
+
+== Component-Driven Data Flow ==
+
+User -> Component: User Interaction
+activate Component
+
+Component -> Hook: Call custom hook
+activate Hook
+
+Hook -> Store: dispatch(action)
+activate Store
+
+Store -> Saga: Trigger saga effect
+activate Saga
+
+Saga -> Service: Call service method
+activate Service
+
+alt Web3 Operation
+  Service -> Blockchain: Blockchain call
+  activate Blockchain
+  Blockchain --> Service: Response data
+  deactivate Blockchain
+else REST API Operation  
+  Service -> API: HTTP request
+  activate API
+  API --> Service: JSON response
+  deactivate API
+end
+
+Service --> Saga: Processed data
+deactivate Service
+
+Saga -> Store: dispatch success/failure
+deactivate Saga
+
+Store --> Hook: State updated
+deactivate Store
+
+Hook --> Component: New data
+deactivate Hook
+
+Component --> User: UI update
+deactivate Component
+
+== Slice Lifecycle Management ==
+
+participant "SliceLifecycleManager" as SliceManager
+participant "Component Registry" as Registry
+participant "Cleanup Strategy" as Cleanup
+
+Component -> Registry: Register component
+activate Registry
+
+Registry -> SliceManager: registerComponent()
+activate SliceManager
+
+SliceManager -> SliceManager: Track slice usage
+note right: Component-slice mapping
+
+Component -> Component: Component unmounts
+
+Component -> Registry: Unregister component
+Registry -> SliceManager: unregisterComponent()
+
+SliceManager -> Cleanup: Evaluate cleanup
+activate Cleanup
+
+alt Cleanup Required
+  Cleanup -> Store: dispatch cleanup action
+  Store -> Store: Reset slice state
+  note right: Memory optimization
+end
+
+deactivate Cleanup
+deactivate SliceManager  
+deactivate Registry
+
+== Service Layer Abstraction ==
+
+box "Blog Demo Flow"
+  participant "BlogComponent" as BlogComp
+  participant "useBlogPosts" as BlogHook
+  participant "Blog Saga" as BlogSaga
+  participant "BlogDemoApi" as BlogApi
+  participant "JSONPlaceholder" as JsonAPI
+end box
+
+BlogComp -> BlogHook: Load posts
+BlogHook -> Store: dispatch(getPosts)
+Store -> BlogSaga: Handle getPosts
+BlogSaga -> BlogApi: getPosts()
+BlogApi -> JsonAPI: GET /posts
+JsonAPI --> BlogApi: Posts array
+BlogApi --> BlogSaga: Normalized posts
+BlogSaga -> Store: Posts loaded
+Store --> BlogHook: Updated state
+BlogHook --> BlogComp: Posts data
+
+== Wallet State Flow ==
+
+box "Wallet Integration"
+  participant "ConnectButton" as WalletBtn
+  participant "useWallet" as WalletHook  
+  participant "Wallet Saga" as WalletSaga
+  participant "WalletAPI" as WalletAPI
+  participant "MetaMask" as MetaMask
+end box
+
+WalletBtn -> WalletHook: Connect wallet
+WalletHook -> Store: dispatch(connectWallet)
+Store -> WalletSaga: Handle wallet connection
+WalletSaga -> WalletAPI: connectWallet('metamask')
+WalletAPI -> MetaMask: Request connection
+MetaMask --> User: Connection prompt
+User -> MetaMask: Approve connection
+MetaMask --> WalletAPI: Connection result
+WalletAPI --> WalletSaga: Account data
+WalletSaga -> Store: Wallet connected
+Store --> WalletHook: Connection state
+WalletHook --> WalletBtn: Update UI
+
+note over Component, Hook
+  **Custom Hooks Pattern:**
+  - Encapsulate business logic
+  - Provide clean component API
+  - Handle loading/error states
+  - Abstract Redux complexity
+end note
+
+note over Saga, Service
+  **Service Abstraction:**
+  - Interface-driven development
+  - Testable service layer
+  - Environment configuration
+  - Error handling & retry logic
+end note
+
+note over SliceManager
+  **Automatic Cleanup:**
+  - Component unmount detection
+  - Route change handling
+  - Cache timeout management
+  - Memory leak prevention
+end note
+
+note over API, Blockchain
+  **External Integration:**
+  - REST APIs (JSONPlaceholder)
+  - Web3 Providers (Ethers.js)
+  - Multiple wallet support
+  - Multi-chain architecture
+end note
+
+@enduml

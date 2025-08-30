@@ -6,6 +6,7 @@ import { configureBlogFeature } from '@/features/blog-demo/configureBlogFeature'
 import { i18nConfig } from '@/features/i18n/config';
 import { useSliceManagerInit } from '@/features/slice-manager/hooks/useSliceManagerInit';
 import { withWalletProtection } from '@/features/wallet/hocs/withWalletProtection';
+import { usePostLoginRedirect } from '@/features/wallet/hooks/usePostLoginRedirect';
 
 import { isHashRouter } from './config';
 import { AppRoutes } from './types';
@@ -45,6 +46,9 @@ export interface RoutesProps {
 const Routes: React.FC<RoutesProps> = ({ routes }) => {
   // Initialize the slice manager
   const sliceManager = useSliceManagerInit();
+  
+  // Handle post-login redirect
+  usePostLoginRedirect();
 
   useEffect(() => {
     if (sliceManager) {

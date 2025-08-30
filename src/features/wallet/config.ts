@@ -45,3 +45,5 @@ export const SLOW_DOWN_IN_MS: number = import.meta.env
 export const DISABLE_WALLET_SIGN: boolean = JSON.parse(
   import.meta.env.VITE_WALLET_DISABLE_SIGN || 'false'
 );
+
+export const POST_LOGIN_REDIRECT_PATH: string | undefined = undefined;

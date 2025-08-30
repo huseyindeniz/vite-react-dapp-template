@@ -1,0 +1,167 @@
+@startuml wallet-state-flow
+!theme plain
+title Web3 Wallet State Management Flow
+
+participant "User" as User
+participant "Connect Button" as ConnectBtn
+participant "Connection Modal" as Modal
+participant "Provider Model" as Provider
+participant "Network Model" as Network  
+participant "Account Model" as Account
+participant "Wallet Service" as WalletService
+participant "Blockchain" as Blockchain
+
+User -> ConnectBtn: Click Connect
+activate ConnectBtn
+
+ConnectBtn -> Modal: Open connection modal
+activate Modal
+
+Modal -> Provider: detectWallets()
+activate Provider
+
+Provider -> WalletService: Check available wallets
+activate WalletService
+WalletService --> Provider: Available wallets list
+deactivate WalletService
+
+Provider --> Modal: Show wallet options
+deactivate Provider
+
+Modal --> User: Display wallet selection
+User -> Modal: Select wallet (e.g., MetaMask)
+
+Modal -> Provider: selectWallet(MetaMask)
+activate Provider
+
+Provider -> WalletService: Connect to MetaMask
+activate WalletService
+
+WalletService -> Blockchain: Request connection
+activate Blockchain
+Blockchain --> WalletService: Connection response
+deactivate Blockchain
+
+WalletService --> Provider: Connection status
+deactivate WalletService
+
+alt Connection Successful
+  Provider --> Modal: Wallet connected
+  deactivate Provider
+  
+  Modal -> Network: checkNetwork()
+  activate Network
+  
+  Network -> WalletService: Get current network
+  activate WalletService
+  WalletService --> Network: Current network info
+  deactivate WalletService
+  
+  alt Network Supported
+    Network --> Modal: Network valid
+    deactivate Network
+    
+    Modal -> Account: connectAccount()
+    activate Account
+    
+    Account -> WalletService: Get accounts
+    activate WalletService
+    WalletService -> Blockchain: Request accounts
+    activate Blockchain
+    Blockchain --> WalletService: Account list
+    deactivate Blockchain
+    WalletService --> Account: Account data
+    deactivate WalletService
+    
+    Account --> Modal: Account connected
+    deactivate Account
+    
+    alt Signing Required
+      Modal -> Account: signMessage()
+      activate Account
+      
+      Account -> WalletService: Request signature
+      activate WalletService
+      WalletService -> Blockchain: Sign message
+      activate Blockchain
+      Blockchain --> User: Signature prompt
+      User -> Blockchain: Approve/Reject
+      Blockchain --> WalletService: Signature result
+      deactivate Blockchain
+      WalletService --> Account: Signature data
+      deactivate WalletService
+      
+      Account --> Modal: Signing complete
+      deactivate Account
+    end
+    
+    Modal --> User: Connection successful
+    Modal -> ConnectBtn: Update UI state
+    deactivate Modal
+    deactivate ConnectBtn
+    
+  else Network Not Supported
+    Network -> Network: switchNetwork()
+    Network -> WalletService: Request network switch
+    activate WalletService
+    WalletService -> Blockchain: Switch chain
+    activate Blockchain
+    Blockchain --> User: Network switch prompt
+    User -> Blockchain: Approve/Reject
+    Blockchain --> WalletService: Switch result
+    deactivate Blockchain
+    WalletService --> Network: Network switched
+    deactivate WalletService
+    Network --> Modal: Continue with account
+    deactivate Network
+  end
+  
+else Connection Failed
+  Provider --> Modal: Show error
+  Modal --> User: Connection error
+  deactivate Provider
+  deactivate Modal
+  deactivate ConnectBtn
+end
+
+note over Provider, Account
+  Three-Model State Machine:
+  
+  **Provider Model**
+  - Wallet detection & selection
+  - Connection management
+  
+  **Network Model** 
+  - Chain validation & switching
+  - Network configuration
+  
+  **Account Model**
+  - Account authentication
+  - Message signing
+  - Balance tracking
+end note
+
+note over WalletService
+  **Supported Wallets:**
+  - MetaMask
+  - Core
+  - Coinbase
+  - Rabby
+  
+  **Supported Networks:**
+  - Ethereum Mainnet
+  - Polygon
+  - Avalanche
+  - BSC
+  + All testnets
+end note
+
+note over User, Blockchain
+  **Security Features:**
+  - User consent for all operations
+  - Configurable signing timeout
+  - Network validation
+  - Error boundary handling
+end note
+
+@enduml

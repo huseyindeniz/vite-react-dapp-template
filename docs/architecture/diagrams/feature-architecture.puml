@@ -1,0 +1,155 @@
+@startuml feature-architecture
+!theme plain
+title Feature-Based Architecture
+
+package "Core Features" {
+  package "App Feature" {
+    component [App.tsx] as App
+    component [Provider Composition] as Providers
+  }
+
+  package "Wallet Feature" {
+    component [Provider Model] as ProviderModel
+    component [Network Model] as NetworkModel  
+    component [Account Model] as AccountModel
+    component [Wallet Components] as WalletComponents
+    component [Web3 Configuration] as Web3Config
+  }
+
+  package "UI Feature" {
+    component [Mantine Theme] as MantineTheme
+    component [Layout Components] as LayoutComponents
+    component [Shared Components] as SharedComponents
+    component [Color Scheme] as ColorScheme
+  }
+
+  package "Router Feature" {
+    component [Router] as Router
+    component [Route Definitions] as RouteDefinitions
+    component [Navigation Hooks] as NavigationHooks
+  }
+
+  package "i18n Feature" {
+    component [i18next Config] as i18nConfig
+    component [Translation Files] as Translations
+    component [Language Components] as LangComponents
+  }
+
+  package "Slice Manager Feature" {
+    component [SliceLifecycleManager] as SliceManager
+    component [Cleanup Strategies] as CleanupStrategies
+    component [Feature Registration] as FeatureReg
+  }
+}
+
+package "Demo Features" {
+  package "Blog Demo Feature" {
+    component [Posts Model] as PostsModel
+    component [Authors Model] as AuthorsModel
+    component [Blog Components] as BlogComponents
+    component [Blog Configuration] as BlogConfig
+  }
+}
+
+package "Infrastructure" {
+  package "Services" {
+    component [Ethers.js Service] as EthersService
+    component [JSONPlaceholder Service] as JsonService
+    component [Service Interfaces] as ServiceInterfaces
+  }
+
+  package "Store" {
+    component [Root Reducer] as RootReducer
+    component [Store Configuration] as StoreConfig
+    component [Saga Orchestration] as SagaOrch
+  }
+
+  package "Pages" {
+    component [Route Components] as RouteComponents
+    component [Lazy Loading] as LazyLoading
+  }
+
+  package "Hooks" {
+    component [Custom Hooks] as CustomHooks
+  }
+}
+
+' App Feature connections
+App --> Providers
+Providers --> StoreConfig
+Providers --> MantineTheme
+Providers --> Router
+
+' Wallet Feature internal connections
+ProviderModel --> NetworkModel
+NetworkModel --> AccountModel
+WalletComponents --> ProviderModel
+WalletComponents --> NetworkModel
+WalletComponents --> AccountModel
+Web3Config --> EthersService
+
+' UI Feature connections
+LayoutComponents --> SharedComponents
+LayoutComponents --> MantineTheme
+ColorScheme --> MantineTheme
+
+' Router Feature connections
+Router --> RouteDefinitions
+Router --> RouteComponents
+NavigationHooks --> Router
+
+' i18n Feature connections
+i18nConfig --> Translations
+LangComponents --> i18nConfig
+
+' Slice Manager connections
+SliceManager --> CleanupStrategies
+SliceManager --> FeatureReg
+BlogConfig --> SliceManager
+
+' Blog Demo connections
+PostsModel --> JsonService
+AuthorsModel --> JsonService
+BlogComponents --> PostsModel
+BlogComponents --> AuthorsModel
+
+' Store connections
+RootReducer --> ProviderModel
+RootReducer --> NetworkModel
+RootReducer --> AccountModel
+RootReducer --> PostsModel
+RootReducer --> AuthorsModel
+StoreConfig --> RootReducer
+StoreConfig --> SagaOrch
+
+' Service connections
+JsonService --> ServiceInterfaces
+EthersService --> ServiceInterfaces
+
+' Pages connections
+RouteComponents --> LazyLoading
+RouteComponents --> BlogComponents
+RouteComponents --> WalletComponents
+
+note right of SliceManager
+  Automatic cleanup strategies:
+  - Component-based
+  - Route-based  
+  - Cache-based
+  - Persistent
+  - Manual
+end note
+
+note right of Web3Config
+  Multi-wallet & multi-chain
+  configuration with environment
+  variable support
+end note
+
+note bottom of BlogConfig
+  Example feature configuration
+  showing complete Redux slice
+  lifecycle management
+end note
+
+@enduml
