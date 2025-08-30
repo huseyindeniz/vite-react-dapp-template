@@ -46,4 +46,5 @@ export const DISABLE_WALLET_SIGN: boolean = JSON.parse(
   import.meta.env.VITE_WALLET_DISABLE_SIGN || 'false'
 );
 
-export const POST_LOGIN_REDIRECT_PATH: string | undefined = undefined;
+export const POST_LOGIN_REDIRECT_PATH: string | undefined =
+  import.meta.env.VITE_POST_LOGIN_REDIRECT_PATH || undefined;
