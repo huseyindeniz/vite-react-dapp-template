@@ -1,0 +1,186 @@
+@startuml component-hierarchy
+!theme plain
+title Component Hierarchy and Routing Structure
+
+package "Application Root" {
+  component [App] as App
+  component [ComposedProviders] as Providers
+}
+
+package "Providers Layer" {
+  component [Redux Provider] as ReduxProvider
+  component [Mantine Provider] as MantineProvider
+  component [i18n Provider] as i18nProvider
+}
+
+package "Router Layer" {
+  component [Router] as Router
+  component [Route Definitions] as Routes
+}
+
+package "Layout Layer" {
+  component [Layout] as Layout
+  component [Header] as Header
+  component [Sidebar] as Sidebar
+  component [Main Content] as MainContent
+  component [Footer] as Footer
+}
+
+package "Navigation Components" {
+  component [MainMenu] as MainMenu
+  component [SecondaryMenu] as SecondaryMenu
+  component [ProfileDropdown] as ProfileDropdown
+  component [LanguageMenu] as LanguageMenu
+  component [ColorSchemeSwitch] as ColorSchemeSwitch
+}
+
+package "Wallet Components" {
+  component [ConnectButton] as ConnectButton
+  component [ConnectionModal] as ConnectionModal
+  component [WalletLogo] as WalletLogo
+  component [NetworkLogo] as NetworkLogo
+  component [BlockInfo] as BlockInfo
+}
+
+package "Page Components" {
+  component [HomePage] as HomePage
+  component [UserPage] as UserPage
+  component [Page1] as Page1
+  component [Page2] as Page2
+  component [BlogPage] as BlogPage
+  component [BlogPostPage] as BlogPostPage
+  component [NotFoundPage] as NotFoundPage
+}
+
+package "Blog Feature Components" {
+  component [Posts] as Posts
+  component [PostItem] as PostItem
+  component [PostLoading] as PostLoading
+  component [PostEmptyList] as PostEmptyList
+  component [PostLoadingError] as PostLoadingError
+  component [PostLoadMoreButton] as PostLoadMoreButton
+}
+
+package "Shared UI Components" {
+  component [SiteLogo] as SiteLogo
+  component [PageMeta] as PageMeta
+  component [PageLoading] as PageLoading
+  component [ErrorFallback] as ErrorFallback
+  component [CookieConsent] as CookieConsent
+  component [ScrollToTopButton] as ScrollToTopButton
+  component [Copyright] as Copyright
+}
+
+' Main application structure
+App --> Providers
+Providers --> ReduxProvider
+Providers --> MantineProvider
+ReduxProvider --> i18nProvider
+i18nProvider --> Router
+Router --> Routes
+Routes --> Layout
+
+' Layout structure
+Layout --> Header
+Layout --> Sidebar
+Layout --> MainContent
+Layout --> Footer
+
+' Header components
+Header --> MainMenu
+Header --> ProfileDropdown
+Header --> ConnectButton
+Header --> ColorSchemeSwitch
+
+' Sidebar components
+Sidebar --> SecondaryMenu
+Sidebar --> LanguageMenu
+
+' Navigation connections
+MainMenu --> SiteLogo
+ProfileDropdown --> WalletLogo
+ProfileDropdown --> NetworkLogo
+
+' Wallet components hierarchy
+ConnectButton --> ConnectionModal
+ConnectionModal --> WalletLogo
+ConnectionModal --> NetworkLogo
+ConnectionModal --> BlockInfo
+
+' Main content routing
+MainContent --> HomePage
+MainContent --> UserPage
+MainContent --> Page1
+MainContent --> Page2
+MainContent --> BlogPage
+MainContent --> BlogPostPage
+MainContent --> NotFoundPage
+
+' Blog feature components
+BlogPage --> Posts
+BlogPostPage --> Posts
+Posts --> PostItem
+Posts --> PostLoading
+Posts --> PostEmptyList
+Posts --> PostLoadingError
+Posts --> PostLoadMoreButton
+
+' Shared components integration
+Layout --> PageMeta
+Layout --> PageLoading
+Layout --> ErrorFallback
+Layout --> CookieConsent
+Layout --> ScrollToTopButton
+Footer --> Copyright
+
+note right of Providers
+  **Provider Composition:**
+  1. Redux Provider (state)
+  2. Mantine Provider (UI theme)
+  3. i18n Provider (localization)
+  
+  Providers are composed using
+  the composeProviders utility
+end note
+
+note right of Routes
+  **Route Configuration:**
+  - / → HomePage (index)
+  - /user → UserPage (protected)
+  - /page1 → Page1
+  - /page2 → Page2 (protected)  
+  - /blog → BlogPage
+  - /blog/:postId → BlogPostPage
+  - /* → NotFoundPage
+  
+  All routes use lazy loading
+end note
+
+note left of Posts
+  **Blog Components:**
+  - Demonstrates complete
+    feature architecture
+  - Redux integration
+  - Loading states
+  - Error handling
+  - Pagination
+end note
+
+note bottom of ProfileDropdown
+  **Wallet Integration:**
+  - Connection status
+  - Account information
+  - Network display
+  - Disconnect option
+  - Block information
+end note
+
+note bottom of Layout
+  **Responsive Design:**
+  - Mobile-first approach
+  - Mantine breakpoints
+  - Collapsible sidebar
+  - Adaptive navigation
+end note
+
+@enduml

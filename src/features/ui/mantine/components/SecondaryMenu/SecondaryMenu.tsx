@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { Group, Anchor } from '@mantine/core';
-import { NavLink as RouterLink } from 'react-router-dom';
+import { Group } from '@mantine/core';
+import { NavLink } from 'react-router-dom';
 
 import { MenuType } from '@/features/router/types';
 
@@ -19,14 +19,16 @@ export const SecondaryMenu: React.FC<SecondaryMenuProps> = ({
       <Group gap={6}>
         {secondaryMenuItems?.length > 0
           ? secondaryMenuItems.map((link, index) => (
-              <Anchor
+              <NavLink
                 key={index}
-                component={RouterLink}
                 to={link.path ?? ''}
-                className={classes.link}
+                end
+                className={({ isActive }) =>
+                  `${classes.link}${isActive ? ` ${classes.active}` : ''}`
+                }
               >
                 {link.menuLabel}
-              </Anchor>
+              </NavLink>
             ))
           : null}
       </Group>

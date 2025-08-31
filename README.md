@@ -1,94 +1,302 @@
 # React dApp Template (Vite)
 
 ![version](https://img.shields.io/github/package-json/version/huseyindeniz/vite-react-dapp-template)
-
 ![GitHub stars](https://img.shields.io/github/stars/huseyindeniz/vite-react-dapp-template?style=social) ![GitHub forks](https://img.shields.io/github/forks/huseyindeniz/vite-react-dapp-template?style=social)
-
 ![GitHub repo size](https://img.shields.io/github/repo-size/huseyindeniz/vite-react-dapp-template?style=plastic) ![GitHub language count](https://img.shields.io/github/languages/count/huseyindeniz/vite-react-dapp-template?style=plastic) ![GitHub top language](https://img.shields.io/github/languages/top/huseyindeniz/vite-react-dapp-template?style=plastic) ![GitHub last commit](https://img.shields.io/github/last-commit/huseyindeniz/vite-react-dapp-template?color=red&style=plastic)
 
-A Vite React template specifically designed for decentralized application (dApp) frontend development.
+A sophisticated, production-ready React template specifically designed for decentralized application (dApp) frontend development with modern Web3 integration.
 
-See how it looks/works here: [https://snazzy-sorbet-15dcef.netlify.app](https://snazzy-sorbet-15dcef.netlify.app)
+🚀 **[Live Demo](https://snazzy-sorbet-15dcef.netlify.app)** | 📚 **[Documentation](https://huseyindeniz.github.io/react-dapp-template-documentation/)**
 
-Quick start
+## Quick Start
 
-```sh
-npx degit huseyindeniz/vite-react-dapp-template my-project
-cd my-project
-
+```bash
+npx degit huseyindeniz/vite-react-dapp-template my-dapp
+cd my-dapp
 npm install
 npm run dev
 ```
 
-There is also a CRA version of this template [here](https://github.com/huseyindeniz/cra-template-dapp)
+> **⚠️ UI Library Migration Notice:**  
+> Starting from **v0.7.0**, this template uses **Mantine** as the UI library. Previous versions used Chakra UI.
 
-> **⚠️ Important Notice: UI Library Change:**
-> Starting from version 0.7.0, this project uses Mantine as the UI library. All previous versions (v0.6.x and earlier) used Chakra UI. If you're working with older versions, please be aware of the library change in the latest release.
+## Why Choose This Template?
 
-### Tired of searching for and configuring multiple React packages?
+### 🎯 **Built for Web3**
 
-React dApp Template (Vite) solves this challenge. It includes preconfigured packages for core functionality like routing and state management, as well as specialized features like internationalization. These packages are carefully selected and integrated, eliminating the need for developers to spend time researching and configuring individual packages. With the React dApp Template (Vite), developers can quickly build powerful and feature-rich applications without repetitive boilerplate code.
+- **Multi-Wallet Support**: MetaMask, Core, Coinbase, Rabby with extensible architecture
+- **Multi-Chain Ready**: Ethereum, Polygon, Avalanche, BSC + all major testnets
+- **Advanced Web3 State Management**: Sophisticated three-model wallet system (Provider, Network, Account)
 
-### Benefits of React dApp Template (Vite)?
+### ⚡ **Modern Development Experience**
 
-Compared to React-based frameworks, React dApp Template (Vite) allows decentralized hosting, eliminating reliance on a single server. It provides flexibility in tool and technology choices, supporting various React libraries and decentralized storage solutions.
+- **Latest React 19**: Concurrent features, improved Suspense, optimized rendering
+- **Vite 7**: Lightning-fast development and optimized production builds
+- **TypeScript 5**: Full type safety with advanced features
+- **Feature-Based Architecture**: Scalable organization by business domains
 
-React dApp Template (Vite) is an easy-to-use foundation for efficiently building high-quality dApps with React, suitable for developers seeking customization and quick development.
+### 🧠 **Advanced State Management**
 
-## Features
+- **Redux Toolkit + Redux Saga**: Predictable state with complex async workflows
+- **Slice Lifecycle Management**: Automatic cleanup strategies for optimal memory usage
+- **Feature-Based Slices**: Organized by business domains rather than technical layers
 
-- Authentication with Web3 Wallet ([Metamask](https://metamask.io), [Core](https://core.app), [Coinbase](https://www.coinbase.com), [Rabby](https://www.rabby.io) more wallets can be added)
-- Wallet Domain Name Support ([AVVY Domains](https://avvy.domains) and ENS)
-- Internationalization
-- UI
-- Page load optimizations
-- SEO support
+### 🎨 **Modern UI/UX**
 
-## What's Included and Preconfigured
+- **Mantine v8**: Comprehensive component library with excellent TypeScript support
+- **Responsive Design**: Mobile-first approach with flexible layouts
+- **Dark/Light Mode**: Built-in theme switching capabilities
+- **Accessibility**: ARIA compliant components out of the box
 
-### Web3 Packages
+## Core Features
 
-- ethers.js (v6)
+### 🔐 **Web3 Wallet Integration**
 
-### Testing Infrastucture
+- **Multi-Wallet Support**: [MetaMask](https://metamask.io), [Core](https://core.app), [Coinbase](https://www.coinbase.com), [Rabby](https://www.rabby.io)
+- **Multi-Chain Support**: Ethereum, Polygon, Avalanche, BSC + testnets
+- **Domain Name Support**: [AVVY Domains](https://avvy.domains) and ENS integration
 
-- Unit Tests: Vitest
-- Component Unit Tests: React Testing Library + Storybook
-- Integration Tests: React Testing Library + Storybook
-- E2E Tests: Cypress + Synpress + Cucumber (todo)
+### 🌍 **Internationalization (i18n)**
 
-### Other Packages
+- **Multi-Language Support**: English, Turkish (easily extensible)
+- **Browser Detection**: Automatic language detection
+- **Namespace Organization**: Feature-based translation keys
 
-**React**: A fast and efficient JavaScript library for building reusable user interfaces.
+### 🚦 **Routing & Navigation**
 
-**TypeScript**: A typed superset of JavaScript that improves code quality and catch errors, particularly beneficial for complex projects.
+- **React Router v7**: Latest routing with improved performance
+- **Protected Routes**: Wallet-based authentication guards
+- **Lazy Loading**: Route-based code splitting for optimal performance
+- **SEO Optimization**: Server-side rendering ready
 
-**Mantine**: A customizable UI component library for creating accessible user interfaces in React.
+### 🧪 **Comprehensive Testing**
 
-**React Router**: A declarative routing library for building single-page applications.
+- **Unit Tests**: Vitest with 30% coverage threshold
+- **Component Tests**: React Testing Library integration
+- **Visual Testing**: Storybook with multiple addons
+- **E2E Testing**: Cypress + Synpress setup (ready to implement)
 
-**Redux Toolkit**: A state management toolkit for predictable and scalable application development with Redux.
+## Technology Stack
 
-**Redux Saga**: A library for managing asynchronous logic in Redux applications.
+### **Core Technologies**
 
-**React Error Boundary**: A feature in React for handling and containing errors within specific components.
+| Technology        | Version | Purpose                              |
+| ----------------- | ------- | ------------------------------------ |
+| **React**         | ^19.1.1 | UI framework with latest features    |
+| **TypeScript**    | ^5.9.2  | Type safety and developer experience |
+| **Vite**          | ^7.1.3  | Build tool and development server    |
+| **Mantine**       | ^8.2.7  | UI component library                 |
+| **Redux Toolkit** | ^2.8.2  | State management                     |
+| **Redux Saga**    | ^1.3.0  | Async side effects                   |
+| **React Router**  | ^7.8.2  | Client-side routing                  |
+| **Ethers.js**     | ^6.15.0 | Web3/blockchain integration          |
+| **i18next**       | ^25.4.2 | Internationalization                 |
+| **Vitest**        | ^3.2.4  | Testing framework                    |
+| **Storybook**     | ^8.6.14 | Component documentation              |
 
-**React Helmet Async**: A library for managing metadata in React applications, optimizing SEO and discoverability.
+### **Advanced Features**
 
-**I18Next**: An internationalization library for easily translating JavaScript applications into different languages.
+#### **Slice Lifecycle Manager**
 
-**React Icons**: A library providing a collection of high-quality SVG icons for React applications.
+Automatic Redux slice cleanup with multiple strategies:
 
-**React Cookie Consent**: A library simplifying the implementation of cookie consent banners in React applications.
+- **Component**: Cleanup when components unmount
+- **Route**: Cleanup when leaving routes
+- **Cached**: Time-based cleanup with configurable timeout
+- **Persistent**: Never cleanup automatically
+- **Manual**: Only cleanup when explicitly triggered
 
-## Getting Started
+#### **Web3 State Machine**
 
-Please visit the [Official React dApp Template Documentation Page](https://huseyindeniz.github.io/react-dapp-template-documentation/) to start your dApp frontend development journey.
+Sophisticated three-model architecture:
 
-## Contributions
+- **Provider Model**: Wallet detection and connection
+- **Network Model**: Chain switching and validation
+- **Account Model**: User authentication and signing
 
-React dApp Template (Vite) is an open-source project and we welcome contributions from the community. If you have any suggestions, please use the [discussion](https://github.com/huseyindeniz/vite-react-dapp-template/discussions) tab. If you have any bug reports, please [open an issue](https://github.com/huseyindeniz/vite-react-dapp-template/issues) or [submit a pull request](https://github.com/huseyindeniz/vite-react-dapp-template/pulls).
+#### **Service Layer Abstraction**
+
+Interface-driven architecture for external integrations:
+
+- **Ethers.js Service**: Blockchain interaction abstraction
+- **JSONPlaceholder Demo**: REST API integration example
+- **Extensible Design**: Easy to add new services
+
+## Architecture Overview
+
+![System Architecture](docs/architecture/diagrams/system-overview.png)
+
+The template follows a **feature-based architecture** with clear separation of concerns:
+
+### **📁 Project Structure**
+
+```
+src/
+├── features/           # Feature-based organization
+│   ├── app/           # Application bootstrap & providers
+│   ├── wallet/        # Web3 wallet integration
+│   ├── ui/            # Mantine-based design system
+│   ├── router/        # Routing configuration
+│   ├── i18n/          # Internationalization
+│   ├── slice-manager/ # Redux lifecycle management
+│   └── blog-demo/     # Complete feature example
+├── pages/             # Application pages
+├── services/          # External API integrations
+├── store/             # Redux store configuration
+└── hooks/             # Custom React hooks
+```
+
+### **🔄 Data Flow**
+
+![Data Flow](docs/architecture/diagrams/data-flow.png)
+
+1. **UI Layer**: React components with Mantine design system
+2. **State Layer**: Redux Toolkit with automatic slice management
+3. **Service Layer**: Ethers.js and REST API abstractions
+4. **External**: Blockchain networks and REST APIs
+
+## Development Commands
+
+### **Core Commands**
+
+```bash
+npm run dev          # Development server with HMR
+npm run build        # Production build (TypeScript + Vite)
+npm run test         # Unit tests with Vitest
+npm run lint         # ESLint with zero warnings tolerance
+npm run coverage     # Test coverage report
+npm run preview      # Preview production build
+```
+
+### **Storybook**
+
+```bash
+npm run storybook         # Component development environment
+npm run build-storybook   # Build static Storybook
+```
+
+### **Internationalization**
+
+```bash
+npm run extract             # Extract translation keys
+npm run check-translations  # Validate translations
+```
+
+### **Release**
+
+```bash
+npm run release      # Version bump and release
+npm run prepare      # Setup git hooks
+```
+
+## Configuration
+
+### **Environment Variables**
+
+```bash
+# Wallet Configuration
+VITE_WALLET_SIGN_TIMEOUT_IN_SEC=60
+VITE_WALLET_DISABLE_SIGN=false
+VITE_WALLET_POST_LOGIN_REDIRECT_PATH=/dashboard
+
+# Router Configuration
+VITE_ROUTER_USE_HASH=false
+
+# Performance
+VITE_WALLET_SLOW_DOWN_IN_MS=500
+```
+
+### **Supported Networks**
+
+```typescript
+// Pre-configured networks
+SUPPORTED_NETWORKS = [
+  AvalancheChain,
+  BinanceSmartChain,
+  PolygonChain,
+  EthereumMainnetChain,
+  // + All major testnets
+];
+```
+
+### **TypeScript Path Aliases**
+
+```typescript
+"paths": {
+  "@/features/*": ["./src/features/*"],
+  "@/services/*": ["./src/services/*"],
+  "@/pages/*": ["./src/pages/*"],
+  "@/hooks/*": ["./src/hooks/*"],
+  "@/store/*": ["./src/store/*"]
+}
+```
+
+## Performance & Optimization
+
+### **Bundle Optimization**
+
+- ✅ **Manual Chunking**: Strategic code splitting
+- ✅ **Tree Shaking**: Dead code elimination
+- ✅ **Lazy Loading**: Route-based dynamic imports
+- ✅ **Memory Management**: Automatic Redux cleanup
+
+### **Build Output**
+
+```
+📦 Optimized Chunks:
+├── ethers.js      (~255KB) - Web3 functionality
+├── mantine.js     (~250KB) - UI components
+├── router.js      (~200KB) - Routing logic
+├── rtk.js         (~23KB)  - State management
+└── app.js         (~166KB) - Application code
+```
+
+## Documentation
+
+### **📚 Comprehensive Documentation**
+
+- **[Official Documentation](https://huseyindeniz.github.io/react-dapp-template-documentation/)**: Complete setup guide
+- **[Architecture Report](docs/architecture/ARCHITECTURE_REPORT.md)**: Detailed technical documentation
+- **[Technology Stack](docs/architecture/TECH_STACK.md)**: Technology analysis and recommendations
+- **[Dependencies](docs/architecture/DEPENDENCIES.md)**: Dependency management guide
+
+### **🎨 Visual Documentation**
+
+- **[System Overview](docs/architecture/diagrams/system-overview.png)**: High-level architecture
+- **[Component Hierarchy](docs/architecture/diagrams/component-hierarchy.png)**: UI component structure
+- **[Wallet State Flow](docs/architecture/diagrams/wallet-state-flow.png)**: Web3 state management
+- **[Redux Architecture](docs/architecture/diagrams/redux-architecture.png)**: State management flow
+
+## Alternative Versions
+
+- **[Create React App Version](https://github.com/huseyindeniz/cra-template-dapp)**: CRA-based template
+- **Legacy Versions**: v0.6.x and earlier used Chakra UI
+
+## Contributing
+
+We welcome contributions from the community!
+
+### **How to Contribute**
+
+- 💬 **Discussions**: [GitHub Discussions](https://github.com/huseyindeniz/vite-react-dapp-template/discussions) for suggestions
+- 🐛 **Bug Reports**: [GitHub Issues](https://github.com/huseyindeniz/vite-react-dapp-template/issues)
+- 🔧 **Pull Requests**: [GitHub PRs](https://github.com/huseyindeniz/vite-react-dapp-template/pulls)
+
+### **Development Setup**
+
+```bash
+git clone https://github.com/huseyindeniz/vite-react-dapp-template.git
+cd vite-react-dapp-template
+npm install
+npm run dev
+```
 
 ## License
 
-React dApp Template (Vite) is licensed under the [MIT License](./LICENSE).
+This project is licensed under the [MIT License](./LICENSE).
+
+---
+
+**🚀 Ready to build the next generation of decentralized applications?**
+
+[Get Started Now](https://huseyindeniz.github.io/react-dapp-template-documentation/) | [View Live Demo](https://snazzy-sorbet-15dcef.netlify.app) | [Star on GitHub ⭐](https://github.com/huseyindeniz/vite-react-dapp-template)

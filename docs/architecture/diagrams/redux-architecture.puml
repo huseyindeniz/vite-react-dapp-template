@@ -1,0 +1,146 @@
+@startuml redux-architecture
+!theme plain
+title Redux Store Architecture with Slice Lifecycle Management
+
+rectangle "Redux Store" {
+  component [Root Reducer] as RootReducer
+  component [Store Configuration] as Store
+  component [Saga Middleware] as SagaMiddleware
+}
+
+rectangle "Wallet Feature Slices" {
+  component [Provider Slice] as ProviderSlice
+  component [Network Slice] as NetworkSlice
+  component [Account Slice] as AccountSlice
+}
+
+rectangle "Blog Demo Feature Slices" {
+  component [Posts Slice] as PostsSlice
+  component [Authors Slice] as AuthorsSlice
+  component [Comments Slice] as CommentsSlice
+  component [Categories Slice] as CategoriesSlice
+}
+
+rectangle "Saga Orchestration" {
+  component [Root Saga] as RootSaga
+  component [Wallet Sagas] as WalletSagas
+  component [Blog Demo Sagas] as BlogSagas
+}
+
+rectangle "Slice Lifecycle Management" {
+  component [SliceLifecycleManager] as SliceManager
+  component [Cleanup Strategies] as CleanupStrategies
+  component [Feature Registration] as FeatureReg
+  component [Component Registry] as ComponentReg
+}
+
+rectangle "Service Layer" {
+  component [Wallet API Service] as WalletAPI
+  component [Blog Demo API Service] as BlogAPI
+}
+
+rectangle "Components" {
+  component [React Components] as ReactComponents
+  component [Feature Components] as FeatureComponents
+  component [Lifecycle HOCs] as LifecycleHOCs
+}
+
+' Store structure
+Store --> RootReducer
+Store --> SagaMiddleware
+RootReducer --> ProviderSlice
+RootReducer --> NetworkSlice
+RootReducer --> AccountSlice
+RootReducer --> PostsSlice
+RootReducer --> AuthorsSlice
+
+' Saga connections
+SagaMiddleware --> RootSaga
+RootSaga --> WalletSagas
+RootSaga --> BlogSagas
+WalletSagas --> WalletAPI
+BlogSagas --> BlogAPI
+
+' Slice Lifecycle connections
+SliceManager --> CleanupStrategies
+SliceManager --> FeatureReg
+SliceManager --> ComponentReg
+FeatureReg --> PostsSlice
+FeatureReg --> AuthorsSlice
+FeatureReg --> CommentsSlice
+FeatureReg --> CategoriesSlice
+
+' Component connections
+ReactComponents --> Store
+FeatureComponents --> LifecycleHOCs
+LifecycleHOCs --> SliceManager
+
+' Cleanup flow
+SliceManager --> ProviderSlice : cleanup actions
+SliceManager --> NetworkSlice : cleanup actions
+SliceManager --> AccountSlice : cleanup actions
+SliceManager --> PostsSlice : cleanup actions
+SliceManager --> AuthorsSlice : cleanup actions
+
+note right of SliceManager
+  **Cleanup Strategies:**
+  
+  **Component Strategy:**
+  - Cleanup when components unmount
+  - Short delay (2s default)
+  
+  **Route Strategy:** 
+  - Cleanup when leaving routes
+  - Longer delay (5s default)
+  
+  **Cached Strategy:**
+  - Time-based cleanup
+  - Configurable timeout (5-10min)
+  
+  **Persistent Strategy:**
+  - Never cleanup automatically
+  - Manual cleanup only
+  
+  **Manual Strategy:**
+  - Explicit cleanup calls only
+end note
+
+note right of RootReducer
+  **State Structure:**
+  ```typescript
+  RootState = {
+    wallet: {
+      provider: ProviderState,
+      network: NetworkState,
+      account: AccountState
+    },
+    blogDemo: {
+      posts: PostsState,
+      authors: AuthorsState,
+      comments: CommentsState,
+      categories: CategoriesState
+    }
+  }
+  ```
+end note
+
+note left of FeatureReg
+  **Feature Registration Example:**
+  ```typescript
+  const blogFeatureConfig = {
+    name: 'blogDemo',
+    routes: [/^\/blog($|\/)/],
+    slices: ['posts', 'authors', 'categories']
+  };
+  ```
+end note
+
+note bottom of BlogSagas
+  **Saga Pattern:**
+  - Effect handlers for async operations
+  - API service injection
+  - Error handling & retry logic
+  - Slice lifecycle integration
+end note
+
+@enduml
