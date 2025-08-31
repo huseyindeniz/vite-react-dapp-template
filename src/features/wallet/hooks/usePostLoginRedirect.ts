@@ -16,6 +16,7 @@ export const usePostLoginRedirect = () => {
   const { pageLink } = usePageLink();
   const { homeRoute, userRoute, pageRoutes } = usePages();
   const prevAuthenticatedRef = useRef(isAuthenticated);
+  const isMountedRef = useRef(true);
 
   const isValidRoute = useCallback(
     (path: string) => {
@@ -52,6 +53,13 @@ export const usePostLoginRedirect = () => {
   };
 
   useEffect(() => {
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
+
+  useEffect(() => {
     const prevAuthenticated = prevAuthenticatedRef.current;
     prevAuthenticatedRef.current = isAuthenticated;
 
@@ -64,6 +72,11 @@ export const usePostLoginRedirect = () => {
       POST_LOGIN_REDIRECT_PATH.trim() !== '' &&
       isValidRedirectPath(POST_LOGIN_REDIRECT_PATH)
     ) {
+      // Check if component is still mounted before navigating
+      if (!isMountedRef.current) {
+        return;
+      }
+
       // Check if redirect path is a valid route
       if (isValidRoute(POST_LOGIN_REDIRECT_PATH)) {
         // Use pageLink to get the proper i18n-aware path
