@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 
 import log from 'loglevel';
 import { useNavigate } from 'react-router-dom';
@@ -17,25 +17,34 @@ export const usePostLoginRedirect = () => {
   const { homeRoute, userRoute, pageRoutes } = usePages();
   const prevAuthenticatedRef = useRef(isAuthenticated);
 
+  const isValidRoute = useCallback(
+    (path: string) => {
+      const allRoutes = [homeRoute, userRoute, ...pageRoutes];
+      return allRoutes.some(route => {
+        if (route.index && path === '/') {
+          return true;
+        }
+        return route.path === path?.replace(/^\//, '');
+      });
+    },
+    [homeRoute, userRoute, pageRoutes]
+  );
+
   useEffect(() => {
     const prevAuthenticated = prevAuthenticatedRef.current;
     prevAuthenticatedRef.current = isAuthenticated;
 
     // Only redirect when transitioning from unauthenticated to authenticated
     // and POST_LOGIN_REDIRECT_PATH is explicitly set (not empty string)
-    if (!prevAuthenticated && isAuthenticated && POST_LOGIN_REDIRECT_PATH && POST_LOGIN_REDIRECT_PATH.trim() !== '') {
+    if (
+      !prevAuthenticated &&
+      isAuthenticated &&
+      POST_LOGIN_REDIRECT_PATH &&
+      POST_LOGIN_REDIRECT_PATH.trim() !== '' &&
+      !POST_LOGIN_REDIRECT_PATH.startsWith('http')
+    ) {
       // Check if redirect path is a valid route
-      const allRoutes = [homeRoute, userRoute, ...pageRoutes];
-      const isValidRoute = allRoutes.some(route => {
-        // For home route, match '/' only
-        if (route.index && POST_LOGIN_REDIRECT_PATH === '/') {
-          return true;
-        }
-        // For other routes, match the path exactly
-        return route.path === POST_LOGIN_REDIRECT_PATH?.replace(/^\//, '');
-      });
-
-      if (isValidRoute) {
+      if (isValidRoute(POST_LOGIN_REDIRECT_PATH)) {
         // Use pageLink to get the proper i18n-aware path
         const redirectPath = pageLink(POST_LOGIN_REDIRECT_PATH);
         navigate(redirectPath);

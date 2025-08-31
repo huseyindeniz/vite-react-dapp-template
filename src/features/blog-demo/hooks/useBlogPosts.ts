@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 
+import log from 'loglevel';
+
 import useTypedSelector from '@/hooks/useTypedSelector';
 
 import { LoadingStatusType } from '../models/shared/types/LoadingStatus';
@@ -39,8 +41,10 @@ export const useBlogPosts = () => {
     const startIndex = posts.length;
     setLastPostCount(posts.length); // Remember current count
     setMoreLoading(true);
-    // eslint-disable-next-line no-console
-    console.log(`Load More: posts.length=${posts.length}, calling fetchPosts with start=${startIndex}`);
+
+    log.debug(
+      `Load More: posts.length=${posts.length}, calling fetchPosts with start=${startIndex}`
+    );
     actions.fetchPosts({
       limit: 5,
       start: startIndex, // Continue from the last loaded index
