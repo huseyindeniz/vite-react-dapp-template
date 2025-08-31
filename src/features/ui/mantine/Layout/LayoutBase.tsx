@@ -2,7 +2,14 @@ import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
 import React, { ErrorInfo } from 'react';
 
-import { Burger, Center, Divider, Group, Container, Stack } from '@mantine/core';
+import {
+  Burger,
+  Center,
+  Divider,
+  Group,
+  Container,
+  Stack,
+} from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Notifications } from '@mantine/notifications';
 import log from 'loglevel';
@@ -11,10 +18,11 @@ import { HelmetProvider } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
 import { Outlet } from 'react-router-dom';
 
+import { Auth } from '@/features/auth/components/Auth';
 import { LangMenu } from '@/features/i18n/components/LangMenu/LangMenu';
 import { useI18nWatcher } from '@/features/i18n/useI18nWatchers';
-import { usePageLink } from '@/features/router/usePageLink';
-import { usePages } from '@/features/router/usePages';
+import { usePageLink } from '@/features/router/hooks/usePageLink';
+import { usePages } from '@/features/router/hooks/usePages';
 import { Wallet } from '@/features/wallet/components/Wallet';
 
 import { ColorSchemeSwitch } from '../components/ColorSchemeSwitch/ColorSchemeSwitch';
@@ -71,6 +79,7 @@ export const LayoutBase: React.FC = () => {
             <Group visibleFrom="sm">
               <LangMenu />
               <ColorSchemeSwitch />
+              <Auth size="sm" />
               <Wallet />
             </Group>
           </Layout.Header>
@@ -81,6 +90,7 @@ export const LayoutBase: React.FC = () => {
             <Stack align="center" gap="sm">
               <LangMenu />
               <ColorSchemeSwitch />
+              <Auth size="sm" fullWidth />
               <Wallet />
             </Stack>
           </Layout.Navbar>

@@ -16,7 +16,12 @@
       "Bash(tree:*)",
       "Bash(wc:*)",
       "Bash(mkdir:*)",
-      "Bash(npm run lint:*)"
+      "Bash(npm run lint:*)",
+      "WebSearch",
+      "WebFetch(domain:developers.google.com)",
+      "Bash(npx tsc:*)",
+      "Bash(npm test:*)",
+      "Bash(git rm:*)"
     ],
     "deny": [],
     "ask": []

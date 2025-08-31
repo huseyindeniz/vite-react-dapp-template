@@ -3,6 +3,7 @@ import { enableMapSet } from 'immer';
 import saga from 'redux-saga';
 import { all, fork } from 'redux-saga/effects';
 
+import { authSaga } from '@/features/auth/sagas';
 import { watchBlogDemoSaga } from '@/features/blog-demo/sagas';
 import {
   watchWalletSaga /*announceWalletLoaded*/,
@@ -21,6 +22,7 @@ const blogDemoApi = BlogDemoApi.getInstance();
 function* RootSaga() {
   yield all([fork(watchWalletSaga, walletApi)]);
   yield all([fork(watchBlogDemoSaga, blogDemoApi)]);
+  yield all([fork(authSaga)]);
 }
 
 const sagaMiddleware = saga();
