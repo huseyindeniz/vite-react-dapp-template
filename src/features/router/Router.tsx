@@ -9,7 +9,7 @@ import { withWalletProtection } from '@/features/wallet/hocs/withWalletProtectio
 import { usePostLoginRedirect } from '@/features/wallet/hooks/usePostLoginRedirect';
 
 import { isHashRouter } from './config';
-import { AppRoutes } from './types';
+import { AppRoutes } from './types/AppRoutes';
 
 const HashRouter = React.lazy(() =>
   import(/* webpackChunkName: "Router" */ 'react-router-dom').then(module => ({
@@ -44,11 +44,11 @@ export interface RoutesProps {
 }
 
 const Routes: React.FC<RoutesProps> = ({ routes }) => {
-  // Initialize the slice manager
-  const sliceManager = useSliceManagerInit();
-  
   // Handle post-login redirect (only triggers on auth state transition)
   usePostLoginRedirect();
+
+  // Initialize the slice manager
+  const sliceManager = useSliceManagerInit();
 
   useEffect(() => {
     if (sliceManager) {
@@ -79,7 +79,7 @@ const Routes: React.FC<RoutesProps> = ({ routes }) => {
       return {
         ...p,
         path: `/:${i18nConfig.urlParam}/${p.path}`,
-        children: p.children.map(c => {
+        children: p.children.map((c: RouteObject) => {
           if (c.index) {
             return c;
           }

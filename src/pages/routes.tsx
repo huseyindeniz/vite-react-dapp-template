@@ -2,7 +2,8 @@ import React from 'react';
 
 import { useTranslation } from 'react-i18next';
 
-import { AppRoutes, PageType } from '@/features/router/types';
+import { AppRoutes } from '@/features/router/types/AppRoutes';
+import { PageType } from '@/features/router/types/PageType';
 
 const HomePage = React.lazy(() =>
   import(/* webpackChunkName: "HomePage" */ './Home/Home').then(module => ({

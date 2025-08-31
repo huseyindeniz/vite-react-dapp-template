@@ -3,7 +3,7 @@ import React from 'react';
 import { Group } from '@mantine/core';
 import { NavLink } from 'react-router-dom';
 
-import { MenuType } from '@/features/router/types';
+import { MenuType } from '@/features/router/types/MenuType';
 
 import classes from './SecondaryMenu.module.css';
 

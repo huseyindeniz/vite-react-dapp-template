@@ -2,7 +2,7 @@ import { Card, ThemeIcon, Text, Button } from '@mantine/core';
 import { FaCheckCircle } from 'react-icons/fa';
 import { NavLink } from 'react-router-dom';
 
-import { usePageLink } from '@/features/router/usePageLink';
+import { usePageLink } from '@/features/router/hooks/usePageLink';
 
 export interface PostItemProps {
   post: {

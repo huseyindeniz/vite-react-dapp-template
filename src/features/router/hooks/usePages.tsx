@@ -6,7 +6,7 @@ import { i18nConfig } from '@/features/i18n/config';
 import { useWalletAuthentication } from '@/features/wallet/hooks/useWalletAuthentication';
 import { routes } from '@/pages/routes';
 
-import { MenuType } from './types';
+import { MenuType } from '../types/MenuType';
 
 export const usePages = () => {
   const { i18n } = useTranslation('Menu');

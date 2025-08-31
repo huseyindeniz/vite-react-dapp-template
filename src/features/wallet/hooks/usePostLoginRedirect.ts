@@ -2,8 +2,8 @@ import { useCallback, useEffect, useRef } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 
-import { usePageLink } from '@/features/router/usePageLink';
-import { usePages } from '@/features/router/usePages';
+import { usePageLink } from '@/features/router/hooks/usePageLink';
+import { usePages } from '@/features/router/hooks/usePages';
 
 import { POST_LOGIN_REDIRECT_PATH } from '../config';
 

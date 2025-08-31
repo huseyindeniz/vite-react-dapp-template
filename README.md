@@ -26,6 +26,7 @@ npm run dev
 
 - **Multi-Wallet Support**: MetaMask, Core, Coinbase, Rabby with extensible architecture
 - **Multi-Chain Ready**: Ethereum, Polygon, Avalanche, BSC + all major testnets
+- **Dual Authentication**: Web3 wallet + Google OAuth 2.0 for mainstream user onboarding
 - **Advanced Web3 State Management**: Sophisticated three-model wallet system (Provider, Network, Account)
 
 ### ⚡ **Modern Development Experience**
