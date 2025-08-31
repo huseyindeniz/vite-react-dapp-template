@@ -24,7 +24,6 @@ build
 *.local
 
 # Environment files
-.env*
 **/.env*
 
 # Editor directories and files
