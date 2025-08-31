@@ -44,7 +44,7 @@ export const Environment = () => {
         </Table.Tr>
 
         <Table.Tr>
-          <Table.Th>login Redirect</Table.Th>
+          <Table.Th>Login Redirect</Table.Th>
           <Table.Td>{import.meta.env.VITE_POST_LOGIN_REDIRECT_PATH}</Table.Td>
           <Table.Td>{`${POST_LOGIN_REDIRECT_PATH}`}</Table.Td>
         </Table.Tr>

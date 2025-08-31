@@ -30,6 +30,27 @@ export const usePostLoginRedirect = () => {
     [homeRoute, userRoute, pageRoutes]
   );
 
+  const isValidRedirectPath = (path: string): boolean => {
+    // Check for protocol-relative URLs
+    if (path.startsWith('//')) {
+      return false;
+    }
+    // Check for javascript: protocol
+    // eslint-disable-next-line no-script-url
+    if (path.toLowerCase().startsWith('javascript:')) {
+      return false;
+    }
+    // Check for data: protocol
+    if (path.toLowerCase().startsWith('data:')) {
+      return false;
+    }
+    // Check for http or https protocol
+    if (path.startsWith('http')) {
+      return false;
+    }
+    return true;
+  };
+
   useEffect(() => {
     const prevAuthenticated = prevAuthenticatedRef.current;
     prevAuthenticatedRef.current = isAuthenticated;
@@ -41,7 +62,7 @@ export const usePostLoginRedirect = () => {
       isAuthenticated &&
       POST_LOGIN_REDIRECT_PATH &&
       POST_LOGIN_REDIRECT_PATH.trim() !== '' &&
-      !POST_LOGIN_REDIRECT_PATH.startsWith('http')
+      isValidRedirectPath(POST_LOGIN_REDIRECT_PATH)
     ) {
       // Check if redirect path is a valid route
       if (isValidRoute(POST_LOGIN_REDIRECT_PATH)) {
@@ -49,14 +70,8 @@ export const usePostLoginRedirect = () => {
         const redirectPath = pageLink(POST_LOGIN_REDIRECT_PATH);
         navigate(redirectPath);
       } else {
-        log.warn(
-          `POST_LOGIN_REDIRECT_PATH "${POST_LOGIN_REDIRECT_PATH}" is not a valid route. Available routes:`,
-          [
-            '/',
-            ...pageRoutes.map(r => `/${r.path}`),
-            `/${userRoute.path}`,
-          ].join(', ')
-        );
+        log.warn(`Invalid redirect route...`);
+        navigate('/');
       }
     }
   }, [isAuthenticated, navigate, pageLink, homeRoute, userRoute, pageRoutes]);
