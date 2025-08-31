@@ -28,9 +28,10 @@ export const MainMenu: React.FC<MainMenuProps> = ({
               <NavLink
                 key={index}
                 to={link.path ?? ''}
+                end
                 onClick={onClick}
                 className={({ isActive }) =>
-                  `${classes.link} ${isActive ? classes.active : ''}`
+                  `${classes.link}${isActive ? ` ${classes.active}` : ''}`
                 }
               >
                 {link.menuLabel}

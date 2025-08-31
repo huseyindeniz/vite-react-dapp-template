@@ -5,6 +5,7 @@ import {
   DISABLE_WALLET_SIGN,
   SIGN_TIMEOUT_IN_SEC,
   SLOW_DOWN_IN_MS,
+  POST_LOGIN_REDIRECT_PATH,
 } from '@/features/wallet/config';
 
 export const Environment = () => {
@@ -15,7 +16,7 @@ export const Environment = () => {
         <Table.Tr>
           <Table.Th w={160}>Mode</Table.Th>
           <Table.Td>{import.meta.env.MODE}</Table.Td>
-          <Table.Td>-</Table.Td>
+          <Table.Td>Check</Table.Td>
         </Table.Tr>
 
         <Table.Tr>
@@ -40,6 +41,12 @@ export const Environment = () => {
           <Table.Th>Wallet: Slow Down</Table.Th>
           <Table.Td>{import.meta.env.VITE_WALLET_SLOW_DOWN_IN_MS}</Table.Td>
           <Table.Td>{`${SLOW_DOWN_IN_MS}`}</Table.Td>
+        </Table.Tr>
+
+        <Table.Tr>
+          <Table.Th>login Redirect</Table.Th>
+          <Table.Td>{import.meta.env.VITE_POST_LOGIN_REDIRECT_PATH}</Table.Td>
+          <Table.Td>{`${POST_LOGIN_REDIRECT_PATH}`}</Table.Td>
         </Table.Tr>
       </Table.Tbody>
     </Table>

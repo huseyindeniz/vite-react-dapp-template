@@ -47,7 +47,7 @@ const Routes: React.FC<RoutesProps> = ({ routes }) => {
   // Initialize the slice manager
   const sliceManager = useSliceManagerInit();
   
-  // Handle post-login redirect
+  // Handle post-login redirect (only triggers on auth state transition)
   usePostLoginRedirect();
 
   useEffect(() => {
