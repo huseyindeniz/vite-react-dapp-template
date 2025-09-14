@@ -5,5 +5,5 @@ export enum AuthState {
   LOGGING_IN = 'LOGGING_IN',
   AUTHENTICATED = 'AUTHENTICATED',
   LOGGING_OUT = 'LOGGING_OUT',
-  ERROR = 'ERROR'
+  ERROR = 'ERROR',
 }

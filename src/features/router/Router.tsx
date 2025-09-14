@@ -58,7 +58,7 @@ const Routes: React.FC<RoutesProps> = ({ routes }) => {
     }
   }, [sliceManager]);
 
-  const { homeRoute, userRoute, pageRoutes } = routes;
+  const { homeRoute, userRoute, pageRoutes, githubCallbackRoute } = routes;
 
   const protectedRoutes = pageRoutes.map(p => {
     return {
@@ -106,12 +106,27 @@ const Routes: React.FC<RoutesProps> = ({ routes }) => {
     children: [homeRoute, UserWithLang, ...PagesWithLang, NotFound],
   };
 
-  const routeRoot: RouteObject = {
-    id: 'root',
+  // Create routes with Layout wrapper
+  const layoutRoutes: RouteObject = {
     path: '/',
     element: <Layout />,
     children: [homeRoute, userRoute, ...protectedRoutes, routeRootWithLang],
   };
+
+  // Create root route structure
+  const routeRoot: RouteObject = {
+    id: 'root',
+    path: '/',
+    children: [
+      layoutRoutes,
+      // GitHub callback without layout
+      ...(githubCallbackRoute ? [{
+        path: githubCallbackRoute.path as string,
+        element: githubCallbackRoute.element,
+      }] : [])
+    ],
+  };
+
   return useRoutes([routeRoot]);
 };
 

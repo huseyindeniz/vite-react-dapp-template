@@ -1,7 +1,9 @@
+import log from 'loglevel';
+
 import { AuthProvider, AuthProviderCredentials } from '../types/AuthProvider';
 
 import { GoogleOAuth2CodeResponse, GoogleOAuth2Error } from './types';
-import { getGoogleClientId } from './utils/env';
+import { getGoogleClientId, getGoogleScope } from './utils/env';
 
 export class GoogleAuthProvider implements AuthProvider {
   name = 'google' as const;
@@ -70,7 +72,7 @@ export class GoogleAuthProvider implements AuthProvider {
 
       const client = window.google.accounts.oauth2.initCodeClient({
         client_id: clientId,
-        scope: 'openid email profile',
+        scope: getGoogleScope(),
         ux_mode: 'popup',
         callback: (response: GoogleOAuth2CodeResponse) => {
           // Note: In a real app, you'd exchange the code for tokens on your backend
@@ -105,8 +107,7 @@ export class GoogleAuthProvider implements AuthProvider {
         window.google.accounts.id.disableAutoSelect();
       }
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.warn('Google logout warning:', error);
+      log.debug('Google logout warning:', error);
     }
   }
 

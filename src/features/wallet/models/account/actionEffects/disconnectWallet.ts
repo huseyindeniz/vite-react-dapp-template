@@ -1,6 +1,6 @@
 import { call, put } from 'redux-saga/effects';
 
-import { IWalletAccountApi } from '@/services/interfaces/IWalletAccountApi';
+import { IWalletAccountApi } from '@/features/wallet/interfaces/IWalletAccountApi';
 
 import * as walletStateSliceActions from '../../slice';
 import { LoadingStatusType } from '../../types/LoadingStatus';

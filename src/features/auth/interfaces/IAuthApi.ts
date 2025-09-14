@@ -1,27 +1,7 @@
-export interface AuthTokenExchangeRequest {
-  provider: 'google' | 'apple' | 'github';
-  token: string;
-  email?: string;
-}
-
-export interface AuthUser {
-  id: string;
-  email: string;
-  name: string;
-  avatarUrl?: string;
-  provider: string;
-}
-
-export interface AuthSession {
-  accessToken: string;
-  refreshToken: string;
-  expiresAt: number;
-  user: AuthUser;
-}
-
-export interface AuthTokenRefreshRequest {
-  refreshToken: string;
-}
+import { AuthSession } from '@/features/auth/models/types/AuthSession';
+import { AuthTokenExchangeRequest } from '@/features/auth/models/types/AuthTokenExchangeRequest';
+import { AuthTokenRefreshRequest } from '@/features/auth/models/types/AuthTokenRefreshRequest';
+import { AuthUser } from '@/features/auth/models/types/AuthUser';
 
 export interface IAuthApi {
   /**

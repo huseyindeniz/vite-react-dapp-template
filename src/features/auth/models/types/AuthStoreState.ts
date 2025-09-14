@@ -1,7 +1,6 @@
-import { AuthSession } from '@/services/auth';
-
 import { AuthProviderName } from '../../providers/types/AuthProvider';
 
+import { AuthSession } from './AuthSession';
 import { AuthState } from './AuthState';
 
 export interface AuthStoreState {

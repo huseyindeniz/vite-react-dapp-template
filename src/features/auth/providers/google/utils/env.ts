@@ -11,3 +11,7 @@ export const getGoogleClientId = (): string => {
 export const getGoogleRedirectUri = (): string | undefined => {
   return import.meta.env.VITE_GOOGLE_REDIRECT_URI;
 };
+
+export const getGoogleScope = (): string => {
+  return import.meta.env.VITE_GOOGLE_SCOPE || 'openid email profile';
+};

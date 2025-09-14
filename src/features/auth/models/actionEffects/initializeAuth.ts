@@ -1,27 +1,22 @@
-import { call, put } from 'redux-saga/effects';
+import log from 'loglevel';
+import { put } from 'redux-saga/effects';
 
-import { getAuthProviderByName } from '../../config';
 import * as authActions from '../actions';
 
 export function* ActionEffectInitializeAuth() {
   try {
-    // Initialize all auth providers
-    const providers = [getAuthProviderByName('google')].filter(Boolean);
-    
-    for (const provider of providers) {
-      try {
-        yield call([provider, 'initialize']);
-      } catch (error) {
-        // eslint-disable-next-line no-console
-        console.warn(`Failed to initialize ${provider.name} provider:`, error);
-      }
-    }
-    
+    log.debug('ActionEffectInitializeAuth started');
+
+    // Don't initialize providers here - they will be initialized lazily when needed
+    // This prevents conflicts between multiple auth providers
+
     yield put(authActions.authInitialized());
-    
+
     // Try to restore session after initialization
     yield put({ type: authActions.RESTORE_SESSION });
   } catch (error) {
-    yield put(authActions.authError({ error: `Failed to initialize auth: ${error}` }));
+    yield put(
+      authActions.authError({ error: `Failed to initialize auth: ${error}` })
+    );
   }
 }

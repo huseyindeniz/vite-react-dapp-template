@@ -19,6 +19,12 @@ const UserPage = React.lazy(() =>
 
 // ADD YOUR PAGE IMPORTS HERE
 
+const GitHubCallbackPage = React.lazy(() =>
+  import(/* webpackChunkName: "GitHubCallbackPage" */ './auth/GitHubCallback').then(module => ({
+    default: module.GitHubCallback,
+  }))
+);
+
 const Page1 = React.lazy(() =>
   import(/* webpackChunkName: "Page1Page" */ './Page1/Page1').then(module => ({
     default: module.Page1,
@@ -96,6 +102,17 @@ export const routes = () => {
     isProtected: false,
   };
 
+  // GitHub OAuth Callback Route
+  const GitHubCallbackRoute: PageType = {
+    id: 'github-callback',
+    path: 'auth/callback/github',
+    element: <GitHubCallbackPage />,
+    menuLabel: 'GitHub Callback',
+    isShownInMainMenu: false,
+    isShownInSecondaryMenu: false,
+    isProtected: false,
+  };
+
   // do not forget add your page routes into this array
   const PageRoutes: PageType[] = [
     Page1Route,
@@ -126,5 +143,6 @@ export const routes = () => {
     homeRoute: HomeRoute,
     userRoute: UserRoute,
     pageRoutes: PageRoutes,
+    githubCallbackRoute: GitHubCallbackRoute,
   } as AppRoutes;
 };

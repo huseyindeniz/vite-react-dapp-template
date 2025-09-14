@@ -3,9 +3,7 @@ import { call, put } from 'redux-saga/effects';
 
 import { IAuthApi } from '@/features/auth/interfaces/IAuthApi';
 
-import { getAuthProviderByName } from '../../config';
 import {
-  AuthProvider,
   AuthProviderName,
   AuthProviderCredentials,
 } from '../../providers/types/AuthProvider';
@@ -16,39 +14,21 @@ import { AuthSession } from '../types/AuthSession';
 const AUTH_SESSION_KEY = 'auth_session';
 const AUTH_PROVIDER_KEY = 'auth_provider';
 
-export function* ActionEffectLoginWithProvider(
+export function* ActionEffectLoginWithCredentials(
   authApi: IAuthApi,
-  action: PayloadAction<{ provider: AuthProviderName }>
+  action: PayloadAction<{
+    provider: AuthProviderName;
+    credentials: AuthProviderCredentials;
+  }>
 ) {
-  const { provider: providerName } = action.payload;
+  const { provider: providerName, credentials } = action.payload;
 
   try {
     yield put(authActions.loginStarted({ provider: providerName }));
 
-    const provider: AuthProvider = getAuthProviderByName(providerName);
-    if (!provider) {
-      throw new Error(`Provider ${providerName} not found`);
-    }
-
-    // Initialize provider lazily when needed
-    yield call([provider, provider.initialize]);
-
-    if (!provider.isAvailable()) {
-      throw new Error(`Provider ${providerName} is not available`);
-    }
-
-    // Get credentials from provider
-    const credentials: AuthProviderCredentials = yield call([
-      provider,
-      provider.login,
-    ]);
-
-    // Exchange with backend
-    // GitHub also uses authorization_code flow like Google
+    // Exchange credentials with backend
     const tokenType =
-      providerName === 'google' || providerName === 'github'
-        ? 'authorization_code'
-        : 'access_token';
+      providerName === 'google' ? 'authorization_code' : 'access_token';
     const session: AuthSession = yield call([authApi, authApi.exchangeToken], {
       provider: providerName,
       token: credentials.token,

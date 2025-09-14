@@ -1,14 +1,14 @@
 import { put, call } from 'redux-saga/effects';
 
-import { Coinbase } from '@/features/wallet/web3Wallets/coinbase';
-import { Core } from '@/features/wallet/web3Wallets/core';
-import { Metamask } from '@/features/wallet/web3Wallets/metamask';
-import { Rabby } from '@/features/wallet/web3Wallets/rabby';
 import {
   IWalletProviderApi,
   InstalledWallets,
   SupportedWallets,
-} from '@/services/interfaces/IWalletProviderApi';
+} from '@/features/wallet/interfaces/IWalletProviderApi';
+import { Coinbase } from '@/features/wallet/web3Wallets/coinbase';
+import { Core } from '@/features/wallet/web3Wallets/core';
+import { Metamask } from '@/features/wallet/web3Wallets/metamask';
+import { Rabby } from '@/features/wallet/web3Wallets/rabby';
 
 import { SlowDown } from '../../../utils';
 import * as accountActions from '../../account/actions';

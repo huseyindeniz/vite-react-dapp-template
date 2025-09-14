@@ -1,12 +1,13 @@
+import { GitHubAuthProvider } from './providers/github/GitHubAuthProvider';
 import { GoogleAuthProvider } from './providers/google/GoogleAuthProvider';
 import { AuthProvider, AuthProviderName } from './providers/types/AuthProvider';
 
 // Supported auth providers
 export const SUPPORTED_AUTH_PROVIDERS: AuthProvider[] = [
   new GoogleAuthProvider(),
+  new GitHubAuthProvider(),
   // Add more providers here:
   // new AppleAuthProvider(),
-  // new GitHubAuthProvider(),
 ];
 
 // Helper function to get provider by name

@@ -2,7 +2,7 @@ import { call } from 'redux-saga/effects';
 import { expectSaga } from 'redux-saga-test-plan';
 import { throwError } from 'redux-saga-test-plan/providers';
 
-import { IWalletAccountApi } from '@/services/interfaces/IWalletAccountApi';
+import { IWalletAccountApi } from '@/features/wallet/interfaces/IWalletAccountApi';
 
 import * as walletStateSliceActions from '../../slice';
 

@@ -1,10 +1,11 @@
-import { 
-  IAuthApi, 
-  AuthTokenExchangeRequest, 
-  AuthSession, 
-  AuthTokenRefreshRequest, 
-  AuthUser 
-} from './interfaces/IAuthApi';
+import log from 'loglevel';
+
+import { AuthSession } from '@/features/auth/models/types/AuthSession';
+import { AuthTokenExchangeRequest } from '@/features/auth/models/types/AuthTokenExchangeRequest';
+import { AuthTokenRefreshRequest } from '@/features/auth/models/types/AuthTokenRefreshRequest';
+import { AuthUser } from '@/features/auth/models/types/AuthUser';
+
+import { IAuthApi } from '../../features/auth/interfaces/IAuthApi';
 
 // const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
 
@@ -13,14 +14,25 @@ import {
  * Currently returns mock data for development
  */
 export class AuthApi implements IAuthApi {
+  private static instance: AuthApi;
   private readonly baseDelay = 500; // Simulate network delay
+
+  private constructor() {} // Private constructor to prevent instantiation
+
+  static getInstance(): AuthApi {
+    if (!AuthApi.instance) {
+      AuthApi.instance = new AuthApi();
+    }
+    return AuthApi.instance;
+  }
 
   private delay(ms: number = this.baseDelay): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
   private generateMockToken(length: number = 32): string {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const chars =
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let result = '';
     for (let i = 0; i < length; i++) {
       result += chars.charAt(Math.floor(Math.random() * chars.length));
@@ -28,31 +40,48 @@ export class AuthApi implements IAuthApi {
     return result;
   }
 
-  private generateMockUser(provider: string, email: string, _token: string): AuthUser {
-    const name = email.split('@')[0].replace(/[._]/g, ' ').toLowerCase()
+  private generateMockUser(
+    provider: string,
+    email: string,
+    _token: string
+  ): AuthUser {
+    const name = email
+      .split('@')[0]
+      .replace(/[._]/g, ' ')
+      .toLowerCase()
       .replace(/\b\w/g, l => l.toUpperCase());
-    
-    const userId = `${provider}_${btoa(email).replace(/[^a-zA-Z0-9]/g, '').slice(0, 8)}`;
-    
+
+    const userId = `${provider}_${btoa(email)
+      .replace(/[^a-zA-Z0-9]/g, '')
+      .slice(0, 8)}`;
+
     const avatarUrls = {
       google: `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=4285f4&color=fff`,
       apple: `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=000&color=fff`,
-      github: `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=333&color=fff`
+      github: `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=333&color=fff`,
     };
 
-    return {
+    const user = {
       id: userId,
       email,
       name,
       avatarUrl: avatarUrls[provider as keyof typeof avatarUrls],
-      provider
+      provider,
     };
+    return user;
   }
 
   async exchangeToken(request: AuthTokenExchangeRequest): Promise<AuthSession> {
     // BACKEND ENDPOINT NEEDED: POST /api/auth/token/exchange
-    // Body: { provider: string, token: string, email?: string }
+    // Body: { provider: string, token: string, tokenType: string, email?: string }
     // Response: { accessToken: string, refreshToken: string, expiresAt: number, user: AuthUser }
+    //
+    // OAuth2 Flow Handling:
+    // - If tokenType === 'authorization_code' (Google):
+    //   1. Use token (authorization code) + client_secret to get access_token from provider
+    //   2. Use access_token to fetch user info from provider API
+    // - If tokenType === 'access_token' (other providers):
+    //   1. Use token directly to fetch user info from provider API
     /*
     const response = await fetch(`http://localhost:3001/api/auth/token/exchange`, {
       method: 'POST',
@@ -63,6 +92,7 @@ export class AuthApi implements IAuthApi {
       body: JSON.stringify({
         provider: request.provider,
         token: request.token,
+        tokenType: request.tokenType,
         email: request.email
       }),
     });
@@ -78,6 +108,8 @@ export class AuthApi implements IAuthApi {
     // MOCK IMPLEMENTATION (remove when backend is ready)
     await this.delay();
 
+    log.debug('AuthApi.exchangeToken called with:', request);
+
     if (!request.token) {
       throw new Error('Invalid token');
     }
@@ -90,9 +122,9 @@ export class AuthApi implements IAuthApi {
     let email = request.email;
     if (!email) {
       const mockEmails = {
-        google: 'user@gmail.com',
+        google: 'yourname@gmail.com',
         apple: 'user@icloud.com',
-        github: 'user@users.noreply.github.com'
+        github: 'user@users.noreply.github.com',
       };
       email = mockEmails[request.provider] || 'user@example.com';
     }
@@ -100,13 +132,13 @@ export class AuthApi implements IAuthApi {
     const user = this.generateMockUser(request.provider, email, request.token);
     const accessToken = this.generateMockToken(64);
     const refreshToken = this.generateMockToken(48);
-    const expiresAt = Date.now() + (24 * 60 * 60 * 1000); // 24 hours
+    const expiresAt = Date.now() + 24 * 60 * 60 * 1000; // 24 hours
 
     return {
       accessToken,
       refreshToken,
       expiresAt,
-      user
+      user,
     };
   }
 
@@ -148,21 +180,20 @@ export class AuthApi implements IAuthApi {
 
     const accessToken = this.generateMockToken(64);
     const refreshToken = this.generateMockToken(48);
-    const expiresAt = Date.now() + (24 * 60 * 60 * 1000); // 24 hours
+    const expiresAt = Date.now() + 24 * 60 * 60 * 1000; // 24 hours
 
-    const user: AuthUser = {
-      id: 'mock_user_123',
-      email: 'user@example.com',
-      name: 'Mock User',
-      avatarUrl: 'https://ui-avatars.com/api/?name=Mock+User&background=4285f4&color=fff',
-      provider: 'google'
-    };
+    // Generate consistent user data (in production, this would come from the stored session)
+    const user = this.generateMockUser(
+      'google',
+      'user@gmail.com',
+      request.refreshToken
+    );
 
     return {
       accessToken,
       refreshToken,
       expiresAt,
-      user
+      user,
     };
   }
 
@@ -193,8 +224,9 @@ export class AuthApi implements IAuthApi {
       throw new Error('Invalid access token');
     }
 
-    // eslint-disable-next-line no-console
-    console.log(`Mock logout successful for token: ${accessToken.slice(0, 8)}...`);
+    log.debug(
+      `Mock logout successful for token: ${accessToken.slice(0, 8)}...`
+    );
   }
 
   async validateSession(accessToken: string): Promise<AuthUser> {
@@ -231,12 +263,6 @@ export class AuthApi implements IAuthApi {
       throw new Error('Session expired');
     }
 
-    return {
-      id: 'mock_user_123',
-      email: 'user@example.com',
-      name: 'Mock User',
-      avatarUrl: 'https://ui-avatars.com/api/?name=Mock+User&background=4285f4&color=fff',
-      provider: 'google'
-    };
+    return this.generateMockUser('google', 'user@gmail.com', accessToken);
   }
 }

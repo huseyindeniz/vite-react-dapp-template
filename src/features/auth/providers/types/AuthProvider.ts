@@ -11,22 +11,22 @@ export interface AuthProvider {
   label: string;
   icon?: string;
   color?: string;
-  
+
   /**
    * Initialize the auth provider (load SDK, setup, etc.)
    */
   initialize: () => Promise<void>;
-  
+
   /**
    * Trigger the OAuth login flow
    */
   login: () => Promise<AuthProviderCredentials>;
-  
+
   /**
    * Logout from the provider
    */
   logout: () => Promise<void>;
-  
+
   /**
    * Check if the provider is available/ready
    */

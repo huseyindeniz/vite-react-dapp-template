@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import {
   initializeAuth,
   loginWithProvider,
+  loginWithCredentials,
   logout,
   refreshToken,
   restoreSession,
@@ -16,6 +17,7 @@ export const useActions = () => {
     {
       initializeAuth,
       loginWithProvider,
+      loginWithCredentials,
       logout,
       refreshToken,
       restoreSession,

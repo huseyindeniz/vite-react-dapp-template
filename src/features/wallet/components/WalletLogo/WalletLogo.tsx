@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Image } from '@mantine/core';
 
-import { SupportedWallets } from '@/services/interfaces/IWalletProviderApi';
+import { SupportedWallets } from '@/features/wallet/interfaces/IWalletProviderApi';
 
 export interface WalletLogoProps {
   wallet: SupportedWallets;

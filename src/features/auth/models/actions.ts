@@ -1,8 +1,11 @@
 import { createAction } from '@reduxjs/toolkit';
 
-import { AuthSession } from '@/services/auth';
+import {
+  AuthProviderName,
+  AuthProviderCredentials,
+} from '../providers/types/AuthProvider';
 
-import { AuthProviderName } from '../providers/types/AuthProvider';
+import { AuthSession } from './types/AuthSession';
 
 // Action Types
 export const INITIALIZE_AUTH = 'auth/initialize';
@@ -17,6 +20,11 @@ export const initializeAuth = createAction(INITIALIZE_AUTH);
 export const loginWithProvider = createAction<{
   provider: AuthProviderName;
 }>(LOGIN_WITH_PROVIDER);
+
+export const loginWithCredentials = createAction<{
+  provider: AuthProviderName;
+  credentials: AuthProviderCredentials;
+}>('auth/loginWithCredentials');
 
 export const logout = createAction(LOGOUT);
 
