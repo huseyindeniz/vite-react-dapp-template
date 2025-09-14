@@ -129,3 +129,4 @@ The codebase includes a sophisticated slice management system for automatic Redu
 - never ever lead to hacky dead ends when you don't find the correct path
 - always check latest documentation before designing anything
 - never ever reinvent the wheel, always check ready to use battle tested, thurasted, widely apapted solutions first
+- never ever run npm run lint with --fix arg

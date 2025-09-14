@@ -8,7 +8,9 @@ import { watchBlogDemoSaga } from '@/features/blog-demo/sagas';
 import {
   watchWalletSaga /*announceWalletLoaded*/,
 } from '@/features/wallet/sagas';
-import { AuthApi } from '@/services/auth/AuthApi';
+import { AuthService } from '@/services/auth/AuthService';
+import { GitHubAuthProvider } from '@/services/auth/providers/github/GitHubAuthProvider';
+import { GoogleAuthProvider } from '@/services/auth/providers/google/GoogleAuthProvider';
 
 import { EthersV6WalletAPI } from '../services/ethersV6/wallet/WalletAPI';
 import { BlogDemoApi } from '../services/jsonplaceholder/BlogDemoApi';
@@ -19,12 +21,16 @@ enableMapSet();
 
 const walletApi = EthersV6WalletAPI.getInstance();
 const blogDemoApi = BlogDemoApi.getInstance();
-const authApi = AuthApi.getInstance();
+const authService = AuthService.getInstance();
+
+// Register auth providers
+authService.registerProvider(new GoogleAuthProvider());
+authService.registerProvider(new GitHubAuthProvider());
 
 function* RootSaga() {
   yield all([fork(watchWalletSaga, walletApi)]);
   yield all([fork(watchBlogDemoSaga, blogDemoApi)]);
-  yield all([fork(authSaga, authApi)]);
+  yield all([fork(authSaga, authService)]);
 }
 
 const sagaMiddleware = saga();

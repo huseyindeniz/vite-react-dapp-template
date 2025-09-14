@@ -1,11 +1,11 @@
 import log from 'loglevel';
 
-import { AuthProvider, AuthProviderCredentials } from '../types/AuthProvider';
+import { AuthProviderCredentials, IAuthProvider } from '@/features/auth/types/IAuthProvider';
 
 import { GoogleOAuth2CodeResponse, GoogleOAuth2Error } from './types';
 import { getGoogleClientId, getGoogleScope } from './utils/env';
 
-export class GoogleAuthProvider implements AuthProvider {
+export class GoogleAuthProvider implements IAuthProvider {
   name = 'google' as const;
   label = 'Google';
   icon = 'https://developers.google.com/identity/images/g-logo.png';

@@ -24,7 +24,10 @@ build
 *.local
 
 # Environment files
-**/.env*
+**/.env
+**/.env.development
+**/.env.staging
+**/.env.production
 
 # Editor directories and files
 .vscode/*

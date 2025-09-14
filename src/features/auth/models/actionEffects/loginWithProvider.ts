@@ -1,14 +1,9 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 import { call, put } from 'redux-saga/effects';
 
-import { IAuthApi } from '@/features/auth/interfaces/IAuthApi';
+import { AuthProviderName } from '@/features/auth/types/IAuthProvider';
+import { IAuthService } from '@/features/auth/types/IAuthService';
 
-import { getAuthProviderByName } from '../../config';
-import {
-  AuthProvider,
-  AuthProviderName,
-  AuthProviderCredentials,
-} from '../../providers/types/AuthProvider';
 import * as authActions from '../actions';
 import { AuthSession } from '../types/AuthSession';
 
@@ -17,7 +12,7 @@ const AUTH_SESSION_KEY = 'auth_session';
 const AUTH_PROVIDER_KEY = 'auth_provider';
 
 export function* ActionEffectLoginWithProvider(
-  authApi: IAuthApi,
+  authService: IAuthService,
   action: PayloadAction<{ provider: AuthProviderName }>
 ) {
   const { provider: providerName } = action.payload;
@@ -25,36 +20,11 @@ export function* ActionEffectLoginWithProvider(
   try {
     yield put(authActions.loginStarted({ provider: providerName }));
 
-    const provider: AuthProvider = getAuthProviderByName(providerName);
-    if (!provider) {
-      throw new Error(`Provider ${providerName} not found`);
-    }
-
-    // Initialize provider lazily when needed
-    yield call([provider, provider.initialize]);
-
-    if (!provider.isAvailable()) {
-      throw new Error(`Provider ${providerName} is not available`);
-    }
-
-    // Get credentials from provider
-    const credentials: AuthProviderCredentials = yield call([
-      provider,
-      provider.login,
-    ]);
-
-    // Exchange with backend
-    // GitHub also uses authorization_code flow like Google
-    const tokenType =
-      providerName === 'google' || providerName === 'github'
-        ? 'authorization_code'
-        : 'access_token';
-    const session: AuthSession = yield call([authApi, authApi.exchangeToken], {
-      provider: providerName,
-      token: credentials.token,
-      tokenType,
-      email: credentials.email,
-    });
+    // Use the high-level loginWithProvider method that handles the entire flow
+    const session: AuthSession = yield call(
+      [authService, authService.loginWithProvider],
+      providerName
+    );
 
     // Store session
     localStorage.setItem(AUTH_SESSION_KEY, JSON.stringify(session));

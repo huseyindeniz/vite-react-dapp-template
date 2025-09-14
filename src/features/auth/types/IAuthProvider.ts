@@ -6,7 +6,7 @@ export interface AuthProviderCredentials {
   [key: string]: unknown;
 }
 
-export interface AuthProvider {
+export interface IAuthProvider {
   name: AuthProviderName;
   label: string;
   icon?: string;

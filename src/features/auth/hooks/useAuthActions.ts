@@ -1,9 +1,6 @@
 import { useCallback } from 'react';
 
-import {
-  AuthProviderName,
-  AuthProviderCredentials,
-} from '../providers/types/AuthProvider';
+import { AuthProviderName } from '../types/IAuthProvider';
 
 import { useActions } from './useActions';
 
@@ -17,13 +14,6 @@ export const useAuthActions = () => {
   const loginWith = useCallback(
     (provider: AuthProviderName) => {
       actions.loginWithProvider({ provider });
-    },
-    [actions]
-  );
-
-  const loginWithCredentials = useCallback(
-    (provider: AuthProviderName, credentials: AuthProviderCredentials) => {
-      actions.loginWithCredentials({ provider, credentials });
     },
     [actions]
   );
@@ -43,7 +33,6 @@ export const useAuthActions = () => {
   return {
     initialize,
     loginWith,
-    loginWithCredentials,
     logout,
     refreshToken,
     restoreSession,

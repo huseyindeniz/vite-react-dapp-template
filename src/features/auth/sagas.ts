@@ -1,16 +1,15 @@
 import { takeLatest, call } from 'redux-saga/effects';
 
-import { IAuthApi } from '@/features/auth/interfaces/IAuthApi';
+import { IAuthService } from '@/features/auth/types/IAuthService';
 
 import { ActionEffectInitializeAuth } from './models/actionEffects/initializeAuth';
-import { ActionEffectLoginWithCredentials } from './models/actionEffects/loginWithCredentials';
 import { ActionEffectLoginWithProvider } from './models/actionEffects/loginWithProvider';
 import { ActionEffectLogout } from './models/actionEffects/logout';
 import { ActionEffectRefreshToken } from './models/actionEffects/refreshToken';
 import { ActionEffectRestoreSession } from './models/actionEffects/restoreSession';
 import * as authActions from './models/actions';
 
-export function* authSaga(authApi: IAuthApi) {
+export function* authSaga(authService: IAuthService) {
   // Initialize auth automatically when saga starts
   yield call(ActionEffectInitializeAuth);
 
@@ -18,22 +17,17 @@ export function* authSaga(authApi: IAuthApi) {
   yield takeLatest(
     authActions.LOGIN_WITH_PROVIDER,
     ActionEffectLoginWithProvider,
-    authApi
+    authService
   );
-  yield takeLatest(
-    authActions.loginWithCredentials.type,
-    ActionEffectLoginWithCredentials,
-    authApi
-  );
-  yield takeLatest(authActions.LOGOUT, ActionEffectLogout, authApi);
+  yield takeLatest(authActions.LOGOUT, ActionEffectLogout, authService);
   yield takeLatest(
     authActions.REFRESH_TOKEN,
     ActionEffectRefreshToken,
-    authApi
+    authService
   );
   yield takeLatest(
     authActions.RESTORE_SESSION,
     ActionEffectRestoreSession,
-    authApi
+    authService
   );
 }

@@ -1,10 +1,10 @@
 import log from 'loglevel';
 
-import { AuthProvider, AuthProviderCredentials } from '../types/AuthProvider';
+import { AuthProviderCredentials, IAuthProvider } from '@/features/auth/types/IAuthProvider';
 
 import { getGitHubClientId, getGitHubRedirectUri, getGitHubScope } from './utils/env';
 
-export class GitHubAuthProvider implements AuthProvider {
+export class GitHubAuthProvider implements IAuthProvider {
   name = 'github' as const;
   label = 'GitHub';
   icon = 'https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png';

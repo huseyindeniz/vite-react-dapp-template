@@ -1,6 +1,6 @@
 import { call, put, select } from 'redux-saga/effects';
 
-import { IAuthApi } from '@/features/auth/interfaces/IAuthApi';
+import { IAuthService } from '@/features/auth/types/IAuthService';
 import { RootState } from '@/store/store';
 
 import * as authActions from '../actions';
@@ -12,7 +12,7 @@ const AUTH_SESSION_KEY = 'auth_session';
 const AUTH_PROVIDER_KEY = 'auth_provider';
 
 export function* ActionEffectRefreshToken(
-  authApi: IAuthApi
+  authService: IAuthService
 ) {
   try {
     yield put(authActions.tokenRefreshStarted());
@@ -26,7 +26,7 @@ export function* ActionEffectRefreshToken(
     }
 
     const newSession: AuthSession = yield call(
-      [authApi, authApi.refreshToken],
+      [authService, authService.refreshToken],
       {
         refreshToken: session.refreshToken,
       }

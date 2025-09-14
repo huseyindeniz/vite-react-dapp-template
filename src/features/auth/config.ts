@@ -1,17 +1,36 @@
-import { GitHubAuthProvider } from './providers/github/GitHubAuthProvider';
-import { GoogleAuthProvider } from './providers/google/GoogleAuthProvider';
-import { AuthProvider, AuthProviderName } from './providers/types/AuthProvider';
+import { AuthProviderName } from './types/IAuthProvider';
 
-// Supported auth providers
-export const SUPPORTED_AUTH_PROVIDERS: AuthProvider[] = [
-  new GoogleAuthProvider(),
-  new GitHubAuthProvider(),
-  // Add more providers here:
-  // new AppleAuthProvider(),
+// Provider metadata for UI components
+export interface AuthProviderMetadata {
+  name: AuthProviderName;
+  label: string;
+  icon?: string;
+  color?: string;
+}
+
+// Supported providers metadata (configuration only)
+export const SUPPORTED_AUTH_PROVIDERS: AuthProviderMetadata[] = [
+  {
+    name: 'google',
+    label: 'Google',
+    icon: 'https://developers.google.com/identity/images/g-logo.png',
+    color: '#4285f4',
+  },
+  {
+    name: 'github',
+    label: 'GitHub',
+    icon: 'https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png',
+    color: '#24292e',
+  },
+  // Add more provider metadata here:
+  // { name: 'apple', label: 'Apple', ... },
 ];
 
-// Helper function to get provider by name
-export const getAuthProviderByName = (name: AuthProviderName): AuthProvider => {
+// Supported provider names (configuration only)
+export const SUPPORTED_PROVIDER_NAMES: AuthProviderName[] = SUPPORTED_AUTH_PROVIDERS.map(p => p.name);
+
+// Helper function to get provider metadata by name
+export const getAuthProviderByName = (name: AuthProviderName): AuthProviderMetadata => {
   const provider = SUPPORTED_AUTH_PROVIDERS.find(p => p.name === name);
   if (!provider) {
     throw new Error(`Auth provider ${name} not found`);

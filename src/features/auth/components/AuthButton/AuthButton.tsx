@@ -5,10 +5,10 @@ import log from 'loglevel';
 import { FaChevronDown, FaUser } from 'react-icons/fa';
 import { IoIosLogOut } from 'react-icons/io';
 
-import { SUPPORTED_AUTH_PROVIDERS, getAuthProviderByName } from '../../config';
+import { SUPPORTED_AUTH_PROVIDERS } from '../../config';
 import { useAuth } from '../../hooks/useAuth';
 import { useAuthActions } from '../../hooks/useAuthActions';
-import { AuthProviderName } from '../../providers/types/AuthProvider';
+import { AuthProviderName } from '../../types/IAuthProvider';
 
 interface AuthButtonProps {
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
@@ -22,33 +22,12 @@ export const AuthButton: React.FC<AuthButtonProps> = ({
   fullWidth = false,
 }) => {
   const auth = useAuth();
-  const { loginWithCredentials, logout } = useAuthActions();
+  const { loginWith, logout } = useAuthActions();
 
-  const handleProviderLogin = async (providerName: string) => {
-    try {
-      log.debug(`Starting login with provider: ${providerName}`);
-      // Get provider and initialize it first
-      const provider = getAuthProviderByName(providerName as AuthProviderName);
-      if (!provider) {
-        throw new Error(`${providerName} provider not found`);
-      }
-
-      // Initialize provider before checking availability
-      await provider.initialize();
-
-      if (!provider.isAvailable()) {
-        throw new Error(`${providerName} provider not available`);
-      }
-
-      // Call provider login synchronously - no Redux delay
-      const credentials = await provider.login();
-
-      // Pass credentials directly to Redux without delay
-      loginWithCredentials(providerName as AuthProviderName, credentials);
-    } catch (error) {
-      log.debug('Provider login failed:', error);
-      // Could show error state here
-    }
+  const handleProviderLogin = (providerName: string) => {
+    log.debug(`Starting login with provider: ${providerName}`);
+    // Use the Redux saga flow which handles the entire process through AuthService
+    loginWith(providerName as AuthProviderName);
   };
 
   // Loading state
@@ -72,7 +51,7 @@ export const AuthButton: React.FC<AuthButtonProps> = ({
   // Authenticated state
   if (auth.isAuthenticated && auth.user) {
     return (
-      <Menu shadow="md" width={200}>
+      <Menu shadow="md" width="auto">
         <Menu.Target>
           <Button
             size={size}
@@ -105,6 +84,11 @@ export const AuthButton: React.FC<AuthButtonProps> = ({
         size={size}
         variant={variant}
         fullWidth={fullWidth}
+        leftSection={
+          provider.icon ? (
+            <img src={provider.icon} alt={provider.label} width={16} height={16} />
+          ) : null
+        }
         onClick={() => handleProviderLogin(provider.name)}
         disabled={auth.isLoading || !auth.isReady}
       >
@@ -128,11 +112,16 @@ export const AuthButton: React.FC<AuthButtonProps> = ({
         </Button>
       </Menu.Target>
 
-      <Menu.Dropdown>
+      <Menu.Dropdown style={{ minWidth: 250 }}>
         <Menu.Label>Choose auth provider</Menu.Label>
         {SUPPORTED_AUTH_PROVIDERS.map(provider => (
           <Menu.Item
             key={provider.name}
+            leftSection={
+              provider.icon ? (
+                <img src={provider.icon} alt={provider.label} width={16} height={16} />
+              ) : null
+            }
             onClick={() => handleProviderLogin(provider.name)}
           >
             Sign in with {provider.label}
