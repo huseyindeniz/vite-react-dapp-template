@@ -1,26 +1,38 @@
 import { AuthSession } from '@/features/auth/models/types/AuthSession';
 import { AuthTokenExchangeRequest } from '@/features/auth/models/types/AuthTokenExchangeRequest';
 import { AuthTokenRefreshRequest } from '@/features/auth/models/types/AuthTokenRefreshRequest';
-import { AuthUser } from '@/features/auth/models/types/AuthUser';
+
+import { AuthProviderName } from '../types/IAuthProvider';
 
 export interface IAuthApi {
   /**
    * Exchange OAuth provider token for app session
    */
   exchangeToken: (request: AuthTokenExchangeRequest) => Promise<AuthSession>;
-  
+
   /**
    * Refresh app session token
    */
   refreshToken: (request: AuthTokenRefreshRequest) => Promise<AuthSession>;
-  
+
   /**
    * Logout and invalidate session
    */
   logout: (accessToken: string) => Promise<void>;
-  
+
+
   /**
-   * Validate current session
+   * Store auth tokens securely (httpOnly cookies)
    */
-  validateSession: (accessToken: string) => Promise<AuthUser>;
+  storeTokens: (accessToken: string, refreshToken: string, provider: AuthProviderName) => Promise<void>;
+
+  /**
+   * Retrieve stored auth tokens
+   */
+  getStoredTokens: () => Promise<{ accessToken: string | null; refreshToken: string | null; provider: AuthProviderName | null }>;
+
+  /**
+   * Clear stored auth tokens
+   */
+  clearStoredTokens: () => Promise<void>;
 }

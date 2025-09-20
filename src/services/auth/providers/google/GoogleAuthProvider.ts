@@ -5,12 +5,56 @@ import {
   IAuthProvider,
 } from '@/features/auth/types/IAuthProvider';
 
-// Types not needed for redirect mode - removed unused imports
-import {
-  getGoogleClientId,
-  getGoogleRedirectUri,
-  getGoogleScope,
-} from './utils/env';
+import { getGoogleClientId, getGoogleScope } from './utils/env';
+
+declare global {
+  interface Window {
+    google?: {
+      accounts: {
+        oauth2: {
+          initTokenClient: (config: {
+            client_id: string;
+            scope: string;
+            callback: (response: TokenResponse) => void;
+            error_callback?: (error: {
+              message?: string;
+              [key: string]: unknown;
+            }) => void;
+          }) => TokenClient;
+          hasGrantedAllScopes: (
+            tokenResponse: TokenResponse,
+            ...scopes: string[]
+          ) => boolean;
+          hasGrantedAnyScope: (
+            tokenResponse: TokenResponse,
+            ...scopes: string[]
+          ) => boolean;
+          revoke: (token: string, callback?: () => void) => void;
+        };
+      };
+    };
+  }
+}
+
+interface TokenResponse {
+  access_token: string;
+  authuser?: string;
+  expires_in: number;
+  prompt?: string;
+  scope: string;
+  token_type: string;
+  error?: string;
+  error_description?: string;
+  error_uri?: string;
+}
+
+interface TokenClient {
+  requestAccessToken: (overrideConfig?: {
+    prompt?: string;
+    hint?: string;
+    state?: string;
+  }) => void;
+}
 
 export class GoogleAuthProvider implements IAuthProvider {
   name = 'google' as const;
@@ -19,12 +63,10 @@ export class GoogleAuthProvider implements IAuthProvider {
   color = '#4285f4';
 
   private isInitialized = false;
-  private loginWindow: Window | null = null;
+  private tokenClient: TokenClient | null = null;
   private loginResolve: ((value: AuthProviderCredentials) => void) | null =
     null;
   private loginReject: ((reason?: Error) => void) | null = null;
-  private loginTimeout: NodeJS.Timeout | null = null;
-  private messageListener: ((event: MessageEvent) => void) | null = null;
 
   async initialize(): Promise<void> {
     if (this.isInitialized) {
@@ -38,25 +80,59 @@ export class GoogleAuthProvider implements IAuthProvider {
         return;
       }
 
-      if (window.google?.accounts?.id) {
-        // Initialize the OAuth2 code client once
-        this.initializeCodeClient();
+      const initializeTokenClient = () => {
+        if (!window.google?.accounts?.oauth2) {
+          reject(new Error('Google OAuth2 not available'));
+          return;
+        }
+
+        const clientId = getGoogleClientId();
+        const scope = getGoogleScope();
+
+        if (!clientId) {
+          reject(new Error('Google Client ID is not configured'));
+          return;
+        }
+
+        // Initialize the token client
+        this.tokenClient = window.google.accounts.oauth2.initTokenClient({
+          client_id: clientId,
+          scope,
+          callback: (response: TokenResponse) => {
+            this.handleTokenResponse(response);
+          },
+          error_callback: (error: {
+            message?: string;
+            [key: string]: unknown;
+          }) => {
+            log.error('Google OAuth error:', error);
+            if (this.loginReject) {
+              this.loginReject(
+                new Error(error?.message || 'Google OAuth error occurred')
+              );
+              this.cleanup();
+            }
+          },
+        });
+
         this.isInitialized = true;
         resolve();
+      };
+
+      if (window.google?.accounts?.oauth2) {
+        initializeTokenClient();
         return;
       }
 
+      // Load the Google Identity Services library
       const script = document.createElement('script');
       script.src = 'https://accounts.google.com/gsi/client';
       script.async = true;
       script.defer = true;
 
       script.onload = () => {
-        if (window.google?.accounts?.id) {
-          // Initialize the OAuth2 code client once
-          this.initializeCodeClient();
-          this.isInitialized = true;
-          resolve();
+        if (window.google?.accounts?.oauth2) {
+          initializeTokenClient();
         } else {
           reject(new Error('Failed to load Google Identity Services'));
         }
@@ -70,23 +146,10 @@ export class GoogleAuthProvider implements IAuthProvider {
     });
   }
 
-  private initializeCodeClient(): void {
-    const clientId = getGoogleClientId();
-    if (!clientId) {
-      log.error('Google Client ID is not configured');
-      return;
-    }
-
-    if (!window.google?.accounts?.oauth2) {
-      log.error('Google OAuth2 not available');
-    }
-
-    // Don't initialize OAuth2 client for redirect mode - we'll redirect directly
-  }
-
   login(): Promise<AuthProviderCredentials> {
     log.debug('GoogleAuthProvider login called');
-    if (!this.isInitialized) {
+
+    if (!this.isInitialized || !this.tokenClient) {
       throw new Error('Google Auth provider not ready');
     }
 
@@ -95,59 +158,12 @@ export class GoogleAuthProvider implements IAuthProvider {
       this.loginReject = reject;
 
       try {
-        const clientId = getGoogleClientId();
-        const scope = getGoogleScope();
-        const redirectUri = getGoogleRedirectUri();
-        const state = this.generateState();
-        log.debug('redirectUri:', redirectUri);
-        // Store state for validation
-        sessionStorage.setItem('google_oauth_state', state);
-
-        // Construct Google OAuth URL
-        const params = new URLSearchParams({
-          client_id: clientId,
-          redirect_uri: redirectUri,
-          scope,
-          state,
-          response_type: 'code',
-          access_type: 'offline',
-          prompt: 'consent',
-        });
-
-        const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`;
-
-        // Setup message listener for popup communication
-        this.setupMessageListener();
-
-        // Open popup window
-        const width = 500;
-        const height = 600;
-        const left = window.screen.width / 2 - width / 2;
-        const top = window.screen.height / 2 - height / 2;
-
-        this.loginWindow = window.open(
-          authUrl,
-          'Google Login',
-          `toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=${width}, height=${height}, top=${top}, left=${left}`
-        );
-
-        if (!this.loginWindow) {
-          this.cleanup();
-          reject(
-            new Error(
-              'Failed to open Google login window. Please check your popup blocker.'
-            )
-          );
-          return;
+        // Request access token - this will open the Google consent popup
+        if (this.tokenClient) {
+          this.tokenClient.requestAccessToken({
+            prompt: '', // Let Google decide whether to show consent
+          });
         }
-
-        // Set a timeout for the login process (5 minutes)
-        this.loginTimeout = setTimeout(() => {
-          if (this.loginReject) {
-            this.cleanup();
-            reject(new Error('Login timeout - no response received'));
-          }
-        }, 5 * 60 * 1000);
       } catch (error) {
         this.cleanup();
         reject(error);
@@ -155,134 +171,96 @@ export class GoogleAuthProvider implements IAuthProvider {
     });
   }
 
-  private setupMessageListener(): void {
-    // Remove any existing listener
-    if (this.messageListener) {
-      window.removeEventListener('message', this.messageListener);
+  private async handleTokenResponse(response: TokenResponse): Promise<void> {
+    log.debug('Google token response received');
+
+    if (response.error) {
+      const errorMessage = response.error_description || response.error;
+      log.error('Google OAuth error:', errorMessage);
+      if (this.loginReject) {
+        this.loginReject(new Error(errorMessage));
+      }
+      this.cleanup();
+      return;
     }
 
-    this.messageListener = (event: MessageEvent) => {
-      // Verify origin
-      if (event.origin !== window.location.origin) {
-        log.debug('Ignoring message from unexpected origin:', event.origin);
-        return;
+    if (!response.access_token) {
+      log.error('No access token in response');
+      if (this.loginReject) {
+        this.loginReject(new Error('No access token received from Google'));
       }
-
-      // Handle Google OAuth callback message
-      if (event.data?.type === 'google-oauth-callback') {
-        log.debug('Received Google OAuth callback:', event.data);
-
-        const { code, state, error } = event.data;
-
-        // Validate state
-        const storedState = sessionStorage.getItem('google_oauth_state');
-        if (state !== storedState) {
-          this.handleError(
-            new Error('Invalid OAuth state. Possible CSRF attack.')
-          );
-          return;
-        }
-
-        // Clear stored state
-        sessionStorage.removeItem('google_oauth_state');
-
-        if (error) {
-          this.handleError(new Error(`Google OAuth error: ${error}`));
-          return;
-        }
-
-        if (code) {
-          // Don't try to close the popup - let the callback page handle it
-          // The callback page will close itself after posting the message
-
-          // Resolve with the authorization code
-          if (this.loginResolve) {
-            this.loginResolve({
-              token: code, // This is the authorization code
-              email: '', // Will be populated by backend token exchange
-              name: '',
-              picture: '',
-              sub: '',
-            });
-            this.cleanup();
-          }
-        }
-      }
-    };
-
-    window.addEventListener('message', this.messageListener);
-  }
-
-  private handleError(error: Error): void {
-    log.error('Google OAuth error:', error);
-    // Don't try to close the window - it causes COOP errors
-    // The window will be cleaned up when the user closes it
-    if (this.loginReject) {
-      this.loginReject(error);
+      this.cleanup();
+      return;
     }
-    this.cleanup();
+
+    // Get user info using the access token
+    try {
+      const userInfoResponse = await fetch(
+        'https://www.googleapis.com/oauth2/v3/userinfo',
+        {
+          headers: {
+            Authorization: `Bearer ${response.access_token}`,
+          },
+        }
+      );
+
+      if (!userInfoResponse.ok) {
+        throw new Error('Failed to get user info from Google');
+      }
+
+      const userInfo = await userInfoResponse.json();
+
+      log.debug('Google userInfo:', userInfo);
+
+      // Return access token with decoded user info
+      if (this.loginResolve) {
+        this.loginResolve({
+          token: response.access_token,
+          email: userInfo.email || '',
+          name: userInfo.name || '',
+          given_name: userInfo.given_name || '',
+          picture: userInfo.picture || '',
+          sub: userInfo.sub || '',
+        });
+      }
+    } catch (error) {
+      log.error('Failed to get user info:', error);
+      if (this.loginReject) {
+        this.loginReject(
+          error instanceof Error
+            ? error
+            : new Error('Failed to get user info from Google')
+        );
+      }
+    } finally {
+      this.cleanup();
+    }
   }
 
   private cleanup(): void {
     this.loginResolve = null;
     this.loginReject = null;
-    this.loginWindow = null;
-
-    if (this.loginTimeout) {
-      clearTimeout(this.loginTimeout);
-      this.loginTimeout = null;
-    }
-
-    if (this.messageListener) {
-      window.removeEventListener('message', this.messageListener);
-      this.messageListener = null;
-    }
-  }
-
-  private generateState(): string {
-    const array = new Uint8Array(32);
-    crypto.getRandomValues(array);
-    return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join(
-      ''
-    );
   }
 
   async logout(): Promise<void> {
     log.debug('GoogleAuthProvider logout called');
+
     if (!this.isInitialized) {
       log.debug('Google Auth provider not initialized, nothing to do');
       return;
     }
 
-    try {
-      if (window.google?.accounts?.id) {
-        window.google.accounts.id.disableAutoSelect();
-      }
-    } catch (error) {
-      log.debug('Google logout warning:', error);
-    }
-
-    // Clean up all OAuth2 state and DOM bindings
-    this.cleanupOAuthBindings();
-  }
-
-  private cleanupOAuthBindings(): void {
-    log.debug('Cleaning up Google OAuth2 bindings');
-
-    // Clear sessionStorage auth state
-    sessionStorage.removeItem('google_oauth_state');
-
-    // Clean up popup-related state
+    // Google OAuth2 token client doesn't require explicit cleanup
+    // Tokens are managed by the backend
     this.cleanup();
-
-    log.debug('Google OAuth2 state reset complete');
   }
 
   isAvailable(): boolean {
     return (
       typeof window !== 'undefined' &&
       this.isInitialized &&
-      !!window.google?.accounts?.id
+      !!this.tokenClient &&
+      !!window.google?.accounts?.oauth2
     );
   }
 }

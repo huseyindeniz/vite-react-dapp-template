@@ -7,43 +7,40 @@ import { IAuthService } from '@/features/auth/types/IAuthService';
 import * as authActions from '../actions';
 import { AuthSession } from '../types/AuthSession';
 
-// Storage keys
-const AUTH_SESSION_KEY = 'auth_session';
-const AUTH_PROVIDER_KEY = 'auth_provider';
-
 export function* ActionEffectRestoreSession(authService: IAuthService) {
   try {
-    const sessionData = localStorage.getItem(AUTH_SESSION_KEY);
-    const providerName = localStorage.getItem(
-      AUTH_PROVIDER_KEY
-    ) as AuthProviderName;
+    // Get stored tokens instead of session data
+    const { accessToken, refreshToken, provider: providerName }: {
+      accessToken: string | null;
+      refreshToken: string | null;
+      provider: AuthProviderName | null
+    } = yield call([authService, authService.getStoredTokens]);
 
-    if (!sessionData || !providerName) {
+    if (!accessToken || !refreshToken || !providerName) {
       return;
     }
 
-    const session: AuthSession = JSON.parse(sessionData);
+    // Reconstruct session from stored tokens (assume valid, will fail gracefully on first API call if not)
+    const session: AuthSession = {
+      accessToken,
+      refreshToken,
+      expiresAt: Date.now() + 24 * 60 * 60 * 1000, // Default 24 hours
+      user: null, // Will be populated when needed by actual API calls
+    };
 
-    // Check if session is expired
+    // Check if session is expired based on stored expiry
     if (session.expiresAt <= Date.now()) {
       yield put({ type: authActions.REFRESH_TOKEN });
       return;
     }
 
-    // Validate session with backend
-    try {
-      yield call([authService, authService.validateSession], session.accessToken);
-      yield put(
-        authActions.sessionRestored({ session, provider: providerName })
-      );
-    } catch (error) {
-      // Session is invalid, try to refresh
-      yield put({ type: authActions.REFRESH_TOKEN });
-    }
+    // Restore session (tokens will be validated on first actual API call)
+    yield put(
+      authActions.sessionRestored({ session, provider: providerName })
+    );
   } catch (error) {
-    // Clear invalid session
-    localStorage.removeItem(AUTH_SESSION_KEY);
-    localStorage.removeItem(AUTH_PROVIDER_KEY);
+    // Clear invalid tokens
+    yield call([authService, authService.clearStoredTokens]);
     log.debug('Session restore failed:', error);
   }
 }

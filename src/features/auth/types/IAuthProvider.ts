@@ -1,12 +1,16 @@
 import { SUPPORTED_AUTH_PROVIDERS } from '@/features/auth/config';
 
 // Automatically derive provider names from config - no more hardcoding!
-export type AuthProviderName = typeof SUPPORTED_AUTH_PROVIDERS[number]['name'];
+export type AuthProviderName =
+  (typeof SUPPORTED_AUTH_PROVIDERS)[number]['name'];
 
 export interface AuthProviderCredentials {
-  token: string;
+  token: string; // ID token
   email?: string;
-  [key: string]: unknown;
+  name?: string;
+  given_name?: string;
+  picture?: string;
+  sub?: string; // Subject ID from provider
 }
 
 export interface IAuthProvider {

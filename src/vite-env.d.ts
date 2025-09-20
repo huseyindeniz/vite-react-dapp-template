@@ -3,19 +3,6 @@
 interface Window {
   ethereum: ExternalProvider;
   //web3: any;
-  google?: {
-    accounts?: {
-      oauth2?: {
-        initCodeClient: (config: any) => any;
-      };
-      id?: {
-        initialize: (config: any) => void;
-        prompt: (notification?: any) => void;
-        renderButton: (parent: HTMLElement, options: any) => void;
-        disableAutoSelect: () => void;
-      };
-    };
-  };
 }
 
 interface ImportMetaEnv {

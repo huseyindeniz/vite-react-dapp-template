@@ -8,10 +8,6 @@ export const getGoogleClientId = (): string => {
   return clientId;
 };
 
-export const getGoogleRedirectUri = (): string => {
-  return import.meta.env.VITE_GOOGLE_REDIRECT_URI || `${window.location.origin}/auth/callback/google`;
-};
-
 export const getGoogleScope = (): string => {
   return import.meta.env.VITE_GOOGLE_SCOPE || 'openid email profile';
 };
