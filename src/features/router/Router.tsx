@@ -58,7 +58,7 @@ const Routes: React.FC<RoutesProps> = ({ routes }) => {
     }
   }, [sliceManager]);
 
-  const { homeRoute, userRoute, pageRoutes, githubCallbackRoute } = routes;
+  const { homeRoute, userRoute, pageRoutes, authRoutes } = routes;
 
   const protectedRoutes = pageRoutes.map(p => {
     return {
@@ -119,11 +119,11 @@ const Routes: React.FC<RoutesProps> = ({ routes }) => {
     path: '/',
     children: [
       layoutRoutes,
-      // GitHub callback without layout
-      ...(githubCallbackRoute ? [{
-        path: githubCallbackRoute.path as string,
-        element: githubCallbackRoute.element,
-      }] : [])
+      // Auth callback routes without layout (dynamically generated)
+      ...authRoutes.map(route => ({
+        path: route.path as string,
+        element: route.element,
+      }))
     ],
   };
 

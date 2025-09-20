@@ -14,6 +14,7 @@ export class GitHubAuthProvider implements IAuthProvider {
   private loginWindow: Window | null = null;
   private loginResolve: ((value: AuthProviderCredentials) => void) | null = null;
   private loginReject: ((reason?: Error) => void) | null = null;
+  private loginTimeout: NodeJS.Timeout | null = null;
   private messageListener: ((event: MessageEvent) => void) | null = null;
 
   async initialize(): Promise<void> {
@@ -85,16 +86,13 @@ export class GitHubAuthProvider implements IAuthProvider {
           return;
         }
 
-        // Check if popup is closed
-        const checkInterval = setInterval(() => {
-          if (this.loginWindow?.closed) {
-            clearInterval(checkInterval);
-            if (this.loginReject) {
-              this.cleanup();
-              reject(new Error('Login window was closed'));
-            }
+        // Set a timeout for the login process (5 minutes)
+        this.loginTimeout = setTimeout(() => {
+          if (this.loginReject) {
+            this.cleanup();
+            reject(new Error('Login timeout - no response received'));
           }
-        }, 1000);
+        }, 5 * 60 * 1000);
 
       } catch (error) {
         this.cleanup();
@@ -139,10 +137,8 @@ export class GitHubAuthProvider implements IAuthProvider {
         }
 
         if (code) {
-          // Close the popup
-          if (this.loginWindow && !this.loginWindow.closed) {
-            this.loginWindow.close();
-          }
+          // Don't try to close the popup - let the callback page handle it
+          // The callback page will close itself after posting the message
 
           // Resolve with the authorization code
           // The backend will exchange this for an access token
@@ -163,9 +159,8 @@ export class GitHubAuthProvider implements IAuthProvider {
 
   private handleError(error: Error): void {
     log.error('GitHub OAuth error:', error);
-    if (this.loginWindow && !this.loginWindow.closed) {
-      this.loginWindow.close();
-    }
+    // Don't try to close the window - it causes COOP errors
+    // The window will be cleaned up when the user closes it
     if (this.loginReject) {
       this.loginReject(error);
     }
@@ -176,6 +171,11 @@ export class GitHubAuthProvider implements IAuthProvider {
     this.loginResolve = null;
     this.loginReject = null;
     this.loginWindow = null;
+
+    if (this.loginTimeout) {
+      clearTimeout(this.loginTimeout);
+      this.loginTimeout = null;
+    }
 
     if (this.messageListener) {
       window.removeEventListener('message', this.messageListener);

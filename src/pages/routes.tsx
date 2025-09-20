@@ -2,6 +2,7 @@ import React from 'react';
 
 import { useTranslation } from 'react-i18next';
 
+import { SUPPORTED_AUTH_PROVIDERS } from '@/features/auth/config';
 import { AppRoutes } from '@/features/router/types/AppRoutes';
 import { PageType } from '@/features/router/types/PageType';
 
@@ -17,13 +18,27 @@ const UserPage = React.lazy(() =>
   }))
 );
 
-// ADD YOUR PAGE IMPORTS HERE
+// Dynamically create auth callback pages based on supported providers
+const AuthCallbackPages = SUPPORTED_AUTH_PROVIDERS.reduce(
+  (pages, provider) => {
+    const providerName = provider.name;
+    // Capitalize first letter of provider name for component naming
+    const componentName = `${providerName.charAt(0).toUpperCase()}${providerName.slice(1)}Callback`;
 
-const GitHubCallbackPage = React.lazy(() =>
-  import(/* webpackChunkName: "GitHubCallbackPage" */ './auth/GitHubCallback').then(module => ({
-    default: module.GitHubCallback,
-  }))
+    pages[providerName] = React.lazy(() =>
+      import(
+        /* webpackChunkName: "[request]CallbackPage" */ `./auth/${componentName}.tsx`
+      ).then(module => ({
+        default: module[componentName],
+      }))
+    );
+
+    return pages;
+  },
+  {} as Record<string, React.LazyExoticComponent<React.ComponentType>>
 );
+
+// ADD YOUR PAGE IMPORTS HERE
 
 const Page1 = React.lazy(() =>
   import(/* webpackChunkName: "Page1Page" */ './Page1/Page1').then(module => ({
@@ -102,17 +117,6 @@ export const routes = () => {
     isProtected: false,
   };
 
-  // GitHub OAuth Callback Route
-  const GitHubCallbackRoute: PageType = {
-    id: 'github-callback',
-    path: 'auth/callback/github',
-    element: <GitHubCallbackPage />,
-    menuLabel: 'GitHub Callback',
-    isShownInMainMenu: false,
-    isShownInSecondaryMenu: false,
-    isProtected: false,
-  };
-
   // do not forget add your page routes into this array
   const PageRoutes: PageType[] = [
     Page1Route,
@@ -139,10 +143,26 @@ export const routes = () => {
     isProtected: true,
   };
 
+  // Dynamically create auth callback routes based on supported providers
+  const authRoutes: PageType[] = SUPPORTED_AUTH_PROVIDERS.map(provider => {
+    const providerName = provider.name;
+    const CallbackComponent = AuthCallbackPages[providerName];
+
+    return {
+      id: `${providerName}-callback`,
+      path: `auth/callback/${providerName}`,
+      element: <CallbackComponent />,
+      menuLabel: `${provider.label} Callback`,
+      isShownInMainMenu: false,
+      isShownInSecondaryMenu: false,
+      isProtected: false,
+    };
+  });
+
   return {
     homeRoute: HomeRoute,
     userRoute: UserRoute,
     pageRoutes: PageRoutes,
-    githubCallbackRoute: GitHubCallbackRoute,
+    authRoutes,
   } as AppRoutes;
 };

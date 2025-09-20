@@ -4,25 +4,46 @@ import { Center, Loader, Text, Stack } from '@mantine/core';
 import log from 'loglevel';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
-export const GithubCallback = () => {
+export const GoogleCallback = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
   useEffect(() => {
-    const handleCallback = () => {
+    const handleCallback = async () => {
       const code = searchParams.get('code');
       const state = searchParams.get('state');
       const error = searchParams.get('error');
       const errorDescription = searchParams.get('error_description');
 
-      log.debug('GitHub OAuth callback received:', { code: !!code, state: !!state, error });
+      log.debug('Google OAuth callback received:', { code: !!code, state: !!state, error });
+
+      if (error) {
+        log.error('Google OAuth error:', error, errorDescription);
+        navigate('/auth/error', {
+          state: {
+            error: 'Google login failed',
+            description: errorDescription || error
+          }
+        });
+        return;
+      }
+
+      if (!code || !state) {
+        navigate('/auth/error', {
+          state: {
+            error: 'Invalid callback',
+            description: 'Missing required parameters'
+          }
+        });
+        return;
+      }
 
       // Check if this is a popup or regular window
       if (window.opener && window.opener !== window) {
         // We're in a popup - send message to parent window
         window.opener.postMessage(
           {
-            type: 'github-oauth-callback',
+            type: 'google-oauth-callback',
             code,
             state,
             error: error || errorDescription,
@@ -36,23 +57,21 @@ export const GithubCallback = () => {
         }, 1000);
       } else if (error) {
         // We're in the main window and there's an error
-        log.error('GitHub OAuth error:', error, errorDescription);
+        log.error('Google OAuth error:', error, errorDescription);
         navigate('/auth/error', {
           state: {
-            error: 'GitHub login failed',
+            error: 'Google login failed',
             description: errorDescription || error
           }
         });
       } else if (code && state) {
-        // We're in the main window with success
-        // In a real implementation, you would trigger the auth action here
-        // For now, we'll redirect to home with a message
-        log.info('GitHub OAuth successful, code received');
+        // We're in the main window with success (fallback)
+        log.info('Google OAuth successful, code received');
         navigate('/', {
           state: {
             authCode: code,
             authState: state,
-            provider: 'github'
+            provider: 'google'
           }
         });
       } else {
@@ -74,10 +93,10 @@ export const GithubCallback = () => {
       <Stack align="center" gap="md">
         <Loader size="lg" />
         <Text size="lg" fw={500}>
-          Completing GitHub login...
+          Completing Google login...
         </Text>
         <Text size="sm" c="dimmed">
-          {window.opener ? 'You can close this window' : 'Redirecting...'}
+          Redirecting...
         </Text>
       </Stack>
     </Center>

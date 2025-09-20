@@ -1,10 +1,15 @@
 import log from 'loglevel';
 
+import { getAuthProviderByName } from '@/features/auth/config';
 import { AuthSession } from '@/features/auth/models/types/AuthSession';
 import { AuthTokenExchangeRequest } from '@/features/auth/models/types/AuthTokenExchangeRequest';
 import { AuthTokenRefreshRequest } from '@/features/auth/models/types/AuthTokenRefreshRequest';
 import { AuthUser } from '@/features/auth/models/types/AuthUser';
-import { AuthProviderCredentials, AuthProviderName, IAuthProvider } from '@/features/auth/types/IAuthProvider';
+import {
+  AuthProviderCredentials,
+  AuthProviderName,
+  IAuthProvider,
+} from '@/features/auth/types/IAuthProvider';
 import { IAuthService } from '@/features/auth/types/IAuthService';
 
 import { AuthApi } from './AuthApi';
@@ -71,7 +76,9 @@ export class AuthService implements IAuthService {
    * Complete login flow with a provider
    * Handles provider login + token exchange with backend
    */
-  async loginWithProvider(providerName: AuthProviderName): Promise<AuthSession> {
+  async loginWithProvider(
+    providerName: AuthProviderName
+  ): Promise<AuthSession> {
     log.debug(`Starting login flow with provider: ${providerName}`);
 
     // Get provider
@@ -89,10 +96,9 @@ export class AuthService implements IAuthService {
     // Get credentials from provider
     const credentials: AuthProviderCredentials = await provider.login();
 
-    // Exchange with backend
-    const tokenType = (providerName === 'google' || providerName === 'github')
-      ? 'authorization_code'
-      : 'access_token';
+    // Exchange with backend - get token type from provider config
+    const providerConfig = getAuthProviderByName(providerName);
+    const tokenType = providerConfig.tokenType;
 
     const session: AuthSession = await this.authApi.exchangeToken({
       provider: providerName,
@@ -110,7 +116,10 @@ export class AuthService implements IAuthService {
    * Complete logout flow
    * Handles provider logout + backend logout
    */
-  async logout(accessToken: string, providerName?: AuthProviderName): Promise<void> {
+  async logout(
+    accessToken: string,
+    providerName: AuthProviderName
+  ): Promise<void> {
     log.debug('Starting logout flow');
 
     // Logout from backend first

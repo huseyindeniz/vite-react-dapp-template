@@ -1,5 +1,5 @@
 import log from 'loglevel';
-import { call, put, select } from 'redux-saga/effects';
+import { put, select } from 'redux-saga/effects';
 
 import { IAuthService } from '@/features/auth/types/IAuthService';
 import { RootState } from '@/store/store';
@@ -15,14 +15,17 @@ export function* ActionEffectLogout(authService: IAuthService) {
   try {
     yield put(authActions.logoutStarted());
 
-    const { session }: AuthStoreState = yield select(
+    const { session, currentProvider }: AuthStoreState = yield select(
       (state: RootState) => state.auth
     );
 
+    if (!session || !currentProvider) {
+      throw new Error('No active session to logout from');
+    }
     // Logout using the unified auth service
     if (session?.accessToken) {
       try {
-        yield call([authService, authService.logout], session.accessToken);
+        yield authService.logout(session.accessToken, currentProvider);
       } catch (error) {
         log.debug('Logout failed:', error);
       }

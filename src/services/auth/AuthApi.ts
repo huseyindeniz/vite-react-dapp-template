@@ -121,7 +121,7 @@ export class AuthApi implements IAuthApi {
 
     let email = request.email;
     if (!email) {
-      const mockEmails = {
+      const mockEmails: Record<string, string> = {
         google: 'yourname@gmail.com',
         apple: 'user@icloud.com',
         github: 'user@users.noreply.github.com',
@@ -129,7 +129,7 @@ export class AuthApi implements IAuthApi {
       email = mockEmails[request.provider] || 'user@example.com';
     }
 
-    const user = this.generateMockUser(request.provider, email, request.token);
+    const user = this.generateMockUser(request.provider, email!, request.token);
     const accessToken = this.generateMockToken(64);
     const refreshToken = this.generateMockToken(48);
     const expiresAt = Date.now() + 24 * 60 * 60 * 1000; // 24 hours

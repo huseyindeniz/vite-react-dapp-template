@@ -4,5 +4,5 @@ export type AppRoutes = {
   homeRoute: PageType;
   userRoute: PageType;
   pageRoutes: PageType[];
-  githubCallbackRoute?: PageType;
+  authRoutes: PageType[];
 };

@@ -77,7 +77,7 @@ export const AuthButton: React.FC<AuthButtonProps> = ({
   }
 
   // Not authenticated - show provider options
-  if (SUPPORTED_AUTH_PROVIDERS.length === 1) {
+  if (SUPPORTED_AUTH_PROVIDERS.length <= 1) {
     const provider = SUPPORTED_AUTH_PROVIDERS[0];
     return (
       <Button

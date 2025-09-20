@@ -1,4 +1,7 @@
-export type AuthProviderName = 'google' | 'apple' | 'github';
+import { SUPPORTED_AUTH_PROVIDERS } from '@/features/auth/config';
+
+// Automatically derive provider names from config - no more hardcoding!
+export type AuthProviderName = typeof SUPPORTED_AUTH_PROVIDERS[number]['name'];
 
 export interface AuthProviderCredentials {
   token: string;

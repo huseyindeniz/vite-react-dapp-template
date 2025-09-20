@@ -41,7 +41,10 @@ export interface IAuthService {
   /**
    * Logout and invalidate session
    */
-  logout: (accessToken: string) => Promise<void>;
+  logout: (
+    accessToken: string,
+    providerName: AuthProviderName
+  ) => Promise<void>;
 
   /**
    * Validate current session

@@ -3,6 +3,7 @@
 ## Current Architecture Analysis
 
 ### Current Structure:
+
 ```
 src/features/auth/
 ├── providers/
@@ -20,6 +21,7 @@ src/store/store.ts (injects AuthApi into sagas)
 ```
 
 ### Issues with Current Architecture:
+
 1. **Mixing concerns**: Auth providers (pure OAuth logic) are mixed with feature-level code
 2. **Direct coupling**: Action effects directly import and use providers
 3. **No service injection**: Providers aren't properly injected through the store/saga layer
@@ -28,6 +30,7 @@ src/store/store.ts (injects AuthApi into sagas)
 ## Target Architecture
 
 ### New Structure:
+
 ```
 src/services/auth/
 ├── AuthApi.ts (existing - backend communication)
@@ -48,7 +51,9 @@ src/features/auth/
 ```
 
 ### Key Architectural Principle:
+
 **Features define interfaces (contracts), Services provide implementations**
+
 - Features layer owns the interfaces (what needs to be done)
 - Services layer owns the implementations (how it's done)
 - This allows features to remain decoupled from concrete implementations
@@ -96,6 +101,7 @@ src/features/auth/
 7. **Update Store Configuration** (`src/store/store.ts`)
    - Replace `authApi` injection with unified `authService`
    - Initialize AuthService singleton that manages both API and providers
+
    ```ts
    const authService = AuthService.getInstance();
    // AuthService internally manages AuthApi + AuthProviderService
@@ -137,21 +143,25 @@ src/features/auth/
 ## Benefits of This Architecture
 
 ### ✅ Proper Separation of Concerns
+
 - **Services**: Pure business logic, no UI/feature coupling
 - **Features**: UI logic, state management, user interactions
 - **Store**: Dependency injection, service orchestration
 
 ### ✅ Better Testability
+
 - Services can be unit tested in isolation
 - Providers can be mocked at service boundary
 - Feature logic tests don't need to mock individual providers
 
 ### ✅ Scalability
+
 - Easy to add new auth providers (just register with service)
 - Service layer can be reused by other features if needed
 - Clear boundaries for different types of auth logic
 
 ### ✅ Consistent Patterns
+
 - Follows same singleton pattern as other services (AuthApi, WalletAPI)
 - Proper dependency injection through store
 - Clean saga parameter passing
@@ -168,19 +178,23 @@ src/features/auth/
 ## File Changes Summary
 
 ### New Files (Features Layer - Interfaces):
+
 - `src/features/auth/types/IAuthProvider.ts` (interface)
 - `src/features/auth/types/IAuthProviderService.ts` (interface)
 - `src/features/auth/types/IAuthService.ts` (interface)
 
 ### New Files (Services Layer - Implementations):
+
 - `src/services/auth/providers/AuthProviderService.ts` (implements IAuthProviderService)
 - `src/services/auth/AuthService.ts` (implements IAuthService)
 
 ### Moved Files:
+
 - `src/features/auth/providers/google/*` → `src/services/auth/providers/google/*`
 - `src/features/auth/providers/github/*` → `src/services/auth/providers/github/*`
 
 ### Modified Files:
+
 - `src/store/store.ts` (inject AuthService implementation)
 - `src/features/auth/sagas.ts` (accept IAuthService interface)
 - `src/features/auth/models/actionEffects/*.ts` (use IAuthService interface)
@@ -189,6 +203,7 @@ src/features/auth/
 - `src/services/auth/providers/GitHubAuthProvider.ts` (implement IAuthProvider)
 
 ### Deleted Files:
+
 - `src/features/auth/providers/types/AuthProvider.ts` (replaced by IAuthProvider interface)
 - Original provider files in features directory (after migration)
 
@@ -197,11 +212,13 @@ This plan maintains backward compatibility during migration and creates a clean,
 ## Implementation Status
 
 ### ✅ Phase 1: Define Feature Interfaces
+
 - [x] 1.1 Create IAuthProvider interface (`src/features/auth/types/IAuthProvider.ts` - COMPLETED)
 - [x] 1.2 Create IAuthProviderService interface (`src/features/auth/types/IAuthProviderService.ts` - COMPLETED)
 - [x] 1.3 Create IAuthService interface (`src/features/auth/types/IAuthService.ts` - COMPLETED)
 
 ### ✅ Phase 2: Create Service Implementations
+
 - [x] 2.1 Implement AuthProviderService (`src/services/auth/providers/AuthProviderService.ts` - COMPLETED)
   - Updated to implement IAuthProviderService interface
   - All method signatures now use IAuthProvider type
@@ -212,6 +229,7 @@ This plan maintains backward compatibility during migration and creates a clean,
   - Fixed loginWithProvider to return AuthSession directly
 
 ### ✅ Phase 3: Move Provider Implementations
+
 - [x] 3.1 Move GoogleAuthProvider to services (`src/services/auth/providers/google/` - COMPLETED)
   - Copied all Google provider files from features to services
   - Updated GoogleAuthProvider to implement IAuthProvider interface
@@ -221,6 +239,7 @@ This plan maintains backward compatibility during migration and creates a clean,
 - [x] 3.3 Update providers to implement IAuthProvider (COMPLETED)
 
 ### ✅ Phase 4: Update Store Integration
+
 - [x] 4.1 Update store configuration (`src/store/store.ts` - COMPLETED)
   - Replaced AuthApi with AuthService import
   - Updated store to inject AuthService into sagas
@@ -230,6 +249,7 @@ This plan maintains backward compatibility during migration and creates a clean,
   - Updated all action effect calls to pass authService
 
 ### ✅ Phase 5: Update Feature Layer
+
 - [x] 5.1 Update auth config (`src/features/auth/config.ts` - COMPLETED)
   - Removed direct provider instantiation
   - Created AuthProviderMetadata for UI components
@@ -243,6 +263,7 @@ This plan maintains backward compatibility during migration and creates a clean,
   - Updated all type imports to use interface types
 
 ### ✅ Phase 6: Clean Up Feature Layer
+
 - [x] 6.1 Update feature exports (COMPLETED)
   - Updated AuthButton component to use simplified provider metadata
   - Updated useAuthActions hook to use correct types
@@ -257,11 +278,13 @@ This plan maintains backward compatibility during migration and creates a clean,
 ## Current State Notes
 
 ### Files Created:
+
 - `src/features/auth/types/IAuthProvider.ts` - Interface defining auth provider contract
 - `src/features/auth/types/IAuthProviderService.ts` - Interface for provider management service
 - `src/features/auth/types/IAuthService.ts` - Interface for unified auth service
 
 ### Files Modified:
+
 - `src/services/auth/providers/AuthProviderService.ts` - Started updating to implement IAuthProviderService interface
   - TODO: Complete updating all method signatures to use IAuthProvider type
 
@@ -270,12 +293,14 @@ This plan maintains backward compatibility during migration and creates a clean,
 All phases of the auth architecture restructuring have been completed successfully. The auth system now follows proper architectural patterns:
 
 ### Key Achievements:
+
 1. **Proper Separation of Concerns**: Features define interfaces, services provide implementations
 2. **Clean Dependency Injection**: AuthService is properly injected through the store
 3. **Unified API**: Single AuthService facade handles both provider and API operations
 4. **Maintainable Code**: All linting rules satisfied, tests passing, builds successfully
 
 ### Migration Summary:
+
 - **Interfaces Created**: 3 (IAuthProvider, IAuthProviderService, IAuthService)
 - **Services Updated**: 2 (AuthProviderService, AuthService)
 - **Providers Moved**: 2 (GoogleAuthProvider, GitHubAuthProvider)
@@ -285,6 +310,7 @@ All phases of the auth architecture restructuring have been completed successful
 - **Zero Breaking Changes**: All existing functionality preserved
 
 ### Final Verification:
+
 - ✅ Build successful (TypeScript compilation clean)
 - ✅ Linting passed (0 errors, 0 warnings)
 - ✅ All tests passing
@@ -292,3 +318,213 @@ All phases of the auth architecture restructuring have been completed successful
 - ✅ All imports correctly reference new interface locations
 
 The auth system is now ready for future enhancements and follows the established architectural patterns throughout the codebase.
+
+---
+
+# Security & Quality Review
+
+## 🚨 Critical Issues (Must Fix)
+
+### 1. Security Vulnerabilities
+
+#### 1.1 Missing PKCE Implementation
+
+- **Status**: ⏳ Pending
+- **Priority**: High
+- **Issue**: OAuth authorization code flow lacks PKCE (Proof Key for Code Exchange)
+- **Location**:
+  - `src/services/auth/providers/google/GoogleAuthProvider.ts:73-93`
+  - `src/services/auth/providers/github/GitHubAuthProvider.ts`
+- **Risk**: Authorization code interception attacks
+- **Solution**: Implemented PKCE for both Google and GitHub OAuth flows
+- **Implementation Details**:
+  - Created PKCE utility functions in `src/services/auth/utils/pkce.ts`
+  - Updated both Google and GitHub providers to generate and use PKCE challenge/verifier
+  - Added type support for `codeVerifier` in `AuthProviderCredentials`
+  - AuthService now passes verifier to backend for validation
+  - Fixed all ESLint and TypeScript errors
+- **Effort**: 3 hours
+
+#### 1.2 Insecure Token Storage
+
+- **Status**: ⏳ Pending
+- **Priority**: High
+- **Issue**: Auth tokens stored in localStorage without encryption
+- **Location**: `src/features/auth/models/actionEffects/restoreSession.ts:16-17`
+- **Risk**: XSS attacks could steal tokens
+- **Solution**:
+  - Consider httpOnly cookies for refresh tokens
+  - Implement token rotation
+  - Add CSP headers to prevent XSS
+- **Effort**: 4-6 hours
+
+#### 1.3 OAuth State Parameter Validation
+
+- **Status**: ⏳ Pending
+- **Priority**: High
+- **Issue**: OAuth state parameter stored in sessionStorage without proper validation
+- **Location**: `src/services/auth/providers/github/GitHubAuthProvider.ts:54`
+- **Risk**: Potential CSRF attacks
+- **Solution**: Use cryptographically secure random values and validate on both client and server
+- **Effort**: 2-3 hours
+
+### 2. No Test Coverage
+
+- **Status**: ⏳ Pending
+- **Priority**: High
+- **Issue**: No test files found for the entire auth feature
+- **Impact**: High risk of regressions, difficult to maintain
+- **Required Tests**:
+  - [ ] Unit tests for reducers and actions
+  - [ ] Saga tests for async flows
+  - [ ] Component tests for AuthButton
+  - [ ] Service layer tests with mocked API calls
+  - [ ] Provider initialization tests
+- **Effort**: 8-12 hours
+
+## ⚠️ Important Issues (Should Fix)
+
+### 3. Mock Implementation in Production Code
+
+- **Status**: ⏳ Pending
+- **Priority**: Medium
+- **Issue**: AuthApi contains extensive mock implementation mixed with production code
+- **Location**: `src/services/auth/AuthApi.ts:74-267`
+- **Solution**: Move mock implementations to a separate mock service or use MSW for development
+- **Effort**: 2-3 hours
+
+### 4. Error Handling Gaps
+
+- **Status**: ⏳ Pending
+- **Priority**: Medium
+- **Issue**: Generic error messages don't provide actionable feedback
+- **Location**: `src/services/auth/providers/google/GoogleAuthProvider.ts:88-91`
+- **Solution**: Implement proper error codes and user-friendly messages
+- **Effort**: 3-4 hours
+
+### 5. Memory Leaks Risk
+
+- **Status**: ⏳ Pending
+- **Priority**: Medium
+- **Issue**: Interval not cleared if component unmounts during login
+- **Location**: `src/services/auth/providers/github/GitHubAuthProvider.ts:89-97`
+- **Solution**: Store interval ID and clear in cleanup function
+- **Effort**: 1 hour
+
+## 💡 Enhancement Recommendations
+
+### Code Quality Improvements
+
+#### Environment Variable Validation
+
+- **Status**: ⏳ Pending
+- **Priority**: Low
+- **Solution**: Add runtime validation for required env vars on app initialization
+- **Consider**: Using a schema validation library like zod
+- **Effort**: 2-3 hours
+
+#### Token Refresh Strategy
+
+- **Status**: ⏳ Pending
+- **Priority**: Medium
+- **Solution**: Add automatic refresh before expiration
+
+```typescript
+// Add automatic refresh before expiration
+const REFRESH_BUFFER = 5 * 60 * 1000; // 5 minutes
+if (session.expiresAt - Date.now() < REFRESH_BUFFER) {
+  yield put({ type: authActions.REFRESH_TOKEN });
+}
+```
+
+- **Effort**: 2-3 hours
+
+#### Provider Loading States
+
+- **Status**: ⏳ Pending
+- **Priority**: Low
+- **Solution**:
+  - Add loading states for individual providers during initialization
+  - Show which providers are available/unavailable in UI
+- **Effort**: 3-4 hours
+
+#### Accessibility Improvements
+
+- **Status**: ⏳ Pending
+- **Priority**: Medium
+- **Solution**:
+  - Add ARIA labels to AuthButton component
+  - Ensure keyboard navigation works for provider selection menu
+- **Effort**: 2-3 hours
+
+### Performance Optimizations
+
+#### Lazy Load Providers
+
+- **Status**: ⏳ Pending
+- **Priority**: Low
+- **Solution**: Only load provider SDKs when needed
+
+```typescript
+// Only load provider SDKs when needed
+const loadProvider = async (name: AuthProviderName) => {
+  const provider = await import(`./providers/${name}`);
+  return provider.default;
+};
+```
+
+- **Effort**: 4-5 hours
+
+#### SDK Script Caching
+
+- **Status**: ⏳ Pending
+- **Priority**: Low
+- **Solution**: Cache Google/GitHub SDK scripts to avoid reloading
+- **Effort**: 2-3 hours
+
+### Documentation Needs
+
+#### Backend API Requirements
+
+- **Status**: ⏳ Pending
+- **Priority**: Medium
+- **Issue**: Mock API documents required endpoints, but should be in separate docs
+- **Effort**: 2-3 hours
+
+#### Provider Setup Guide
+
+- **Status**: ⏳ Pending
+- **Priority**: Medium
+- **Solution**: Add documentation for configuring OAuth apps
+- **Effort**: 3-4 hours
+
+#### Security Best Practices
+
+- **Status**: ⏳ Pending
+- **Priority**: High
+- **Solution**: Document token storage strategy and security considerations
+- **Effort**: 2-3 hours
+
+## 📊 Review Progress Summary
+
+### Status Legend
+
+- ✅ **Completed** - Issue resolved and tested
+- 🚧 **In Progress** - Currently being worked on
+- ⏳ **Pending** - Not started yet
+- ❌ **Blocked** - Cannot proceed due to dependencies
+
+### Priority Breakdown
+
+- **Critical Issues**: 4 items (Security + Tests)
+- **Important Issues**: 3 items (Quality improvements)
+- **Enhancement Recommendations**: 9 items (Nice to have)
+
+### Estimated Total Effort: 50-70 hours
+
+### Next Steps
+
+1. Review and prioritize critical security issues
+2. Discuss implementation approach for each item
+3. Create implementation plan with milestones
+4. Begin implementation in priority order
