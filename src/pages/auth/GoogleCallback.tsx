@@ -10,15 +10,24 @@ export const GoogleCallback = () => {
 
   useEffect(() => {
     const handleCallback = async () => {
-      const code = searchParams.get('code');
-      const state = searchParams.get('state');
+      // For hybrid flow (code id_token), check both query params and URL fragment
+      let code = searchParams.get('code');
+      let state = searchParams.get('state');
       const error = searchParams.get('error');
       const errorDescription = searchParams.get('error_description');
 
-      // Extract id_token from URL fragment (for hybrid flow)
+      // Extract both code and id_token from URL fragment (for hybrid flow)
       const fragment = window.location.hash.substring(1);
       const fragmentParams = new URLSearchParams(fragment);
       const idToken = fragmentParams.get('id_token');
+
+      // Authorization code might be in fragment instead of query params for hybrid flow
+      if (!code) {
+        code = fragmentParams.get('code');
+      }
+      if (!state) {
+        state = fragmentParams.get('state');
+      }
 
       log.debug('Google OAuth callback received:', { code: !!code, state: !!state, error, idToken: !!idToken });
 

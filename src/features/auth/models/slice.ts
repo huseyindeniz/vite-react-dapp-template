@@ -4,6 +4,7 @@ import {
   authInitialized,
   loginStarted,
   loginSucceeded,
+  userUpdated,
   loginFailed,
   logoutStarted,
   logoutSucceeded,
@@ -39,6 +40,10 @@ export const authSlice = createSlice({
         state.currentProvider = action.payload.provider;
         state.isLoading = false;
         state.error = null;
+      })
+      .addCase(userUpdated, (state, action) => {
+        // Update user info from backend response (overwrites immediate data)
+        state.user = action.payload.user;
       })
       .addCase(loginFailed, (state, action) => {
         state.state = AuthState.ERROR;

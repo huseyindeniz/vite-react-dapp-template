@@ -38,6 +38,7 @@ export const GithubCallback = () => {
         setTimeout(() => {
           window.close();
         }, 1000);
+        // Important: exit here to prevent further navigation
       } else if (error) {
         // We're in the main window and there's an error
         log.error('GitHub OAuth error:', error, errorDescription);

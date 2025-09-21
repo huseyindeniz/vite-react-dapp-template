@@ -101,13 +101,14 @@ export class GoogleAuthProvider implements IAuthProvider {
         const state = this.generateState();
         log.debug('redirectUri:', redirectUri);
 
-        // Construct Google OAuth URL for implicit flow to get id_token
+        // Construct Google OAuth URL for hybrid flow to get both code and id_token
         const params = new URLSearchParams({
           client_id: clientId,
           redirect_uri: redirectUri,
           scope,
           state,
-          response_type: 'id_token',
+          response_type: 'code id_token',
+          access_type: 'offline',
           prompt: 'consent',
           nonce: this.generateNonce(), // Required for id_token
         });
@@ -173,7 +174,7 @@ export class GoogleAuthProvider implements IAuthProvider {
       if (event.data?.type === 'google-oauth-callback') {
         log.debug('Received Google OAuth callback:', event.data);
 
-        const { idToken, error } = event.data;
+        const { code, idToken, error } = event.data;
 
         // Note: State validation removed since backend handles session via httpOnly cookies
 
@@ -182,27 +183,32 @@ export class GoogleAuthProvider implements IAuthProvider {
           return;
         }
 
-        if (idToken) {
+        if (code) {
           try {
-            // Decode ID token to get user info directly
-            const userInfo = this.decodeIdToken(idToken);
+            let userInfo = null;
+
+            // If ID token is available, decode it for immediate user info
+            if (idToken) {
+              userInfo = this.decodeIdToken(idToken);
+              log.debug('Using ID token for immediate user info:', userInfo);
+            }
 
             if (this.loginResolve) {
               this.loginResolve({
-                token: idToken, // Pass the id_token for backend verification
-                email: userInfo.email || '',
-                name: userInfo.name || '',
-                given_name: userInfo.given_name,
-                picture: userInfo.picture || '',
-                sub: userInfo.sub || '',
+                token: code, // Always pass the authorization code to backend
+                email: userInfo?.email || '',
+                name: userInfo?.name || '',
+                given_name: userInfo?.given_name || '',
+                picture: userInfo?.picture || '',
+                sub: userInfo?.sub || '',
               });
               this.cleanup();
             }
           } catch (error) {
-            this.handleError(new Error(`Failed to decode user info: ${error}`));
+            this.handleError(new Error(`Failed to process OAuth response: ${error}`));
           }
         } else {
-          this.handleError(new Error('No id_token received from Google OAuth'));
+          this.handleError(new Error('No authorization code received from Google OAuth'));
         }
       }
     };

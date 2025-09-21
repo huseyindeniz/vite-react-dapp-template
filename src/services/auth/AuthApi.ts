@@ -34,15 +34,15 @@ export class AuthApi implements IAuthApi {
     user: AuthUser;
   }> {
     // BACKEND ENDPOINT NEEDED: POST /api/auth/token/exchange
-    // Body: { provider: string, token: string, tokenType: string, email?: string }
+    // Body: { provider: string, token: string, tokenType: string, email?: string, name?: string, given_name?: string, picture?: string, sub?: string }
     // Response: { accessToken: string, refreshToken: string, expiresAt: number, user: AuthUser }
     //
-    // OAuth2 Flow Handling:
-    // - If tokenType === 'authorization_code' (Google):
-    //   1. Use token (authorization code) + client_secret to get access_token from provider
-    //   2. Use access_token to fetch user info from provider API
-    // - If tokenType === 'access_token' (other providers):
-    //   1. Use token directly to fetch user info from provider API
+    // OAuth2 Flow Handling (All providers now use authorization_code):
+    // - For all providers (Google, GitHub, LinkedIn, Apple):
+    //   1. Validate the authorization code with provider + client_secret
+    //   2. Exchange code for access_token from provider
+    //   3. Use access_token to fetch complete user info from provider API
+    //   4. Return validated user info and set httpOnly cookies for session
     /*
     const response = await fetch(`http://localhost:3001/api/auth/token/exchange`, {
       method: 'POST',
@@ -80,20 +80,49 @@ export class AuthApi implements IAuthApi {
       throw new Error('Token exchange failed');
     }
 
-    // Use REAL user info from the ID token that was already decoded on client side
-    if (!request.email || !request.name) {
-      throw new Error('User info (email and name) are required from ID token');
+    // Handle different providers - simulate backend fetching real user info
+    let email = request.email;
+    let name = request.name;
+    let picture = request.picture;
+    let sub = request.sub;
+
+    if (request.provider === 'google') {
+      // For Google, frontend already provided user info from ID token (immediate feedback)
+      // Backend validates the authorization code and can enhance user info if needed
+      log.debug('Using Google user info from ID token (already validated by frontend)');
+
+      // In real implementation, backend would still validate the code for security
+      if (!email || !name) {
+        throw new Error('Google user info should be provided from ID token');
+      }
+    } else if (request.provider === 'github') {
+      // For GitHub, we simulate backend fetching user info with the authorization code
+      // Frontend provided placeholder data, now backend fetches real data
+      // In real implementation, backend would:
+      // 1. Exchange authorization code for access token
+      // 2. Use access token to fetch user info from GitHub API
+
+      // Simulate real GitHub user info (override placeholder data)
+      email = 'john.doe@github.example.com';
+      name = 'John Doe';
+      picture = 'https://avatars.githubusercontent.com/u/123456?v=4';
+      sub = 'github_123456789';
+
+      log.debug('Mock GitHub user info fetched from API:', { email, name, picture, sub });
+    } else {
+      // For future providers (LinkedIn, Apple, etc.)
+      throw new Error(`Provider ${request.provider} not yet implemented in mock`);
     }
 
     // Generate a proper user ID from the provider's sub (subject identifier)
-    const userId = request.sub || `${request.provider}_${btoa(request.email).replace(/[^a-zA-Z0-9]/g, '').slice(0, 8)}`;
+    const userId = sub || `${request.provider}_${btoa(email).replace(/[^a-zA-Z0-9]/g, '').slice(0, 8)}`;
 
     const user: AuthUser = {
       id: userId,
-      email: request.email,
-      name: request.name,
-      given_name: request.given_name,
-      avatarUrl: request.picture,
+      email,
+      name,
+      given_name: request.given_name, // GitHub doesn't provide given_name
+      avatarUrl: picture,
       provider: request.provider,
     };
 

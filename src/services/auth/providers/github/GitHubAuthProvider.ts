@@ -140,13 +140,16 @@ export class GitHubAuthProvider implements IAuthProvider {
           // Don't try to close the popup - let the callback page handle it
           // The callback page will close itself after posting the message
 
-          // Resolve with the authorization code
-          // The backend will exchange this for an access token
+          // Resolve with the authorization code and placeholder user data
+          // Backend will exchange code for access token and fetch real user info
           if (this.loginResolve) {
             this.loginResolve({
               token: code, // This is the authorization code
-              // GitHub doesn't provide email directly in the OAuth flow
-              // The backend will fetch user info after token exchange
+              email: 'github.user@placeholder.com', // Placeholder until backend responds
+              name: 'GitHub User', // Placeholder until backend responds
+              given_name: '', // GitHub doesn't provide given_name
+              picture: 'https://github.com/identicons/placeholder.png', // Placeholder avatar
+              sub: 'github_placeholder', // Placeholder until backend responds
             });
             this.cleanup();
           }

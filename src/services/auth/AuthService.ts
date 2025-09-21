@@ -67,16 +67,15 @@ export class AuthService implements IAuthService {
     return this.providerService.getAvailableProviders();
   }
 
-  // High-level auth operations that combine provider + API calls
+  // High-level auth operations that support immediate feedback + backend validation
 
   /**
-   * Complete login flow with a provider
-   * Handles provider login + token exchange with backend
+   * Get credentials from provider (for immediate UI feedback)
    */
-  async loginWithProvider(
+  async getProviderCredentials(
     providerName: AuthProviderName
-  ): Promise<{ user: AuthUser }> {
-    log.debug(`Starting login flow with provider: ${providerName}`);
+  ): Promise<AuthProviderCredentials> {
+    log.debug(`Getting credentials from provider: ${providerName}`);
 
     // Get provider
     const provider = this.getProvider(providerName);
@@ -90,8 +89,21 @@ export class AuthService implements IAuthService {
       }
     }
 
-    // Get credentials from provider
+    // Get credentials from provider (includes immediate user data)
     const credentials: AuthProviderCredentials = await provider.login();
+
+    log.debug(`Got credentials from provider: ${providerName}`);
+    return credentials;
+  }
+
+  /**
+   * Exchange authorization code with backend for validated user data
+   */
+  async exchangeTokenWithBackend(
+    providerName: AuthProviderName,
+    credentials: AuthProviderCredentials
+  ): Promise<{ user: AuthUser }> {
+    log.debug(`Exchanging token with backend for provider: ${providerName}`);
 
     // Exchange with backend - get token type from provider config
     const providerConfig = getAuthProviderByName(providerName);
@@ -108,9 +120,20 @@ export class AuthService implements IAuthService {
       sub: credentials.sub,
     });
 
-    log.debug(`Login successful with provider: ${providerName}`);
+    log.debug(`Backend exchange successful for provider: ${providerName}`);
 
     return authResult;
+  }
+
+  /**
+   * Complete login flow with a provider (legacy method for backward compatibility)
+   * @deprecated Use getProviderCredentials + exchangeTokenWithBackend for better UX
+   */
+  async loginWithProvider(
+    providerName: AuthProviderName
+  ): Promise<{ user: AuthUser }> {
+    const credentials = await this.getProviderCredentials(providerName);
+    return await this.exchangeTokenWithBackend(providerName, credentials);
   }
 
   /**
@@ -140,7 +163,6 @@ export class AuthService implements IAuthService {
 
     log.debug('Logout completed');
   }
-
 
   // Utility methods
 

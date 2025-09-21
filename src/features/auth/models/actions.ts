@@ -30,6 +30,10 @@ export const loginSucceeded = createAction<{
   provider: AuthProviderName;
 }>('auth/loginSucceeded');
 
+export const userUpdated = createAction<{
+  user: AuthUser;
+}>('auth/userUpdated');
+
 export const loginFailed = createAction<{
   error: string;
 }>('auth/loginFailed');
