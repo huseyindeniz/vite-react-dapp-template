@@ -2,7 +2,7 @@ import { call, spawn } from 'redux-saga/effects';
 import { expectSaga } from 'redux-saga-test-plan';
 import { throwError } from 'redux-saga-test-plan/providers';
 
-import { IWalletNetworkApi } from '@/services/interfaces/IWalletNetworkApi';
+import { IWalletNetworkApi } from '@/features/wallet/interfaces/IWalletNetworkApi';
 
 import { HardhatChain } from '../../../chains/hardhat';
 import { SlowDown } from '../../../utils';

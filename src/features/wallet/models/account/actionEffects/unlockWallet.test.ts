@@ -2,7 +2,7 @@ import { call } from 'redux-saga/effects';
 import { expectSaga, testSaga } from 'redux-saga-test-plan';
 import { throwError } from 'redux-saga-test-plan/providers';
 
-import { IWalletAccountApi } from '@/services/interfaces/IWalletAccountApi';
+import { IWalletAccountApi } from '@/features/wallet/interfaces/IWalletAccountApi';
 
 import { SlowDown } from '../../../utils';
 import { WalletState } from '../../types/WalletState';

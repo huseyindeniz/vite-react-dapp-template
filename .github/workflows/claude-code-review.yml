@@ -1,18 +1,20 @@
 name: Claude Code Review
 
 on:
-  pull_request:
-    types: [opened, synchronize]
-    paths:
-      - "src/**/*.ts"
-      - "src/**/*.tsx"
-      - "src/**/*.js"
-      - "src/**/*.jsx"
-      - "package.json"
-      - "package-lock.json"
-      - "tsconfig.json"
-      - "vite.config.ts"
-      - "vitest.config.ts"
+  workflow_dispatch:
+  # Uncomment to enable on PRs - currently disabled to avoid excessive runs
+  # pull_request:
+    # types: [opened, synchronize]
+    # paths:
+    #  - "src/**/*.ts"
+    #  - "src/**/*.tsx"
+    #  - "src/**/*.js"
+    #  - "src/**/*.jsx"
+    #  - "package.json"
+    #  - "package-lock.json"
+    #  - "tsconfig.json"
+    #  - "vite.config.ts"
+    #  - "vitest.config.ts"
 
 jobs:
   claude-review:

@@ -23,6 +23,12 @@ dist-ssr
 build
 *.local
 
+# Environment files
+**/.env
+**/.env.development
+**/.env.staging
+**/.env.production
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

@@ -2,7 +2,9 @@ import React from 'react';
 
 import { useTranslation } from 'react-i18next';
 
-import { AppRoutes, PageType } from '@/features/router/types';
+import { SUPPORTED_AUTH_PROVIDERS } from '@/features/auth/config';
+import { AppRoutes } from '@/features/router/types/AppRoutes';
+import { PageType } from '@/features/router/types/PageType';
 
 const HomePage = React.lazy(() =>
   import(/* webpackChunkName: "HomePage" */ './Home/Home').then(module => ({
@@ -14,6 +16,26 @@ const UserPage = React.lazy(() =>
   import(/* webpackChunkName: "UserPage" */ './User/User').then(module => ({
     default: module.UserPage,
   }))
+);
+
+// Dynamically create auth callback pages based on supported providers
+const AuthCallbackPages = SUPPORTED_AUTH_PROVIDERS.reduce(
+  (pages, provider) => {
+    const providerName = provider.name;
+    // Capitalize first letter of provider name for component naming
+    const componentName = `${providerName.charAt(0).toUpperCase()}${providerName.slice(1)}Callback`;
+
+    pages[providerName] = React.lazy(() =>
+      import(
+        /* webpackChunkName: "[request]CallbackPage" */ `./auth/${componentName}.tsx`
+      ).then(module => ({
+        default: module[componentName],
+      }))
+    );
+
+    return pages;
+  },
+  {} as Record<string, React.LazyExoticComponent<React.ComponentType>>
 );
 
 // ADD YOUR PAGE IMPORTS HERE
@@ -121,9 +143,26 @@ export const routes = () => {
     isProtected: true,
   };
 
+  // Dynamically create auth callback routes based on supported providers
+  const authRoutes: PageType[] = SUPPORTED_AUTH_PROVIDERS.map(provider => {
+    const providerName = provider.name;
+    const CallbackComponent = AuthCallbackPages[providerName];
+
+    return {
+      id: `${providerName}-callback`,
+      path: `auth/callback/${providerName}`,
+      element: <CallbackComponent />,
+      menuLabel: `${provider.label} Callback`,
+      isShownInMainMenu: false,
+      isShownInSecondaryMenu: false,
+      isProtected: false,
+    };
+  });
+
   return {
     homeRoute: HomeRoute,
     userRoute: UserRoute,
     pageRoutes: PageRoutes,
+    authRoutes,
   } as AppRoutes;
 };

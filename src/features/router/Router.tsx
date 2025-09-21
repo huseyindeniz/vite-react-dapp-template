@@ -9,7 +9,7 @@ import { withWalletProtection } from '@/features/wallet/hocs/withWalletProtectio
 import { usePostLoginRedirect } from '@/features/wallet/hooks/usePostLoginRedirect';
 
 import { isHashRouter } from './config';
-import { AppRoutes } from './types';
+import { AppRoutes } from './types/AppRoutes';
 
 const HashRouter = React.lazy(() =>
   import(/* webpackChunkName: "Router" */ 'react-router-dom').then(module => ({
@@ -44,11 +44,11 @@ export interface RoutesProps {
 }
 
 const Routes: React.FC<RoutesProps> = ({ routes }) => {
-  // Initialize the slice manager
-  const sliceManager = useSliceManagerInit();
-  
   // Handle post-login redirect (only triggers on auth state transition)
   usePostLoginRedirect();
+
+  // Initialize the slice manager
+  const sliceManager = useSliceManagerInit();
 
   useEffect(() => {
     if (sliceManager) {
@@ -58,7 +58,7 @@ const Routes: React.FC<RoutesProps> = ({ routes }) => {
     }
   }, [sliceManager]);
 
-  const { homeRoute, userRoute, pageRoutes } = routes;
+  const { homeRoute, userRoute, pageRoutes, authRoutes } = routes;
 
   const protectedRoutes = pageRoutes.map(p => {
     return {
@@ -79,7 +79,7 @@ const Routes: React.FC<RoutesProps> = ({ routes }) => {
       return {
         ...p,
         path: `/:${i18nConfig.urlParam}/${p.path}`,
-        children: p.children.map(c => {
+        children: p.children.map((c: RouteObject) => {
           if (c.index) {
             return c;
           }
@@ -106,12 +106,27 @@ const Routes: React.FC<RoutesProps> = ({ routes }) => {
     children: [homeRoute, UserWithLang, ...PagesWithLang, NotFound],
   };
 
-  const routeRoot: RouteObject = {
-    id: 'root',
+  // Create routes with Layout wrapper
+  const layoutRoutes: RouteObject = {
     path: '/',
     element: <Layout />,
     children: [homeRoute, userRoute, ...protectedRoutes, routeRootWithLang],
   };
+
+  // Create root route structure
+  const routeRoot: RouteObject = {
+    id: 'root',
+    path: '/',
+    children: [
+      layoutRoutes,
+      // Auth callback routes without layout (dynamically generated)
+      ...authRoutes.map(route => ({
+        path: route.path as string,
+        element: route.element,
+      }))
+    ],
+  };
+
   return useRoutes([routeRoot]);
 };
 

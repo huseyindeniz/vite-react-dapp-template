@@ -1,4 +1,4 @@
-import { SupportedWallets } from '@/services/interfaces/IWalletProviderApi';
+import { SupportedWallets } from '@/features/wallet/interfaces/IWalletProviderApi';
 
 export type Web3Wallet = {
   name: SupportedWallets;

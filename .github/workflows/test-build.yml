@@ -5,6 +5,9 @@ on:
     branches: [main]
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   test-build:
     runs-on: ubuntu-latest
@@ -25,6 +28,12 @@ jobs:
 
       - name: Run test
         run: npm run test
+        env:
+          VITE_ROUTER_USE_HASH: true
+          VITE_WALLET_DISABLE_SIGN: false
+          VITE_WALLET_SIGN_TIMEOUT_IN_SEC: 60
+          VITE_WALLET_SLOW_DOWN_IN_MS: 1000
+          VITE_POST_LOGIN_REDIRECT_PATH: '/user'
 
       - name: Build
         run: npm run build

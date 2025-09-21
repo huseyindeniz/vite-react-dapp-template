@@ -5,7 +5,7 @@ import { throwError } from 'redux-saga-test-plan/providers';
 import {
   IWalletProviderApi,
   SupportedWallets,
-} from '@/services/interfaces/IWalletProviderApi';
+} from '@/features/wallet/interfaces/IWalletProviderApi';
 
 import { SlowDown } from '../../../utils';
 import * as walletStateSliceActions from '../../slice';

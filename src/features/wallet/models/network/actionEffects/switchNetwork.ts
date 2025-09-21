@@ -1,7 +1,7 @@
 import { put, call } from 'redux-saga/effects';
 
-import { IWalletAPI } from '@/services/interfaces/IWalletAPI';
-import { IWalletNetworkApi } from '@/services/interfaces/IWalletNetworkApi';
+import { IWalletAPI } from '@/features/wallet/interfaces/IWalletAPI';
+import { IWalletNetworkApi } from '@/features/wallet/interfaces/IWalletNetworkApi';
 
 import { SlowDown } from '../../../utils';
 import * as providerActions from '../../provider/actions';

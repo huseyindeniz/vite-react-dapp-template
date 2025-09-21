@@ -13,8 +13,8 @@ import {
 import { useTranslation } from 'react-i18next';
 import { IoIosInformationCircle } from 'react-icons/io';
 
+import { SupportedWallets } from '@/features/wallet/interfaces/IWalletProviderApi';
 import { Web3Wallet } from '@/features/wallet/models/provider/types/Web3Wallet';
-import { SupportedWallets } from '@/services/interfaces/IWalletProviderApi';
 
 import { WalletLogo } from '../../WalletLogo/WalletLogo';
 

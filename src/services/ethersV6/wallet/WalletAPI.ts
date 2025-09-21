@@ -11,11 +11,11 @@ import {
   DISABLE_WALLET_SIGN,
   SUPPORTED_NETWORKS,
 } from '@/features/wallet/config';
-import { AccountType } from '@/features/wallet/models/account/types/Account';
 import {
   InstalledWallets,
   SupportedWallets,
-} from '@/services/interfaces/IWalletProviderApi';
+} from '@/features/wallet/interfaces/IWalletProviderApi';
+import { AccountType } from '@/features/wallet/models/account/types/Account';
 
 import { AvvyAPI } from '../avvy/AvvyAPI';
 import { IWalletEthersV6ProviderApi } from '../interfaces/IWalletEthersV6ProviderApi';
