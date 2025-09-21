@@ -5,8 +5,6 @@ import {
   initializeAuth,
   loginWithProvider,
   logout,
-  refreshToken,
-  restoreSession,
 } from '../models/actions';
 
 export const useActions = () => {
@@ -17,8 +15,6 @@ export const useActions = () => {
       initializeAuth,
       loginWithProvider,
       logout,
-      refreshToken,
-      restoreSession,
     },
     dispatch
   );

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Button, Menu } from '@mantine/core';
+import { Avatar, Button, Menu, Group, Text } from '@mantine/core';
 import log from 'loglevel';
 import { FaChevronDown, FaUser } from 'react-icons/fa';
 import { IoIosLogOut } from 'react-icons/io';
@@ -58,14 +58,34 @@ export const AuthButton: React.FC<AuthButtonProps> = ({
             variant={variant}
             fullWidth={fullWidth}
             rightSection={<FaChevronDown size={16} />}
-            leftSection={<FaUser size={16} />}
+            leftSection={
+              auth.user.avatarUrl ? (
+                <Avatar src={auth.user.avatarUrl} size={20} radius="xl" />
+              ) : (
+                <FaUser size={16} />
+              )
+            }
           >
-            {auth.user.name}
+            {auth.user.given_name || auth.user.name || auth.user.email}
           </Button>
         </Menu.Target>
 
         <Menu.Dropdown>
-          <Menu.Label>Signed in with {auth.currentProvider}</Menu.Label>
+          <Menu.Label>
+            <Group gap="sm">
+              {auth.user.avatarUrl && (
+                <Avatar src={auth.user.avatarUrl} size={24} radius="xl" />
+              )}
+              <div>
+                <Text size="sm" fw={500}>
+                  {auth.user.given_name || auth.user.name}
+                </Text>
+                <Text size="xs" c="dimmed">
+                  Signed in with {auth.currentProvider}
+                </Text>
+              </div>
+            </Group>
+          </Menu.Label>
           <Menu.Item>{auth.user.email}</Menu.Item>
           <Menu.Divider />
           <Menu.Item leftSection={<IoIosLogOut size={14} />} onClick={logout}>

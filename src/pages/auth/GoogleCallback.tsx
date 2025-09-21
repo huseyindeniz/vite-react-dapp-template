@@ -15,7 +15,12 @@ export const GoogleCallback = () => {
       const error = searchParams.get('error');
       const errorDescription = searchParams.get('error_description');
 
-      log.debug('Google OAuth callback received:', { code: !!code, state: !!state, error });
+      // Extract id_token from URL fragment (for hybrid flow)
+      const fragment = window.location.hash.substring(1);
+      const fragmentParams = new URLSearchParams(fragment);
+      const idToken = fragmentParams.get('id_token');
+
+      log.debug('Google OAuth callback received:', { code: !!code, state: !!state, error, idToken: !!idToken });
 
       if (error) {
         log.error('Google OAuth error:', error, errorDescription);
@@ -28,6 +33,28 @@ export const GoogleCallback = () => {
         return;
       }
 
+      // Check if this is a popup or regular window first
+      if (window.opener && window.opener !== window) {
+        // We're in a popup - send message to parent window
+        window.opener.postMessage(
+          {
+            type: 'google-oauth-callback',
+            code,
+            state,
+            idToken,
+            error: error || errorDescription,
+          },
+          window.location.origin
+        );
+
+        // Show success message briefly then close
+        setTimeout(() => {
+          window.close();
+        }, 1000);
+        return; // Important: exit here to prevent further navigation
+      }
+
+      // We're in the main window - handle navigation
       if (!code || !state) {
         navigate('/auth/error', {
           state: {
@@ -38,33 +65,7 @@ export const GoogleCallback = () => {
         return;
       }
 
-      // Check if this is a popup or regular window
-      if (window.opener && window.opener !== window) {
-        // We're in a popup - send message to parent window
-        window.opener.postMessage(
-          {
-            type: 'google-oauth-callback',
-            code,
-            state,
-            error: error || errorDescription,
-          },
-          window.location.origin
-        );
-
-        // Show success message briefly then close
-        setTimeout(() => {
-          window.close();
-        }, 1000);
-      } else if (error) {
-        // We're in the main window and there's an error
-        log.error('Google OAuth error:', error, errorDescription);
-        navigate('/auth/error', {
-          state: {
-            error: 'Google login failed',
-            description: errorDescription || error
-          }
-        });
-      } else if (code && state) {
+      if (code && state) {
         // We're in the main window with success (fallback)
         log.info('Google OAuth successful, code received');
         navigate('/', {

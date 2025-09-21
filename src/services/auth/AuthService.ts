@@ -1,9 +1,6 @@
 import log from 'loglevel';
 
 import { getAuthProviderByName } from '@/features/auth/config';
-import { AuthSession } from '@/features/auth/models/types/AuthSession';
-import { AuthTokenExchangeRequest } from '@/features/auth/models/types/AuthTokenExchangeRequest';
-import { AuthTokenRefreshRequest } from '@/features/auth/models/types/AuthTokenRefreshRequest';
 import { AuthUser } from '@/features/auth/models/types/AuthUser';
 import {
   AuthProviderCredentials,
@@ -78,7 +75,7 @@ export class AuthService implements IAuthService {
    */
   async loginWithProvider(
     providerName: AuthProviderName
-  ): Promise<AuthSession> {
+  ): Promise<{ user: AuthUser }> {
     log.debug(`Starting login flow with provider: ${providerName}`);
 
     // Get provider
@@ -100,31 +97,32 @@ export class AuthService implements IAuthService {
     const providerConfig = getAuthProviderByName(providerName);
     const tokenType = providerConfig.tokenType;
 
-    const session: AuthSession = await this.authApi.exchangeToken({
+    const authResult = await this.authApi.exchangeToken({
       provider: providerName,
       token: credentials.token,
       tokenType,
       email: credentials.email,
+      name: credentials.name,
+      given_name: credentials.given_name,
+      picture: credentials.picture,
+      sub: credentials.sub,
     });
 
     log.debug(`Login successful with provider: ${providerName}`);
 
-    return session;
+    return authResult;
   }
 
   /**
    * Complete logout flow
-   * Handles provider logout + backend logout
+   * Handles provider logout + backend logout via httpOnly cookies
    */
-  async logout(
-    accessToken: string,
-    providerName: AuthProviderName
-  ): Promise<void> {
+  async logout(providerName?: AuthProviderName): Promise<void> {
     log.debug('Starting logout flow');
 
-    // Logout from backend first
+    // Logout from backend - backend will clear httpOnly cookies
     try {
-      await this.authApi.logout(accessToken);
+      await this.authApi.logout();
     } catch (error) {
       log.warn('Backend logout failed:', error);
       // Continue with provider logout even if backend fails
@@ -143,19 +141,6 @@ export class AuthService implements IAuthService {
     log.debug('Logout completed');
   }
 
-  // Direct API methods (delegated to AuthApi)
-
-  async exchangeToken(request: AuthTokenExchangeRequest): Promise<AuthSession> {
-    return this.authApi.exchangeToken(request);
-  }
-
-  async refreshToken(request: AuthTokenRefreshRequest): Promise<AuthSession> {
-    return this.authApi.refreshToken(request);
-  }
-
-  async validateSession(accessToken: string): Promise<AuthUser> {
-    return this.authApi.validateSession(accessToken);
-  }
 
   // Utility methods
 

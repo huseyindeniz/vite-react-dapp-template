@@ -5,11 +5,7 @@ import { AuthProviderName } from '@/features/auth/types/IAuthProvider';
 import { IAuthService } from '@/features/auth/types/IAuthService';
 
 import * as authActions from '../actions';
-import { AuthSession } from '../types/AuthSession';
-
-// Storage keys
-const AUTH_SESSION_KEY = 'auth_session';
-const AUTH_PROVIDER_KEY = 'auth_provider';
+import { AuthUser } from '../types/AuthUser';
 
 export function* ActionEffectLoginWithProvider(
   authService: IAuthService,
@@ -20,17 +16,17 @@ export function* ActionEffectLoginWithProvider(
   try {
     yield put(authActions.loginStarted({ provider: providerName }));
 
-    // Use the high-level loginWithProvider method that handles the entire flow
-    const session: AuthSession = yield call(
+    // Get user info from provider login + backend sets httpOnly cookies
+    const authResult: { user: AuthUser } = yield call(
       [authService, authService.loginWithProvider],
       providerName
     );
 
-    // Store session
-    localStorage.setItem(AUTH_SESSION_KEY, JSON.stringify(session));
-    localStorage.setItem(AUTH_PROVIDER_KEY, providerName);
-
-    yield put(authActions.loginSucceeded({ session, provider: providerName }));
+    // Login completed - store only user info, backend handles tokens via httpOnly cookies
+    yield put(authActions.loginSucceeded({
+      user: authResult.user,
+      provider: providerName
+    }));
   } catch (error) {
     yield put(authActions.loginFailed({ error: `Login failed: ${error}` }));
   }

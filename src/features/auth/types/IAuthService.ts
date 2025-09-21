@@ -1,6 +1,3 @@
-import { AuthSession } from '@/features/auth/models/types/AuthSession';
-import { AuthTokenExchangeRequest } from '@/features/auth/models/types/AuthTokenExchangeRequest';
-import { AuthTokenRefreshRequest } from '@/features/auth/models/types/AuthTokenRefreshRequest';
 import { AuthUser } from '@/features/auth/models/types/AuthUser';
 
 import { AuthProviderName, IAuthProvider } from './IAuthProvider';
@@ -24,30 +21,14 @@ export interface IAuthService {
 
   /**
    * Login with a specific provider and exchange token
+   * Backend sets httpOnly cookies automatically
    */
-  loginWithProvider: (providerName: AuthProviderName) => Promise<AuthSession>;
-
-  // API methods (from IAuthApi)
-  /**
-   * Exchange OAuth provider token for app session
-   */
-  exchangeToken: (request: AuthTokenExchangeRequest) => Promise<AuthSession>;
+  loginWithProvider: (providerName: AuthProviderName) => Promise<{
+    user: AuthUser;
+  }>;
 
   /**
-   * Refresh app session token
+   * Logout and clear httpOnly cookies
    */
-  refreshToken: (request: AuthTokenRefreshRequest) => Promise<AuthSession>;
-
-  /**
-   * Logout and invalidate session
-   */
-  logout: (
-    accessToken: string,
-    providerName: AuthProviderName
-  ) => Promise<void>;
-
-  /**
-   * Validate current session
-   */
-  validateSession: (accessToken: string) => Promise<AuthUser>;
+  logout: (providerName?: AuthProviderName) => Promise<void>;
 }

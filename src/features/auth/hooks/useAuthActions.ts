@@ -22,19 +22,9 @@ export const useAuthActions = () => {
     actions.logout();
   }, [actions]);
 
-  const refreshToken = useCallback(() => {
-    actions.refreshToken();
-  }, [actions]);
-
-  const restoreSession = useCallback(() => {
-    actions.restoreSession();
-  }, [actions]);
-
   return {
     initialize,
     loginWith,
     logout,
-    refreshToken,
-    restoreSession,
   };
 };

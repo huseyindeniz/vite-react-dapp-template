@@ -1,11 +1,11 @@
 import { AuthProviderName } from '../../types/IAuthProvider';
 
-import { AuthSession } from './AuthSession';
 import { AuthState } from './AuthState';
+import { AuthUser } from './AuthUser';
 
 export interface AuthStoreState {
   state: AuthState;
-  session: AuthSession | null;
+  user: AuthUser | null;
   currentProvider: AuthProviderName | null;
   error: string | null;
   isInitialized: boolean;
@@ -14,7 +14,7 @@ export interface AuthStoreState {
 
 export const initialAuthState: AuthStoreState = {
   state: AuthState.NOT_INITIALIZED,
-  session: null,
+  user: null,
   currentProvider: null,
   error: null,
   isInitialized: false,

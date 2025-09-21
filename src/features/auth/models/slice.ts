@@ -8,11 +8,6 @@ import {
   logoutStarted,
   logoutSucceeded,
   logoutFailed,
-  tokenRefreshStarted,
-  tokenRefreshSucceeded,
-  tokenRefreshFailed,
-  sessionRestored,
-  sessionExpired,
   authError,
 } from './actions';
 import { AuthState } from './types/AuthState';
@@ -40,14 +35,14 @@ export const authSlice = createSlice({
       })
       .addCase(loginSucceeded, (state, action) => {
         state.state = AuthState.AUTHENTICATED;
-        state.session = action.payload.session;
+        state.user = action.payload.user;
         state.currentProvider = action.payload.provider;
         state.isLoading = false;
         state.error = null;
       })
       .addCase(loginFailed, (state, action) => {
         state.state = AuthState.ERROR;
-        state.session = null;
+        state.user = null;
         state.currentProvider = null;
         state.isLoading = false;
         state.error = action.payload.error;
@@ -61,7 +56,7 @@ export const authSlice = createSlice({
       })
       .addCase(logoutSucceeded, (state) => {
         state.state = AuthState.READY;
-        state.session = null;
+        state.user = null;
         state.currentProvider = null;
         state.isLoading = false;
         state.error = null;
@@ -72,39 +67,7 @@ export const authSlice = createSlice({
         state.error = action.payload.error;
       })
 
-      // Token refresh
-      .addCase(tokenRefreshStarted, (state) => {
-        state.isLoading = true;
-        state.error = null;
-      })
-      .addCase(tokenRefreshSucceeded, (state, action) => {
-        state.session = action.payload.session;
-        state.isLoading = false;
-        state.error = null;
-      })
-      .addCase(tokenRefreshFailed, (state, action) => {
-        state.state = AuthState.ERROR;
-        state.session = null;
-        state.currentProvider = null;
-        state.isLoading = false;
-        state.error = action.payload.error;
-      })
 
-      // Session management
-      .addCase(sessionRestored, (state, action) => {
-        state.state = AuthState.AUTHENTICATED;
-        state.session = action.payload.session;
-        state.currentProvider = action.payload.provider;
-        state.isLoading = false;
-        state.error = null;
-      })
-      .addCase(sessionExpired, (state) => {
-        state.state = AuthState.READY;
-        state.session = null;
-        state.currentProvider = null;
-        state.isLoading = false;
-        state.error = null;
-      })
 
       // Error handling
       .addCase(authError, (state, action) => {

@@ -10,8 +10,7 @@ export const useAuth = () => {
   return {
     // State
     state: authState.state,
-    session: authState.session,
-    user: authState.session?.user,
+    user: authState.user,
     currentProvider: authState.currentProvider,
     error: authState.error,
     isInitialized: authState.isInitialized,
@@ -24,9 +23,5 @@ export const useAuth = () => {
     isReady: authState.state === AuthState.READY,
     hasError: authState.state === AuthState.ERROR,
     isInitializing: authState.state === AuthState.INITIALIZING,
-
-    // Token info
-    accessToken: authState.session?.accessToken,
-    isTokenExpired: authState.session ? authState.session.expiresAt <= Date.now() : false,
   };
 };

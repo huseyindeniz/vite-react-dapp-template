@@ -20,19 +20,11 @@
     "noFallthroughCasesInSwitch": true,
     "baseUrl": ".",
     "paths": {
-      "@/features/app/*": ["./src/features/app/*"],
-      "@/features/slice-manager/*": ["./src/features/slice-manager/*"],
-      "@/features/router/*": ["./src/features/router/*"],
-      "@/features/i18n/*": ["./src/features/i18n/*"],
-      "@/features/ui/*": ["./src/features/ui/*"],
-      "@/features/wallet/*": ["./src/features/wallet/*"],
-      "@/features/auth/*": ["./src/features/auth/*"],
-      "@/features/blog-demo/*": ["./src/features/blog-demo/*"],
+      "@/features/*": ["./src/features/*"],
       "@/services/*": ["./src/services/*"],
       "@/pages/*": ["./src/pages/*"],
       "@/hooks/*": ["./src/hooks/*"],
       "@/store/*": ["./src/store/*"],
-      "@/types/*": ["./src/types/*"],
       "@test-utils": ["./src/test-utils/index.ts"]
     },
     "types": ["vitest/globals", "vite"]

@@ -12,8 +12,7 @@ export function* ActionEffectInitializeAuth() {
 
     yield put(authActions.authInitialized());
 
-    // Try to restore session after initialization
-    yield put({ type: authActions.RESTORE_SESSION });
+    // No session restoration needed - backend handles auth via httpOnly cookies
   } catch (error) {
     yield put(
       authActions.authError({ error: `Failed to initialize auth: ${error}` })

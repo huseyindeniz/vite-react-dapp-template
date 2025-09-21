@@ -100,18 +100,16 @@ export class GoogleAuthProvider implements IAuthProvider {
         const redirectUri = getGoogleRedirectUri();
         const state = this.generateState();
         log.debug('redirectUri:', redirectUri);
-        // Store state for validation
-        sessionStorage.setItem('google_oauth_state', state);
 
-        // Construct Google OAuth URL
+        // Construct Google OAuth URL for implicit flow to get id_token
         const params = new URLSearchParams({
           client_id: clientId,
           redirect_uri: redirectUri,
           scope,
           state,
-          response_type: 'code',
-          access_type: 'offline',
+          response_type: 'id_token',
           prompt: 'consent',
+          nonce: this.generateNonce(), // Required for id_token
         });
 
         const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`;
@@ -142,12 +140,15 @@ export class GoogleAuthProvider implements IAuthProvider {
         }
 
         // Set a timeout for the login process (5 minutes)
-        this.loginTimeout = setTimeout(() => {
-          if (this.loginReject) {
-            this.cleanup();
-            reject(new Error('Login timeout - no response received'));
-          }
-        }, 5 * 60 * 1000);
+        this.loginTimeout = setTimeout(
+          () => {
+            if (this.loginReject) {
+              this.cleanup();
+              reject(new Error('Login timeout - no response received'));
+            }
+          },
+          5 * 60 * 1000
+        );
       } catch (error) {
         this.cleanup();
         reject(error);
@@ -172,40 +173,36 @@ export class GoogleAuthProvider implements IAuthProvider {
       if (event.data?.type === 'google-oauth-callback') {
         log.debug('Received Google OAuth callback:', event.data);
 
-        const { code, state, error } = event.data;
+        const { idToken, error } = event.data;
 
-        // Validate state
-        const storedState = sessionStorage.getItem('google_oauth_state');
-        if (state !== storedState) {
-          this.handleError(
-            new Error('Invalid OAuth state. Possible CSRF attack.')
-          );
-          return;
-        }
-
-        // Clear stored state
-        sessionStorage.removeItem('google_oauth_state');
+        // Note: State validation removed since backend handles session via httpOnly cookies
 
         if (error) {
           this.handleError(new Error(`Google OAuth error: ${error}`));
           return;
         }
 
-        if (code) {
-          // Don't try to close the popup - let the callback page handle it
-          // The callback page will close itself after posting the message
+        if (idToken) {
+          try {
+            // Decode ID token to get user info directly
+            const userInfo = this.decodeIdToken(idToken);
 
-          // Resolve with the authorization code
-          if (this.loginResolve) {
-            this.loginResolve({
-              token: code, // This is the authorization code
-              email: '', // Will be populated by backend token exchange
-              name: '',
-              picture: '',
-              sub: '',
-            });
-            this.cleanup();
+            if (this.loginResolve) {
+              this.loginResolve({
+                token: idToken, // Pass the id_token for backend verification
+                email: userInfo.email || '',
+                name: userInfo.name || '',
+                given_name: userInfo.given_name,
+                picture: userInfo.picture || '',
+                sub: userInfo.sub || '',
+              });
+              this.cleanup();
+            }
+          } catch (error) {
+            this.handleError(new Error(`Failed to decode user info: ${error}`));
           }
+        } else {
+          this.handleError(new Error('No id_token received from Google OAuth'));
         }
       }
     };
@@ -247,6 +244,48 @@ export class GoogleAuthProvider implements IAuthProvider {
     );
   }
 
+  private generateNonce(): string {
+    const array = new Uint8Array(32);
+    crypto.getRandomValues(array);
+    return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join(
+      ''
+    );
+  }
+
+  private decodeIdToken(idToken: string): {
+    email?: string;
+    name?: string;
+    given_name?: string;
+    picture?: string;
+    sub?: string;
+    [key: string]: unknown;
+  } {
+    try {
+      // JWT has 3 parts separated by dots: header.payload.signature
+      const parts = idToken.split('.');
+      if (parts.length !== 3) {
+        throw new Error('Invalid ID token format');
+      }
+
+      // Decode the payload (base64url encoded)
+      const payload = parts[1];
+      // Add padding if needed for base64 decoding
+      const paddedPayload =
+        payload + '='.repeat((4 - (payload.length % 4)) % 4);
+
+      // Convert base64url to base64 and decode properly with UTF-8 support
+      const base64 = paddedPayload.replace(/-/g, '+').replace(/_/g, '/');
+      const binaryString = atob(base64);
+      const bytes = Uint8Array.from(binaryString, char => char.charCodeAt(0));
+      const decodedPayload = new TextDecoder().decode(bytes);
+
+      return JSON.parse(decodedPayload);
+    } catch (error) {
+      log.error('Failed to decode ID token:', error);
+      throw new Error('Failed to decode user information from ID token');
+    }
+  }
+
   async logout(): Promise<void> {
     log.debug('GoogleAuthProvider logout called');
     if (!this.isInitialized) {
@@ -269,8 +308,7 @@ export class GoogleAuthProvider implements IAuthProvider {
   private cleanupOAuthBindings(): void {
     log.debug('Cleaning up Google OAuth2 bindings');
 
-    // Clear sessionStorage auth state
-    sessionStorage.removeItem('google_oauth_state');
+    // No session storage to clear - backend handles sessions
 
     // Clean up popup-related state
     this.cleanup();
