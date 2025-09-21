@@ -30,3 +30,5 @@ interface ImportMeta {
 declare module '@metamask/jazzicon' {
   export default function (diameter: number, seed: number): HTMLElement;
 }
+
+declare const __VITE_REACT_DAPP_TEMPLATE_VERSION__: string;
