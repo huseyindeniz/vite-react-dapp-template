@@ -1,6 +1,7 @@
 import { AuthSession } from '@/features/auth/models/types/AuthSession';
 import { AuthTokenExchangeRequest } from '@/features/auth/models/types/AuthTokenExchangeRequest';
 import { AuthTokenRefreshRequest } from '@/features/auth/models/types/AuthTokenRefreshRequest';
+import { AuthUser } from '@/features/auth/models/types/AuthUser';
 
 import { AuthProviderName, IAuthProvider } from './IAuthProvider';
 
@@ -45,20 +46,8 @@ export interface IAuthService {
     providerName: AuthProviderName
   ) => Promise<void>;
 
-
-  // Token storage methods
   /**
-   * Store auth tokens securely
+   * Validate current session
    */
-  storeTokens: (accessToken: string, refreshToken: string, provider: AuthProviderName) => Promise<void>;
-
-  /**
-   * Retrieve stored auth tokens
-   */
-  getStoredTokens: () => Promise<{ accessToken: string | null; refreshToken: string | null; provider: AuthProviderName | null }>;
-
-  /**
-   * Clear stored auth tokens
-   */
-  clearStoredTokens: () => Promise<void>;
+  validateSession: (accessToken: string) => Promise<AuthUser>;
 }

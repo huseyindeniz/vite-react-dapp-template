@@ -7,6 +7,10 @@ import { IAuthService } from '@/features/auth/types/IAuthService';
 import * as authActions from '../actions';
 import { AuthSession } from '../types/AuthSession';
 
+// Storage keys
+const AUTH_SESSION_KEY = 'auth_session';
+const AUTH_PROVIDER_KEY = 'auth_provider';
+
 export function* ActionEffectLoginWithProvider(
   authService: IAuthService,
   action: PayloadAction<{ provider: AuthProviderName }>
@@ -22,8 +26,9 @@ export function* ActionEffectLoginWithProvider(
       providerName
     );
 
-    // Store tokens securely
-    yield call([authService, authService.storeTokens], session.accessToken, session.refreshToken, providerName);
+    // Store session
+    localStorage.setItem(AUTH_SESSION_KEY, JSON.stringify(session));
+    localStorage.setItem(AUTH_PROVIDER_KEY, providerName);
 
     yield put(authActions.loginSucceeded({ session, provider: providerName }));
   } catch (error) {

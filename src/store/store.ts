@@ -9,6 +9,7 @@ import {
   watchWalletSaga /*announceWalletLoaded*/,
 } from '@/features/wallet/sagas';
 import { AuthService } from '@/services/auth/AuthService';
+import { GitHubAuthProvider } from '@/services/auth/providers/github/GitHubAuthProvider';
 import { GoogleAuthProvider } from '@/services/auth/providers/google/GoogleAuthProvider';
 
 import { EthersV6WalletAPI } from '../services/ethersV6/wallet/WalletAPI';
@@ -24,6 +25,7 @@ const authService = AuthService.getInstance();
 
 // Register auth providers
 authService.registerProvider(new GoogleAuthProvider());
+authService.registerProvider(new GitHubAuthProvider());
 
 function* RootSaga() {
   yield all([fork(watchWalletSaga, walletApi)]);

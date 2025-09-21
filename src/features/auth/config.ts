@@ -4,6 +4,7 @@ export interface AuthProviderMetadata {
   label: string;
   icon?: string;
   color?: string;
+  tokenType: 'authorization_code' | 'access_token';
 }
 
 // Supported providers metadata (configuration only)
@@ -13,10 +14,17 @@ export const SUPPORTED_AUTH_PROVIDERS = [
     label: 'Google',
     icon: 'https://developers.google.com/identity/images/g-logo.png',
     color: '#4285f4',
+    tokenType: 'authorization_code',
+  },
+  {
+    name: 'github',
+    label: 'GitHub',
+    icon: 'https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png',
+    color: '#24292e',
+    tokenType: 'authorization_code',
   },
   // Add more provider metadata here:
-  // { name: 'linkedin', label: 'LinkedIn', ... },
-  // { name: 'apple', label: 'Apple', ... },
+  // { name: 'apple', label: 'Apple', tokenType: 'access_token', ... },
 ] as const;
 
 // Supported provider names (configuration only) - automatically derived from providers

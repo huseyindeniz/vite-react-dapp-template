@@ -58,19 +58,7 @@ export const AuthButton: React.FC<AuthButtonProps> = ({
             variant={variant}
             fullWidth={fullWidth}
             rightSection={<FaChevronDown size={16} />}
-            leftSection={
-              auth.user.avatarUrl ? (
-                <img
-                  src={auth.user.avatarUrl}
-                  alt={auth.user.name || 'User'}
-                  width={16}
-                  height={16}
-                  style={{ borderRadius: '50%' }}
-                />
-              ) : (
-                <FaUser size={16} />
-              )
-            }
+            leftSection={<FaUser size={16} />}
           >
             {auth.user.name}
           </Button>

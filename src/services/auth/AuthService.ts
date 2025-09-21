@@ -1,8 +1,10 @@
 import log from 'loglevel';
 
+import { getAuthProviderByName } from '@/features/auth/config';
 import { AuthSession } from '@/features/auth/models/types/AuthSession';
 import { AuthTokenExchangeRequest } from '@/features/auth/models/types/AuthTokenExchangeRequest';
 import { AuthTokenRefreshRequest } from '@/features/auth/models/types/AuthTokenRefreshRequest';
+import { AuthUser } from '@/features/auth/models/types/AuthUser';
 import {
   AuthProviderCredentials,
   AuthProviderName,
@@ -91,23 +93,19 @@ export class AuthService implements IAuthService {
       }
     }
 
-    // Get credentials from provider (with decoded user info)
+    // Get credentials from provider
     const credentials: AuthProviderCredentials = await provider.login();
 
-    // Exchange token with backend
+    // Exchange with backend - get token type from provider config
+    const providerConfig = getAuthProviderByName(providerName);
+    const tokenType = providerConfig.tokenType;
+
     const session: AuthSession = await this.authApi.exchangeToken({
       provider: providerName,
-      idToken: credentials.token,
+      token: credentials.token,
+      tokenType,
       email: credentials.email,
     });
-
-    // Set user info from credentials
-    if (session.user) {
-      session.user.name = credentials.given_name ?? credentials.name ?? '';
-      session.user.avatarUrl = credentials.picture || '';
-      session.user.id =
-        credentials.sub || `${providerName}_${credentials.email}`;
-    }
 
     log.debug(`Login successful with provider: ${providerName}`);
 
@@ -155,29 +153,11 @@ export class AuthService implements IAuthService {
     return this.authApi.refreshToken(request);
   }
 
+  async validateSession(accessToken: string): Promise<AuthUser> {
+    return this.authApi.validateSession(accessToken);
+  }
+
   // Utility methods
-
-  // Token storage methods (delegate to AuthApi)
-
-  async storeTokens(
-    accessToken: string,
-    refreshToken: string,
-    provider: AuthProviderName
-  ): Promise<void> {
-    return this.authApi.storeTokens(accessToken, refreshToken, provider);
-  }
-
-  async getStoredTokens(): Promise<{
-    accessToken: string | null;
-    refreshToken: string | null;
-    provider: AuthProviderName | null;
-  }> {
-    return this.authApi.getStoredTokens();
-  }
-
-  async clearStoredTokens(): Promise<void> {
-    return this.authApi.clearStoredTokens();
-  }
 
   /**
    * Reset the service (mainly for testing)

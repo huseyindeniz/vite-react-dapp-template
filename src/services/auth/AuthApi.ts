@@ -4,7 +4,6 @@ import { AuthSession } from '@/features/auth/models/types/AuthSession';
 import { AuthTokenExchangeRequest } from '@/features/auth/models/types/AuthTokenExchangeRequest';
 import { AuthTokenRefreshRequest } from '@/features/auth/models/types/AuthTokenRefreshRequest';
 import { AuthUser } from '@/features/auth/models/types/AuthUser';
-import { AuthProviderName } from '@/features/auth/types/IAuthProvider';
 
 import { IAuthApi } from '../../features/auth/interfaces/IAuthApi';
 
@@ -41,16 +40,48 @@ export class AuthApi implements IAuthApi {
     return result;
   }
 
+  private generateMockUser(
+    provider: string,
+    email: string,
+    _token: string
+  ): AuthUser {
+    const name = email
+      .split('@')[0]
+      .replace(/[._]/g, ' ')
+      .toLowerCase()
+      .replace(/\b\w/g, l => l.toUpperCase());
+
+    const userId = `${provider}_${btoa(email)
+      .replace(/[^a-zA-Z0-9]/g, '')
+      .slice(0, 8)}`;
+
+    const avatarUrls = {
+      google: `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=4285f4&color=fff`,
+      apple: `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=000&color=fff`,
+      github: `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=333&color=fff`,
+    };
+
+    const user = {
+      id: userId,
+      email,
+      name,
+      avatarUrl: avatarUrls[provider as keyof typeof avatarUrls],
+      provider,
+    };
+    return user;
+  }
 
   async exchangeToken(request: AuthTokenExchangeRequest): Promise<AuthSession> {
     // BACKEND ENDPOINT NEEDED: POST /api/auth/token/exchange
-    // Body: { provider: string, idToken: string, email?: string }
+    // Body: { provider: string, token: string, tokenType: string, email?: string }
     // Response: { accessToken: string, refreshToken: string, expiresAt: number, user: AuthUser }
     //
-    // ID Token Flow:
-    // 1. Verify ID token with Google/provider directly
-    // 2. Extract user info from verified token
-    // 3. Issue your own JWT access/refresh tokens
+    // OAuth2 Flow Handling:
+    // - If tokenType === 'authorization_code' (Google):
+    //   1. Use token (authorization code) + client_secret to get access_token from provider
+    //   2. Use access_token to fetch user info from provider API
+    // - If tokenType === 'access_token' (other providers):
+    //   1. Use token directly to fetch user info from provider API
     /*
     const response = await fetch(`http://localhost:3001/api/auth/token/exchange`, {
       method: 'POST',
@@ -60,7 +91,8 @@ export class AuthApi implements IAuthApi {
       credentials: 'include',
       body: JSON.stringify({
         provider: request.provider,
-        idToken: request.idToken,
+        token: request.token,
+        tokenType: request.tokenType,
         email: request.email
       }),
     });
@@ -76,10 +108,10 @@ export class AuthApi implements IAuthApi {
     // MOCK IMPLEMENTATION (remove when backend is ready)
     await this.delay();
 
-    log.debug('AuthApi.exchangeToken called with provider:', request.provider);
+    log.debug('AuthApi.exchangeToken called with:', request);
 
-    if (!request.idToken) {
-      throw new Error('Invalid ID token');
+    if (!request.token) {
+      throw new Error('Invalid token');
     }
 
     // Simulate random failures for testing
@@ -87,19 +119,20 @@ export class AuthApi implements IAuthApi {
       throw new Error('Token exchange failed');
     }
 
-    // Generate JWT tokens
+    let email = request.email;
+    if (!email) {
+      const mockEmails: Record<string, string> = {
+        google: 'yourname@gmail.com',
+        apple: 'user@icloud.com',
+        github: 'user@users.noreply.github.com',
+      };
+      email = mockEmails[request.provider] || 'user@example.com';
+    }
+
+    const user = this.generateMockUser(request.provider, email!, request.token);
     const accessToken = this.generateMockToken(64);
     const refreshToken = this.generateMockToken(48);
     const expiresAt = Date.now() + 24 * 60 * 60 * 1000; // 24 hours
-
-    // Use user info from GoogleAuthProvider (already decoded)
-    const user: AuthUser = {
-      id: `${request.provider}_${request.email}`,
-      email: request.email || '',
-      name: '', // Will be set by AuthService from credentials
-      avatarUrl: '', // Will be set by AuthService from credentials
-      provider: request.provider,
-    };
 
     return {
       accessToken,
@@ -149,14 +182,12 @@ export class AuthApi implements IAuthApi {
     const refreshToken = this.generateMockToken(48);
     const expiresAt = Date.now() + 24 * 60 * 60 * 1000; // 24 hours
 
-    // User data comes from stored session in production
-    const user: AuthUser = {
-      id: '',
-      email: '',
-      name: '',
-      avatarUrl: '',
-      provider: 'google', // Will be retrieved from stored session
-    };
+    // Generate consistent user data (in production, this would come from the stored session)
+    const user = this.generateMockUser(
+      'google',
+      'user@gmail.com',
+      request.refreshToken
+    );
 
     return {
       accessToken,
@@ -198,85 +229,40 @@ export class AuthApi implements IAuthApi {
     );
   }
 
+  async validateSession(accessToken: string): Promise<AuthUser> {
+    // BACKEND ENDPOINT NEEDED: GET /api/auth/me
+    // Headers: { Authorization: 'Bearer ${accessToken}' }
+    // Response: { id: string, email: string, name: string, avatarUrl?: string, provider: string }
+    /*
+    const response = await fetch(`http://localhost:3001/api/auth/me`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    });
 
-  // Token Storage Methods (CLIENT-SIDE httpOnly cookies)
-
-  async storeTokens(accessToken: string, refreshToken: string, provider: AuthProviderName): Promise<void> {
-    // Store tokens in httpOnly cookies on CLIENT-SIDE for security
-    // These cookies will be sent automatically with every API request
-
-    await this.delay(50);
-
-    // Set httpOnly cookies (requires document.cookie for non-httpOnly or server-side for httpOnly)
-    // For development, use localStorage as fallback
-    if (import.meta.env.MODE === 'development') {
-      log.warn('Using localStorage in development - use httpOnly cookies in production!');
-      localStorage.setItem('auth_access_token', accessToken);
-      localStorage.setItem('auth_refresh_token', refreshToken);
-      localStorage.setItem('auth_provider', provider);
-    } else {
-      // Production: Set httpOnly cookies
-      this.setHttpOnlyCookie('auth_access_token', accessToken, 24 * 60 * 60); // 24 hours
-      this.setHttpOnlyCookie('auth_refresh_token', refreshToken, 7 * 24 * 60 * 60); // 7 days
-      this.setHttpOnlyCookie('auth_provider', provider, 7 * 24 * 60 * 60); // 7 days
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || 'Session validation failed');
     }
 
-  }
+    return await response.json();
+    */
 
-  async getStoredTokens(): Promise<{ accessToken: string | null; refreshToken: string | null; provider: AuthProviderName | null }> {
-    await this.delay(50);
+    // MOCK IMPLEMENTATION (remove when backend is ready)
+    await this.delay(300);
 
-    if (import.meta.env.MODE === 'development') {
-      // Development: Read from localStorage
-      const accessToken = localStorage.getItem('auth_access_token');
-      const refreshToken = localStorage.getItem('auth_refresh_token');
-      const provider = localStorage.getItem('auth_provider') as AuthProviderName;
-      return { accessToken, refreshToken, provider };
+    if (!accessToken) {
+      throw new Error('Invalid access token');
     }
 
-    // Production: Read from httpOnly cookies (requires server-side endpoint)
-    // For now, fallback to regular cookies
-    const accessToken = this.getCookie('auth_access_token');
-    const refreshToken = this.getCookie('auth_refresh_token');
-    const provider = this.getCookie('auth_provider') as AuthProviderName;
-    return { accessToken, refreshToken, provider };
-  }
-
-  async clearStoredTokens(): Promise<void> {
-    await this.delay(50);
-
-    if (import.meta.env.MODE === 'development') {
-      localStorage.removeItem('auth_access_token');
-      localStorage.removeItem('auth_refresh_token');
-      localStorage.removeItem('auth_provider');
-    } else {
-      // Clear cookies
-      this.deleteCookie('auth_access_token');
-      this.deleteCookie('auth_refresh_token');
-      this.deleteCookie('auth_provider');
+    // Simulate session validation failure
+    if (Math.random() < 0.05) {
+      throw new Error('Session expired');
     }
 
-  }
-
-  // Cookie utility methods
-  private setHttpOnlyCookie(name: string, value: string, maxAge: number): void {
-    // For httpOnly cookies, we'd need a server endpoint
-    // For now, use regular secure cookies
-    const secure = window.location.protocol === 'https:';
-    document.cookie = `${name}=${encodeURIComponent(value)}; Max-Age=${maxAge}; Path=/; SameSite=Strict${secure ? '; Secure' : ''}`;
-  }
-
-  private getCookie(name: string): string | null {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) {
-      const cookieValue = parts.pop()?.split(';').shift();
-      return cookieValue ? decodeURIComponent(cookieValue) : null;
-    }
-    return null;
-  }
-
-  private deleteCookie(name: string): void {
-    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+    return this.generateMockUser('google', 'user@gmail.com', accessToken);
   }
 }
