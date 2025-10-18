@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createEntityAdapter, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { postsCleanup } from '../shared/actions';
 import { LoadingStatusType } from '../shared/types/LoadingStatus';
@@ -6,11 +6,14 @@ import { LoadingStatusType } from '../shared/types/LoadingStatus';
 import { Post } from './types/Post';
 import { PostsStoreState } from './types/PostsStoreState';
 
-const initialState = Object.freeze({
-  posts: [],
+// Create entity adapter
+export const postsAdapter = createEntityAdapter<Post>();
+
+const initialState = postsAdapter.getInitialState({
   language: null,
   loadingStatus: LoadingStatusType.IDLE,
-  error: '',
+  error: null,
+  lastFetchParams: undefined,
 }) as PostsStoreState;
 
 // Create Redux Slice
@@ -30,24 +33,20 @@ const postsSlice = createSlice({
     setLanguage: (state, { payload }: PayloadAction<string>) => {
       state.language = payload;
     },
-    addPosts: (state, { payload }: PayloadAction<Post[]>) => {
-      payload.forEach(post => {
-        state.posts[post.id] = post;
-      });
+    setLastFetchParams: (state, { payload }: PayloadAction<Record<string, unknown>>) => {
+      state.lastFetchParams = payload;
     },
-    addPost: (state, action: PayloadAction<Post>) => {
-      state.posts[action.payload.id] = action.payload;
-    },
-    resetPosts: state => {
-      state.posts = [];
-    },
+    addPosts: postsAdapter.addMany,
+    addPost: postsAdapter.addOne,
+    resetPosts: postsAdapter.removeAll,
   },
   extraReducers: builder => {
     builder.addCase(postsCleanup.type, state => {
-      state.posts = [];
+      postsAdapter.removeAll(state);
       state.language = null;
       state.loadingStatus = LoadingStatusType.IDLE;
-      state.error = '';
+      state.error = null;
+      state.lastFetchParams = undefined;
     });
   },
 });
@@ -58,8 +57,13 @@ export const {
   setError,
   resetError,
   setLanguage,
+  setLastFetchParams,
   addPosts,
   addPost,
   resetPosts,
 } = postsSlice.actions;
+
+// Export selectors
+export const postsSelectors = postsAdapter.getSelectors();
+
 export const postsReducer = postsSlice.reducer;

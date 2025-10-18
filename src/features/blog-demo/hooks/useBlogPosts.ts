@@ -5,6 +5,7 @@ import log from 'loglevel';
 import i18n from '@/features/i18n/i18n';
 import useTypedSelector from '@/hooks/useTypedSelector';
 
+import { postsSelectors } from '../models/post/slice';
 import { LoadingStatusType } from '../models/shared/types/LoadingStatus';
 
 import { useActions } from './useActions';
@@ -13,7 +14,7 @@ export const useBlogPosts = () => {
   const actions = useActions();
   const state = useTypedSelector(state => state.blogDemo.posts);
   const error = state.error;
-  const posts = Object.values(state.posts);
+  const posts = useTypedSelector(state => postsSelectors.selectAll(state.blogDemo.posts));
   const isLoading = state.loadingStatus === LoadingStatusType.REQUESTED;
 
   // Track if we need to fetch more posts

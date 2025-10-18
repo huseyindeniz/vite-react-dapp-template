@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createEntityAdapter, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { authorsCleanup } from '../shared/actions';
 import { LoadingStatusType } from '../shared/types/LoadingStatus';
@@ -6,10 +6,13 @@ import { LoadingStatusType } from '../shared/types/LoadingStatus';
 import { Author } from './types/Author';
 import { AuthorsStoreState } from './types/AuthorsStoreState';
 
-const initialState = Object.freeze({
-  authors: {},
+// Create entity adapter
+export const authorsAdapter = createEntityAdapter<Author>();
+
+const initialState = authorsAdapter.getInitialState({
   loadingStatus: LoadingStatusType.IDLE,
   error: null,
+  lastFetchParams: undefined,
 }) as AuthorsStoreState;
 
 // Create Redux Slice
@@ -26,23 +29,19 @@ const authorSlice = createSlice({
     resetError: state => {
       state.error = null;
     },
-    setAuthors: (state, action: PayloadAction<Author[]>) => {
-      action.payload.forEach(author => {
-        state.authors[author.id] = author;
-      });
+    setLastFetchParams: (state, { payload }: PayloadAction<Record<string, unknown>>) => {
+      state.lastFetchParams = payload;
     },
-    addAuthor: (state, action: PayloadAction<Author>) => {
-      state.authors[action.payload.id] = action.payload;
-    },
-    resetAuthors: state => {
-      state.authors = {};
-    },
+    setAuthors: authorsAdapter.setMany,
+    addAuthor: authorsAdapter.addOne,
+    resetAuthors: authorsAdapter.removeAll,
   },
   extraReducers: builder => {
     builder.addCase(authorsCleanup.type, state => {
-      state.authors = {};
+      authorsAdapter.removeAll(state);
       state.loadingStatus = LoadingStatusType.IDLE;
-      state.error = '';
+      state.error = null;
+      state.lastFetchParams = undefined;
     });
   },
 });
@@ -52,8 +51,13 @@ export const {
   setLoading,
   setError,
   resetError,
+  setLastFetchParams,
   setAuthors,
   addAuthor,
   resetAuthors,
 } = authorSlice.actions;
+
+// Export selectors
+export const authorsSelectors = authorsAdapter.getSelectors();
+
 export const authorsReducer = authorSlice.reducer;
