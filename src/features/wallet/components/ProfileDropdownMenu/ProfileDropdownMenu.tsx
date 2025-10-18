@@ -25,9 +25,6 @@ export const ProfileDropdownMenu: React.FC = () => {
   );
 
   const [addressExplorerUrl, setAddressExplorerUrl] = useState<string>('');
-  const [domainOrAddressTruncated, setDomainOrAddressTruncated] =
-    useState<string>('');
-  const [avatarURL, setAvatarURL] = useState<string>('');
 
   useEffect(() => {
     if (currentNetwork) {
@@ -36,23 +33,6 @@ export const ProfileDropdownMenu: React.FC = () => {
       );
     }
   }, [currentNetwork]);
-
-  useEffect(() => {
-    if (account) {
-      const domainNameOrAddress: string =
-        account.domainName && account.domainName !== ''
-          ? account.domainName
-          : account.shortAddress;
-      setDomainOrAddressTruncated(
-        domainNameOrAddress && domainNameOrAddress.length > 20
-          ? `${domainNameOrAddress?.slice(0, 4)}...${domainNameOrAddress?.slice(
-              -6
-            )}`
-          : domainNameOrAddress
-      );
-      setAvatarURL(account.avatarURL ?? '');
-    }
-  }, [account]);
 
   const onCopyClicked = () => {
     navigator.clipboard.writeText(account?.address ?? '');
@@ -71,9 +51,7 @@ export const ProfileDropdownMenu: React.FC = () => {
 
   return account && account.address && account.address !== '' ? (
     <DropdownMenu
-      address={account.address}
-      domainOrAddressTruncated={domainOrAddressTruncated ?? ''}
-      avatarURL={avatarURL}
+      address={account.shortAddress}
       currentNetwork={currentNetwork}
       connectedWallet={connectedWallet}
       addressExplorerUrl={addressExplorerUrl}

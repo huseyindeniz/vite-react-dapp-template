@@ -33,7 +33,6 @@ import { MainMenu } from '../components/MainMenu/MainMenu';
 import { ScrollToTopButton } from '../components/ScrollToTopButton/ScrollToTopButton';
 import { SecondaryMenu } from '../components/SecondaryMenu/SecondaryMenu';
 import { SiteLogo } from '../components/SiteLogo/SiteLogo';
-import { SiteMeta } from '../components/SiteMeta/SiteMeta';
 import { SocialMenu } from '../components/SocialMenu/SocialMenu';
 
 import { Layout } from './components/Layout';
@@ -53,13 +52,11 @@ export const LayoutBase: React.FC = () => {
   const { mainMenuItems, secondaryMenuItems } = usePages();
 
   const siteName = t('SITE_NAME');
-  const siteDescription = t('SITE_DESCRIPTION');
 
   const baseUrl = pageLink('/');
 
   return (
     <HelmetProvider>
-      <SiteMeta siteName={siteName} siteDescription={siteDescription} />
       <ErrorBoundary FallbackComponent={ErrorFallback} onError={myErrorHandler}>
         <Notifications />
         <Layout navbarCollapsed={opened}>

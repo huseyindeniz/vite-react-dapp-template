@@ -1,0 +1,7 @@
+{
+  "Auth Page 1": "Auth Page 1",
+  "hi there, this is auth protected content": "hi there, this is auth protected content",
+  "You need to log in to see this content.": "You need to log in to see this content.",
+  "auth page 1 public content with protected content": "auth page 1 public content with protected content",
+  "end of page": "end of page"
+}

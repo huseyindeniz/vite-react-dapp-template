@@ -1,11 +1,10 @@
 import log from 'loglevel';
 import { call, put } from 'redux-saga/effects';
 
+import { BlogSlices } from '@/features/blog-demo/configureBlogFeature';
 import { IBlogDemoApi } from '@/features/blog-demo/IBlogDemoApi';
-import {
-  withSliceCache,
-  createCacheKey,
-} from '@/features/slice-manager/hocs/withSliceCache';
+import { smartFetch } from '@/features/slice-manager/hocs/withSliceCache';
+import { RootState } from '@/store/store';
 
 import { LoadingStatusType } from '../../shared/types/LoadingStatus';
 import * as actions from '../actions';
@@ -21,32 +20,29 @@ export function* ActionEffectGetPosts(
     yield put(sliceActions.resetError());
     yield put(sliceActions.setLoading(LoadingStatusType.REQUESTED));
 
-    const cacheKey = createCacheKey('posts', 'fetchPosts', {
-      limit: action.payload.limit,
-      start: action.payload.start,
-    });
+    const { language, limit, start } = action.payload;
 
-    const posts = (yield* withSliceCache(
-      'posts',
-      cacheKey,
+    const posts = (yield* smartFetch(
+      BlogSlices.POSTS,
+      { language, limit, start },
+      (state: unknown) => (state as RootState).blogDemo.posts.posts,
       function* () {
-        log.debug('Making API call with:', {
-          limit: action.payload.limit,
-          start: action.payload.start,
-        });
         return yield call(
-          blogDemoApi.getPosts,
-          action.payload.limit,
-          action.payload.start
+          [blogDemoApi, blogDemoApi.getPosts],
+          language,
+          limit,
+          start
         );
       },
       {
-        ttl: 600000, // 10 minutes cache
+        languageSelector: (state: unknown) =>
+          (state as RootState).blogDemo.posts.language,
       }
     )) as Post[] | null;
 
     if (posts) {
       yield put(sliceActions.addPosts(posts));
+      yield put(sliceActions.setLanguage(language));
     }
   } catch (error) {
     log.debug(error);

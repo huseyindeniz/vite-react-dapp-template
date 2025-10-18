@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { SUPPORTED_AUTH_PROVIDERS } from '@/features/auth/config';
 import { AppRoutes } from '@/features/router/types/AppRoutes';
 import { PageType } from '@/features/router/types/PageType';
+import { ProtectionType } from '@/features/router/types/ProtectionType';
 
 const HomePage = React.lazy(() =>
   import(/* webpackChunkName: "HomePage" */ './Home/Home').then(module => ({
@@ -52,6 +53,30 @@ const Page2 = React.lazy(() =>
   }))
 );
 
+const AuthPage1 = React.lazy(() =>
+  import(/* webpackChunkName: "AuthPage1Page" */ './AuthPage1/AuthPage1').then(
+    module => ({
+      default: module.AuthPage1,
+    })
+  )
+);
+
+const AuthPage2 = React.lazy(() =>
+  import(/* webpackChunkName: "AuthPage2Page" */ './AuthPage2/AuthPage2').then(
+    module => ({
+      default: module.AuthPage2,
+    })
+  )
+);
+
+const AuthAndWalletPage = React.lazy(() =>
+  import(
+    /* webpackChunkName: "AuthAndWalletPage" */ './AuthAndWallet/AuthAndWalletPage'
+  ).then(module => ({
+    default: module.AuthAndWalletPage,
+  }))
+);
+
 const BlogPage = React.lazy(() =>
   import(/* webpackChunkName: "BlogPage" */ './Blog/Blog').then(module => ({
     default: module.Blog,
@@ -82,7 +107,7 @@ export const routes = () => {
     menuLabel: t('Page 1', { ns: 'Menu' }),
     isShownInMainMenu: true,
     isShownInSecondaryMenu: true,
-    isProtected: false,
+    protectionType: ProtectionType.NONE,
   };
 
   // Page2 Route
@@ -92,7 +117,36 @@ export const routes = () => {
     menuLabel: t('Page 2', { ns: 'Menu' }),
     isShownInMainMenu: true,
     isShownInSecondaryMenu: false,
-    isProtected: true,
+    protectionType: ProtectionType.WALLET,
+  };
+
+  // AuthPage1 Route
+  const AuthPage1Route: PageType = {
+    path: 'authpage1',
+    element: <AuthPage1 />,
+    menuLabel: t('Auth Page 1', { ns: 'Menu' }),
+    isShownInMainMenu: true,
+    isShownInSecondaryMenu: true,
+    protectionType: ProtectionType.NONE,
+  };
+
+  // AuthPage2 Route
+  const AuthPage2Route: PageType = {
+    path: 'authpage2',
+    element: <AuthPage2 />,
+    menuLabel: t('Auth Page 2', { ns: 'Menu' }),
+    isShownInMainMenu: true,
+    isShownInSecondaryMenu: false,
+    protectionType: ProtectionType.AUTH,
+  };
+
+  const AuthAndWalletRoute: PageType = {
+    path: 'authandwallet',
+    element: <AuthAndWalletPage />,
+    menuLabel: t('Auth and Wallet Page', { ns: 'Menu' }),
+    isShownInMainMenu: true,
+    isShownInSecondaryMenu: false,
+    protectionType: ProtectionType.BOTH,
   };
 
   // Blog Route
@@ -103,7 +157,7 @@ export const routes = () => {
     menuLabel: t('Blog', { ns: 'Menu' }),
     isShownInMainMenu: true,
     isShownInSecondaryMenu: true,
-    isProtected: false,
+    protectionType: ProtectionType.NONE,
   };
 
   // Blog Post Route
@@ -114,13 +168,16 @@ export const routes = () => {
     menuLabel: t('Post', { ns: 'Menu' }),
     isShownInMainMenu: false,
     isShownInSecondaryMenu: false,
-    isProtected: false,
+    protectionType: ProtectionType.NONE,
   };
 
   // do not forget add your page routes into this array
   const PageRoutes: PageType[] = [
     Page1Route,
     Page2Route,
+    AuthPage1Route,
+    AuthPage2Route,
+    AuthAndWalletRoute,
     BlogHome,
     BlogPostRoute,
   ];
@@ -132,7 +189,7 @@ export const routes = () => {
     menuLabel: t('Home', { ns: 'Menu' }),
     isShownInMainMenu: true,
     isShownInSecondaryMenu: true,
-    isProtected: false,
+    protectionType: ProtectionType.NONE,
   };
 
   // User Dashboard Page
@@ -140,7 +197,7 @@ export const routes = () => {
     path: 'user',
     element: <UserPage />,
     menuLabel: t('Dashboard', { ns: 'Menu' }),
-    isProtected: true,
+    protectionType: ProtectionType.WALLET,
   };
 
   // Dynamically create auth callback routes based on supported providers
@@ -155,7 +212,7 @@ export const routes = () => {
       menuLabel: `${provider.label} Callback`,
       isShownInMainMenu: false,
       isShownInSecondaryMenu: false,
-      isProtected: false,
+      protectionType: ProtectionType.NONE,
     };
   });
 

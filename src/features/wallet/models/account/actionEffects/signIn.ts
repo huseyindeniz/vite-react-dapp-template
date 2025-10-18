@@ -1,4 +1,3 @@
-import log from 'loglevel';
 import { END, EventChannel, Task } from 'redux-saga';
 import {
   put,
@@ -178,35 +177,6 @@ export function* HandleStateUserAuthenticated(
   walletAuthenticatedApi: IWalletAccountApi
 ) {
   yield spawn(handleEventAccountsChanged, walletAuthenticatedApi);
-  const isDomainNameSupported: boolean = yield call(
-    walletAuthenticatedApi.isDomainNameSupported,
-    null
-  );
-  if (isDomainNameSupported) {
-    yield spawn(updateDomainNameWithAPI, walletAuthenticatedApi);
-  }
-}
-
-// Non-blocking functions
-function* updateDomainNameWithAPI(walletAuthenticatedApi: IWalletAccountApi) {
-  try {
-    const domainName: string | null = yield call(
-      walletAuthenticatedApi.getDomainName
-    );
-    if (domainName) {
-      yield put(slicesActions.setAccountDomainName(domainName));
-      const avatarURL: string = yield call(
-        walletAuthenticatedApi.getAvatarURL,
-        domainName
-      );
-      log.debug(avatarURL);
-      if (avatarURL !== '') {
-        yield put(slicesActions.setAccountAvatarURL(avatarURL));
-      }
-    }
-  } catch (error) {
-    yield put(walletStateSliceActions.setError(error as string));
-  }
 }
 
 // WalletApi Event Handlers

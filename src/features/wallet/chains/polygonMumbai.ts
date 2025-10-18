@@ -15,5 +15,4 @@ export const PolygonMumbaiChain: Network = {
   multicallAddress: '',
   isTestChain: true,
   isLocalChain: false,
-  isDomainNameSupported: false,
 };

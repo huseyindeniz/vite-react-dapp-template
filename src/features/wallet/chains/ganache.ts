@@ -15,5 +15,4 @@ export const GanacheChain: Network = {
   multicallAddress: '',
   isTestChain: true,
   isLocalChain: true,
-  isDomainNameSupported: false,
 };

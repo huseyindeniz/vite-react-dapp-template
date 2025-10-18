@@ -3,7 +3,8 @@ import { LoadingStatusType } from '../../shared/types/LoadingStatus';
 import { Post } from './Post';
 
 export type PostsStoreState = {
-  posts: Record<number, Post>;
+  posts: Post[];
+  language: string | null;
   loadingStatus: LoadingStatusType;
   error: string | null;
 };

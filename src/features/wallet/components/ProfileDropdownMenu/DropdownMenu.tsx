@@ -6,7 +6,6 @@ import {
   Menu,
   MenuDivider,
   Group,
-  Avatar,
   Anchor,
   Center,
 } from '@mantine/core';
@@ -25,8 +24,6 @@ import { Identicon } from './Identicon';
 
 export interface DropdownMenuProps {
   address: string;
-  domainOrAddressTruncated: string;
-  avatarURL: string;
   currentNetwork: Network | null;
   connectedWallet: Web3Wallet | null;
   addressExplorerUrl: string | undefined;
@@ -37,8 +34,6 @@ export interface DropdownMenuProps {
 
 export const DropdownMenu: React.FC<DropdownMenuProps> = ({
   address,
-  domainOrAddressTruncated,
-  avatarURL,
   currentNetwork,
   connectedWallet,
   addressExplorerUrl,
@@ -65,29 +60,21 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
                 networkName={currentNetwork?.chainName}
               />
             ) : null}
-            <Text color="white" fz="md" fw="medium" mr="2">
-              {domainOrAddressTruncated}
+            <Text fz="md" fw="medium" mr="2">
+              {address}
             </Text>
-            {avatarURL !== '' ? (
-              <Avatar name={address} src={avatarURL} size="sm" />
-            ) : (
-              <Identicon size={24} account={address} />
-            )}
+            <Identicon size={24} account={address} />
           </Group>
         </Button>
       </Menu.Target>
       <Menu.Dropdown m={0}>
         <Menu.Item disabled>
           <Center>
-            {avatarURL !== '' ? (
-              <Avatar name={address} src={avatarURL} size="lg" />
-            ) : (
-              <Identicon size={64} account={address} />
-            )}
+            <Identicon size={64} account={address} />
           </Center>
         </Menu.Item>
         <Menu.Item disabled ta="center">
-          <Text>{domainOrAddressTruncated}</Text>
+          <Text>{address}</Text>
         </Menu.Item>
         <Menu.Divider />
         <Menu.Item

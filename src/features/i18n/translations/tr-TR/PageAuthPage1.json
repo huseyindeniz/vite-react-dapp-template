@@ -1,0 +1,7 @@
+{
+  "Auth Page 1": "Giriş Sayfası 1",
+  "hi there, this is auth protected content": "merhaba, bu giriş korumalı içeriktir",
+  "You need to log in to see this content.": "bu içeriği görmek için giriş yapmanız gerekiyor.",
+  "auth page 1 public content with protected content": "giriş sayfası 1 açık içeriği ile korumalı içerik",
+  "end of page": "sayfa sonu"
+}

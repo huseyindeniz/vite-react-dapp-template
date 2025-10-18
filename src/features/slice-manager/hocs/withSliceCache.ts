@@ -30,10 +30,11 @@ interface SmartFetchOptions {
   maxAge?: number;
   forceRefresh?: boolean;
   ttl?: number;
+  languageSelector?: StateSelector<string | null>;
 }
 
 // Saga generator type for API calls
-type ApiCallGenerator<T> = Generator<unknown, T, unknown>;
+type ApiCallGenerator<T> = Generator<CallEffect<T>, T, unknown>;
 
 // Selector type
 type StateSelector<T> = (state: unknown) => T;
@@ -146,19 +147,25 @@ function* withSliceCache<T>(
   apiCall: () => ApiCallGenerator<T>,
   options: CacheOptions = {}
 ): Generator<CallEffect<unknown>, T, unknown> {
-  const {
-    ttl = 300000, // 5 minutes default
-    forceRefresh = false,
-    updateAccessTime = true,
-  } = options;
+  // Get slice configuration from SliceManager
+  const manager = getSliceManager();
+  const sliceConfig: unknown = yield call(
+    [manager, 'getSliceConfig'],
+    sliceName
+  );
+  const config = sliceConfig as {
+    cleanupStrategy?: string;
+    cacheTimeout?: number;
+  };
 
-  // Check if this slice should use caching
-  const useCacheResult: unknown = yield call(shouldUseSliceCache, sliceName);
-  const useCache: boolean =
-    typeof useCacheResult === 'boolean' ? useCacheResult : false;
+  const { forceRefresh = false, updateAccessTime = true } = options;
 
-  // Try cache first (if enabled and not force refresh)
-  if (useCache && !forceRefresh) {
+  // Only use saga cache for 'cached' strategy
+  // Other strategies rely on Redux state + smartFetch logic
+  const useSagaCache = config?.cleanupStrategy === 'cached';
+
+  // Try cache first (only for 'cached' strategy)
+  if (useSagaCache && !forceRefresh) {
     const cachedData = getCachedData(`${sliceName}:${cacheKey}`);
     if (cachedData !== null) {
       if (updateAccessTime) {
@@ -172,8 +179,9 @@ function* withSliceCache<T>(
   log.debug(`🌐 Fetching fresh data: ${sliceName}/${cacheKey}`);
   const data: unknown = yield call(apiCall);
 
-  // Cache the result if caching is enabled
-  if (useCache) {
+  // Cache the result ONLY for 'cached' strategy
+  if (useSagaCache) {
+    const ttl = config.cacheTimeout ?? 300000; // Use configured timeout or 5 min default
     setCachedData(`${sliceName}:${cacheKey}`, data, ttl);
   }
 
@@ -192,7 +200,8 @@ function* withSliceCache<T>(
 function* shouldFetchData<T>(
   sliceName: string,
   dataSelector: StateSelector<T>,
-  maxAge = 300000 // 5 minutes
+  languageSelector: StateSelector<string | null>,
+  requestedLanguage?: string
 ): Generator<SelectEffect | CallEffect<unknown>, boolean, unknown> {
   // Check if we have current data
   const currentDataRaw: unknown = yield select(dataSelector);
@@ -205,45 +214,100 @@ function* shouldFetchData<T>(
     return true;
   }
 
-  // Check if data is stale based on slice access time
-  const lastAccessed: unknown = yield call(getSliceLastAccessed, sliceName);
-  const age = Date.now() - (lastAccessed as number);
+  // Check if language changed (if language is being used)
+  if (requestedLanguage !== undefined) {
+    const storedLanguageRaw: unknown = yield select(languageSelector);
+    const storedLanguage = storedLanguageRaw as string | null;
+    if (storedLanguage !== requestedLanguage) {
+      log.debug(
+        `🌐 Language changed: ${storedLanguage} -> ${requestedLanguage}`
+      );
+      return true; // Language changed, fetch fresh data
+    }
+  }
 
-  return age > maxAge;
+  // Get slice configuration from SliceManager
+  const manager = getSliceManager();
+  const sliceConfig: unknown = yield call(
+    [manager, 'getSliceConfig'],
+    sliceName
+  );
+  const config = sliceConfig as {
+    cleanupStrategy?: string;
+    cacheTimeout?: number;
+  };
+
+  // If data exists, check cleanupStrategy
+  if (!config?.cleanupStrategy) {
+    return false; // No config, use existing data
+  }
+
+  // Only 'cached' strategy should re-fetch based on timeout
+  if (config.cleanupStrategy === 'cached') {
+    const cacheTimeout = config.cacheTimeout ?? 300000; // 5 minutes default
+    const lastAccessed: unknown = yield call(getSliceLastAccessed, sliceName);
+    const age = Date.now() - (lastAccessed as number);
+    return age > cacheTimeout;
+  }
+
+  // All other strategies (persistent, manual, component, route): use existing data
+  return false;
 }
 
 function* smartFetch<T>(
   sliceName: string,
-  cacheKey: string,
+  params: Record<string, unknown>,
   dataSelector: StateSelector<T>,
   apiCall: () => ApiCallGenerator<T>,
   options: SmartFetchOptions = {}
 ): Generator<CallEffect<unknown> | SelectEffect, T | null, unknown> {
-  const { maxAge = 300000, forceRefresh = false, ttl = 300000 } = options;
+  const { forceRefresh = false, languageSelector } = options;
+
+  // Extract language from params if present
+  const requestedLanguage = params.language as string | undefined;
 
   if (!forceRefresh) {
     const shouldFetch: unknown = yield call(
       shouldFetchData,
       sliceName,
       dataSelector,
-      maxAge
+      languageSelector || (() => null),
+      requestedLanguage
     );
     if (!(shouldFetch as boolean)) {
-      log.debug(`⏭️ Skipping fetch for ${sliceName} - data is fresh`);
+      // Get strategy to provide meaningful log message
+      const manager = getSliceManager();
+      const config: unknown = yield call(
+        [manager, 'getSliceConfig'],
+        sliceName
+      );
+      const strategy = (config as { cleanupStrategy?: string })
+        ?.cleanupStrategy;
+
+      const reasonMap: Record<string, string> = {
+        persistent: 'data is persistent',
+        manual: 'data requires manual cleanup',
+        component: 'component still active',
+        route: 'route still active',
+        cached: 'data is fresh',
+      };
+      const reason = reasonMap[strategy || ''] || 'data exists';
+
+      log.debug(`⏭️ Skipping fetch for ${sliceName} - ${reason}`);
       const existingData: unknown = yield select(dataSelector);
       return existingData as T;
     }
   }
+
+  // Auto-generate cache key from slice name + params
+  const cacheKey = createCacheKey(sliceName, 'fetch', params);
 
   const result: unknown = yield call(
     withSliceCache,
     sliceName,
     cacheKey,
     apiCall,
-    {
-      ttl,
-      forceRefresh,
-    }
+    options
   );
   return result as T;
 }

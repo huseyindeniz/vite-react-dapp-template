@@ -1,11 +1,12 @@
 import React from 'react';
 
 import { Helmet } from 'react-helmet-async';
+import { useTranslation } from 'react-i18next';
 
 export interface PageMetaProps {
   title: string;
   url: string;
-  description: string;
+  description?: string;
   image?: string;
 }
 export const PageMeta: React.FC<PageMetaProps> = ({
@@ -14,11 +15,17 @@ export const PageMeta: React.FC<PageMetaProps> = ({
   description,
   image,
 }) => {
+  const { t } = useTranslation('Layout');
   const PUBLIC_URL = window.location.host;
+  const siteName = t('SITE_NAME');
+  const siteDescription = t('SITE_DESCRIPTION');
+
   return (
     <Helmet>
-      <title>{title}</title>
-      <meta name="description" content={description} />
+      <title>
+        {title} | {siteName}
+      </title>
+      <meta name="description" content={description ?? siteDescription} />
       <meta name="image" content={image ?? `${PUBLIC_URL}/default.png`} />
 
       <meta property="og:url" content={`${PUBLIC_URL}${url}`} />

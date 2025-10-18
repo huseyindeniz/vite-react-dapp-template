@@ -2,6 +2,7 @@ import React, { JSX, useEffect } from 'react';
 
 import { RouteObject, useRoutes } from 'react-router-dom';
 
+import { withAuthProtection } from '@/features/auth/hocs/withAuthProtection';
 import { configureBlogFeature } from '@/features/blog-demo/configureBlogFeature';
 import { i18nConfig } from '@/features/i18n/config';
 import { useSliceManagerInit } from '@/features/slice-manager/hooks/useSliceManagerInit';
@@ -10,6 +11,7 @@ import { usePostLoginRedirect } from '@/features/wallet/hooks/usePostLoginRedire
 
 import { isHashRouter } from './config';
 import { AppRoutes } from './types/AppRoutes';
+import { ProtectionType } from './types/ProtectionType';
 
 const HashRouter = React.lazy(() =>
   import(/* webpackChunkName: "Router" */ 'react-router-dom').then(module => ({
@@ -61,11 +63,27 @@ const Routes: React.FC<RoutesProps> = ({ routes }) => {
   const { homeRoute, userRoute, pageRoutes, authRoutes } = routes;
 
   const protectedRoutes = pageRoutes.map(p => {
+    let element = p.element;
+    switch (p.protectionType) {
+      case ProtectionType.WALLET:
+        element = withWalletProtection(p.element as JSX.Element);
+        break;
+      case ProtectionType.AUTH:
+        element = withAuthProtection(p.element as JSX.Element);
+        break;
+      case ProtectionType.BOTH:
+        element = withAuthProtection(
+          withWalletProtection(p.element as JSX.Element)
+        );
+        break;
+      case ProtectionType.NONE:
+      default:
+        // No protection
+        break;
+    }
     return {
       ...p,
-      element: p.isProtected
-        ? withWalletProtection(p.element as JSX.Element)
-        : p.element,
+      element,
     };
   });
 
@@ -123,7 +141,7 @@ const Routes: React.FC<RoutesProps> = ({ routes }) => {
       ...authRoutes.map(route => ({
         path: route.path as string,
         element: route.element,
-      }))
+      })),
     ],
   };
 

@@ -7,7 +7,8 @@ import { Post } from './types/Post';
 import { PostsStoreState } from './types/PostsStoreState';
 
 const initialState = Object.freeze({
-  posts: {},
+  posts: [],
+  language: null,
   loadingStatus: LoadingStatusType.IDLE,
   error: '',
 }) as PostsStoreState;
@@ -26,8 +27,11 @@ const postsSlice = createSlice({
     resetError: state => {
       state.error = null;
     },
-    addPosts: (state, action: PayloadAction<Post[]>) => {
-      action.payload.forEach(post => {
+    setLanguage: (state, { payload }: PayloadAction<string>) => {
+      state.language = payload;
+    },
+    addPosts: (state, { payload }: PayloadAction<Post[]>) => {
+      payload.forEach(post => {
         state.posts[post.id] = post;
       });
     },
@@ -35,12 +39,13 @@ const postsSlice = createSlice({
       state.posts[action.payload.id] = action.payload;
     },
     resetPosts: state => {
-      state.posts = {};
+      state.posts = [];
     },
   },
   extraReducers: builder => {
     builder.addCase(postsCleanup.type, state => {
-      state.posts = {};
+      state.posts = [];
+      state.language = null;
       state.loadingStatus = LoadingStatusType.IDLE;
       state.error = '';
     });
@@ -52,6 +57,7 @@ export const {
   setLoading,
   setError,
   resetError,
+  setLanguage,
   addPosts,
   addPost,
   resetPosts,

@@ -3,7 +3,7 @@
   "Refuse non-essential cookies": "Refuse non-essential cookies",
   "This website uses cookies to enhance the user experience.": "This website uses cookies to enhance the user experience.",
   "Please wait while the requested page is loading...": "Please wait while the requested page is loading...",
-  "Go To Top": "Go To Top",
   "SITE_NAME": "My Awesome dApp",
-  "SITE_DESCRIPTION": "dApp demonstration website that created with React dApp Template (Vite)"
+  "SITE_DESCRIPTION": "dApp demonstration website that created with React dApp Template (Vite)",
+  "Go To Top": "Go To Top"
 }

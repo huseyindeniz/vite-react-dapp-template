@@ -15,5 +15,4 @@ export const HardhatChain: Network = {
   multicallAddress: '',
   isTestChain: true,
   isLocalChain: true,
-  isDomainNameSupported: false,
 };

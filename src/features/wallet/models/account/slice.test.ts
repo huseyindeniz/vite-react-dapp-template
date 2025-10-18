@@ -63,23 +63,6 @@ describe('wallet:account slice', () => {
     expect(nextState.account).toEqual(mockAccount);
   });
 
-  it('should set account domain name', () => {
-    const mockAccount: AccountType = mockObject<AccountType>();
-    const state = { ...slicesActions.initialState, account: mockAccount };
-    const mockDomainName: string = 'My mock domain name';
-    const action = slicesActions.setAccountDomainName(mockDomainName);
-    const nextState = slicesActions.accountReducer(state, action);
-    expect(nextState.account?.domainName).toEqual(mockDomainName);
-  });
-
-  it('should not set account domain name if account is null', () => {
-    const state = { ...slicesActions.initialState };
-    const mockDomainName: string = 'My mock ens name';
-    const action = slicesActions.setAccountDomainName(mockDomainName);
-    const nextState = slicesActions.accountReducer(state, action);
-    expect(nextState.account?.domainName).toEqual(undefined);
-  });
-
   it('should reset the state when the disconnectWallet action is dispatched', () => {
     const state = slicesActions.initialState;
     const action = slicesActions.setAccountLoadState(

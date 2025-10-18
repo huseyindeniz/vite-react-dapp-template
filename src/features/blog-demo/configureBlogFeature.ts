@@ -2,6 +2,14 @@ import { getSliceManager } from '@/features/slice-manager/SliceLifecycleManager'
 import { FeatureRouteConfig } from '@/features/slice-manager/types/FeatureRouteConfig';
 import { SliceConfig } from '@/features/slice-manager/types/SliceConfig';
 
+export const BlogSlices = {
+  POSTS: 'posts',
+  AUTHORS: 'authors',
+  CATEGORIES: 'categories',
+  COMMENTS: 'comments',
+  BLOG_SETTINGS: 'blogSettings',
+} as const;
+
 // Configuration for your blog feature
 export const configureBlogFeature = () => {
   const manager = getSliceManager();
@@ -11,9 +19,14 @@ export const configureBlogFeature = () => {
     name: 'blogDemo',
     routes: [
       /^\/blog($|\/)/, // /blog, /blog/, /blog/anything
-      /^\/articles($|\/)/, // Alternative blog routes if any
     ],
-    slices: ['posts', 'authors', 'categories', 'comments', 'blogSettings'],
+    slices: [
+      BlogSlices.POSTS,
+      BlogSlices.AUTHORS,
+      BlogSlices.CATEGORIES,
+      BlogSlices.COMMENTS,
+      BlogSlices.BLOG_SETTINGS,
+    ],
   };
 
   manager.registerFeature(blogFeatureConfig);
@@ -21,15 +34,15 @@ export const configureBlogFeature = () => {
   // Register individual slices with their specific strategies
   const blogSliceConfigs: SliceConfig[] = [
     {
-      name: 'posts',
+      name: BlogSlices.POSTS,
       feature: 'blogDemo',
       cleanupStrategy: 'cached', // Clean when leaving blog routes
-      cacheTimeout: 600000, // 10 minutes cache
+      cacheTimeout: 1000 * 60 * 10, // 10 minutes cache
       cleanupReducerName: 'cleanup', // Use the 'cleanup' action for cleanup
-      cleanupDelay: 3000, // Wait 3 seconds before cleanup
+      cleanupDelay: 1000 * 3, // Wait 3 seconds before cleanup
     },
     {
-      name: 'authors',
+      name: BlogSlices.AUTHORS,
       feature: 'blogDemo',
       cleanupStrategy: 'cached', // Keep cached for longer
       cacheTimeout: 600000, // 10 minutes cache
@@ -37,20 +50,20 @@ export const configureBlogFeature = () => {
       cleanupDelay: 1000,
     },
     {
-      name: 'categories',
+      name: BlogSlices.CATEGORIES,
       feature: 'blogDemo',
       cleanupStrategy: 'persistent', // Never cleanup automatically
       cleanupReducerName: 'cleanup',
     },
     {
-      name: 'comments',
+      name: BlogSlices.COMMENTS,
       feature: 'blogDemo',
       cleanupStrategy: 'component', // Clean when components unmount
       cleanupReducerName: 'cleanup',
       cleanupDelay: 5000, // Wait 5 seconds
     },
     {
-      name: 'blogSettings',
+      name: BlogSlices.BLOG_SETTINGS,
       feature: 'blogDemo',
       cleanupStrategy: 'persistent', // Keep settings always
       cleanupReducerName: 'cleanup',
