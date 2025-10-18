@@ -33,6 +33,11 @@ Parse command arguments to determine execution mode:
 - `--major-only`: Only process major version updates (X.x.x)
 - `--auto`: Run in non-interactive mode with conservative defaults
 
+**Excluded Packages**
+
+- DO NOT TOUCH 18next related packages
+- DO NOT TOUCH storybook related packages
+
 **Execution Modes:**
 
 - **Interactive Mode** (default): Ask user for approval on each batch
