@@ -2,10 +2,14 @@ import { PayloadAction } from '@reduxjs/toolkit';
 import { SagaIterator } from 'redux-saga';
 import { call, put } from 'redux-saga/effects';
 
-import { AuthProviderName, AuthProviderCredentials } from '@/features/auth/types/IAuthProvider';
+import {
+  AuthProviderName,
+  AuthProviderCredentials,
+} from '@/features/auth/types/IAuthProvider';
 import { IAuthService } from '@/features/auth/types/IAuthService';
 
-import * as authActions from '../actions';
+import * as sliceActions from '../slice';
+import { AuthState } from '../types/AuthState';
 import { AuthUser } from '../types/AuthUser';
 
 export function* ActionEffectLoginWithProvider(
@@ -15,7 +19,10 @@ export function* ActionEffectLoginWithProvider(
   const { provider: providerName } = action.payload;
 
   try {
-    yield put(authActions.loginStarted({ provider: providerName }));
+    // Set loading state
+    yield put(sliceActions.setState(AuthState.LOGGING_IN));
+    yield put(sliceActions.setCurrentProvider(providerName));
+    yield put(sliceActions.setError(null));
 
     // Step 1: Get provider credentials (immediate user data for UI feedback)
     const credentials: AuthProviderCredentials = yield call(
@@ -33,10 +40,8 @@ export function* ActionEffectLoginWithProvider(
       provider: providerName,
     };
 
-    yield put(authActions.loginSucceeded({
-      user: immediateUser,
-      provider: providerName
-    }));
+    yield put(sliceActions.setState(AuthState.AUTHENTICATED));
+    yield put(sliceActions.setUser(immediateUser));
 
     // Step 3: Exchange authorization code with backend for validated user data
     const backendResult: { user: AuthUser } = yield call(
@@ -46,11 +51,11 @@ export function* ActionEffectLoginWithProvider(
     );
 
     // Step 4: Update UI with authoritative backend user data
-    yield put(authActions.userUpdated({
-      user: backendResult.user
-    }));
-
+    yield put(sliceActions.setUser(backendResult.user));
   } catch (error) {
-    yield put(authActions.loginFailed({ error: `Login failed: ${error}` }));
+    yield put(sliceActions.setState(AuthState.ERROR));
+    yield put(sliceActions.setUser(null));
+    yield put(sliceActions.setCurrentProvider(null));
+    yield put(sliceActions.setError(`Login failed: ${error}`));
   }
 }

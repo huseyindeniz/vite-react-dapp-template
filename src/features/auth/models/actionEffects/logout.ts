@@ -4,13 +4,15 @@ import { put, select } from 'redux-saga/effects';
 import { IAuthService } from '@/features/auth/types/IAuthService';
 import { RootState } from '@/store/store';
 
-import * as authActions from '../actions';
+import * as sliceActions from '../slice';
+import { AuthState } from '../types/AuthState';
 import { AuthStoreState } from '../types/AuthStoreState';
-
 
 export function* ActionEffectLogout(authService: IAuthService) {
   try {
-    yield put(authActions.logoutStarted());
+    // Set logging out state
+    yield put(sliceActions.setState(AuthState.LOGGING_OUT));
+    yield put(sliceActions.setError(null));
 
     const { currentProvider }: AuthStoreState = yield select(
       (state: RootState) => state.auth
@@ -25,8 +27,12 @@ export function* ActionEffectLogout(authService: IAuthService) {
 
     // Backend clears httpOnly cookies automatically
 
-    yield put(authActions.logoutSucceeded());
+    // Clear auth state
+    yield put(sliceActions.setState(AuthState.READY));
+    yield put(sliceActions.setUser(null));
+    yield put(sliceActions.setCurrentProvider(null));
   } catch (error) {
-    yield put(authActions.logoutFailed({ error: `Logout failed: ${error}` }));
+    yield put(sliceActions.setState(AuthState.ERROR));
+    yield put(sliceActions.setError(`Logout failed: ${error}`));
   }
 }

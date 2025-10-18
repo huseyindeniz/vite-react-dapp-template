@@ -13,10 +13,13 @@ export const useAuth = () => {
     user: authState.user,
     currentProvider: authState.currentProvider,
     error: authState.error,
-    isInitialized: authState.isInitialized,
-    isLoading: authState.isLoading,
 
     // Computed states
+    isLoading:
+      authState.state === AuthState.LOGGING_IN ||
+      authState.state === AuthState.LOGGING_OUT ||
+      authState.state === AuthState.INITIALIZING,
+    isInitialized: authState.state !== AuthState.NOT_INITIALIZED,
     isAuthenticated: authState.state === AuthState.AUTHENTICATED,
     isLoggingIn: authState.state === AuthState.LOGGING_IN,
     isLoggingOut: authState.state === AuthState.LOGGING_OUT,
