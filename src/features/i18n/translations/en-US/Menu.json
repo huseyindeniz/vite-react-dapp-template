@@ -1,6 +1,10 @@
 {
-  "Page 1": "Page 1",
-  "Page 2": "Page 2",
+  "Auth Demo": "Auth Demo",
+  "Wallet - Basic": "Wallet - Basic",
+  "Wallet - Protected": "Wallet - Protected",
+  "OAuth - Basic": "OAuth - Basic",
+  "OAuth - Protected": "OAuth - Protected",
+  "Combined Auth": "Combined Auth",
   "Blog": "Blog",
   "Post": "Post",
   "Home": "Home",

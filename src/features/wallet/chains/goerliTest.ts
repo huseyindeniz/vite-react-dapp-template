@@ -15,5 +15,4 @@ export const GoerliTestChain: Network = {
   multicallAddress: '',
   isTestChain: true,
   isLocalChain: false,
-  isDomainNameSupported: false,
 };

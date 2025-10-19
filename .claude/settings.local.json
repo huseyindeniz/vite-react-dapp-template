@@ -21,7 +21,9 @@
       "WebFetch(domain:developers.google.com)",
       "Bash(npx tsc:*)",
       "Bash(npm test:*)",
-      "Bash(git rm:*)"
+      "Bash(git rm:*)",
+      "WebFetch(domain:mantine.dev)",
+      "Bash(npm run check-translations)"
     ],
     "deny": [],
     "ask": []

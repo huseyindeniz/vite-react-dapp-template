@@ -21,10 +21,13 @@ import { Outlet } from 'react-router-dom';
 import { Auth } from '@/features/auth/components/Auth';
 import { LangMenu } from '@/features/i18n/components/LangMenu/LangMenu';
 import { useI18nWatcher } from '@/features/i18n/useI18nWatchers';
+import { useActiveRoute } from '@/features/router/hooks/useActiveRoute';
+import { useBreadcrumb } from '@/features/router/hooks/useBreadcrumb';
 import { usePageLink } from '@/features/router/hooks/usePageLink';
 import { usePages } from '@/features/router/hooks/usePages';
 import { Wallet } from '@/features/wallet/components/Wallet';
 
+import { Breadcrumb } from '../components/Breadcrumb/Breadcrumb';
 import { ColorSchemeSwitch } from '../components/ColorSchemeSwitch/ColorSchemeSwitch';
 import { CookieConsentMessage } from '../components/CookieConsent/CookieConsentMessage';
 import { Copyright } from '../components/Copyright/Copyright';
@@ -32,8 +35,8 @@ import { ErrorFallback } from '../components/ErrorFallback/ErrorFallback';
 import { MainMenu } from '../components/MainMenu/MainMenu';
 import { ScrollToTopButton } from '../components/ScrollToTopButton/ScrollToTopButton';
 import { SecondaryMenu } from '../components/SecondaryMenu/SecondaryMenu';
+import { SideNav } from '../components/SideNav/SideNav';
 import { SiteLogo } from '../components/SiteLogo/SiteLogo';
-import { SiteMeta } from '../components/SiteMeta/SiteMeta';
 import { SocialMenu } from '../components/SocialMenu/SocialMenu';
 
 import { Layout } from './components/Layout';
@@ -50,19 +53,22 @@ export const LayoutBase: React.FC = () => {
   const { t } = useTranslation('Layout');
   const [opened, { toggle, close }] = useDisclosure();
   const { pageLink } = usePageLink();
-  const { mainMenuItems, secondaryMenuItems } = usePages();
+  const { mainMenuItems, secondaryMenuItems, pageRoutes } = usePages();
 
   const siteName = t('SITE_NAME');
-  const siteDescription = t('SITE_DESCRIPTION');
-
   const baseUrl = pageLink('/');
+
+  // Detect active route and check if it has subRoutes
+  const { hasSubRoutes, subRoutes, fullWidth } = useActiveRoute(pageRoutes);
+
+  // Get breadcrumb items
+  const breadcrumbItems = useBreadcrumb(pageRoutes);
 
   return (
     <HelmetProvider>
-      <SiteMeta siteName={siteName} siteDescription={siteDescription} />
       <ErrorBoundary FallbackComponent={ErrorFallback} onError={myErrorHandler}>
         <Notifications />
-        <Layout navbarCollapsed={opened}>
+        <Layout navbarCollapsed={opened} asideVisible={hasSubRoutes}>
           <Layout.Header>
             <Burger
               opened={opened}
@@ -95,10 +101,15 @@ export const LayoutBase: React.FC = () => {
             </Stack>
           </Layout.Navbar>
 
-          <Layout.Content>
-            <Container>
-              <Outlet />
-            </Container>
+          {hasSubRoutes && (
+            <Layout.Aside>
+              <SideNav items={subRoutes} />
+            </Layout.Aside>
+          )}
+
+          <Layout.Content fullWidth={fullWidth}>
+            <Breadcrumb items={breadcrumbItems} />
+            <Outlet />
           </Layout.Content>
 
           <Layout.Footer>

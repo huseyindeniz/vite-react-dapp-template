@@ -23,9 +23,11 @@ describe('PageMeta', () => {
 
     // Wait for the Helmet component to update the document head
     await waitFor(() => {
-      expect(document.title).toBe(title);
+      expect(document.title).toBe(`${title} | SITE_NAME`);
 
-      expect(document.querySelector('title')).toHaveTextContent(title);
+      expect(document.querySelector('title')).toHaveTextContent(
+        `${title} | SITE_NAME`
+      );
       expect(
         document.querySelector('meta[name="description"]')
       ).toHaveAttribute('content', description);

@@ -1,0 +1,8 @@
+{
+  "Wallet Protected Page": "Cüzdan Korumalı Sayfa",
+  "Fully protected page requiring wallet authentication": "Cüzdan kimlik doğrulaması gerektiren tamamen korumalı sayfa",
+  "Protected Route": "Korumalı Rota",
+  "This entire page is protected by wallet authentication at the route level. You can only access this page if you have connected your wallet.": "Bu sayfanın tamamı rota düzeyinde cüzdan kimlik doğrulaması ile korunmaktadır. Bu sayfaya yalnızca cüzdanınızı bağladıysanız erişebilirsiniz.",
+  "Unlike the Basic Wallet page which uses conditional rendering, this page uses route-level protection configured in the routes configuration.": "Koşullu render kullanan Temel Cüzdan sayfasının aksine, bu sayfa rota yapılandırmasında ayarlanmış rota düzeyinde koruma kullanır.",
+  "If you can see this page, you have successfully connected your Web3 wallet.": "Bu sayfayı görebiliyorsanız, Web3 cüzdanınızı başarıyla bağlamışsınız demektir."
+}

@@ -7,10 +7,6 @@ import { useActions } from './useActions';
 export const useAuthActions = () => {
   const actions = useActions();
 
-  const initialize = useCallback(() => {
-    actions.initializeAuth();
-  }, [actions]);
-
   const loginWith = useCallback(
     (provider: AuthProviderName) => {
       actions.loginWithProvider({ provider });
@@ -23,7 +19,6 @@ export const useAuthActions = () => {
   }, [actions]);
 
   return {
-    initialize,
     loginWith,
     logout,
   };

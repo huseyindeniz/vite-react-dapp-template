@@ -1,4 +1,5 @@
 import axios, { AxiosError } from 'axios';
+import log from 'loglevel';
 
 import { Author } from '@/features/blog-demo/models/author/types/Author';
 import { Post } from '@/features/blog-demo/models/post/types/Post';
@@ -19,8 +20,15 @@ export class BlogDemoApi implements IBlogDemoApi {
     return BlogDemoApi.instance;
   }
 
-  async getPosts(limit: number, start: number): Promise<Post[]> {
+  async getPosts(
+    language: string,
+    limit: number,
+    start: number
+  ): Promise<Post[]> {
     try {
+      log.debug(
+        `Fetching posts for language: ${language}, limit: ${limit}, start: ${start}`
+      );
       const response = await axios.get<Post[]>(`${BASE_URL}/posts`, {
         params: { _limit: limit, _start: start },
       });

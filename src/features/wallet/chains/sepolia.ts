@@ -15,5 +15,4 @@ export const SepoliaChain: Network = {
   multicallAddress: '',
   isTestChain: true,
   isLocalChain: false,
-  isDomainNameSupported: false,
 };

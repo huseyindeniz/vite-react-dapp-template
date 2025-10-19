@@ -15,5 +15,4 @@ export const BinanceSmartChain: Network = {
   multicallAddress: '',
   isTestChain: false,
   isLocalChain: false,
-  isDomainNameSupported: false,
 };

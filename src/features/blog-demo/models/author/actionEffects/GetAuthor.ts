@@ -17,6 +17,7 @@ export function* ActionEffectGetAuthor(
     yield put(sliceActions.setLoading(LoadingStatusType.REQUESTED));
     const author: Author = yield call(blogDemoApi.getAuthor, action.payload);
     yield put(sliceActions.addAuthor(author));
+    yield put(sliceActions.setLastFetchParams({ authorId: action.payload }));
   } catch (error) {
     log.debug(error);
     yield put(sliceActions.setError((error as Error).message));

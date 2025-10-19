@@ -39,3 +39,6 @@ build
 *.njsproj
 *.sln
 *.sw?
+
+# netlify
+netlify.toml

@@ -77,5 +77,12 @@
   "Address copied.": "Address copied.",
   "The address of your account has been copied to the clipboard.": "The address of your account has been copied to the clipboard.",
   "401 Unauthorized": "401 Unauthorized",
-  "You need to connect your wallet to see this page.": "You need to connect your wallet to see this page."
+  "This page requires a Web3 wallet connection to access.": "This page requires a Web3 wallet connection to access.",
+  "To access this page, you need to:": "To access this page, you need to:",
+  "Click the \"Connect\" button below or in the header": "Click the \"Connect\" button below or in the header",
+  "Choose your Web3 wallet (MetaMask, Coinbase, Core, or Rabby)": "Choose your Web3 wallet (MetaMask, Coinbase, Core, or Rabby)",
+  "Approve the connection request in your wallet": "Approve the connection request in your wallet",
+  "Sign the login message to verify your wallet ownership": "Sign the login message to verify your wallet ownership",
+  "You will be automatically redirected back to this page": "You will be automatically redirected back to this page",
+  "Your wallet connection is secure and you can disconnect anytime.": "Your wallet connection is secure and you can disconnect anytime."
 }

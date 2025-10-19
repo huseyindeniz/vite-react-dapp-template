@@ -5,8 +5,6 @@ import { formatEther } from 'ethers/utils';
 import log from 'loglevel';
 import { eventChannel, EventChannel } from 'redux-saga';
 
-import { AvalancheChain } from '@/features/wallet/chains/avalanche';
-import { EthereumMainnetChain } from '@/features/wallet/chains/ethereum';
 import {
   DISABLE_WALLET_SIGN,
   SUPPORTED_NETWORKS,
@@ -17,7 +15,6 @@ import {
 } from '@/features/wallet/interfaces/IWalletProviderApi';
 import { AccountType } from '@/features/wallet/models/account/types/Account';
 
-import { AvvyAPI } from '../avvy/AvvyAPI';
 import { IWalletEthersV6ProviderApi } from '../interfaces/IWalletEthersV6ProviderApi';
 
 enum MetamaskRPCErrors {
@@ -163,23 +160,6 @@ export class EthersV6WalletAPI implements IWalletEthersV6ProviderApi {
     );
   };
 
-  public isDomainNameSupported = async (chainId: number | null) => {
-    log.debug(this._network?.chainId);
-    log.debug(chainId);
-    if (chainId) {
-      return SUPPORTED_NETWORKS.some(
-        chain => chain.chainId === chainId && chain.isDomainNameSupported
-      );
-    }
-    const network = SUPPORTED_NETWORKS.find(
-      chain => chain.chainId === Number(this._network?.chainId)
-    );
-    if (network) {
-      return network.isDomainNameSupported;
-    }
-    return false;
-  };
-
   public isUnlocked = async () => {
     const accounts: string[] = await this._provider?.send('eth_accounts', []);
     this._isUnlocked = accounts.length > 0;
@@ -276,37 +256,9 @@ export class EthersV6WalletAPI implements IWalletEthersV6ProviderApi {
           0,
           6
         )}...${this._signerAddress.slice(-4)}`,
-        domainName: null,
-        avatarURL: null,
       };
     }
     return result;
-  };
-
-  public getDomainName = async () => {
-    log.debug(this._network?.chainId);
-    if (this._provider && this._network && this._signerAddress) {
-      if (Number(this._network.chainId) === AvalancheChain.chainId) {
-        const avvyApi = AvvyAPI.getInstance(this._provider);
-        return avvyApi.addressToDomain(this._signerAddress);
-      } else if (
-        Number(this._network.chainId) === EthereumMainnetChain.chainId
-      ) {
-        return await this._provider.lookupAddress(this._signerAddress);
-      }
-    }
-  };
-
-  public getAvatarURL = async (domain: string) => {
-    log.debug(this._network?.chainId);
-    if (this._provider && this._network && this._signerAddress) {
-      if (Number(this._network.chainId) === AvalancheChain.chainId) {
-        const avvyApi = AvvyAPI.getInstance(this._provider);
-        return avvyApi.getAvatar(domain);
-      }
-      return '';
-    }
-    return '';
   };
 
   // reset

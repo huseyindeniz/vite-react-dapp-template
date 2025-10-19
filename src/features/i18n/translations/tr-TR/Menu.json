@@ -1,6 +1,10 @@
 {
-  "Page 1": "Sayfa 1",
-  "Page 2": "Sayfa 2",
+  "Auth Demo": "Yetkilendirme Demosu",
+  "Wallet - Basic": "Cüzdan - Basit",
+  "Wallet - Protected": "Cüzdan - Korumalı",
+  "OAuth - Basic": "OAuth - Basit",
+  "OAuth - Protected": "OAuth - Korumalı",
+  "Combined Auth": "Birleşik Yetkilendirme",
   "Blog": "Günlük",
   "Post": "Gönderi",
   "Home": "Anasayfa",

@@ -56,7 +56,7 @@ This is a React dApp template built with Vite, designed for Web3/blockchain fron
 #### Pages and Services
 
 - `src/pages/` - Application pages with route definitions
-- `src/services/` - External service integrations (Ethers.js, AVVY domains)
+- `src/services/` - External service integrations (Ethers.js, oauth)
 - `src/store/` - Redux store configuration with root reducer
 
 ### Web3 Integration
@@ -129,4 +129,9 @@ The codebase includes a sophisticated slice management system for automatic Redu
 - never ever lead to hacky dead ends when you don't find the correct path
 - always check latest documentation before designing anything
 - never ever reinvent the wheel, always check ready to use battle tested, thurasted, widely apapted solutions first
+- **React Hook Dependencies**: NEVER add unnecessary dependencies to useMemo/useCallback/useEffect arrays:
+  - ❌ DON'T add stable references that never change (e.g., `t` from useTranslation, `actions` from custom hooks)
+  - ❌ DON'T add props/params that are recreated on every render but have same content (e.g., `allRoutes` from routes())
+  - ✅ DO add only values that should trigger re-computation when they actually change (e.g., `location.pathname`, `i18n.resolvedLanguage`)
+  - Each unnecessary dependency creates exponential re-render combinations - keep arrays minimal!
 - never ever run npm run lint with --fix arg

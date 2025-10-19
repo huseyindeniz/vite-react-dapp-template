@@ -42,16 +42,6 @@ const accountSlice = createSlice({
     setAccount: (state, { payload }: PayloadAction<AccountType>) => {
       state.account = payload;
     },
-    setAccountDomainName: (state, { payload }: PayloadAction<string>) => {
-      if (state.account) {
-        state.account.domainName = payload;
-      }
-    },
-    setAccountAvatarURL: (state, { payload }: PayloadAction<string>) => {
-      if (state.account) {
-        state.account.avatarURL = payload;
-      }
-    },
   },
   extraReducers: builder => {
     builder.addCase(disconnectWallet.type, state => {
@@ -66,8 +56,6 @@ const accountSlice = createSlice({
 export const {
   setAccountLoadState,
   setAccount,
-  setAccountDomainName,
-  setAccountAvatarURL,
   setAccountSignState,
   decSignCounter,
   resetSignCounter,

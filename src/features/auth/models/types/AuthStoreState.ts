@@ -8,8 +8,6 @@ export interface AuthStoreState {
   user: AuthUser | null;
   currentProvider: AuthProviderName | null;
   error: string | null;
-  isInitialized: boolean;
-  isLoading: boolean;
 }
 
 export const initialAuthState: AuthStoreState = {
@@ -17,6 +15,4 @@ export const initialAuthState: AuthStoreState = {
   user: null,
   currentProvider: null,
   error: null,
-  isInitialized: false,
-  isLoading: false,
 };

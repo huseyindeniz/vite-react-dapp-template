@@ -2,8 +2,10 @@ import { useEffect, useState } from 'react';
 
 import log from 'loglevel';
 
+import i18n from '@/features/i18n/i18n';
 import useTypedSelector from '@/hooks/useTypedSelector';
 
+import { postsSelectors } from '../models/post/slice';
 import { LoadingStatusType } from '../models/shared/types/LoadingStatus';
 
 import { useActions } from './useActions';
@@ -12,7 +14,7 @@ export const useBlogPosts = () => {
   const actions = useActions();
   const state = useTypedSelector(state => state.blogDemo.posts);
   const error = state.error;
-  const posts = Object.values(state.posts);
+  const posts = useTypedSelector(state => postsSelectors.selectAll(state.blogDemo.posts));
   const isLoading = state.loadingStatus === LoadingStatusType.REQUESTED;
 
   // Track if we need to fetch more posts
@@ -21,7 +23,11 @@ export const useBlogPosts = () => {
 
   // Trigger initial fetch on component mount - let smartFetch decide if it should fetch
   useEffect(() => {
-    actions.fetchPosts({ limit: 5, start: 0 });
+    actions.fetchPosts({
+      language: i18n.resolvedLanguage ?? i18n.language,
+      limit: 5,
+      start: 0,
+    });
   }, []);
 
   // Reset moreLoading state when new posts are loaded after load more
@@ -46,6 +52,7 @@ export const useBlogPosts = () => {
       `Load More: posts.length=${posts.length}, calling fetchPosts with start=${startIndex}`
     );
     actions.fetchPosts({
+      language: i18n.resolvedLanguage ?? i18n.language,
       limit: 5,
       start: startIndex, // Continue from the last loaded index
     });

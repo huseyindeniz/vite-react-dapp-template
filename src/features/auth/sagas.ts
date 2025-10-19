@@ -1,21 +1,22 @@
-import { takeLatest, call } from 'redux-saga/effects';
+import { takeLatest, put } from 'redux-saga/effects';
 
 import { IAuthService } from '@/features/auth/types/IAuthService';
 
-import { ActionEffectInitializeAuth } from './models/actionEffects/initializeAuth';
 import { ActionEffectLoginWithProvider } from './models/actionEffects/loginWithProvider';
 import { ActionEffectLogout } from './models/actionEffects/logout';
 import * as authActions from './models/actions';
+import * as sliceActions from './models/slice';
+import { AuthState } from './models/types/AuthState';
 
 export function* authSaga(authService: IAuthService) {
-  // Initialize auth automatically when saga starts
-  yield call(ActionEffectInitializeAuth);
+  // Initialize auth state when saga starts
+  yield put(sliceActions.setState(AuthState.READY));
+  yield put(sliceActions.setError(null));
 
-  yield takeLatest(authActions.INITIALIZE_AUTH, ActionEffectInitializeAuth);
   yield takeLatest(
-    authActions.LOGIN_WITH_PROVIDER,
+    authActions.loginWithProvider.type,
     ActionEffectLoginWithProvider,
     authService
   );
-  yield takeLatest(authActions.LOGOUT, ActionEffectLogout, authService);
+  yield takeLatest(authActions.logout.type, ActionEffectLogout, authService);
 }

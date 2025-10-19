@@ -1,0 +1,10 @@
+{
+  "Combined Authentication": "Combined Authentication",
+  "Page requiring both OAuth and Wallet authentication": "Page requiring both OAuth and Wallet authentication",
+  "Dual Protection": "Dual Protection",
+  "This page requires BOTH OAuth authentication AND Web3 wallet connection. You must satisfy both requirements to access this content.": "This page requires BOTH OAuth authentication AND Web3 wallet connection. You must satisfy both requirements to access this content.",
+  "This demonstrates the most restrictive protection level, combining two different authentication mechanisms:": "This demonstrates the most restrictive protection level, combining two different authentication mechanisms:",
+  "OAuth/Social login (Google or GitHub)": "OAuth/Social login (Google or GitHub)",
+  "Web3 wallet connection (MetaMask, Coinbase, etc.)": "Web3 wallet connection (MetaMask, Coinbase, etc.)",
+  "If you can see this page, you have successfully authenticated via both OAuth and connected your Web3 wallet.": "If you can see this page, you have successfully authenticated via both OAuth and connected your Web3 wallet."
+}

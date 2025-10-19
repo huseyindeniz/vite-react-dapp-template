@@ -326,10 +326,7 @@ export class SliceLifecycleManager {
 
   isSliceCachingEnabled(sliceName: string): boolean {
     const config = this.slices.get(sliceName);
-    return (
-      config?.cleanupStrategy === 'cached' ||
-      config?.cleanupStrategy === 'persistent'
-    );
+    return config?.cleanupStrategy === 'cached';
   }
 
   getSliceLastAccessed(sliceName: string): number {
