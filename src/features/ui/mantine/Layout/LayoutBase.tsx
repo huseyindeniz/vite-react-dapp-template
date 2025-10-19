@@ -22,10 +22,12 @@ import { Auth } from '@/features/auth/components/Auth';
 import { LangMenu } from '@/features/i18n/components/LangMenu/LangMenu';
 import { useI18nWatcher } from '@/features/i18n/useI18nWatchers';
 import { useActiveRoute } from '@/features/router/hooks/useActiveRoute';
+import { useBreadcrumb } from '@/features/router/hooks/useBreadcrumb';
 import { usePageLink } from '@/features/router/hooks/usePageLink';
 import { usePages } from '@/features/router/hooks/usePages';
 import { Wallet } from '@/features/wallet/components/Wallet';
 
+import { Breadcrumb } from '../components/Breadcrumb/Breadcrumb';
 import { ColorSchemeSwitch } from '../components/ColorSchemeSwitch/ColorSchemeSwitch';
 import { CookieConsentMessage } from '../components/CookieConsent/CookieConsentMessage';
 import { Copyright } from '../components/Copyright/Copyright';
@@ -58,6 +60,9 @@ export const LayoutBase: React.FC = () => {
 
   // Detect active route and check if it has subRoutes
   const { hasSubRoutes, subRoutes, fullWidth } = useActiveRoute(pageRoutes);
+
+  // Get breadcrumb items
+  const breadcrumbItems = useBreadcrumb(pageRoutes);
 
   return (
     <HelmetProvider>
@@ -103,6 +108,7 @@ export const LayoutBase: React.FC = () => {
           )}
 
           <Layout.Content fullWidth={fullWidth}>
+            <Breadcrumb items={breadcrumbItems} />
             <Outlet />
           </Layout.Content>
 

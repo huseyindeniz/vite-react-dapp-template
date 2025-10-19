@@ -1,6 +1,13 @@
 import React from 'react';
 
 import { useTranslation } from 'react-i18next';
+import {
+  IoWallet,
+  IoWalletOutline,
+  IoLogIn,
+  IoShieldCheckmark,
+  IoShield,
+} from 'react-icons/io5';
 
 import { SUPPORTED_AUTH_PROVIDERS } from '@/features/auth/config';
 import { AppRoutes } from '@/features/router/types/AppRoutes';
@@ -129,30 +136,35 @@ export const routes = () => {
         element: <WalletBasic />,
         menuLabel: t('Wallet - Basic', { ns: 'Menu' }),
         protectionType: ProtectionType.NONE,
+        icon: <IoWallet size={18} />,
       },
       {
         path: 'wallet-protected',
         element: <WalletProtected />,
         menuLabel: t('Wallet - Protected', { ns: 'Menu' }),
         protectionType: ProtectionType.WALLET,
+        icon: <IoWalletOutline size={18} />,
       },
       {
         path: 'oauth',
         element: <OAuthDemo />,
         menuLabel: t('OAuth - Basic', { ns: 'Menu' }),
         protectionType: ProtectionType.NONE,
+        icon: <IoLogIn size={18} />,
       },
       {
         path: 'oauth-protected',
         element: <OAuthProtected />,
         menuLabel: t('OAuth - Protected', { ns: 'Menu' }),
         protectionType: ProtectionType.AUTH,
+        icon: <IoShieldCheckmark size={18} />,
       },
       {
         path: 'combined',
         element: <CombinedAuth />,
         menuLabel: t('Combined Auth', { ns: 'Menu' }),
         protectionType: ProtectionType.BOTH,
+        icon: <IoShield size={18} />,
       },
     ],
   };

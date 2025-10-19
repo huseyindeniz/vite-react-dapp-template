@@ -74,5 +74,5 @@ export const useActiveRoute = (allRoutes: MenuType[]): ActiveRouteInfo => {
       subRoutes,
       fullWidth,
     };
-  }, [location.pathname, allRoutes, i18n.resolvedLanguage]);
+  }, [location.pathname, i18n.resolvedLanguage]);
 };
