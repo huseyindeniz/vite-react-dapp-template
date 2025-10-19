@@ -21,6 +21,7 @@ import { Outlet } from 'react-router-dom';
 import { Auth } from '@/features/auth/components/Auth';
 import { LangMenu } from '@/features/i18n/components/LangMenu/LangMenu';
 import { useI18nWatcher } from '@/features/i18n/useI18nWatchers';
+import { useActiveRoute } from '@/features/router/hooks/useActiveRoute';
 import { usePageLink } from '@/features/router/hooks/usePageLink';
 import { usePages } from '@/features/router/hooks/usePages';
 import { Wallet } from '@/features/wallet/components/Wallet';
@@ -32,6 +33,7 @@ import { ErrorFallback } from '../components/ErrorFallback/ErrorFallback';
 import { MainMenu } from '../components/MainMenu/MainMenu';
 import { ScrollToTopButton } from '../components/ScrollToTopButton/ScrollToTopButton';
 import { SecondaryMenu } from '../components/SecondaryMenu/SecondaryMenu';
+import { SideNav } from '../components/SideNav/SideNav';
 import { SiteLogo } from '../components/SiteLogo/SiteLogo';
 import { SocialMenu } from '../components/SocialMenu/SocialMenu';
 
@@ -49,17 +51,19 @@ export const LayoutBase: React.FC = () => {
   const { t } = useTranslation('Layout');
   const [opened, { toggle, close }] = useDisclosure();
   const { pageLink } = usePageLink();
-  const { mainMenuItems, secondaryMenuItems } = usePages();
+  const { mainMenuItems, secondaryMenuItems, pageRoutes } = usePages();
 
   const siteName = t('SITE_NAME');
-
   const baseUrl = pageLink('/');
+
+  // Detect active route and check if it has subRoutes
+  const { hasSubRoutes, subRoutes, fullWidth } = useActiveRoute(pageRoutes);
 
   return (
     <HelmetProvider>
       <ErrorBoundary FallbackComponent={ErrorFallback} onError={myErrorHandler}>
         <Notifications />
-        <Layout navbarCollapsed={opened}>
+        <Layout navbarCollapsed={opened} asideVisible={hasSubRoutes}>
           <Layout.Header>
             <Burger
               opened={opened}
@@ -92,10 +96,14 @@ export const LayoutBase: React.FC = () => {
             </Stack>
           </Layout.Navbar>
 
-          <Layout.Content>
-            <Container>
-              <Outlet />
-            </Container>
+          {hasSubRoutes && (
+            <Layout.Aside>
+              <SideNav items={subRoutes} />
+            </Layout.Aside>
+          )}
+
+          <Layout.Content fullWidth={fullWidth}>
+            <Outlet />
           </Layout.Content>
 
           <Layout.Footer>

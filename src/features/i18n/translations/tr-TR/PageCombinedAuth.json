@@ -1,0 +1,10 @@
+{
+  "Combined Authentication": "Kombine Kimlik Doğrulama",
+  "Page requiring both OAuth and Wallet authentication": "Hem OAuth hem de Cüzdan kimlik doğrulaması gerektiren sayfa",
+  "Dual Protection": "Çift Koruma",
+  "This page requires BOTH OAuth authentication AND Web3 wallet connection. You must satisfy both requirements to access this content.": "Bu sayfa HEM OAuth kimlik doğrulaması HEM DE Web3 cüzdan bağlantısı gerektirir. Bu içeriğe erişmek için her iki gereksinimi de karşılamanız gerekir.",
+  "This demonstrates the most restrictive protection level, combining two different authentication mechanisms:": "Bu, iki farklı kimlik doğrulama mekanizmasını birleştirerek en kısıtlayıcı koruma seviyesini gösterir:",
+  "OAuth/Social login (Google or GitHub)": "OAuth/Sosyal giriş (Google veya GitHub)",
+  "Web3 wallet connection (MetaMask, Coinbase, etc.)": "Web3 cüzdan bağlantısı (MetaMask, Coinbase, vb.)",
+  "If you can see this page, you have successfully authenticated via both OAuth and connected your Web3 wallet.": "Bu sayfayı görebiliyorsanız, hem OAuth aracılığıyla kimlik doğrulaması yaptınız hem de Web3 cüzdanınızı bağladınız demektir."
+}

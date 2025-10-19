@@ -1,0 +1,8 @@
+{
+  "OAuth Protected Page": "OAuth Protected Page",
+  "Fully protected page requiring OAuth authentication": "Fully protected page requiring OAuth authentication",
+  "Protected Route": "Protected Route",
+  "This entire page is protected by OAuth authentication at the route level. You can only access this page if you have logged in with Google or GitHub.": "This entire page is protected by OAuth authentication at the route level. You can only access this page if you have logged in with Google or GitHub.",
+  "Unlike the OAuth Demo page which uses conditional rendering, this page uses route-level protection configured in the routes configuration.": "Unlike the OAuth Demo page which uses conditional rendering, this page uses route-level protection configured in the routes configuration.",
+  "If you can see this page, you have successfully authenticated via OAuth.": "If you can see this page, you have successfully authenticated via OAuth."
+}

@@ -1,0 +1,11 @@
+{
+  "Wallet Authentication - Basic": "Wallet Authentication - Basic",
+  "Basic wallet authentication demo": "Basic wallet authentication demo",
+  "Basic Wallet Authentication": "Basic Wallet Authentication",
+  "This page demonstrates basic Web3 wallet authentication using MetaMask, Coinbase Wallet, Core, or Rabby.": "This page demonstrates basic Web3 wallet authentication using MetaMask, Coinbase Wallet, Core, or Rabby.",
+  "Wallet Connected!": "Wallet Connected!",
+  "You have successfully connected your wallet. This content is only visible to authenticated wallet users.": "You have successfully connected your wallet. This content is only visible to authenticated wallet users.",
+  "Wallet Required": "Wallet Required",
+  "Please connect your wallet to view the protected content on this page.": "Please connect your wallet to view the protected content on this page.",
+  "This demonstrates the withWalletProtection HOC pattern for conditional rendering.": "This demonstrates the withWalletProtection HOC pattern for conditional rendering."
+}

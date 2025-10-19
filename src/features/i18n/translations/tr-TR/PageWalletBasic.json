@@ -1,0 +1,11 @@
+{
+  "Wallet Authentication - Basic": "Cüzdan Kimlik Doğrulama - Temel",
+  "Basic wallet authentication demo": "Temel cüzdan kimlik doğrulama demosu",
+  "Basic Wallet Authentication": "Temel Cüzdan Kimlik Doğrulama",
+  "This page demonstrates basic Web3 wallet authentication using MetaMask, Coinbase Wallet, Core, or Rabby.": "Bu sayfa, MetaMask, Coinbase Wallet, Core veya Rabby kullanarak temel Web3 cüzdan kimlik doğrulamasını gösterir.",
+  "Wallet Connected!": "Cüzdan Bağlandı!",
+  "You have successfully connected your wallet. This content is only visible to authenticated wallet users.": "Cüzdanınızı başarıyla bağladınız. Bu içerik yalnızca kimliği doğrulanmış cüzdan kullanıcılarına görünür.",
+  "Wallet Required": "Cüzdan Gerekli",
+  "Please connect your wallet to view the protected content on this page.": "Bu sayfadaki korumalı içeriği görüntülemek için lütfen cüzdanınızı bağlayın.",
+  "This demonstrates the withWalletProtection HOC pattern for conditional rendering.": "Bu, koşullu render için withWalletProtection HOC desenini gösterir."
+}

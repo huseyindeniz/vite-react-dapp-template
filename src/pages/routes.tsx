@@ -41,39 +41,53 @@ const AuthCallbackPages = SUPPORTED_AUTH_PROVIDERS.reduce(
 
 // ADD YOUR PAGE IMPORTS HERE
 
-const Page1 = React.lazy(() =>
-  import(/* webpackChunkName: "Page1Page" */ './Page1/Page1').then(module => ({
-    default: module.Page1,
-  }))
-);
-
-const Page2 = React.lazy(() =>
-  import(/* webpackChunkName: "Page2Page" */ './Page2/Page2').then(module => ({
-    default: module.Page2,
-  }))
-);
-
-const AuthPage1 = React.lazy(() =>
-  import(/* webpackChunkName: "AuthPage1Page" */ './AuthPage1/AuthPage1').then(
+// Auth Demo Parent Page
+const AuthDemo = React.lazy(() =>
+  import(/* webpackChunkName: "AuthDemoPage" */ './AuthDemo/AuthDemo').then(
     module => ({
-      default: module.AuthPage1,
+      default: module.AuthDemo,
     })
   )
 );
 
-const AuthPage2 = React.lazy(() =>
-  import(/* webpackChunkName: "AuthPage2Page" */ './AuthPage2/AuthPage2').then(
-    module => ({
-      default: module.AuthPage2,
-    })
-  )
-);
-
-const AuthAndWalletPage = React.lazy(() =>
+// Auth Demo Sub-pages
+const WalletBasic = React.lazy(() =>
   import(
-    /* webpackChunkName: "AuthAndWalletPage" */ './AuthAndWallet/AuthAndWalletPage'
+    /* webpackChunkName: "WalletBasicPage" */ './AuthDemo/WalletBasic/WalletBasic'
   ).then(module => ({
-    default: module.AuthAndWalletPage,
+    default: module.WalletBasic,
+  }))
+);
+
+const WalletProtected = React.lazy(() =>
+  import(
+    /* webpackChunkName: "WalletProtectedPage" */ './AuthDemo/WalletProtected/WalletProtected'
+  ).then(module => ({
+    default: module.WalletProtected,
+  }))
+);
+
+const OAuthDemo = React.lazy(() =>
+  import(
+    /* webpackChunkName: "OAuthDemoPage" */ './AuthDemo/OAuthDemo/OAuthDemo'
+  ).then(module => ({
+    default: module.OAuthDemo,
+  }))
+);
+
+const OAuthProtected = React.lazy(() =>
+  import(
+    /* webpackChunkName: "OAuthProtectedPage" */ './AuthDemo/OAuthProtected/OAuthProtected'
+  ).then(module => ({
+    default: module.OAuthProtected,
+  }))
+);
+
+const CombinedAuth = React.lazy(() =>
+  import(
+    /* webpackChunkName: "CombinedAuthPage" */ './AuthDemo/CombinedAuth/CombinedAuth'
+  ).then(module => ({
+    default: module.CombinedAuth,
   }))
 );
 
@@ -100,53 +114,47 @@ export const routes = () => {
 
   // ADD YOUR PAGE ROUTES HERE
 
-  // Page1 Route
-  const Page1Route: PageType = {
-    path: 'page1',
-    element: <Page1 />,
-    menuLabel: t('Page 1', { ns: 'Menu' }),
+  // Auth Demo Parent Route with sub-routes
+  const AuthDemoRoute: PageType = {
+    id: 'auth-demo',
+    path: 'auth-demo',
+    element: <AuthDemo />,
+    menuLabel: t('Auth Demo', { ns: 'Menu' }),
     isShownInMainMenu: true,
     isShownInSecondaryMenu: true,
     protectionType: ProtectionType.NONE,
-  };
-
-  // Page2 Route
-  const Page2Route: PageType = {
-    path: 'page2',
-    element: <Page2 />,
-    menuLabel: t('Page 2', { ns: 'Menu' }),
-    isShownInMainMenu: true,
-    isShownInSecondaryMenu: false,
-    protectionType: ProtectionType.WALLET,
-  };
-
-  // AuthPage1 Route
-  const AuthPage1Route: PageType = {
-    path: 'authpage1',
-    element: <AuthPage1 />,
-    menuLabel: t('Auth Page 1', { ns: 'Menu' }),
-    isShownInMainMenu: true,
-    isShownInSecondaryMenu: true,
-    protectionType: ProtectionType.NONE,
-  };
-
-  // AuthPage2 Route
-  const AuthPage2Route: PageType = {
-    path: 'authpage2',
-    element: <AuthPage2 />,
-    menuLabel: t('Auth Page 2', { ns: 'Menu' }),
-    isShownInMainMenu: true,
-    isShownInSecondaryMenu: false,
-    protectionType: ProtectionType.AUTH,
-  };
-
-  const AuthAndWalletRoute: PageType = {
-    path: 'authandwallet',
-    element: <AuthAndWalletPage />,
-    menuLabel: t('Auth and Wallet Page', { ns: 'Menu' }),
-    isShownInMainMenu: true,
-    isShownInSecondaryMenu: false,
-    protectionType: ProtectionType.BOTH,
+    subRoutes: [
+      {
+        path: 'wallet-basic',
+        element: <WalletBasic />,
+        menuLabel: t('Wallet - Basic', { ns: 'Menu' }),
+        protectionType: ProtectionType.NONE,
+      },
+      {
+        path: 'wallet-protected',
+        element: <WalletProtected />,
+        menuLabel: t('Wallet - Protected', { ns: 'Menu' }),
+        protectionType: ProtectionType.WALLET,
+      },
+      {
+        path: 'oauth',
+        element: <OAuthDemo />,
+        menuLabel: t('OAuth - Basic', { ns: 'Menu' }),
+        protectionType: ProtectionType.NONE,
+      },
+      {
+        path: 'oauth-protected',
+        element: <OAuthProtected />,
+        menuLabel: t('OAuth - Protected', { ns: 'Menu' }),
+        protectionType: ProtectionType.AUTH,
+      },
+      {
+        path: 'combined',
+        element: <CombinedAuth />,
+        menuLabel: t('Combined Auth', { ns: 'Menu' }),
+        protectionType: ProtectionType.BOTH,
+      },
+    ],
   };
 
   // Blog Route
@@ -173,11 +181,7 @@ export const routes = () => {
 
   // do not forget add your page routes into this array
   const PageRoutes: PageType[] = [
-    Page1Route,
-    Page2Route,
-    AuthPage1Route,
-    AuthPage2Route,
-    AuthAndWalletRoute,
+    AuthDemoRoute,
     BlogHome,
     BlogPostRoute,
   ];

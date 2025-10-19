@@ -1,3 +1,7 @@
+import { ReactNode } from 'react';
+
+import { RouteObject } from 'react-router-dom';
+
 import { ProtectionType } from './ProtectionType';
 
 export type MenuType = {
@@ -6,4 +10,7 @@ export type MenuType = {
   isShownInMainMenu?: boolean;
   isShownInSecondaryMenu?: boolean;
   protectionType?: ProtectionType;
+  fullWidth?: boolean;
+  icon?: ReactNode;
+  subRoutes?: (MenuType & RouteObject)[];
 };

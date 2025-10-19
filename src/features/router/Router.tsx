@@ -11,6 +11,7 @@ import { usePostLoginRedirect } from '@/features/wallet/hooks/usePostLoginRedire
 
 import { isHashRouter } from './config';
 import { AppRoutes } from './types/AppRoutes';
+import { PageType } from './types/PageType';
 import { ProtectionType } from './types/ProtectionType';
 
 const HashRouter = React.lazy(() =>
@@ -62,29 +63,53 @@ const Routes: React.FC<RoutesProps> = ({ routes }) => {
 
   const { homeRoute, userRoute, pageRoutes, authRoutes } = routes;
 
-  const protectedRoutes = pageRoutes.map(p => {
-    let element = p.element;
-    switch (p.protectionType) {
+  const applyProtection = (element: JSX.Element, protectionType?: ProtectionType): JSX.Element => {
+    switch (protectionType) {
       case ProtectionType.WALLET:
-        element = withWalletProtection(p.element as JSX.Element);
-        break;
+        return withWalletProtection(element);
       case ProtectionType.AUTH:
-        element = withAuthProtection(p.element as JSX.Element);
-        break;
+        return withAuthProtection(element);
       case ProtectionType.BOTH:
-        element = withAuthProtection(
-          withWalletProtection(p.element as JSX.Element)
-        );
-        break;
+        return withAuthProtection(withWalletProtection(element));
       case ProtectionType.NONE:
       default:
-        // No protection
-        break;
+        return element;
     }
+  };
+
+  // Flatten routes - extract subRoutes and create flat list for React Router
+  const flattenRoutes = (routes: PageType[]): PageType[] => {
+    const flattened: PageType[] = [];
+
+    routes.forEach(route => {
+      // Add parent route
+      flattened.push(route);
+
+      // Extract and flatten subRoutes
+      if (route.subRoutes && route.subRoutes.length > 0) {
+        route.subRoutes.forEach(subRoute => {
+          const childPageType = subRoute as PageType;
+          flattened.push({
+            ...childPageType,
+            // Build full path by combining parent + child
+            path: `${route.path}/${childPageType.path}`,
+          });
+        });
+      }
+    });
+
+    return flattened;
+  };
+
+  const flatPageRoutes = flattenRoutes(pageRoutes);
+
+  const protectedRoutes = flatPageRoutes.map(p => {
+    const element = applyProtection(p.element as JSX.Element, p.protectionType);
+
     return {
       ...p,
       element,
-    };
+    } as RouteObject;
   });
 
   const NotFound: RouteObject = {

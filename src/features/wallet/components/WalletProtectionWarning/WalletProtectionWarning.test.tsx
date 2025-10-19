@@ -9,7 +9,7 @@ describe('Feature: Wallet', () => {
     describe('Scenario: Default', () => {
       it('should be visible and clickable', () => {
         // Arrange
-        const expectedTitle = 'Access Denied';
+        const expectedTitle = '401 Unauthorized';
         // Act
         const { asFragment, getByText } = render(<Default />);
         // Assert

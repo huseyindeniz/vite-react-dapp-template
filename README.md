@@ -55,7 +55,6 @@ npm run dev
 
 - **Multi-Wallet Support**: [MetaMask](https://metamask.io), [Core](https://core.app), [Coinbase](https://www.coinbase.com), [Rabby](https://www.rabby.io)
 - **Multi-Chain Support**: Ethereum, Polygon, Avalanche, BSC + testnets
-- **Domain Name Support**: [AVVY Domains](https://avvy.domains) and ENS integration
 
 ### 🌍 **Internationalization (i18n)**
 

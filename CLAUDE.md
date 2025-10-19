@@ -56,7 +56,7 @@ This is a React dApp template built with Vite, designed for Web3/blockchain fron
 #### Pages and Services
 
 - `src/pages/` - Application pages with route definitions
-- `src/services/` - External service integrations (Ethers.js, AVVY domains)
+- `src/services/` - External service integrations (Ethers.js, oauth)
 - `src/store/` - Redux store configuration with root reducer
 
 ### Web3 Integration

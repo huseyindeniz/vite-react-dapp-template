@@ -28,7 +28,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({
               <NavLink
                 key={index}
                 to={link.path ?? ''}
-                end
+                end={!link.subRoutes || link.subRoutes.length === 0}
                 onClick={onClick}
                 className={({ isActive }) =>
                   `${classes.link}${isActive ? ` ${classes.active}` : ''}`
