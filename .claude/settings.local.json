@@ -23,7 +23,10 @@
       "Bash(npm test:*)",
       "Bash(git rm:*)",
       "WebFetch(domain:mantine.dev)",
-      "Bash(npm run check-translations)"
+      "Bash(npm run check-translations)",
+      "Skill(npm-minor-updater)",
+      "Skill(architecture-documenter)",
+      "WebFetch(domain:github.com)"
     ],
     "deny": [],
     "ask": []

@@ -55,7 +55,8 @@ const imports = {}; // file -> array of specifiers (bare module ids only)
 
 for (const root of roots) {
   for (const f of walk(root)) {
-    files.push(path.relative(CWD, f));
+    const relPath = path.relative(CWD, f);
+    files.push(relPath);
     const lines = fs.readFileSync(f, 'utf8').split(/\r?\n/);
     for (const line of lines) {
       const m = line.match(IMPORT_RE);
@@ -63,7 +64,7 @@ for (const root of roots) {
         const spec = m[1];
         // only collect bare module ids, not relative paths
         if (!spec.startsWith('.') && !spec.startsWith('/')) {
-          (imports[f] ||= []).push(spec);
+          (imports[relPath] ||= []).push(spec);
         }
       }
     }
@@ -90,5 +91,6 @@ const meta = {
 };
 
 fs.mkdirSync(path.join(CWD,'docs','architecture','diagrams'), { recursive:true });
-fs.writeFileSync(path.join(CWD,'docs','architecture','scan.meta.json'), JSON.stringify(meta, null, 2));
+fs.mkdirSync(path.join(CWD,'docs','architecture','analysis'), { recursive:true });
+fs.writeFileSync(path.join(CWD,'docs','architecture','analysis','scan.meta.json'), JSON.stringify(meta, null, 2));
 console.log(`scan_project: scanned ${files.length} files.`);

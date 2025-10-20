@@ -2,7 +2,7 @@
 import fs from 'fs';
 import path from 'path';
 const OUT = path.join(process.cwd(),'docs','architecture','diagrams');
-const META = JSON.parse(fs.readFileSync(path.join(process.cwd(),'docs','architecture','scan.meta.json'),'utf8'));
+const META = JSON.parse(fs.readFileSync(path.join(process.cwd(),'docs','architecture','analysis','scan.meta.json'),'utf8'));
 
 function write(name, content){
   fs.writeFileSync(path.join(OUT, name), content);

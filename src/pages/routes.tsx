@@ -48,6 +48,14 @@ const AuthCallbackPages = SUPPORTED_AUTH_PROVIDERS.reduce(
 
 // ADD YOUR PAGE IMPORTS HERE
 
+const AiChatPage = React.lazy(() =>
+  import(/* webpackChunkName: "AiChatPage" */ './AiChat/AiChat').then(
+    module => ({
+      default: module.AiChatPage,
+    })
+  )
+);
+
 // Auth Demo Parent Page
 const AuthDemo = React.lazy(() =>
   import(/* webpackChunkName: "AuthDemoPage" */ './AuthDemo/AuthDemo').then(
@@ -121,6 +129,17 @@ export const routes = () => {
 
   // ADD YOUR PAGE ROUTES HERE
 
+  // AI Chat Route
+  const AiChatRoute: PageType = {
+    id: 'ai-chat',
+    path: 'ai-chat',
+    element: <AiChatPage />,
+    menuLabel: t('AI Chat', { ns: 'Menu' }),
+    isShownInMainMenu: true,
+    isShownInSecondaryMenu: true,
+    protectionType: ProtectionType.NONE,
+  };
+
   // Auth Demo Parent Route with sub-routes
   const AuthDemoRoute: PageType = {
     id: 'auth-demo',
@@ -193,6 +212,7 @@ export const routes = () => {
 
   // do not forget add your page routes into this array
   const PageRoutes: PageType[] = [
+    AiChatRoute,
     AuthDemoRoute,
     BlogHome,
     BlogPostRoute,

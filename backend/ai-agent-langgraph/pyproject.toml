@@ -1,0 +1,28 @@
+[project]
+name = "ai-agent-langgraph"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi>=0.119.0",
+    "httpx>=0.28.1",
+    "langchain>=1.0.0",
+    "langchain-core>=1.0.0",
+    "langchain-openai>=1.0.0",
+    "langgraph>=1.0.0",
+    "pydantic>=2.12.3",
+    "python-dotenv>=1.1.1",
+    "uvicorn[standard]>=0.38.0",
+]
+
+[dependency-groups]
+dev = [
+    "black>=25.9.0",
+    "isort>=7.0.0",
+    "langgraph-cli[inmem]>=0.4.4",
+    "pyright>=1.1.406",
+    "pytest>=8.4.2",
+    "pytest-asyncio>=1.2.0",
+    "ruff>=0.14.1",
+]
