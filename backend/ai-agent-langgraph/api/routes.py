@@ -4,63 +4,52 @@ import json
 from typing import AsyncGenerator
 from fastapi import APIRouter
 from fastapi.responses import StreamingResponse
-from langchain_core.messages import HumanMessage, ToolMessage
+from langchain_core.messages import HumanMessage
 from langchain_core.runnables import RunnableConfig
 
-from api.models import ChatRequest, AddMessageCommand, AddToolResultCommand
+from api.models import LangGraphChatRequest
 from agent.graph import graph
 from config import settings
 
 router = APIRouter()
 
 
-async def stream_chat_response(request: ChatRequest) -> AsyncGenerator[str, None]:
-    """Stream chat responses using LangGraph astream."""
+async def stream_chat_response(request: LangGraphChatRequest) -> AsyncGenerator[str, None]:
+    """Stream chat responses using LangGraph astream_events."""
 
-    # Process commands to build input messages
-    input_messages = []
+    # Create LangGraph native input
+    input_state = {"messages": [HumanMessage(content=request.message)]}
 
-    for command in request.commands:
-        if isinstance(command, AddMessageCommand):
-            text_parts = [
-                part.text
-                for part in command.message.parts
-                if part.type == "text" and part.text
-            ]
-            if text_parts:
-                input_messages.append(HumanMessage(content=" ".join(text_parts)))
-        elif isinstance(command, AddToolResultCommand):
-            input_messages.append(
-                ToolMessage(
-                    content=str(command.result), tool_call_id=command.toolCallId
-                )
-            )
-
-    input_state = {"messages": input_messages}
-
-    # Use auth token for thread_id and user_id
-    token = request.token or "anonymous"
-    thread_id = token
-    user_id = token
+    # Configure thread and user IDs
+    thread_id = request.thread_id or "anonymous"
+    user_id = request.user_id or "anonymous"
     config: RunnableConfig = {"configurable": {"thread_id": thread_id, "user_id": user_id}}
-    # TODO: Add token validation (JWT verify, expiry check, etc.)
 
-    # Stream responses from LangGraph using astream_events for real streaming
+    # Stream events and extract only serializable data
     try:
         async for event in graph.astream_events(input_state, config, version="v2"):
-            kind = event.get("event")
+            event_type = event.get("event")
+            event_name = event.get("name", "")
 
-            # Stream LLM token chunks
-            if kind == "on_chat_model_stream":
+            # Extract only serializable data from events
+            if event_type == "on_chat_model_stream":
+                # Token streaming
                 chunk = event.get("data", {}).get("chunk")
-                if chunk and hasattr(chunk, "content"):
-                    delta = chunk.content
-                    if delta:
-                        data = {"type": "message", "delta": delta}
-                        yield f"data: {json.dumps(data)}\n\n"
+                if chunk and hasattr(chunk, "content") and chunk.content:
+                    yield f"data: {json.dumps({'type': 'token', 'content': chunk.content})}\n\n"
+
+            elif event_type == "on_tool_start":
+                # Tool execution started
+                tool_data = {"type": "tool_start", "name": event_name}
+                yield f"data: {json.dumps(tool_data)}\n\n"
+
+            elif event_type == "on_tool_end":
+                # Tool execution ended
+                tool_data = {"type": "tool_end", "name": event_name}
+                yield f"data: {json.dumps(tool_data)}\n\n"
+
     except Exception as e:
         import traceback
-
         traceback.print_exc()
         yield f"data: {json.dumps({'type': 'error', 'message': str(e)})}\n\n"
 
@@ -68,9 +57,9 @@ async def stream_chat_response(request: ChatRequest) -> AsyncGenerator[str, None
     yield f"data: {json.dumps({'type': 'end'})}\n\n"
 
 
-@router.post("/assistant")
-async def chat_endpoint(request: ChatRequest):
-    """Chat endpoint using LangGraph with SSE streaming."""
+@router.post("/chat")
+async def chat_endpoint(request: LangGraphChatRequest):
+    """Native LangGraph chat endpoint with SSE streaming."""
     return StreamingResponse(
         stream_chat_response(request),
         media_type="text/event-stream",

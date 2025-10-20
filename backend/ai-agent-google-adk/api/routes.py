@@ -8,7 +8,7 @@ from google.adk.agents.run_config import RunConfig, StreamingMode
 from google.adk.runners import InMemoryRunner
 from google.genai import types
 
-from api.models import ChatRequest, AddMessageCommand, AddToolResultCommand
+from api.models import GoogleADKChatRequest
 from agent.agent import root_agent
 from config import settings
 
@@ -21,80 +21,54 @@ runner = InMemoryRunner(agent=root_agent, app_name=APP_NAME)
 session_service = runner.session_service
 
 
-async def stream_chat_response(request: ChatRequest) -> AsyncGenerator[str, None]:
-    """Stream chat responses using Google ADK Agent with Runner."""
+async def stream_chat_response(request: GoogleADKChatRequest) -> AsyncGenerator[str, None]:
+    """Stream chat responses using Google ADK runner.run_async."""
 
-    # Process commands to build input message
-    user_messages = []
+    # Configure user and session IDs
+    user_id = request.user_id or "anonymous"
+    session_id = request.session_id or "anonymous"
 
-    for command in request.commands:
-        if isinstance(command, AddMessageCommand):
-            text_parts = [
-                part.text
-                for part in command.message.parts
-                if part.type == "text" and part.text
-            ]
-            if text_parts:
-                user_messages.append(" ".join(text_parts))
-        elif isinstance(command, AddToolResultCommand):
-            # Handle tool results if needed
-            user_messages.append(f"Tool result: {command.result}")
-
-    if not user_messages:
-        yield f"data: {json.dumps({'type': 'error', 'message': 'No user message found'})}\n\n"
-        return
-
-    user_input = "\n".join(user_messages)
-
-    # Stream responses from Google ADK Agent using Runner
+    # Get or create session
     try:
-
-        # Use auth token for session_id and user_id
-        token = request.token or "anonymous"
-        session_id = token
-        user_id = token
-        # TODO: Add token validation (JWT verify, OAuth token check, etc.)
-
-        # Get or create session based on token
         existing_session = await session_service.get_session(
             app_name=APP_NAME, user_id=user_id, session_id=session_id
         )
 
         if not existing_session:
-            # Create new session if it doesn't exist
             await session_service.create_session(
                 app_name=APP_NAME, user_id=user_id, session_id=session_id, state={}
             )
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        yield f"data: {json.dumps({'type': 'error', 'message': f'Session error: {str(e)}'})}\n\n"
+        return
 
-        # Prepare the user message
-        content = types.Content(role="user", parts=[types.Part(text=user_input)])
+    # Create Google ADK native message content
+    content = types.Content(role="user", parts=[types.Part(text=request.message)])
 
-        # Create RunConfig with SSE streaming mode
-        run_config = RunConfig(streaming_mode=StreamingMode.SSE)
+    # Create RunConfig with SSE streaming mode
+    run_config = RunConfig(streaming_mode=StreamingMode.SSE)
 
-        # Run the agent asynchronously and stream events
+    # Stream events and extract only serializable data
+    try:
         async for event in runner.run_async(
             user_id=user_id,
             session_id=session_id,
             new_message=content,
             run_config=run_config,
         ):
-            # Stream partial events (streaming tokens)
+            # Extract only serializable data from Google ADK events
             if hasattr(event, "partial") and event.partial:
-                if (
-                    hasattr(event, "content")
-                    and event.content
-                    and hasattr(event.content, "parts")
-                    and event.content.parts
-                ):
-                    for part in event.content.parts:
-                        if hasattr(part, "text") and part.text:
-                            data = {"type": "message", "delta": part.text}
-                            yield f"data: {json.dumps(data)}\n\n"
+                # Partial (streaming) response
+                if hasattr(event, "content") and event.content:
+                    if hasattr(event.content, "parts") and event.content.parts:
+                        for part in event.content.parts:
+                            if hasattr(part, "text") and part.text:
+                                yield f"data: {json.dumps({'type': 'token', 'content': part.text})}\n\n"
 
     except Exception as e:
         import traceback
-
         traceback.print_exc()
         yield f"data: {json.dumps({'type': 'error', 'message': str(e)})}\n\n"
 
@@ -102,9 +76,9 @@ async def stream_chat_response(request: ChatRequest) -> AsyncGenerator[str, None
     yield f"data: {json.dumps({'type': 'end'})}\n\n"
 
 
-@router.post("/assistant")
-async def chat_endpoint(request: ChatRequest):
-    """Chat endpoint using Google ADK Agent with SSE streaming."""
+@router.post("/chat")
+async def chat_endpoint(request: GoogleADKChatRequest):
+    """Native Google ADK chat endpoint with SSE streaming."""
     return StreamingResponse(
         stream_chat_response(request),
         media_type="text/event-stream",

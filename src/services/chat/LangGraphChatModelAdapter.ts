@@ -35,29 +35,18 @@ export class LangGraphChatModelAdapter implements ChatModelAdapter {
         .map(part => (part.type === 'text' ? part.text : ''))
         .join('\n');
 
-      log.info('Sending message to backend:', userMessageText);
+      log.info('Sending message to LangGraph backend:', userMessageText);
 
-      const response = await fetch(`${this.baseUrl}/assistant`, {
+      // Send native LangGraph format
+      const response = await fetch(`${this.baseUrl}/chat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          commands: [
-            {
-              type: 'add-message',
-              message: {
-                role: 'user',
-                parts: [
-                  {
-                    type: 'text',
-                    text: userMessageText,
-                  },
-                ],
-              },
-            },
-          ],
-          token, // Auth token for session persistence
+          message: userMessageText,
+          thread_id: token,
+          user_id: token,
         }),
         signal: abortSignal,
       });
@@ -92,13 +81,12 @@ export class LangGraphChatModelAdapter implements ChatModelAdapter {
 
             if (line.startsWith('data: ')) {
               try {
-                const data = JSON.parse(line.slice(6));
-                log.info('SSE data received:', data);
+                const event = JSON.parse(line.slice(6));
 
-                if (data.type === 'message') {
-                  const delta = data.delta || data.content || '';
-                  accumulatedText += delta;
-                  log.info('Accumulated text:', accumulatedText);
+                if (event.type === 'token') {
+                  // Handle text token streaming
+                  accumulatedText += event.content;
+                  log.debug('Token received:', event.content);
                   yield {
                     content: [
                       {
@@ -107,19 +95,17 @@ export class LangGraphChatModelAdapter implements ChatModelAdapter {
                       },
                     ],
                   };
-                } else if (data.type === 'end') {
-                  log.info('Stream ended, final text:', accumulatedText);
-                  return {
-                    content: [
-                      {
-                        type: 'text' as const,
-                        text: accumulatedText,
-                      },
-                    ],
-                    status: { type: 'complete' as const, reason: 'stop' as const },
-                  };
-                } else if (data.type === 'error') {
-                  throw new Error(data.message || 'Unknown error');
+                } else if (event.type === 'tool_start') {
+                  // Log tool execution start
+                  log.info('Tool started:', event.name);
+                } else if (event.type === 'tool_end') {
+                  // Log tool execution end
+                  log.info('Tool ended:', event.name);
+                } else if (event.type === 'end') {
+                  // Stream ended
+                  log.debug('Stream ended');
+                } else if (event.type === 'error') {
+                  throw new Error(event.message || 'Unknown error');
                 }
               } catch (parseError) {
                 log.error('Error parsing SSE data:', parseError, 'Line:', line);
@@ -132,11 +118,16 @@ export class LangGraphChatModelAdapter implements ChatModelAdapter {
       }
 
       return {
-        content: [],
+        content: [
+          {
+            type: 'text' as const,
+            text: accumulatedText,
+          },
+        ],
         status: { type: 'complete' as const, reason: 'stop' as const },
       };
     } catch (error) {
-      log.error('ChatModelAdapter error:', error);
+      log.error('LangGraphChatModelAdapter error:', error);
       return {
         content: [],
         status: {
