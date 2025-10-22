@@ -1,10 +1,10 @@
 import { put, call } from 'redux-saga/effects';
 
 import {
-  IWalletProviderApi,
+  IProviderApi,
   InstalledWallets,
   SupportedWallets,
-} from '@/features/wallet/interfaces/IWalletProviderApi';
+} from '@/features/wallet/models/provider/IProviderApi';
 import { Coinbase } from '@/features/wallet/web3Wallets/coinbase';
 import { Core } from '@/features/wallet/web3Wallets/core';
 import { Metamask } from '@/features/wallet/web3Wallets/metamask';
@@ -22,14 +22,14 @@ import { Web3Wallet } from '../types/Web3Wallet';
 
 // ACTION EFFECTS
 
-export function* ActionEffectLoadProvider(walletApi: IWalletProviderApi) {
+export function* ActionEffectLoadProvider(walletApi: IProviderApi) {
   yield put(walletStateSliceActions.setLoading(LoadingStatusType.PENDING));
   yield put(walletStateSliceActions.setState(WalletState.CHECKING_WALLET));
   yield call(HandleStateDetectingWallets, walletApi);
 }
 
 export function* ActionEffectSelectProvider(
-  walletApi: IWalletProviderApi,
+  walletApi: IProviderApi,
   action: ReturnType<typeof actions.selectWallet>
 ) {
   yield put(walletStateSliceActions.setLoading(LoadingStatusType.PENDING));
@@ -49,7 +49,7 @@ export function* ActionEffectSelectProvider(
 // STATE HANDLERS
 
 export function* HandleStateDetectingWallets(
-  walletProviderApi: IWalletProviderApi
+  walletProviderApi: IProviderApi
 ) {
   yield put(
     sliceActions.setProviderLoadState(ProviderLoadState.DETECTING_WALLETS)
@@ -123,7 +123,7 @@ export function* HandleStateDetectingWallets(
 }
 
 export function* HandleStateProviderRequested(
-  walletProviderApi: IWalletProviderApi,
+  walletProviderApi: IProviderApi,
   wallet: SupportedWallets
 ) {
   yield put(sliceActions.setProviderLoadState(ProviderLoadState.REQUESTED));

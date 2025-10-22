@@ -10,17 +10,16 @@ import storybook from 'eslint-plugin-storybook';
 // plugins
 import eslintpluginimport from "eslint-plugin-import";
 import reactrefresh from "eslint-plugin-react-refresh";
-import tseslint from 'typescript-eslint';
+import { defineConfig } from 'eslint/config';
 
-export default tseslint.config(
+export default defineConfig(
     eslint.configs.recommended,
-    tseslint.configs.recommended,
     mantine,
     // reacthooks.configs.recommended,
     // a11y.configs.recommended,
     // storybook.configs.recommended,
     {
-        ignores: ['dist', 'build', 'node_modules', '.storybook', '**/*.{mjs,cjs,js,d.ts,d.mts}'],
+        ignores: ['dist', 'build', 'node_modules', '.storybook', 'backend', '**/*.{mjs,cjs,js,d.ts,d.mts}'],
     },
     {
         files: ['src/**/*'],

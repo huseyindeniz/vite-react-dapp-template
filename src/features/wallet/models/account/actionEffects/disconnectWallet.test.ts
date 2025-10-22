@@ -2,13 +2,13 @@ import { call } from 'redux-saga/effects';
 import { expectSaga } from 'redux-saga-test-plan';
 import { throwError } from 'redux-saga-test-plan/providers';
 
-import { IWalletAccountApi } from '@/features/wallet/interfaces/IWalletAccountApi';
+import { IAccountApi } from '@/features/wallet/models/account/IAccountApi';
 
 import * as walletStateSliceActions from '../../slice';
 
 import { HandleStateDisconnectRequested } from './disconnectWallet';
 
-const mockWalletResetApi: IWalletAccountApi = {
+const mockWalletResetApi: IAccountApi = {
   isUnlocked: vi.fn(),
   unlock: vi.fn(),
   isSigned: vi.fn(),

@@ -2,11 +2,11 @@ import { takeLatest, put } from 'redux-saga/effects';
 
 import { IAuthService } from '@/features/auth/types/IAuthService';
 
-import { ActionEffectLoginWithProvider } from './models/actionEffects/loginWithProvider';
-import { ActionEffectLogout } from './models/actionEffects/logout';
-import * as authActions from './models/actions';
-import * as sliceActions from './models/slice';
-import { AuthState } from './models/types/AuthState';
+import { ActionEffectLoginWithProvider } from './models/session/actionEffects/loginWithProvider';
+import { ActionEffectLogout } from './models/session/actionEffects/logout';
+import * as authActions from './models/session/actions';
+import * as sliceActions from './models/session/slice';
+import { AuthState } from './models/session/types/AuthState';
 
 export function* authSaga(authService: IAuthService) {
   // Initialize auth state when saga starts

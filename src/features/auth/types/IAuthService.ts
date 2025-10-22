@@ -1,4 +1,4 @@
-import { AuthUser } from '@/features/auth/models/types/AuthUser';
+import { AuthUser } from '@/features/auth/models/session/types/AuthUser';
 
 import { AuthProviderName, AuthProviderCredentials, IAuthProvider } from './IAuthProvider';
 

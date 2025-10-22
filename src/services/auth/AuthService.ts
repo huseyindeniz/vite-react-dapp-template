@@ -1,7 +1,7 @@
 import log from 'loglevel';
 
 import { getAuthProviderByName } from '@/features/auth/config';
-import { AuthUser } from '@/features/auth/models/types/AuthUser';
+import { AuthUser } from '@/features/auth/models/session/types/AuthUser';
 import {
   AuthProviderCredentials,
   AuthProviderName,

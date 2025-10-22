@@ -30,7 +30,7 @@
     "types": ["vitest/globals", "vite"]
   },
   "include": ["src"],
-  "exclude": ["node_modules", "dist", "build", "coverage"],
+  "exclude": ["node_modules", "dist", "build", "coverage", "backend"],
   "references": [
     {
       "path": "./tsconfig.node.json"

@@ -2,10 +2,10 @@ import { useSelector } from 'react-redux';
 
 import { RootState } from '@/store/store';
 
-import { AuthState } from '../models/types/AuthState';
+import { AuthState } from '../models/session/types/AuthState';
 
 export const useAuth = () => {
-  const authState = useSelector((state: RootState) => state.auth);
+  const authState = useSelector((state: RootState) => state.auth.session);
 
   return {
     // State
