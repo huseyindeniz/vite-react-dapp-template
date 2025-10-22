@@ -9,7 +9,7 @@ export enum SupportedWallets {
 
 export type InstalledWallets = Record<SupportedWallets, BrowserProvider>;
 
-export interface IWalletProviderApi {
+export interface IProviderApi {
   detectWallets: () => Promise<InstalledWallets>;
   loadProvider: (wallet: SupportedWallets) => Promise<boolean>;
 }

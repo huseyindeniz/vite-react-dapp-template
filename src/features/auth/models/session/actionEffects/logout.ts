@@ -15,7 +15,7 @@ export function* ActionEffectLogout(authService: IAuthService) {
     yield put(sliceActions.setError(null));
 
     const { currentProvider }: AuthStoreState = yield select(
-      (state: RootState) => state.auth
+      (state: RootState) => state.auth.session
     );
 
     // Logout using the unified auth service - backend handles token validation via httpOnly cookies

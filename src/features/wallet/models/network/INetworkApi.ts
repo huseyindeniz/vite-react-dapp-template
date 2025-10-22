@@ -2,7 +2,7 @@ import { EventChannel } from 'redux-saga';
 
 import { Network } from '@/features/wallet/models/network/types/Network';
 
-export interface IWalletNetworkApi {
+export interface INetworkApi {
   loadNetwork: () => Promise<Network | undefined>;
   getNetwork: () => Network | undefined;
   switchNetwork: (networkId: number) => Promise<boolean>;

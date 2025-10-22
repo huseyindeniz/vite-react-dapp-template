@@ -1,4 +1,4 @@
-import { AuthProviderName } from '../../types/IAuthProvider';
+import { AuthProviderName } from '../../../types/IAuthProvider';
 
 import { AuthState } from './AuthState';
 import { AuthUser } from './AuthUser';

@@ -1,3 +1,7 @@
-import authReducer from './models/slice';
+import { combineReducers } from '@reduxjs/toolkit';
 
-export { authReducer };
+import { sessionReducer } from './models/session/slice';
+
+export const authReducer = combineReducers({
+  session: sessionReducer,
+});

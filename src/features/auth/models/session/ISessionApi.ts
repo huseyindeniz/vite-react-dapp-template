@@ -1,7 +1,7 @@
-import { AuthTokenExchangeRequest } from '@/features/auth/models/types/AuthTokenExchangeRequest';
-import { AuthUser } from '@/features/auth/models/types/AuthUser';
+import { AuthTokenExchangeRequest } from './types/AuthTokenExchangeRequest';
+import { AuthUser } from './types/AuthUser';
 
-export interface IAuthApi {
+export interface ISessionApi {
   /**
    * Exchange OAuth provider token for user info
    * Backend sets httpOnly cookies automatically

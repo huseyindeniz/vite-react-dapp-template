@@ -1,13 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { AuthProviderName } from '../types/IAuthProvider';
+import { AuthProviderName } from '../../types/IAuthProvider';
 
 import { AuthState } from './types/AuthState';
 import { initialAuthState } from './types/AuthStoreState';
 import { AuthUser } from './types/AuthUser';
 
-export const authSlice = createSlice({
-  name: 'auth',
+export const sessionSlice = createSlice({
+  name: 'auth/session',
   initialState: initialAuthState,
   reducers: {
     setState: (state, action: PayloadAction<AuthState>) => {
@@ -29,6 +29,6 @@ export const authSlice = createSlice({
 });
 
 export const { setState, setUser, setCurrentProvider, setError } =
-  authSlice.actions;
+  sessionSlice.actions;
 
-export default authSlice.reducer;
+export const sessionReducer = sessionSlice.reducer;

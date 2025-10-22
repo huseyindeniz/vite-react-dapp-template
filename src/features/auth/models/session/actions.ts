@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
 
-import { AuthProviderName } from '../types/IAuthProvider';
+import { AuthProviderName } from '../../types/IAuthProvider';
 
 export const loginWithProvider = createAction<{
   provider: AuthProviderName;

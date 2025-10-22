@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { SupportedWallets } from '@/features/wallet/interfaces/IWalletProviderApi';
+import { SupportedWallets } from '@/features/wallet/models/provider/IProviderApi';
 import { Web3Wallet } from '@/features/wallet/models/provider/types/Web3Wallet';
 
 import { ProviderLoadState } from '../../../models/provider/types/ProviderLoadState';

@@ -1,9 +1,8 @@
 import log from 'loglevel';
 
-import { AuthTokenExchangeRequest } from '@/features/auth/models/types/AuthTokenExchangeRequest';
-import { AuthUser } from '@/features/auth/models/types/AuthUser';
-
-import { IAuthApi } from '../../features/auth/interfaces/IAuthApi';
+import { IAuthApi } from '@/features/auth/IAuthApi';
+import { AuthTokenExchangeRequest } from '@/features/auth/models/session/types/AuthTokenExchangeRequest';
+import { AuthUser } from '@/features/auth/models/session/types/AuthUser';
 
 // const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
 
@@ -27,8 +26,6 @@ export class AuthApi implements IAuthApi {
   private delay(ms: number = this.baseDelay): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
-
-
 
   async exchangeToken(request: AuthTokenExchangeRequest): Promise<{
     user: AuthUser;
@@ -89,7 +86,9 @@ export class AuthApi implements IAuthApi {
     if (request.provider === 'google') {
       // For Google, frontend already provided user info from ID token (immediate feedback)
       // Backend validates the authorization code and can enhance user info if needed
-      log.debug('Using Google user info from ID token (already validated by frontend)');
+      log.debug(
+        'Using Google user info from ID token (already validated by frontend)'
+      );
 
       // In real implementation, backend would still validate the code for security
       if (!email || !name) {
@@ -108,14 +107,25 @@ export class AuthApi implements IAuthApi {
       picture = 'https://avatars.githubusercontent.com/u/123456?v=4';
       sub = 'github_123456789';
 
-      log.debug('Mock GitHub user info fetched from API:', { email, name, picture, sub });
+      log.debug('Mock GitHub user info fetched from API:', {
+        email,
+        name,
+        picture,
+        sub,
+      });
     } else {
       // For future providers (LinkedIn, Apple, etc.)
-      throw new Error(`Provider ${request.provider} not yet implemented in mock`);
+      throw new Error(
+        `Provider ${request.provider} not yet implemented in mock`
+      );
     }
 
     // Generate a proper user ID from the provider's sub (subject identifier)
-    const userId = sub || `${request.provider}_${btoa(email).replace(/[^a-zA-Z0-9]/g, '').slice(0, 8)}`;
+    const userId =
+      sub ||
+      `${request.provider}_${btoa(email)
+        .replace(/[^a-zA-Z0-9]/g, '')
+        .slice(0, 8)}`;
 
     const user: AuthUser = {
       id: userId,
@@ -157,5 +167,4 @@ export class AuthApi implements IAuthApi {
 
     log.debug('Mock logout successful - httpOnly cookies cleared by backend');
   }
-
 }

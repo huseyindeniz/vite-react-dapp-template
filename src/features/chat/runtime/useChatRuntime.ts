@@ -20,11 +20,11 @@ export const useChatRuntime = (agentType: AgentType) => {
   const adapter = useMemo(() => {
     switch (agentType) {
       case 'langgraph':
-        return new LangGraphChatModelAdapter('http://localhost:8010', getToken);
+        return new LangGraphChatModelAdapter(getToken);
       case 'google-adk':
-        return new GoogleADKChatModelAdapter('http://localhost:8011', getToken);
+        return new GoogleADKChatModelAdapter(getToken);
       default:
-        return new LangGraphChatModelAdapter('http://localhost:8010', getToken);
+        return new LangGraphChatModelAdapter(getToken);
     }
   }, [agentType, getToken]);
 

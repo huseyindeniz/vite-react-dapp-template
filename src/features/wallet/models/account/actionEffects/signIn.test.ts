@@ -2,7 +2,7 @@ import { call, spawn, put, delay, select } from 'redux-saga/effects';
 import { expectSaga, testSaga } from 'redux-saga-test-plan';
 import { throwError } from 'redux-saga-test-plan/providers';
 
-import { IWalletAccountApi } from '@/features/wallet/interfaces/IWalletAccountApi';
+import { IAccountApi } from '@/features/wallet/models/account/IAccountApi';
 
 import { SIGN_TIMEOUT_IN_SEC } from '../../../config';
 import { SlowDown } from '../../../utils';
@@ -19,7 +19,7 @@ import {
   HandleStateSignTimedout,
 } from './signIn';
 
-const mockWalletSignApi: IWalletAccountApi = {
+const mockWalletSignApi: IAccountApi = {
   isUnlocked: vi.fn(),
   unlock: vi.fn(),
   isSigned: vi.fn(),

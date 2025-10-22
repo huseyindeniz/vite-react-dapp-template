@@ -5,12 +5,14 @@ import type {
 } from '@assistant-ui/react';
 import log from 'loglevel';
 
+const BASE_URL = 'http://localhost:8010';
+
 export class LangGraphChatModelAdapter implements ChatModelAdapter {
   private baseUrl: string;
   private getToken: () => string;
 
-  constructor(baseUrl: string = 'http://localhost:8010', getToken: () => string) {
-    this.baseUrl = baseUrl;
+  constructor(getToken: () => string) {
+    this.baseUrl = BASE_URL;
     this.getToken = getToken;
   }
 

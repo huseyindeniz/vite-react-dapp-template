@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import {
   loginWithProvider,
   logout,
-} from '../models/actions';
+} from '../models/session/actions';
 
 export const useActions = () => {
   const dispatch = useDispatch();
