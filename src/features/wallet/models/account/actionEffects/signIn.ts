@@ -9,8 +9,8 @@ import {
   take,
 } from 'redux-saga/effects';
 
+import { RootState } from '@/features/app/store/store';
 import { IAccountApi } from '@/features/wallet/models/account/IAccountApi';
-import { RootState } from '@/store/store';
 
 import { DISABLE_WALLET_SIGN, SIGN_TIMEOUT_IN_SEC } from '../../../config';
 import { SlowDown } from '../../../utils';
@@ -180,9 +180,7 @@ export function* HandleStateUserAuthenticated(
 }
 
 // WalletApi Event Handlers
-function* handleEventAccountsChanged(
-  walletAuthenticatedApi: IAccountApi
-) {
+function* handleEventAccountsChanged(walletAuthenticatedApi: IAccountApi) {
   const channel: EventChannel<string[]> = yield call(
     walletAuthenticatedApi.listenAccountChange
   );

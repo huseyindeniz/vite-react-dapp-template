@@ -1,8 +1,8 @@
 import log from 'loglevel';
 import { put, select } from 'redux-saga/effects';
 
+import { RootState } from '@/features/app/store/store';
 import { IAuthService } from '@/features/auth/types/IAuthService';
-import { RootState } from '@/store/store';
 
 import * as sliceActions from '../slice';
 import { AuthState } from '../types/AuthState';

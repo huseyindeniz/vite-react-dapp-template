@@ -1,6 +1,6 @@
 import React, { JSX, useEffect } from 'react';
 
-import { RouteObject, useRoutes } from 'react-router-dom';
+import { RouteObject, useRoutes as useReactRouterRoutes } from 'react-router-dom';
 
 import { withAuthProtection } from '@/features/auth/hocs/withAuthProtection';
 import { configureBlogFeature } from '@/features/blog-demo/configureBlogFeature';
@@ -10,7 +10,7 @@ import { withWalletProtection } from '@/features/wallet/hocs/withWalletProtectio
 import { usePostLoginRedirect } from '@/features/wallet/hooks/usePostLoginRedirect';
 
 import { isHashRouter } from './config';
-import { AppRoutes } from './types/AppRoutes';
+import { useRoutes } from './hooks/useRoutes';
 import { PageType } from './types/PageType';
 import { ProtectionType } from './types/ProtectionType';
 
@@ -42,11 +42,7 @@ const NotFoundPage = React.lazy(() =>
   ).then(module => ({ default: module.NotFoundPage }))
 );
 
-export interface RoutesProps {
-  routes: AppRoutes;
-}
-
-const Routes: React.FC<RoutesProps> = ({ routes }) => {
+const Routes: React.FC = () => {
   // Handle post-login redirect (only triggers on auth state transition)
   usePostLoginRedirect();
 
@@ -61,6 +57,8 @@ const Routes: React.FC<RoutesProps> = ({ routes }) => {
     }
   }, [sliceManager]);
 
+  // Get all routes (system + user routes combined)
+  const routes = useRoutes();
   const { homeRoute, userRoute, pageRoutes, authRoutes } = routes;
 
   const applyProtection = (element: JSX.Element, protectionType?: ProtectionType): JSX.Element => {
@@ -170,21 +168,17 @@ const Routes: React.FC<RoutesProps> = ({ routes }) => {
     ],
   };
 
-  return useRoutes([routeRoot]);
+  return useReactRouterRoutes([routeRoot]);
 };
 
-export interface RouterProps {
-  routes: AppRoutes;
-}
-
-export const Router: React.FC<RouterProps> = ({ routes }) => {
+export const Router: React.FC = () => {
   return isHashRouter ? (
     <HashRouter>
-      <Routes routes={routes} />
+      <Routes />
     </HashRouter>
   ) : (
     <BrowserRouter basename={import.meta.env.BASE_URL}>
-      <Routes routes={routes} />
+      <Routes />
     </BrowserRouter>
   );
 };

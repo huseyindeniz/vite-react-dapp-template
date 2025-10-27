@@ -4,15 +4,16 @@ import { useTranslation } from 'react-i18next';
 
 import { i18nConfig } from '@/features/i18n/config';
 import { useWalletAuthentication } from '@/features/wallet/hooks/useWalletAuthentication';
-import { routes } from '@/pages/routes';
 
 import { MenuType } from '../types/MenuType';
+
+import { useRoutes } from './useRoutes';
 
 export const usePages = () => {
   const { i18n } = useTranslation('Menu');
   const { isAuthenticated } = useWalletAuthentication();
 
-  const { homeRoute, userRoute, pageRoutes } = routes();
+  const { homeRoute, userRoute, pageRoutes } = useRoutes();
 
   const homeMenuItem: MenuType = {
     ...homeRoute,
@@ -25,8 +26,8 @@ export const usePages = () => {
   const mainMenuItems: MenuType[] = [
     homeMenuItem,
     ...pageRoutes
-      .filter(m => m.isShownInMainMenu)
-      .map(m => {
+      .filter((m): m is MenuType => m.isShownInMainMenu === true)
+      .map((m: MenuType) => {
         return {
           ...m,
           path:
@@ -40,8 +41,8 @@ export const usePages = () => {
   const secondaryMenuItems: MenuType[] = [
     homeMenuItem,
     ...pageRoutes
-      .filter(m => m.isShownInSecondaryMenu)
-      .map(m => {
+      .filter((m): m is MenuType => m.isShownInSecondaryMenu === true)
+      .map((m: MenuType) => {
         return {
           ...m,
           path:

@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 
-import { RootState } from '@/store/store';
+import { RootState } from '@/features/app/store/store';
 
 import { AuthState } from '../models/session/types/AuthState';
 

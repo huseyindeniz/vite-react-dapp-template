@@ -1,4 +1,6 @@
 {
+  "Home": "Home",
+  "Dashboard": "Dashboard",
   "AI Chat": "AI Chat",
   "Auth Demo": "Auth Demo",
   "Wallet - Basic": "Wallet - Basic",
@@ -7,7 +9,5 @@
   "OAuth - Protected": "OAuth - Protected",
   "Combined Auth": "Combined Auth",
   "Blog": "Blog",
-  "Post": "Post",
-  "Home": "Home",
-  "Dashboard": "Dashboard"
+  "Post": "Post"
 }

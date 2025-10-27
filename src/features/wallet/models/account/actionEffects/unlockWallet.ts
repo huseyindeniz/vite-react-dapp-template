@@ -1,9 +1,9 @@
 import log from 'loglevel';
 import { put, call, select } from 'redux-saga/effects';
 
+import { RootState } from '@/features/app/store/store';
 import { IWalletApi } from '@/features/wallet/IWalletApi';
 import { IAccountApi } from '@/features/wallet/models/account/IAccountApi';
-import { RootState } from '@/store/store';
 
 import { SlowDown } from '../../../utils';
 import * as walletStateSliceActions from '../../slice';
@@ -31,9 +31,7 @@ export function* HandleStateLocked() {
   yield put(slicesActions.setAccountLoadState(AccountLoadState.LOCKED));
 }
 
-export function* HandleStateUnlockRequested(
-  walletAccountApi: IAccountApi
-) {
+export function* HandleStateUnlockRequested(walletAccountApi: IAccountApi) {
   yield put(
     slicesActions.setAccountLoadState(AccountLoadState.UNLOCK_REQUESTED)
   );

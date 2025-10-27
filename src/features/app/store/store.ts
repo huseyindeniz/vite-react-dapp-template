@@ -11,9 +11,8 @@ import {
 import { AuthService } from '@/services/auth/AuthService';
 import { GitHubAuthProvider } from '@/services/auth/providers/github/GitHubAuthProvider';
 import { GoogleAuthProvider } from '@/services/auth/providers/google/GoogleAuthProvider';
-
-import { EthersV6WalletAPI } from '../services/ethersV6/wallet/WalletAPI';
-import { BlogDemoApi } from '../services/jsonplaceholder/BlogDemoApi';
+import { EthersV6WalletAPI } from '@/services/ethersV6/wallet/WalletAPI';
+import { BlogDemoApi } from '@/services/jsonplaceholder/BlogDemoApi';
 
 import RootReducer from './rootReducer';
 
@@ -28,9 +27,11 @@ authService.registerProvider(new GoogleAuthProvider());
 authService.registerProvider(new GitHubAuthProvider());
 
 function* RootSaga() {
-  yield all([fork(watchWalletSaga, walletApi)]);
-  yield all([fork(watchBlogDemoSaga, blogDemoApi)]);
-  yield all([fork(authSaga, authService)]);
+  yield all([
+    fork(watchWalletSaga, walletApi),
+    fork(watchBlogDemoSaga, blogDemoApi),
+    fork(authSaga, authService),
+  ]);
 }
 
 const sagaMiddleware = saga();

@@ -1,10 +1,10 @@
 import log from 'loglevel';
 import { call, put } from 'redux-saga/effects';
 
+import { RootState } from '@/features/app/store/store';
 import { BlogSlices } from '@/features/blog-demo/configureBlogFeature';
 import { IBlogDemoApi } from '@/features/blog-demo/IBlogDemoApi';
 import { smartFetch } from '@/features/slice-manager/sagas/smartFetch';
-import { RootState } from '@/store/store';
 
 import { LoadingStatusType } from '../../shared/types/LoadingStatus';
 import * as actions from '../actions';
@@ -26,7 +26,8 @@ export function* ActionEffectGetPosts(
     const posts = (yield* smartFetch(
       BlogSlices.POSTS,
       { language, limit, start },
-      (state: unknown) => postsSelectors.selectAll((state as RootState).blogDemo.posts),
+      (state: unknown) =>
+        postsSelectors.selectAll((state as RootState).blogDemo.posts),
       function* () {
         return yield call(
           [blogDemoApi, blogDemoApi.getPosts],

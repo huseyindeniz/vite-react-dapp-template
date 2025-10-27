@@ -19,7 +19,7 @@ export default defineConfig(
     // a11y.configs.recommended,
     // storybook.configs.recommended,
     {
-        ignores: ['dist', 'build', 'node_modules', '.storybook', 'backend', '**/*.{mjs,cjs,js,d.ts,d.mts}'],
+        ignores: ['dist', 'build', 'node_modules', '.storybook', 'dev', '**/*.{mjs,cjs,js,d.ts,d.mts}'],
     },
     {
         files: ['src/**/*'],
