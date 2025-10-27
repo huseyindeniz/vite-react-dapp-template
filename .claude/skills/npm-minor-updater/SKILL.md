@@ -19,13 +19,13 @@ No major updates are performed.
 # Process
 
 1. **Discovery**
-   - Run: `npx ncu --target minor --jsonAll`
+   - Run: `ncu --target minor --jsonAll`
    - Filter out:
      - Any package containing `i18next`, `18next`, or `storybook`
 2. **Batch Update**
    - Update in batches of ≤8 packages:
      ```bash
-     npx ncu -u <pkg-list> --target minor
+     ncu -u <pkg-list> --target minor
      npm install --no-audit --no-fund
      ```
 3. **Validation**

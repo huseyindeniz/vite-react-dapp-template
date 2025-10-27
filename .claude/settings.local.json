@@ -26,7 +26,8 @@
       "Bash(npm run check-translations)",
       "Skill(npm-minor-updater)",
       "Skill(architecture-documenter)",
-      "WebFetch(domain:github.com)"
+      "WebFetch(domain:github.com)",
+      "Bash(cp:*)"
     ],
     "deny": [],
     "ask": []
