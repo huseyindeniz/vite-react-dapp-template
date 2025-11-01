@@ -2,8 +2,8 @@ import React from 'react';
 
 import { useTranslation } from 'react-i18next';
 
+import { getUserPageRoutes } from '@/features/app/config/routes';
 import { getAuthRoutes } from '@/features/auth/routes';
-import { getUserPageRoutes } from '@/pages/routes';
 
 import { AppRoutes } from '../types/AppRoutes';
 import { PageType } from '../types/PageType';

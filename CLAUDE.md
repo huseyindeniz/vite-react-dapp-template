@@ -4,6 +4,29 @@ This file provides guidance to Claude Code when working with this React dApp tem
 
 ---
 
+## 📋 Code Quality Enforcement
+
+⚠️ **AUTOMATED CHECKS**: Code quality and architecture rules are automatically enforced by skills:
+
+### Code-Level Checks (`code-audit` skill):
+- Import/export patterns (path aliases, no default exports, no index files)
+- Redux abstraction (no direct useDispatch/useSelector in components)
+- Service dependency injection (services only imported in composition root)
+- i18n coverage (all UI text must use t() function)
+- TypeScript type safety (no "any" type usage)
+- No linter/TypeScript suppressions
+- 1 entity per file (no god files)
+
+**See `.claude/skills/code-audit/skill.md` for detailed rules and examples.**
+
+### Architecture-Level Checks (`arch-audit` skill):
+- Feature dependency rules (core features cannot depend on domain features)
+- Cross-feature dependency analysis and visualization
+
+**See `.claude/skills/arch-audit/skill.md` for architecture dependency rules.**
+
+---
+
 ## ⚠️ CRITICAL ARCHITECTURE PATTERNS (NEVER VIOLATE)
 
 ### 1. Feature-Model Architecture Pattern
@@ -181,27 +204,32 @@ IAuthApi.ts                     # Root combined interface
 #### Abstraction Layers
 
 **Components use Feature Hooks:**
+
 - Each feature has `hooks/` directory with custom hooks
 - `useActions` hook: provides all action dispatchers for the feature
 - Custom state hooks: provide typed state access (e.g., `useWallet`, `useAuth`)
 - Components call these hooks instead of RTK primitives
 
 **Feature Hooks use Root Hooks:**
+
 - Feature hooks internally use `useTypedSelector` from `src/hooks/`
 - Provides type-safe state access
 - Abstracts Redux implementation details from components
 
 **State Access Patterns:**
+
 - **Own feature state**: Use feature-specific hooks (`useWallet()`, `useAuth()`)
 - **Cross-feature state**: Use root `useTypedSelector` from `src/hooks/`
 
 **HOCs (Higher Order Components):**
+
 - Some features provide HOCs when applicable
 - Use for cross-cutting concerns (auth protection, route guards, etc.)
 
 #### Why This Matters
 
 **Abstraction Benefits:**
+
 - Components don't know about Redux/RTK internals
 - Easy to swap state management library
 - Feature hooks can add memoization/logic
@@ -209,6 +237,7 @@ IAuthApi.ts                     # Root combined interface
 - Centralized state access patterns
 
 **Rules:**
+
 - ❌ NEVER use `useDispatch()` directly in components
 - ❌ NEVER use `useSelector()` directly in components
 - ✅ ALWAYS use feature hooks (`useWalletActions()`, `useAuth()`, etc.)
@@ -326,6 +355,7 @@ npm run build   # Must build successfully
 
 ```bash
 npm run dev                # Start dev server
+npm run extract            # Extracts texts from components to resource files.
 npm run check-translations # Validate i18n completeness
 ```
 
@@ -359,36 +389,33 @@ npm run storybook          # Component documentation
    - ❌ Business logic in components or slices
 
 2a. **Components use feature hooks - NEVER use RTK directly**
-   - ❌ NEVER use `useDispatch()` or `useSelector()` in components
-   - ✅ ALWAYS use feature hooks: `useWalletActions()`, `useAuth()`, etc.
-   - ✅ Use root `useTypedSelector` from `src/hooks/` for cross-feature state
-   - ✅ Each feature has `hooks/` directory with `useActions` and state hooks
+
+- ❌ NEVER use `useDispatch()` or `useSelector()` in components
+- ✅ ALWAYS use feature hooks: `useWalletActions()`, `useAuth()`, etc.
+- ✅ Use root `useTypedSelector` from `src/hooks/` for cross-feature state
+- ✅ Each feature has `hooks/` directory with `useActions` and state hooks
 
 3. **Features define interfaces, services implement them**
    - ✅ Each model has `IModelApi.ts`
    - ✅ Root has `IFeatureApi.ts` extending model interfaces
    - ✅ Services implement feature interfaces
 
-4. **One entity per file** - No index.ts files that export everything
-   - ✅ `actions.ts` exports only actions
-   - ❌ `index.ts` that re-exports everything in a folder
-
-5. **Whenever any code changes:**
+4. **Whenever any code changes:**
    - MUST run: `npm run lint` (0 warnings required)
    - MUST run: `npm run test` (all tests pass)
    - MUST run: `npm run build` (successful build)
 
 ### Code Quality Rules
 
-6. **NEVER use `npm run lint --fix`** - Fix ESLint issues manually
+5. **NEVER use `npm run lint --fix`** - Fix ESLint issues manually
 
-7. **React Hook Dependencies** - NEVER add unnecessary dependencies:
+6. **React Hook Dependencies** - NEVER add unnecessary dependencies:
    - ❌ DON'T add stable references that never change (e.g., `t` from useTranslation, `actions` from hooks)
    - ❌ DON'T add props/params recreated on every render with same content (e.g., `allRoutes`)
    - ✅ DO add only values that should trigger re-computation (e.g., `location.pathname`, `i18n.resolvedLanguage`)
    - Each unnecessary dependency creates exponential re-render combinations!
 
-8. **Always follow best practices**
+7. **Always follow best practices**
    - Never lead to hacky dead ends
    - Check latest documentation before designing
    - Never reinvent the wheel - use battle-tested, trusted, widely-adopted solutions

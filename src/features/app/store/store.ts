@@ -1,49 +1,62 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { combineReducers, configureStore, type Reducer } from '@reduxjs/toolkit';
 import { enableMapSet } from 'immer';
-import saga from 'redux-saga';
+import saga, { type Saga } from 'redux-saga';
 import { all, fork } from 'redux-saga/effects';
 
-import { authSaga } from '@/features/auth/sagas';
-import { watchBlogDemoSaga } from '@/features/blog-demo/sagas';
-import {
-  watchWalletSaga /*announceWalletLoaded*/,
-} from '@/features/wallet/sagas';
-import { AuthService } from '@/services/auth/AuthService';
-import { GitHubAuthProvider } from '@/services/auth/providers/github/GitHubAuthProvider';
-import { GoogleAuthProvider } from '@/services/auth/providers/google/GoogleAuthProvider';
-import { EthersV6WalletAPI } from '@/services/ethersV6/wallet/WalletAPI';
-import { BlogDemoApi } from '@/services/jsonplaceholder/BlogDemoApi';
-
-import RootReducer from './rootReducer';
+import { features } from '../config/features';
 
 enableMapSet();
 
-const walletApi = EthersV6WalletAPI.getInstance();
-const blogDemoApi = BlogDemoApi.getInstance();
-const authService = AuthService.getInstance();
+/**
+ * Build reducers object dynamically from features config
+ */
+const buildReducers = () => {
+  const reducers: Record<string, Reducer> = {};
 
-// Register auth providers
-authService.registerProvider(new GoogleAuthProvider());
-authService.registerProvider(new GitHubAuthProvider());
+  for (const [, feature] of Object.entries(features)) {
+    if (feature.enabled) {
+      reducers[feature.store.stateKey] = feature.store.reducer;
+    }
+  }
 
-function* RootSaga() {
-  yield all([
-    fork(watchWalletSaga, walletApi),
-    fork(watchBlogDemoSaga, blogDemoApi),
-    fork(authSaga, authService),
-  ]);
+  return reducers;
+};
+
+const rootReducer = combineReducers(buildReducers());
+
+/**
+ * Build root saga dynamically from features config
+ */
+function* rootSaga() {
+  const sagas = [];
+
+  for (const [, feature] of Object.entries(features)) {
+    if (feature.enabled) {
+      const { saga: sagaFn, dependencies } = feature.saga;
+      // Cast to Saga type to satisfy TypeScript when iterating dynamically
+      const typedSaga = sagaFn as Saga;
+
+      if (dependencies && dependencies.length > 0) {
+        sagas.push(fork(typedSaga, ...dependencies));
+      } else {
+        sagas.push(fork(typedSaga));
+      }
+    }
+  }
+
+  yield all(sagas);
 }
 
 const sagaMiddleware = saga();
 
 const store = configureStore({
-  reducer: RootReducer,
+  reducer: rootReducer,
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware().concat(sagaMiddleware),
   devTools: import.meta.env.MODE === 'development',
 });
 
-sagaMiddleware.run(RootSaga);
+sagaMiddleware.run(rootSaga);
 
 export type RootState = ReturnType<typeof store.getState>;
 

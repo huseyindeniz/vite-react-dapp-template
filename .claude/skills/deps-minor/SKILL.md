@@ -1,6 +1,6 @@
 ---
-name: npm-minor-updater
-description: Updates all npm dependencies with available minor versions, validates build and tests, and rolls back on failure.
+name: deps-minor
+description: Safe minor dependency updates with validation (lint/test/build) and automatic rollback on failure.
 ---
 
 # Purpose

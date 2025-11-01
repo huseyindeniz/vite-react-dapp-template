@@ -92,6 +92,12 @@ export const LayoutBase: React.FC = () => {
 
           <Layout.Navbar>
             <MainMenu mainMenuItems={mainMenuItems} onClick={close} vertical />
+            {hasSubRoutes && (
+              <>
+                <Divider my="sm" />
+                <SideNav items={subRoutes} />
+              </>
+            )}
             <Divider my="sm" />
             <Stack align="center" gap="sm">
               <LangMenu />

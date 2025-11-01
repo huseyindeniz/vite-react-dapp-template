@@ -16,7 +16,7 @@ import { ProtectionType } from '@/features/router/types/ProtectionType';
 // =============================================================================
 
 const AiChatPage = React.lazy(() =>
-  import(/* webpackChunkName: "AiChatPage" */ './AiChat/AiChat').then(
+  import(/* webpackChunkName: "AiChatPage" */ '@/pages/AiChat/AiChat').then(
     module => ({
       default: module.AiChatPage,
     })
@@ -25,17 +25,17 @@ const AiChatPage = React.lazy(() =>
 
 // Auth Demo Parent Page
 const AuthDemo = React.lazy(() =>
-  import(/* webpackChunkName: "AuthDemoPage" */ './AuthDemo/AuthDemo').then(
-    module => ({
-      default: module.AuthDemo,
-    })
-  )
+  import(
+    /* webpackChunkName: "AuthDemoPage" */ '@/pages/AuthDemo/AuthDemo'
+  ).then(module => ({
+    default: module.AuthDemo,
+  }))
 );
 
 // Auth Demo Sub-pages
 const WalletBasic = React.lazy(() =>
   import(
-    /* webpackChunkName: "WalletBasicPage" */ './AuthDemo/WalletBasic/WalletBasic'
+    /* webpackChunkName: "WalletBasicPage" */ '@/pages/AuthDemo/WalletBasic/WalletBasic'
   ).then(module => ({
     default: module.WalletBasic,
   }))
@@ -43,7 +43,7 @@ const WalletBasic = React.lazy(() =>
 
 const WalletProtected = React.lazy(() =>
   import(
-    /* webpackChunkName: "WalletProtectedPage" */ './AuthDemo/WalletProtected/WalletProtected'
+    /* webpackChunkName: "WalletProtectedPage" */ '@/pages/AuthDemo/WalletProtected/WalletProtected'
   ).then(module => ({
     default: module.WalletProtected,
   }))
@@ -51,7 +51,7 @@ const WalletProtected = React.lazy(() =>
 
 const OAuthDemo = React.lazy(() =>
   import(
-    /* webpackChunkName: "OAuthDemoPage" */ './AuthDemo/OAuthDemo/OAuthDemo'
+    /* webpackChunkName: "OAuthDemoPage" */ '@/pages/AuthDemo/OAuthDemo/OAuthDemo'
   ).then(module => ({
     default: module.OAuthDemo,
   }))
@@ -59,7 +59,7 @@ const OAuthDemo = React.lazy(() =>
 
 const OAuthProtected = React.lazy(() =>
   import(
-    /* webpackChunkName: "OAuthProtectedPage" */ './AuthDemo/OAuthProtected/OAuthProtected'
+    /* webpackChunkName: "OAuthProtectedPage" */ '@/pages/AuthDemo/OAuthProtected/OAuthProtected'
   ).then(module => ({
     default: module.OAuthProtected,
   }))
@@ -67,20 +67,22 @@ const OAuthProtected = React.lazy(() =>
 
 const CombinedAuth = React.lazy(() =>
   import(
-    /* webpackChunkName: "CombinedAuthPage" */ './AuthDemo/CombinedAuth/CombinedAuth'
+    /* webpackChunkName: "CombinedAuthPage" */ '@/pages/AuthDemo/CombinedAuth/CombinedAuth'
   ).then(module => ({
     default: module.CombinedAuth,
   }))
 );
 
 const BlogPage = React.lazy(() =>
-  import(/* webpackChunkName: "BlogPage" */ './Blog/Blog').then(module => ({
-    default: module.Blog,
-  }))
+  import(/* webpackChunkName: "BlogPage" */ '@/pages/Blog/Blog').then(
+    module => ({
+      default: module.Blog,
+    })
+  )
 );
 
 const BlogPostPage = React.lazy(() =>
-  import(/* webpackChunkName: "BlogPostPage" */ './Blog/BlogPost').then(
+  import(/* webpackChunkName: "BlogPostPage" */ '@/pages/Blog/BlogPost').then(
     module => ({
       default: module.BlogPost,
     })

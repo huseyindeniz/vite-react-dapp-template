@@ -1,6 +1,4 @@
 {
-  "Home": "Anasayfa",
-  "Dashboard": "Kontrol Paneli",
   "AI Chat": "Yapay Zeka Sohbeti",
   "Auth Demo": "Yetkilendirme Demosu",
   "Wallet - Basic": "Cüzdan - Basit",
@@ -9,5 +7,7 @@
   "OAuth - Protected": "OAuth - Korumalı",
   "Combined Auth": "Birleşik Yetkilendirme",
   "Blog": "Günlük",
-  "Post": "Gönderi"
+  "Post": "Gönderi",
+  "Home": "Anasayfa",
+  "Dashboard": "Kontrol Paneli"
 }
