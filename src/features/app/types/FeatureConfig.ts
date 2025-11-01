@@ -55,4 +55,11 @@ export interface FeatureConfig<TState = unknown> {
    * Saga configuration (saga watcher + dependencies)
    */
   saga: FeatureSaga;
+
+  /**
+   * Optional: Slice manager configuration function
+   * Called by Router after slice manager is ready
+   * Use for registering feature routes and slices with slice manager
+   */
+  configureSliceManager?: () => void;
 }

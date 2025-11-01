@@ -2,8 +2,8 @@ import React, { JSX, useEffect } from 'react';
 
 import { RouteObject, useRoutes as useReactRouterRoutes } from 'react-router-dom';
 
+import { features } from '@/features/app/config/features';
 import { withAuthProtection } from '@/features/auth/hocs/withAuthProtection';
-import { configureBlogFeature } from '@/features/blog-demo/configureBlogFeature';
 import { i18nConfig } from '@/features/i18n/config';
 import { useSliceManagerInit } from '@/features/slice-manager/hooks/useSliceManagerInit';
 import { withWalletProtection } from '@/features/wallet/hocs/withWalletProtection';
@@ -51,9 +51,12 @@ const Routes: React.FC = () => {
 
   useEffect(() => {
     if (sliceManager) {
-      // Configure all your features
-      configureBlogFeature();
-      // configureProductFeature();
+      // Configure slice manager for all features that need it
+      Object.values(features).forEach(feature => {
+        if (feature.enabled && 'configureSliceManager' in feature && feature.configureSliceManager) {
+          feature.configureSliceManager();
+        }
+      });
     }
   }, [sliceManager]);
 

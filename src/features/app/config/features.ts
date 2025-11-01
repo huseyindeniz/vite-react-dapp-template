@@ -1,5 +1,6 @@
 import { authSaga } from '@/features/auth/sagas';
 import { authReducer } from '@/features/auth/slice';
+import { configureBlogFeature } from '@/features/blog-demo/configureBlogFeature';
 import { watchBlogDemoSaga } from '@/features/blog-demo/sagas';
 import { blogDemoReducer } from '@/features/blog-demo/slice';
 import { watchWalletSaga } from '@/features/wallet/sagas';
@@ -14,6 +15,7 @@ import { authService, blogDemoApi, walletApi } from './services';
  * - enabled: Whether feature is active
  * - store: Redux state configuration (stateKey + reducer)
  * - saga: Saga configuration (saga watcher + API dependencies)
+ * - configureSliceManager: Optional slice manager configuration function
  *
  * Benefits:
  * - Single source of truth for feature configuration
@@ -44,6 +46,7 @@ export const features = {
       saga: watchBlogDemoSaga,
       dependencies: [blogDemoApi],
     },
+    configureSliceManager: configureBlogFeature,
   },
   auth: {
     enabled: true,
