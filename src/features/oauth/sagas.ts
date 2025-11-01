@@ -8,15 +8,15 @@ import * as oauthActions from './models/session/actions';
 import * as sliceActions from './models/session/slice';
 import { OAuthState } from './models/session/types/OAuthState';
 
-export function* oauthSaga(authService: IOAuthService) {
-  // Initialize auth state when saga starts
+export function* oauthSaga(oauthService: IOAuthService) {
+  // Initialize OAuth state when saga starts
   yield put(sliceActions.setState(OAuthState.READY));
   yield put(sliceActions.setError(null));
 
   yield takeLatest(
     oauthActions.loginWithProvider.type,
     ActionEffectLoginWithProvider,
-    authService
+    oauthService
   );
-  yield takeLatest(oauthActions.logout.type, ActionEffectLogout, authService);
+  yield takeLatest(oauthActions.logout.type, ActionEffectLogout, oauthService);
 }

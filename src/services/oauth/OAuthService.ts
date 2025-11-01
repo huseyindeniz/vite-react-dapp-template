@@ -9,29 +9,29 @@ import {
 } from '@/features/oauth/types/IOAuthProvider';
 import { IOAuthService } from '@/features/oauth/types/IOAuthService';
 
-import { AuthApi } from './AuthApi';
-import { AuthProviderService } from './providers/AuthProviderService';
+import { OAuthApi } from './OAuthApi';
+import { OAuthProviderService } from './providers/OAuthProviderService';
 
 /**
- * Unified auth service that combines API calls and provider management
- * Provides high-level auth operations for the application
+ * Unified OAuth service that combines API calls and provider management
+ * Provides high-level OAuth operations for the application
  * Implements IOAuthService interface from features layer
  */
-export class AuthService implements IOAuthService {
-  private static instance: AuthService;
-  private authApi: AuthApi;
-  private providerService: AuthProviderService;
+export class OAuthService implements IOAuthService {
+  private static instance: OAuthService;
+  private oauthApi: OAuthApi;
+  private providerService: OAuthProviderService;
 
   private constructor() {
-    this.authApi = AuthApi.getInstance();
-    this.providerService = AuthProviderService.getInstance();
+    this.oauthApi = OAuthApi.getInstance();
+    this.providerService = OAuthProviderService.getInstance();
   }
 
-  static getInstance(): AuthService {
-    if (!AuthService.instance) {
-      AuthService.instance = new AuthService();
+  static getInstance(): OAuthService {
+    if (!OAuthService.instance) {
+      OAuthService.instance = new OAuthService();
     }
-    return AuthService.instance;
+    return OAuthService.instance;
   }
 
   // Provider management methods
@@ -109,7 +109,7 @@ export class AuthService implements IOAuthService {
     const providerConfig = getOAuthProviderByName(providerName);
     const tokenType = providerConfig.tokenType;
 
-    const authResult = await this.authApi.exchangeToken({
+    const authResult = await this.oauthApi.exchangeToken({
       provider: providerName,
       token: credentials.token,
       tokenType,
@@ -145,7 +145,7 @@ export class AuthService implements IOAuthService {
 
     // Logout from backend - backend will clear httpOnly cookies
     try {
-      await this.authApi.logout();
+      await this.oauthApi.logout();
     } catch (error) {
       log.warn('Backend logout failed:', error);
       // Continue with provider logout even if backend fails
@@ -171,6 +171,6 @@ export class AuthService implements IOAuthService {
    */
   reset(): void {
     this.providerService.reset();
-    log.debug('AuthService reset');
+    log.debug('OAuthService reset');
   }
 }

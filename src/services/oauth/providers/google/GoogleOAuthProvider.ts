@@ -12,7 +12,7 @@ import {
   getGoogleScope,
 } from './utils/env';
 
-export class GoogleAuthProvider implements IOAuthProvider {
+export class GoogleOAuthProvider implements IOAuthProvider {
   name = 'google' as const;
   label = 'Google';
   icon = 'https://developers.google.com/identity/images/g-logo.png';
@@ -85,9 +85,9 @@ export class GoogleAuthProvider implements IOAuthProvider {
   }
 
   login(): Promise<OAuthProviderCredentials> {
-    log.debug('GoogleAuthProvider login called');
+    log.debug('GoogleOAuthProvider login called');
     if (!this.isInitialized) {
-      throw new Error('Google Auth provider not ready');
+      throw new Error('Google OAuth provider not ready');
     }
 
     return new Promise((resolve, reject) => {
@@ -293,9 +293,9 @@ export class GoogleAuthProvider implements IOAuthProvider {
   }
 
   async logout(): Promise<void> {
-    log.debug('GoogleAuthProvider logout called');
+    log.debug('GoogleOAuthProvider logout called');
     if (!this.isInitialized) {
-      log.debug('Google Auth provider not initialized, nothing to do');
+      log.debug('Google OAuth provider not initialized, nothing to do');
       return;
     }
 

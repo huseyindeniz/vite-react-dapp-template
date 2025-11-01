@@ -7,20 +7,20 @@ import { OAuthUser } from '@/features/oauth/models/session/types/OAuthUser';
 // const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
 
 /**
- * Auth API service - shows required backend endpoints
+ * OAuth API service - shows required backend endpoints
  * Currently returns mock data for development
  */
-export class AuthApi implements IOAuthApi {
-  private static instance: AuthApi;
+export class OAuthApi implements IOAuthApi {
+  private static instance: OAuthApi;
   private readonly baseDelay = 500; // Simulate network delay
 
   private constructor() {} // Private constructor to prevent instantiation
 
-  static getInstance(): AuthApi {
-    if (!AuthApi.instance) {
-      AuthApi.instance = new AuthApi();
+  static getInstance(): OAuthApi {
+    if (!OAuthApi.instance) {
+      OAuthApi.instance = new OAuthApi();
     }
-    return AuthApi.instance;
+    return OAuthApi.instance;
   }
 
   private delay(ms: number = this.baseDelay): Promise<void> {
@@ -66,7 +66,7 @@ export class AuthApi implements IOAuthApi {
     // MOCK IMPLEMENTATION (remove when backend is ready)
     await this.delay();
 
-    log.debug('AuthApi.exchangeToken called with:', request);
+    log.debug('OAuthApi.exchangeToken called with:', request);
 
     if (!request.token) {
       throw new Error('Invalid token');

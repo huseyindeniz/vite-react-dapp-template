@@ -8,7 +8,7 @@ import * as sliceActions from '../slice';
 import { OAuthState } from '../types/OAuthState';
 import { OAuthStoreState } from '../types/OAuthStoreState';
 
-export function* ActionEffectLogout(authService: IOAuthService) {
+export function* ActionEffectLogout(oauthService: IOAuthService) {
   try {
     // Set logging out state
     yield put(sliceActions.setState(OAuthState.LOGGING_OUT));
@@ -18,16 +18,16 @@ export function* ActionEffectLogout(authService: IOAuthService) {
       (state: RootState) => state.oauth.session
     );
 
-    // Logout using the unified auth service - backend handles token validation via httpOnly cookies
+    // Logout using the unified OAuth service - backend handles token validation via httpOnly cookies
     try {
-      yield authService.logout(currentProvider || undefined);
+      yield oauthService.logout(currentProvider || undefined);
     } catch (error) {
       log.debug('Logout failed:', error);
     }
 
     // Backend clears httpOnly cookies automatically
 
-    // Clear auth state
+    // Clear OAuth state
     yield put(sliceActions.setState(OAuthState.READY));
     yield put(sliceActions.setUser(null));
     yield put(sliceActions.setCurrentProvider(null));

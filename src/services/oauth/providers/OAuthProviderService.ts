@@ -4,28 +4,28 @@ import { OAuthProviderName, IOAuthProvider } from '@/features/oauth/types/IOAuth
 import { IOAuthProviderService } from '@/features/oauth/types/IOAuthProviderService';
 
 /**
- * Service for managing auth provider instances
+ * Service for managing OAuth provider instances
  * Follows singleton pattern like other services in the codebase
  */
-export class AuthProviderService implements IOAuthProviderService {
-  private static instance: AuthProviderService;
+export class OAuthProviderService implements IOAuthProviderService {
+  private static instance: OAuthProviderService;
   private providers = new Map<OAuthProviderName, IOAuthProvider>();
   private initialized = false;
 
   private constructor() {} // Private constructor to prevent instantiation
 
-  static getInstance(): AuthProviderService {
-    if (!AuthProviderService.instance) {
-      AuthProviderService.instance = new AuthProviderService();
+  static getInstance(): OAuthProviderService {
+    if (!OAuthProviderService.instance) {
+      OAuthProviderService.instance = new OAuthProviderService();
     }
-    return AuthProviderService.instance;
+    return OAuthProviderService.instance;
   }
 
   /**
-   * Register an auth provider with the service
+   * Register an OAuth provider with the service
    */
   registerProvider(provider: IOAuthProvider): void {
-    log.debug(`Registering auth provider: ${provider.name}`);
+    log.debug(`Registering OAuth provider: ${provider.name}`);
     this.providers.set(provider.name, provider);
   }
 
@@ -36,7 +36,7 @@ export class AuthProviderService implements IOAuthProviderService {
     const provider = this.providers.get(name);
     if (!provider) {
       const availableProviders = Array.from(this.providers.keys()).join(', ');
-      throw new Error(`Auth provider ${name} not found. Available providers: ${availableProviders}`);
+      throw new Error(`OAuth provider ${name} not found. Available providers: ${availableProviders}`);
     }
     return provider;
   }
@@ -60,11 +60,11 @@ export class AuthProviderService implements IOAuthProviderService {
    */
   async initializeAll(): Promise<void> {
     if (this.initialized) {
-      log.debug('Auth providers already initialized');
+      log.debug('OAuth providers already initialized');
       return;
     }
 
-    log.debug('Initializing all auth providers...');
+    log.debug('Initializing all OAuth providers...');
     const initPromises = this.getSupportedProviders().map(async provider => {
       try {
         await provider.initialize();
@@ -77,7 +77,7 @@ export class AuthProviderService implements IOAuthProviderService {
 
     await Promise.allSettled(initPromises);
     this.initialized = true;
-    log.debug('Auth provider initialization completed');
+    log.debug('OAuth provider initialization completed');
   }
 
   /**
@@ -133,6 +133,6 @@ export class AuthProviderService implements IOAuthProviderService {
   reset(): void {
     this.providers.clear();
     this.initialized = false;
-    log.debug('AuthProviderService reset');
+    log.debug('OAuthProviderService reset');
   }
 }

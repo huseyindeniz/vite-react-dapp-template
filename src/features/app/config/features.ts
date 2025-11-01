@@ -6,7 +6,7 @@ import { oauthReducer } from '@/features/oauth/slice';
 import { watchWalletSaga } from '@/features/wallet/sagas';
 import { walletReducer } from '@/features/wallet/slice';
 
-import { authService, blogDemoApi, walletApi } from './services';
+import { oauthService, blogDemoApi, walletApi } from './services';
 
 /**
  * Centralized feature registry
@@ -56,7 +56,7 @@ export const features = {
     },
     saga: {
       saga: oauthSaga,
-      dependencies: [authService],
+      dependencies: [oauthService],
     },
   },
 };

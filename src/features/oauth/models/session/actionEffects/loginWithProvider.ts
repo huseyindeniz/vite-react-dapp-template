@@ -13,7 +13,7 @@ import { OAuthState } from '../types/OAuthState';
 import { OAuthUser } from '../types/OAuthUser';
 
 export function* ActionEffectLoginWithProvider(
-  authService: IOAuthService,
+  oauthService: IOAuthService,
   action: PayloadAction<{ provider: OAuthProviderName }>
 ): SagaIterator {
   const { provider: providerName } = action.payload;
@@ -26,7 +26,7 @@ export function* ActionEffectLoginWithProvider(
 
     // Step 1: Get provider credentials (immediate user data for UI feedback)
     const credentials: OAuthProviderCredentials = yield call(
-      [authService, authService.getProviderCredentials],
+      [oauthService, oauthService.getProviderCredentials],
       providerName
     );
 
@@ -45,7 +45,7 @@ export function* ActionEffectLoginWithProvider(
 
     // Step 3: Exchange authorization code with backend for validated user data
     const backendResult: { user: OAuthUser } = yield call(
-      [authService, authService.exchangeTokenWithBackend],
+      [oauthService, oauthService.exchangeTokenWithBackend],
       providerName,
       credentials
     );

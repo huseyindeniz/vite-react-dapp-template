@@ -4,7 +4,7 @@ import { OAuthProviderCredentials, IOAuthProvider } from '@/features/oauth/types
 
 import { getGitHubClientId, getGitHubRedirectUri, getGitHubScope } from './utils/env';
 
-export class GitHubAuthProvider implements IOAuthProvider {
+export class GitHubOAuthProvider implements IOAuthProvider {
   name = 'github' as const;
   label = 'GitHub';
   icon = 'https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png';
@@ -18,9 +18,9 @@ export class GitHubAuthProvider implements IOAuthProvider {
   private messageListener: ((event: MessageEvent) => void) | null = null;
 
   async initialize(): Promise<void> {
-    log.debug('Initializing GitHubAuthProvider');
+    log.debug('Initializing GitHubOAuthProvider');
     if (this.isInitialized) {
-      log.debug('GitHubAuthProvider already initialized');
+      log.debug('GitHubOAuthProvider already initialized');
       return;
     }
 
@@ -28,17 +28,17 @@ export class GitHubAuthProvider implements IOAuthProvider {
     try {
       getGitHubClientId();
       this.isInitialized = true;
-      log.debug('GitHubAuthProvider initialized successfully');
+      log.debug('GitHubOAuthProvider initialized successfully');
     } catch (error) {
-      log.error('Failed to initialize GitHubAuthProvider:', error);
+      log.error('Failed to initialize GitHubOAuthProvider:', error);
       throw error;
     }
   }
 
   login(): Promise<OAuthProviderCredentials> {
-    log.debug('GitHubAuthProvider login called');
+    log.debug('GitHubOAuthProvider login called');
     if (!this.isInitialized) {
-      throw new Error('GitHub Auth provider not ready');
+      throw new Error('GitHub OAuth provider not ready');
     }
 
     return new Promise((resolve, reject) => {
