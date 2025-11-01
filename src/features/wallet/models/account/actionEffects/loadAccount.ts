@@ -1,6 +1,6 @@
 import { put, call } from 'redux-saga/effects';
 
-import { IWalletAccountApi } from '@/features/wallet/interfaces/IWalletAccountApi';
+import { IAccountApi } from '@/features/wallet/models/account/IAccountApi';
 
 import { SlowDown } from '../../../utils';
 import * as networkActions from '../../network/actions';
@@ -11,7 +11,7 @@ import * as slicesActions from '../slice';
 import { AccountLoadState } from '../types/AccountLoadState';
 
 // ACTION EFFECTS
-export function* ActionEffectLoadAccount(walletApi: IWalletAccountApi) {
+export function* ActionEffectLoadAccount(walletApi: IAccountApi) {
   yield put(walletStateSliceActions.setLoading(LoadingStatusType.PENDING));
   yield put(walletStateSliceActions.setState(WalletState.CHECKING_ACCOUNT));
   const isUnlocked: boolean = yield call(
@@ -27,7 +27,7 @@ export function* ActionEffectLoadAccount(walletApi: IWalletAccountApi) {
 
 // STATE HANDLERS
 export function* HandleStateAccountRequested(
-  walletAccountApi: IWalletAccountApi
+  walletAccountApi: IAccountApi
 ) {
   yield put(
     slicesActions.setAccountLoadState(AccountLoadState.ACCOUNT_REQUESTED)

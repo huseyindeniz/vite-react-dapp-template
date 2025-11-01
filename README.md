@@ -227,7 +227,6 @@ SUPPORTED_NETWORKS = [
   "@/services/*": ["./src/services/*"],
   "@/pages/*": ["./src/pages/*"],
   "@/hooks/*": ["./src/hooks/*"],
-  "@/store/*": ["./src/store/*"]
 }
 ```
 

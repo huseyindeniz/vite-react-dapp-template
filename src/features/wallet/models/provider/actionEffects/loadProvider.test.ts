@@ -3,9 +3,9 @@ import { expectSaga, testSaga } from 'redux-saga-test-plan';
 import { throwError } from 'redux-saga-test-plan/providers';
 
 import {
-  IWalletProviderApi,
+  IProviderApi,
   SupportedWallets,
-} from '@/features/wallet/interfaces/IWalletProviderApi';
+} from '@/features/wallet/models/provider/IProviderApi';
 
 import { SlowDown } from '../../../utils';
 import * as walletStateSliceActions from '../../slice';
@@ -18,7 +18,7 @@ import {
   HandleStateProviderNotSupported,
 } from './loadProvider';
 
-const mockWalletInitApi: IWalletProviderApi = {
+const mockWalletInitApi: IProviderApi = {
   detectWallets: vi.fn(),
   loadProvider: vi.fn(),
 };

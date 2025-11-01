@@ -1,18 +1,18 @@
 import { call, put } from 'redux-saga/effects';
 
-import { IWalletAccountApi } from '@/features/wallet/interfaces/IWalletAccountApi';
+import { IAccountApi } from '@/features/wallet/models/account/IAccountApi';
 
 import * as walletStateSliceActions from '../../slice';
 import { LoadingStatusType } from '../../types/LoadingStatus';
 
-export function* ActionEffectDisconnectWallet(walletApi: IWalletAccountApi) {
+export function* ActionEffectDisconnectWallet(walletApi: IAccountApi) {
   yield put(walletStateSliceActions.setLoading(LoadingStatusType.PENDING));
   yield call(HandleStateDisconnectRequested, walletApi);
   yield put(walletStateSliceActions.setLoading(LoadingStatusType.IDLE));
 }
 
 export function* HandleStateDisconnectRequested(
-  walletAccountApi: IWalletAccountApi
+  walletAccountApi: IAccountApi
 ) {
   try {
     yield call(walletAccountApi.reset);

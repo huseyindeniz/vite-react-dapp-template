@@ -9,11 +9,11 @@ import {
   DISABLE_WALLET_SIGN,
   SUPPORTED_NETWORKS,
 } from '@/features/wallet/config';
+import { AccountType } from '@/features/wallet/models/account/types/Account';
 import {
   InstalledWallets,
   SupportedWallets,
-} from '@/features/wallet/interfaces/IWalletProviderApi';
-import { AccountType } from '@/features/wallet/models/account/types/Account';
+} from '@/features/wallet/models/provider/IProviderApi';
 
 import { IWalletEthersV6ProviderApi } from '../interfaces/IWalletEthersV6ProviderApi';
 
