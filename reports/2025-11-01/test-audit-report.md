@@ -1,6 +1,6 @@
 # Test Audit Report
 
-**Generated:** 2025-11-01T17:01:30.455Z
+**Generated:** 2025-11-01T20:00:24.391Z
 **Project:** vite-react-dapp-template
 
 ## Executive Summary
@@ -46,52 +46,62 @@ Coverage command output:
  RUN  v4.0.4 D:/github/vite-react-dapp-template
       Coverage enabled with v8
 
- ✓ src/features/ui/mantine/components/ErrorFallback/ErrorFallback.test.tsx (1 test) 526ms
-       ✓ should be visible and show error message  520ms
- ✓ src/features/ui/mantine/components/CookieConsent/CookieConsentMessage.test.tsx (2 tests) 800ms
-       ✓ should render with default props  528ms
- ✓ src/features/wallet/components/ConnectionModal/CheckAccount/CheckAccount.test.tsx (6 tests) 1171ms
-         ✓ should be visible and show error  389ms
-         ✓ should be visible and show error  311ms
- ❯ src/features/wallet/components/WalletProtectionWarning/WalletProtectionWarning.test.tsx (1 test | 1 failed) 202ms
-         × should be visible and clickable 198ms
- ✓ src/features/wallet/components/ConnectButton/ConnectButton.test.tsx (1 test) 369ms
-       ✓ should be visible and enabled  364ms
- ✓ src/features/wallet/components/ConnectionModal/CheckSign/CheckSign.test.tsx (6 tests) 1249ms
-         ✓ should be visible and show info  371ms
- ✓ src/features/wallet/components/ConnectionModal/CheckNetwork/CheckNetwork.test.tsx (6 tests) 2602ms
-         ✓ should be visible and show error  413ms
-         ✓ should be visible and show error  868ms
-         ✓ should be visible and show error  642ms
- ✓ src/features/wallet/models/account/actionEffects/signIn.test.ts (6 tests | 4 skipped) 41ms
- ✓ src/pages/Home/Home.test.tsx (1 test) 293ms
- ✓ src/features/ui/mantine/components/SocialMenu/SocialMenu.test.tsx (1 test) 160ms
- ✓ src/features/ui/mantine/components/PageMeta/PageMeta.test.tsx (1 test) 181ms
- ✓ src/features/wallet/components/ConnectionModal/Modal/Modal.test.tsx (14 tests | 13 skipped) 174ms
- ✓ src/features/ui/mantine/components/PageLoding/PageLoading.test.tsx (1 test) 119ms
- ✓ src/features/wallet/components/Wallet.test.tsx (1 test) 183ms
- ✓ src/features/wallet/models/account/actionEffects/unlockWallet.test.ts (6 tests) 28ms
- ✓ src/features/wallet/models/network/actionEffects/loadNetwork.test.ts (4 tests) 25ms
- ✓ src/features/wallet/models/account/actionEffects/loadAccount.test.ts (4 tests) 19ms
- ✓ src/features/wallet/models/account/actionEffects/disconnectWallet.test.ts (2 tests) 19ms
- ✓ src/features/wallet/models/network/actionEffects/switchNetwork.test.ts (6 tests) 26ms
- ✓ src/features/wallet/models/network/actionEffects/latestBlock.test.ts (2 tests) 19ms
+ ✓ src/features/ui/mantine/components/ErrorFallback/ErrorFallback.test.tsx (1 test) 638ms
+       ✓ should be visible and show error message  635ms
+ ✓ src/features/ui/mantine/components/CookieConsent/CookieConsentMessage.test.tsx (2 tests) 899ms
+       ✓ should render with default props  589ms
+       ✓ should render with debug enabled  305ms
+ ❯ src/features/wallet/components/ConnectionModal/CheckSign/CheckSign.test.tsx (6 tests | 6 failed) 20ms
+         × should be empty 10ms
+         × should be visible and show info 1ms
+         × should be visible and show information 1ms
+         × should be visible and show error 1ms
+         × should be visible and show error 1ms
+         × should be visible and show error 1ms
+ ✓ src/features/wallet/components/ConnectionModal/CheckAccount/CheckAccount.test.tsx (6 tests) 1371ms
+         ✓ should be visible and show error  442ms
+         ✓ should be visible and show error  343ms
+ ✓ src/features/wallet/components/ConnectButton/ConnectButton.test.tsx (1 test) 421ms
+       ✓ should be visible and enabled  417ms
+ ✓ src/features/wallet/components/WalletProtectionWarning/WalletProtectionWarning.test.tsx (1 test) 588ms
+         ✓ should be visible and clickable  583ms
+ ✓ src/features/wallet/components/ConnectionModal/CheckNetwork/CheckNetwork.test.tsx (6 tests) 2626ms
+         ✓ should be visible and show error  353ms
+         ✓ should be visible and show error  924ms
+         ✓ should be visible and show error  751ms
+ ✓ src/features/wallet/models/account/actionEffects/signIn.test.ts (6 tests | 4 skipped) 56ms
+ ✓ src/pages/Home/Home.test.tsx (1 test) 295ms
+ ✓ src/features/ui/mantine/components/SocialMenu/SocialMenu.test.tsx (1 test) 182ms
+ ✓ src/features/wallet/components/ConnectionModal/Modal/Modal.test.tsx (14 tests | 13 skipped) 194ms
+ ✓ src/features/ui/mantine/components/PageMeta/PageMeta.test.tsx (1 test) 179ms
+ ✓ src/features/ui/mantine/components/PageLoding/PageLoading.test.tsx (1 test) 145ms
+ ✓ src/features/wallet/models/network/actionEffects/loadNetwork.test.ts (4 tests) 40ms
+ ✓ src/features/wallet/components/Wallet.test.tsx (1 test) 185ms
+ ✓ src/features/wallet/models/account/actionEffects/unlockWallet.test.ts (6 tests) 26ms
+ ✓ src/features/wallet/models/network/actionEffects/switchNetwork.test.ts (6 tests) 25ms
+ ✓ src/features/wallet/models/network/actionEffects/latestBlock.test.ts (2 tests) 21ms
+ ✓ src/features/wallet/models/account/actionEffects/loadAccount.test.ts (4 tests) 23ms
+ ✓ src/features/wallet/models/account/actionEffects/disconnectWallet.test.ts (2 tests) 21ms
  ✓ src/features/wallet/models/account/slice.test.ts (7 tests) 16ms
- ✓ src/features/wallet/models/network/slice.test.ts (5 tests) 10ms
- ✓ src/features/wallet/models/provider/slice.test.ts (2 tests) 14ms
+ ✓ src/features/wallet/models/network/slice.test.ts (5 tests) 14ms
+ ✓ src/features/wallet/models/provider/slice.test.ts (2 tests) 12ms
  ↓ src/features/router/hooks/usePageLink.test.tsx (2 tests | 2 skipped)
  ↓ src/features/wallet/models/provider/actionEffects/loadProvider.test.ts (5 tests | 5 skipped)
- ✓ src/features/i18n/useChangeLanguage.test.ts (6 tests | 1 skipped) 12ms
+ ✓ src/features/i18n/useChangeLanguage.test.ts (6 tests | 1 skipped) 10ms
  ↓ src/pages/NotFound/NotFound.test.tsx (1 test | 1 skipped)
 
-  Snapshots  1 obsolete
-             ↳ src/features/wallet/components/WalletProtectionWarning/WalletProtectionWarning.test.tsx
-               · Feature: Wallet > Component: ConnectButton/WalletProtectionWarning > Scenario: Default > should be visible and clickable 1
+  Snapshots  5 obsolete
+             ↳ src/features/wallet/components/ConnectionModal/CheckSign/CheckSign.test.tsx
+               · Feature: Wallet > Component: ConnectionModal/Steps/CheckSign > Scenario: NotSigned > should be visible and show info 1
+               · Feature: Wallet > Component: ConnectionModal/Steps/CheckSign > Scenario: SignFailed > should be visible and show error 1
+               · Feature: Wallet > Component: ConnectionModal/Steps/CheckSign > Scenario: SignRejected > should be visible and show error 1
+               · Feature: Wallet > Component: ConnectionModal/Steps/CheckSign > Scenario: SignRequested > should be visible and show information 1
+               · Feature: Wallet > Component: ConnectionModal/Steps/CheckSign > Scenario: SignTimedOut > should be visible and show error 1
 
  Test Files  1 failed | 23 passed | 3 skipped (27)
-      Tests  1 failed | 73 passed | 26 skipped (100)
-   Start at  19:01:04
-   Duration  25.42s (transform 4.61s, setup 8.41s, collect 56.77s, tests 8.26s, environment 58.62s, prepare 1.78s)
+      Tests  6 failed | 68 passed | 26 skipped (100)
+   Start at  21:59:53
+   Duration  29.16s (transform 6.24s, setup 8.18s, collect 69.92s, tests 8.01s, environment 65.43s, prepare 1.98s)
 
 
 

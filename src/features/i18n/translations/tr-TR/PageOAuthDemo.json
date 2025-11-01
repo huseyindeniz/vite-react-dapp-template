@@ -7,5 +7,5 @@
   "You have successfully authenticated using OAuth. This content is only visible to authenticated users.": "OAuth kullanarak başarıyla kimlik doğrulaması yaptınız. Bu içerik yalnızca kimliği doğrulanmış kullanıcılara görünür.",
   "Login Required": "Giriş Gerekli",
   "Please log in with Google or GitHub to view the protected content on this page.": "Bu sayfadaki korumalı içeriği görüntülemek için lütfen Google veya GitHub ile giriş yapın.",
-  "This demonstrates the withOAuthProtection HOC pattern for OAuth-based conditional rendering.": ""
+  "This demonstrates the withOAuthProtection HOC pattern for OAuth-based conditional rendering.": "Bu, OAuth tabanlı koşullu render için withOAuthProtection HOC desenini gösterir."
 }

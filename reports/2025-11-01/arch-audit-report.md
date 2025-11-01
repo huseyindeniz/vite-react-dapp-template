@@ -1,6 +1,6 @@
 # Architecture Audit Report
 
-**Generated:** 2025-11-01T17:00:42.606Z
+**Generated:** 2025-11-01T19:57:21.577Z
 **Project:** vite-react-dapp-template
 
 ## Executive Summary
@@ -16,7 +16,7 @@
 
 | Check | Status | Summary |
 |-------|--------|---------|
-| Core → Domain Dependency | ❌ FAILED | 8 violation(s) |
+| Core → Domain Dependency | ❌ FAILED | 7 violation(s) |
 | Service Import Boundaries | ❌ FAILED | 2 violation(s) |
 | Service Boundaries | ❌ FAILED | 1 violation(s) |
 | Pages Boundaries | ❌ FAILED | 1 violation(s) |
@@ -29,7 +29,7 @@
 
 ### ❌ Core → Domain Dependency
 
-**Summary:** 8 violation(s)
+**Summary:** 7 violation(s)
 
 <details>
 <summary>View Details</summary>
@@ -44,21 +44,19 @@ Exception: src/features/app/config/ (composition root) can import anything
 Violations
 --------------------------------------------------------------------------------
 
-❌ Found 8 violation(s)
+❌ Found 7 violation(s)
 
   ❌ router (core) → domain features:
      → wallet (domain)
         File: src/features/router/hooks/usePages.tsx
         File: src/features/router/Router.tsx
         File: src/features/router/Router.tsx
-     → auth (domain)
+     → oauth (domain)
         File: src/features/router/hooks/useRoutes.tsx
-        File: src/features/router/Router.tsx
-     → blog-demo (domain)
         File: src/features/router/Router.tsx
 
   ❌ ui (core) → domain features:
-     → auth (domain)
+     → oauth (domain)
         File: src/features/ui/mantine/Layout/LayoutBase.tsx
      → wallet (domain)
         File: src/features/ui/mantine/Layout/LayoutBase.tsx
@@ -66,7 +64,7 @@ Violations
 Fix: Move these dependencies to src/features/app/config/
 
 ================================================================================
-Summary: 8 violation(s)
+Summary: 7 violation(s)
 ```
 
 </details>
@@ -139,8 +137,8 @@ Violations
 
 ❌ Found 1 violation(s)
 
-  ❌ src/services/auth/AuthService.ts
-     Line 3: @/features/auth/config
+  ❌ src/services/oauth/OAuthService.ts
+     Line 3: @/features/oauth/config
      Issue: Services can only import root I*Api interfaces and types from features
      Fix: Services should only import:
           - Root interfaces: @/features/{feature}/I{Feature}Api
@@ -245,7 +243,7 @@ This audit ensures the following architectural patterns:
 
 ### Priority Actions
 
-1. **Core → Domain Dependency**: 8 violation(s)
+1. **Core → Domain Dependency**: 7 violation(s)
    - Run: `node ./.claude/skills/arch-audit/scripts/core___domain_dependency.mjs`
    - See detailed output above for specific violations
 

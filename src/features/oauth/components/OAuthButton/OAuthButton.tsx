@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Avatar, Button, Menu, Group, Text } from '@mantine/core';
 import log from 'loglevel';
+import { useTranslation } from 'react-i18next';
 import { FaChevronDown, FaUser } from 'react-icons/fa';
 import { IoIosLogOut } from 'react-icons/io';
 
@@ -21,6 +22,7 @@ export const OAuthButton: React.FC<OAuthButtonProps> = ({
   variant = 'outline',
   fullWidth = false,
 }) => {
+  const { t } = useTranslation('FeatureOAuth');
   const auth = useOAuth();
   const { loginWith, logout } = useOAuthActions();
 
@@ -34,7 +36,7 @@ export const OAuthButton: React.FC<OAuthButtonProps> = ({
   if (auth.isLoggingIn) {
     return (
       <Button size={size} variant={variant} fullWidth={fullWidth} loading>
-        Signing in...
+        {t('Signing in...')}
       </Button>
     );
   }
@@ -43,7 +45,7 @@ export const OAuthButton: React.FC<OAuthButtonProps> = ({
   if (auth.isLoggingOut) {
     return (
       <Button size={size} variant={variant} fullWidth={fullWidth} loading>
-        Signing out...
+        {t('Signing out...')}
       </Button>
     );
   }
@@ -81,7 +83,7 @@ export const OAuthButton: React.FC<OAuthButtonProps> = ({
                   {auth.user.given_name || auth.user.name}
                 </Text>
                 <Text size="xs" c="dimmed">
-                  Signed in with {auth.currentProvider}
+                  {t('Signed in with')} {auth.currentProvider}
                 </Text>
               </div>
             </Group>
@@ -89,7 +91,7 @@ export const OAuthButton: React.FC<OAuthButtonProps> = ({
           <Menu.Item>{auth.user.email}</Menu.Item>
           <Menu.Divider />
           <Menu.Item leftSection={<IoIosLogOut size={14} />} onClick={logout}>
-            Sign out
+            {t('Sign out')}
           </Menu.Item>
         </Menu.Dropdown>
       </Menu>
@@ -106,13 +108,18 @@ export const OAuthButton: React.FC<OAuthButtonProps> = ({
         fullWidth={fullWidth}
         leftSection={
           provider.icon ? (
-            <img src={provider.icon} alt={provider.label} width={16} height={16} />
+            <img
+              src={provider.icon}
+              alt={provider.label}
+              width={16}
+              height={16}
+            />
           ) : null
         }
         onClick={() => handleProviderLogin(provider.name)}
         disabled={auth.isLoading || !auth.isReady}
       >
-        Sign in with {provider.label}
+        {t('Sign in with')} {provider.label}
       </Button>
     );
   }
@@ -128,23 +135,28 @@ export const OAuthButton: React.FC<OAuthButtonProps> = ({
           rightSection={<FaChevronDown size={16} />}
           disabled={auth.isLoading || !auth.isReady}
         >
-          Sign in
+          {t('Sign in')}
         </Button>
       </Menu.Target>
 
       <Menu.Dropdown style={{ minWidth: 250 }}>
-        <Menu.Label>Choose auth provider</Menu.Label>
+        <Menu.Label>{t('Choose auth provider')}</Menu.Label>
         {SUPPORTED_OAUTH_PROVIDERS.map(provider => (
           <Menu.Item
             key={provider.name}
             leftSection={
               provider.icon ? (
-                <img src={provider.icon} alt={provider.label} width={16} height={16} />
+                <img
+                  src={provider.icon}
+                  alt={provider.label}
+                  width={16}
+                  height={16}
+                />
               ) : null
             }
             onClick={() => handleProviderLogin(provider.name)}
           >
-            Sign in with {provider.label}
+            {t('Sign in with')} {provider.label}
           </Menu.Item>
         ))}
       </Menu.Dropdown>

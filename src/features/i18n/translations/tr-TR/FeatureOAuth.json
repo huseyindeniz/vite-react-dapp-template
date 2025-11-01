@@ -1,4 +1,11 @@
 {
+  "Signing in...": "Giriş yapılıyor...",
+  "Signing out...": "Çıkış yapılıyor...",
+  "Signed in with": "Giriş yapıldı:",
+  "Sign out": "Çıkış Yap",
+  "Sign in with": "Giriş yap:",
+  "Sign in": "Giriş Yap",
+  "Choose auth provider": "Kimlik doğrulama sağlayıcısı seçin",
   "401 Unauthorized": "401 Yetki Hatası",
   "This page requires authentication to access.": "Bu sayfaya erişmek için kimlik doğrulaması gereklidir.",
   "To access this page, you need to:": "Bu sayfaya erişmek için şunları yapmanız gerekir:",

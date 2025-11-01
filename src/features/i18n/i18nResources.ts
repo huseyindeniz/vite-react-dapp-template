@@ -1,4 +1,5 @@
 import Components_EN_US from './translations/en-US/Components.json';
+import FeatureBlogDemo_EN_US from './translations/en-US/FeatureBlogDemo.json';
 import FeatureChat_EN_US from './translations/en-US/FeatureChat.json';
 import FeatureOAuth_EN_US from './translations/en-US/FeatureOAuth.json';
 import FeatureWallet_EN_US from './translations/en-US/FeatureWallet.json';
@@ -6,6 +7,7 @@ import Layout_EN_US from './translations/en-US/Layout.json';
 import Menu_EN_US from './translations/en-US/Menu.json';
 import PageAiChat_EN_US from './translations/en-US/PageAiChat.json';
 import PageAuthDemo_EN_US from './translations/en-US/PageAuthDemo.json';
+import PageBlog_EN_US from './translations/en-US/PageBlog.json';
 import PageCombinedAuth_EN_US from './translations/en-US/PageCombinedAuth.json';
 import PageHome_EN_US from './translations/en-US/PageHome.json';
 import PageNotFound_EN_US from './translations/en-US/PageNotFound.json';
@@ -15,6 +17,7 @@ import PageUser_EN_US from './translations/en-US/PageUser.json';
 import PageWalletBasic_EN_US from './translations/en-US/PageWalletBasic.json';
 import PageWalletProtected_EN_US from './translations/en-US/PageWalletProtected.json';
 import Components_TR_TR from './translations/tr-TR/Components.json';
+import FeatureBlogDemo_TR_TR from './translations/tr-TR/FeatureBlogDemo.json';
 import FeatureChat_TR_TR from './translations/tr-TR/FeatureChat.json';
 import FeatureOAuth_TR_TR from './translations/tr-TR/FeatureOAuth.json';
 import FeatureWallet_TR_TR from './translations/tr-TR/FeatureWallet.json';
@@ -22,6 +25,7 @@ import Layout_TR_TR from './translations/tr-TR/Layout.json';
 import Menu_TR_TR from './translations/tr-TR/Menu.json';
 import PageAiChat_TR_TR from './translations/tr-TR/PageAiChat.json';
 import PageAuthDemo_TR_TR from './translations/tr-TR/PageAuthDemo.json';
+import PageBlog_TR_TR from './translations/tr-TR/PageBlog.json';
 import PageCombinedAuth_TR_TR from './translations/tr-TR/PageCombinedAuth.json';
 import PageHome_TR_TR from './translations/tr-TR/PageHome.json';
 import PageNotFound_TR_TR from './translations/tr-TR/PageNotFound.json';
@@ -34,6 +38,7 @@ import PageWalletProtected_TR_TR from './translations/tr-TR/PageWalletProtected.
 export const resources = {
   'en-US': {
     Components: Components_EN_US,
+    FeatureBlogDemo: FeatureBlogDemo_EN_US,
     FeatureChat: FeatureChat_EN_US,
     FeatureOAuth: FeatureOAuth_EN_US,
     FeatureWallet: FeatureWallet_EN_US,
@@ -41,6 +46,7 @@ export const resources = {
     Menu: Menu_EN_US,
     PageAiChat: PageAiChat_EN_US,
     PageAuthDemo: PageAuthDemo_EN_US,
+    PageBlog: PageBlog_EN_US,
     PageCombinedAuth: PageCombinedAuth_EN_US,
     PageHome: PageHome_EN_US,
     PageNotFound: PageNotFound_EN_US,
@@ -52,6 +58,7 @@ export const resources = {
   },
   'tr-TR': {
     Components: Components_TR_TR,
+    FeatureBlogDemo: FeatureBlogDemo_TR_TR,
     FeatureChat: FeatureChat_TR_TR,
     FeatureOAuth: FeatureOAuth_TR_TR,
     FeatureWallet: FeatureWallet_TR_TR,
@@ -59,6 +66,7 @@ export const resources = {
     Menu: Menu_TR_TR,
     PageAiChat: PageAiChat_TR_TR,
     PageAuthDemo: PageAuthDemo_TR_TR,
+    PageBlog: PageBlog_TR_TR,
     PageCombinedAuth: PageCombinedAuth_TR_TR,
     PageHome: PageHome_TR_TR,
     PageNotFound: PageNotFound_TR_TR,

@@ -7,5 +7,5 @@
   "You have successfully authenticated using OAuth. This content is only visible to authenticated users.": "You have successfully authenticated using OAuth. This content is only visible to authenticated users.",
   "Login Required": "Login Required",
   "Please log in with Google or GitHub to view the protected content on this page.": "Please log in with Google or GitHub to view the protected content on this page.",
-  "This demonstrates the withOAuthProtection HOC pattern for OAuth-based conditional rendering.": ""
+  "This demonstrates the withOAuthProtection HOC pattern for OAuth-based conditional rendering.": "This demonstrates the withOAuthProtection HOC pattern for OAuth-based conditional rendering."
 }

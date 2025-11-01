@@ -37,12 +37,12 @@ export const NotFoundPage: React.FC = () => {
           >
             <Image
               src={imageBackToHomePage}
-              alt="not found"
+              alt={t('not found')}
               style={{ width: '50%' }}
             />
             <Image
               src={imageDelorean}
-              alt="not found"
+              alt={t('not found')}
               style={{ width: '50%' }}
             />
           </Stack>

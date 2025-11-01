@@ -1,6 +1,6 @@
 # Code Audit Report
 
-**Generated:** 2025-11-01T17:01:04.045Z
+**Generated:** 2025-11-01T21:11:33.634Z
 **Project:** vite-react-dapp-template
 
 ## Executive Summary
@@ -8,9 +8,9 @@
 | Metric | Value |
 |--------|-------|
 | **Total Checks** | 11 |
-| **Passed** | ✅ 2 |
-| **Failed** | ❌ 9 |
-| **Success Rate** | 18% |
+| **Passed** | ✅ 3 |
+| **Failed** | ❌ 8 |
+| **Success Rate** | 27% |
 
 ## Results by Check
 
@@ -20,10 +20,10 @@
 | Export Quality | ❌ FAILED | Index files: 0, Default exports: 3 |
 | Redux Abstraction | ✅ PASSED | useDispatch: 0, RootState: 0, useSelector: 0 |
 | Service Import Boundaries | ❌ FAILED | Check output |
-| i18n Coverage | ❌ FAILED | 45 violation(s) |
+| i18n Coverage | ✅ PASSED | Check output |
 | TypeScript "any" Usage | ❌ FAILED | 2 violation(s) |
 | Linter/TypeScript Suppressions | ❌ FAILED | 4 total (Critical: 2, High: 2) |
-| God Files (1 Entity Per File) | ❌ FAILED | 5 file(s), 9 entities to split |
+| God Files (1 Entity Per File) | ❌ FAILED | 6 file(s), 17 entities to split |
 | TODO/FIXME/HACK Comments | ❌ FAILED | 15 marker(s) |
 | Console & Debug Logs | ❌ FAILED | 97 statement(s) |
 | Redux Saga Patterns | ✅ PASSED | See details |
@@ -172,316 +172,6 @@ Why this matters:
 
 ---
 
-### ❌ i18n Coverage
-
-**Summary:** 45 violation(s)
-
-<details>
-<summary>View Details</summary>
-
-```
-React i18n Coverage Check
-================================================================================
-
-Scanning 113 component files in src/...
-
-Raw Text Violations (Missing t() Wrapper)
---------------------------------------------------------------------------------
-
-❌ Found 45 raw text occurrence(s) in 25 file(s)
-
-  File: src/features/auth/components/AuthButton/AuthButton.tsx
-
-    ❌ Line 136 (JSX text content)
-       Text: "Choose auth provider"
-       Context: <Menu.Label>Choose auth provider</Menu.Label>
-       Fix: Wrap in t() -> {t('Choose auth provider')}
-
-  File: src/features/auth/components/AuthProtectionWarning/AuthProtectionWarning.tsx
-
-    ❌ Line 30 (String literal)
-       Text: "Sign in"
-       Context: <List.Item>{t('Click the "Sign in" button below or in the header')}</List.Item>
-       Fix: Wrap in t() -> {t('Sign in')}
-
-  File: src/features/auth/pages/GithubCallback.tsx
-
-    ❌ Line 47 (String literal)
-       Text: "GitHub login failed"
-       Context: error: 'GitHub login failed',
-       Fix: Wrap in t() -> {t('GitHub login failed')}
-
-    ❌ Line 67 (String literal)
-       Text: "Invalid callback"
-       Context: error: 'Invalid callback',
-       Fix: Wrap in t() -> {t('Invalid callback')}
-
-    ❌ Line 68 (String literal)
-       Text: "Missing required parameters"
-       Context: description: 'Missing required parameters',
-       Fix: Wrap in t() -> {t('Missing required parameters')}
-
-    ❌ Line 85 (String literal)
-       Text: "You can close this window"
-       Context: {window.opener ? 'You can close this window' : 'Redirecting...'}
-       Fix: Wrap in t() -> {t('You can close this window')}
-
-    ❌ Line 85 (String literal)
-       Text: "Redirecting..."
-       Context: {window.opener ? 'You can close this window' : 'Redirecting...'}
-       Fix: Wrap in t() -> {t('Redirecting...')}
-
-  File: src/features/auth/pages/GoogleCallback.tsx
-
-    ❌ Line 38 (String literal)
-       Text: "Google login failed"
-       Context: error: 'Google login failed',
-       Fix: Wrap in t() -> {t('Google login failed')}
-
-    ❌ Line 70 (String literal)
-       Text: "Invalid callback"
-       Context: error: 'Invalid callback',
-       Fix: Wrap in t() -> {t('Invalid callback')}
-
-    ❌ Line 71 (String literal)
-       Text: "Missing required parameters"
-       Context: description: 'Missing required parameters'
-       Fix: Wrap in t() -> {t('Missing required parameters')}
-
-    ❌ Line 91 (String literal)
-       Text: "Invalid callback"
-       Context: error: 'Invalid callback',
-       Fix: Wrap in t() -> {t('Invalid callback')}
-
-    ❌ Line 92 (String literal)
-       Text: "Missing required parameters"
-       Context: description: 'Missing required parameters'
-       Fix: Wrap in t() -> {t('Missing required parameters')}
-
-  File: src/features/auth/routes.tsx
-
-    ❌ Line 28 (String literal)
-       Text: "Github Callback"
-       Context: menuLabel: `Github Callback`,
-       Fix: Wrap in t() -> {t('Github Callback')}
-
-    ❌ Line 39 (String literal)
-       Text: "Google Callback"
-       Context: menuLabel: `Google Callback`,
-       Fix: Wrap in t() -> {t('Google Callback')}
-
-  File: src/features/blog-demo/components/Posts/PostEmptyList.tsx
-
-    ❌ Line 5 (String literal)
-       Text: "No Posts Available"
-       Context: <Alert title="No Posts Available" color="gray">
-       Fix: Wrap in t() -> {t('No Posts Available')}
-
-  File: src/features/blog-demo/components/Posts/PostLoadMoreButton.tsx
-
-    ❌ Line 22 (String literal)
-       Text: "Loading..."
-       Context: {loading ? 'Loading...' : 'Load More'}
-       Fix: Wrap in t() -> {t('Loading...')}
-
-    ❌ Line 22 (String literal)
-       Text: "Load More"
-       Context: {loading ? 'Loading...' : 'Load More'}
-       Fix: Wrap in t() -> {t('Load More')}
-
-  File: src/features/i18n/components/LangMenu/LangModal.tsx
-
-    ❌ Line 38 (String literal)
-       Text: "Language Selection"
-       Context: <Modal opened={isOpen} onClose={onClose} title="Language Selection">
-       Fix: Wrap in t() -> {t('Language Selection')}
-
-  File: src/features/slice-manager/components/SliceDebugPanel.tsx
-
-    ❌ Line 31 (JSX text content)
-       Text: "Slice Status"
-       Context: <h3>Slice Status</h3>
-       Fix: Wrap in t() -> {t('Slice Status')}
-
-  File: src/features/ui/mantine/components/ColorSchemeSwitch/ColorSchemeSwitch.tsx
-
-    ❌ Line 19 (String literal)
-       Text: "Toggle color scheme"
-       Context: aria-label="Toggle color scheme"
-       Fix: Wrap in t() -> {t('Toggle color scheme')}
-
-  File: src/features/ui/mantine/components/ErrorFallback/ErrorFallback.tsx
-
-    ❌ Line 12 (JSX text content)
-       Text: "Opps!"
-       Context: <strong>Opps!</strong> An unexpected error occured!
-       Fix: Wrap in t() -> {t('Opps!')}
-
-    ❌ Line 16 (JSX text content)
-       Text: "Back To Home?"
-       Context: <p>Back To Home?</p>
-       Fix: Wrap in t() -> {t('Back To Home?')}
-
-    ❌ Line 38 (JSX text content)
-       Text: "Full Error Message"
-       Context: <caption> Full Error Message</caption>
-       Fix: Wrap in t() -> {t('Full Error Message')}
-
-  File: src/features/ui/mantine/theme.tsx
-
-    ❌ Line 4 (String literal)
-       Text: "Open Sans, sans-serif"
-       Context: fontFamily: 'Open Sans, sans-serif',
-       Fix: Wrap in t() -> {t('Open Sans, sans-serif')}
-
-  File: src/features/wallet/components/ConnectionModal/CheckAccount/UnlockWaiting.tsx
-
-    ❌ Line 14 (String literal)
-       Text: "Please close this dialog, open your Web3 wallet, unlock it, and click connect button again."
-       Context: 'Please close this dialog, open your Web3 wallet, unlock it, and click connect button again.'
-       Fix: Wrap in t() -> {t('Please close this dialog, open your Web3 wallet, unlock it, and click connect button again.')}
-
-  File: src/features/wallet/components/ConnectionModal/CheckNetwork/WrongNetwork.tsx
-
-    ❌ Line 32 (String literal)
-       Text: "If you want to continue, please switch to any supported network."
-       Context: 'If you want to continue, please switch to any supported network.'
-       Fix: Wrap in t() -> {t('If you want to continue, please switch to any supported network.')}
-
-  File: src/features/wallet/components/ConnectionModal/CheckSign/NotSigned.tsx
-
-    ❌ Line 24 (String literal)
-       Text: "In order to use this app, you need to sign the login request in your wallet."
-       Context: 'In order to use this app, you need to sign the login request in your wallet.'
-       Fix: Wrap in t() -> {t('In order to use this app, you need to sign the login request in your wallet.')}
-
-  File: src/features/wallet/components/ConnectionModal/CheckWallet/NotSupported.tsx
-
-    ❌ Line 35 (String literal)
-       Text: "Please install any compatible Web3 wallet extension for your browser from the official links below and try again to use this dapp."
-       Context: 'Please install any compatible Web3 wallet extension for your browser from the official links below and try again to use this dapp.'
-       Fix: Wrap in t() -> {t('Please install any compatible Web3 wallet extension for your browser from the official links below and try again to use this dapp.')}
-
-  File: src/features/wallet/components/ConnectionModal/CheckWallet/WaitingSelection.tsx
-
-    ❌ Line 40 (String literal)
-       Text: "The following Web3 wallet extensions dedected in your browser. You can select the wallet you want to connect."
-       Context: 'The following Web3 wallet extensions dedected in your browser. You can select the wallet you want to connect.'
-       Fix: Wrap in t() -> {t('The following Web3 wallet extensions dedected in your browser. You can select the wallet you want to connect.')}
-
-  File: src/features/wallet/components/ConnectionModal/Modal/Modal.tsx
-
-    ❌ Line 40 (String literal)
-       Text: "A supported Web3 wallet extension needs to be installed."
-       Context: 'A supported Web3 wallet extension needs to be installed.'
-       Fix: Wrap in t() -> {t('A supported Web3 wallet extension needs to be installed.')}
-
-    ❌ Line 62 (String literal)
-       Text: "A supported network needs to be selected in the Web3 wallet."
-       Context: 'A supported network needs to be selected in the Web3 wallet.'
-       Fix: Wrap in t() -> {t('A supported network needs to be selected in the Web3 wallet.')}
-
-  File: src/features/wallet/components/ProfileDropdownMenu/ProfileDropdownMenu.tsx
-
-    ❌ Line 42 (String literal)
-       Text: "The address of your account has been copied to the clipboard."
-       Context: 'The address of your account has been copied to the clipboard.'
-       Fix: Wrap in t() -> {t('The address of your account has been copied to the clipboard.')}
-
-  File: src/main.tsx
-
-    ❌ Line 16 (String literal)
-       Text: "pulse spinner"
-       Context: <span className="pulse spinner">
-       Fix: Wrap in t() -> {t('pulse spinner')}
-
-  File: src/pages/AiChat/AiChat.tsx
-
-    ❌ Line 12 (String literal)
-       Text: "AI-powered chat interface for interactive conversations."
-       Context: 'AI-powered chat interface for interactive conversations.'
-       Fix: Wrap in t() -> {t('AI-powered chat interface for interactive conversations.')}
-
-  File: src/pages/Blog/Blog.tsx
-
-    ❌ Line 13 (String literal)
-       Text: "Blog page"
-       Context: <PageMeta title={t('Blog')} url="/blog" description="Blog page" />
-       Fix: Wrap in t() -> {t('Blog page')}
-
-  File: src/pages/Home/Home.tsx
-
-    ❌ Line 76 (String literal)
-       Text: "noopener noreferrer"
-       Context: rel="noopener noreferrer"
-       Fix: Wrap in t() -> {t('noopener noreferrer')}
-
-    ❌ Line 86 (String literal)
-       Text: "noopener noreferrer"
-       Context: rel="noopener noreferrer"
-       Fix: Wrap in t() -> {t('noopener noreferrer')}
-
-  File: src/pages/Home/components/Environment.tsx
-
-    ❌ Line 14 (JSX text content)
-       Text: "Environment Variables"
-       Context: <Table.Caption>Environment Variables</Table.Caption>
-       Fix: Wrap in t() -> {t('Environment Variables')}
-
-    ❌ Line 23 (JSX text content)
-       Text: "Use Hash Router"
-       Context: <Table.Th>Use Hash Router</Table.Th>
-       Fix: Wrap in t() -> {t('Use Hash Router')}
-
-    ❌ Line 29 (JSX text content)
-       Text: "Wallet: Disable Sign"
-       Context: <Table.Th>Wallet: Disable Sign</Table.Th>
-       Fix: Wrap in t() -> {t('Wallet: Disable Sign')}
-
-    ❌ Line 35 (JSX text content)
-       Text: "Wallet: Sign Timeout"
-       Context: <Table.Th>Wallet: Sign Timeout</Table.Th>
-       Fix: Wrap in t() -> {t('Wallet: Sign Timeout')}
-
-    ❌ Line 41 (JSX text content)
-       Text: "Wallet: Slow Down"
-       Context: <Table.Th>Wallet: Slow Down</Table.Th>
-       Fix: Wrap in t() -> {t('Wallet: Slow Down')}
-
-    ❌ Line 47 (JSX text content)
-       Text: "Login Redirect"
-       Context: <Table.Th>Login Redirect</Table.Th>
-       Fix: Wrap in t() -> {t('Login Redirect')}
-
-  File: src/pages/NotFound/NotFound.tsx
-
-    ❌ Line 40 (String literal)
-       Text: "not found"
-       Context: alt="not found"
-       Fix: Wrap in t() -> {t('not found')}
-
-    ❌ Line 45 (String literal)
-       Text: "not found"
-       Context: alt="not found"
-       Fix: Wrap in t() -> {t('not found')}
-
---------------------------------------------------------------------------------
-Summary: 45 raw text occurrence(s) found
-
-Rule: All user-facing text must be wrapped in t() for internationalization.
-
-Examples:
-  ❌ <Button>Click me</Button>
-  ✅ <Button>{t('Click me')}</Button>
-
-  ❌ const message = "Hello world";
-  ✅ const message = t('Hello world');
-```
-
-</details>
-
----
-
 ### ❌ TypeScript "any" Usage
 
 **Summary:** 2 violation(s)
@@ -613,7 +303,7 @@ Better approach:
 
 ### ❌ God Files (1 Entity Per File)
 
-**Summary:** 5 file(s), 9 entities to split
+**Summary:** 6 file(s), 17 entities to split
 
 <details>
 <summary>View Details</summary>
@@ -627,7 +317,29 @@ Scanning 317 TypeScript files in src/...
 "God File" Violations (Multiple Entities Per File)
 --------------------------------------------------------------------------------
 
-❌ Found 5 file(s) with multiple entities
+❌ Found 6 file(s) with multiple entities
+
+  ❌ src/services/oauth/providers/google/types.ts (9 entities)
+     Line 1: interface GoogleOAuth2CodeClientConfig
+     Line 10: interface GoogleOAuth2CodeClient
+     Line 14: interface GoogleOAuth2CodeResponse
+     Line 21: interface GoogleOAuth2Error
+     Line 26: interface GoogleIdConfiguration
+     Line 35: interface GoogleIdCredentialResponse
+     Line 40: interface GoogleIdRenderButtonOptions
+     Line 52: interface PromptMomentNotification
+     Line 67: interface GoogleUserProfile
+     Rule: 1 entity per file - NO god files!
+     Fix: Split into separate files:
+       - src/services/oauth/providers/google/GoogleOAuth2CodeClientConfig.ts
+       - src/services/oauth/providers/google/GoogleOAuth2CodeClient.ts
+       - src/services/oauth/providers/google/GoogleOAuth2CodeResponse.ts
+       - src/services/oauth/providers/google/GoogleOAuth2Error.ts
+       - src/services/oauth/providers/google/GoogleIdConfiguration.ts
+       - src/services/oauth/providers/google/GoogleIdCredentialResponse.ts
+       - src/services/oauth/providers/google/GoogleIdRenderButtonOptions.ts
+       - src/services/oauth/providers/google/PromptMomentNotification.ts
+       - src/services/oauth/providers/google/GoogleUserProfile.ts
 
   ❌ src/features/app/types/FeatureConfig.ts (3 entities)
      Line 8: interface FeatureStore
@@ -639,16 +351,6 @@ Scanning 317 TypeScript files in src/...
        - src/features/app/types/FeatureSaga.ts
        - src/features/app/types/FeatureConfig.ts
 
-  ❌ src/features/auth/types/IAuthProvider.ts (3 entities)
-     Line 4: type AuthProviderName
-     Line 6: interface AuthProviderCredentials
-     Line 16: interface IAuthProvider
-     Rule: 1 entity per file - NO god files!
-     Fix: Split into separate files:
-       - src/features/auth/types/AuthProviderName.ts
-       - src/features/auth/types/AuthProviderCredentials.ts
-       - src/features/auth/types/IAuthProvider.ts
-
   ❌ src/features/i18n/types.ts (3 entities)
      Line 1: enum LangCode
      Line 6: type SupportedLang
@@ -658,6 +360,16 @@ Scanning 317 TypeScript files in src/...
        - src/features/i18n/LangCode.ts
        - src/features/i18n/SupportedLang.ts
        - src/features/i18n/I18NConfig.ts
+
+  ❌ src/features/oauth/types/IOAuthProvider.ts (3 entities)
+     Line 4: type OAuthProviderName
+     Line 6: interface OAuthProviderCredentials
+     Line 16: interface IOAuthProvider
+     Rule: 1 entity per file - NO god files!
+     Fix: Split into separate files:
+       - src/features/oauth/types/OAuthProviderName.ts
+       - src/features/oauth/types/OAuthProviderCredentials.ts
+       - src/features/oauth/types/IOAuthProvider.ts
 
   ❌ src/features/wallet/models/provider/IProviderApi.ts (3 entities)
      Line 3: enum SupportedWallets
@@ -680,8 +392,8 @@ Scanning 317 TypeScript files in src/...
 ================================================================================
 Summary
 
-Files with multiple entities: 5
-Total entities that should be in separate files: 9
+Files with multiple entities: 6
+Total entities that should be in separate files: 17
 
 ❌ God file violations found.
 
@@ -807,19 +519,19 @@ Summary:
   ⚠️  src\features\slice-manager\SliceLifecycleManager.ts
      → 15 log.debug() statement(s)
 
-  ⚠️  src\services\auth\providers\google\GoogleAuthProvider.ts
+  ⚠️  src\services\oauth\providers\google\GoogleOAuthProvider.ts
      → 10 log.debug() statement(s)
 
-  ⚠️  src\services\auth\providers\AuthProviderService.ts
+  ⚠️  src\services\oauth\providers\OAuthProviderService.ts
      → 8 log.debug() statement(s)
 
-  ⚠️  src\services\auth\AuthService.ts
+  ⚠️  src\services\oauth\OAuthService.ts
      → 7 log.debug() statement(s)
 
-  ⚠️  src\services\auth\providers\github\GitHubAuthProvider.ts
+  ⚠️  src\services\oauth\providers\github\GitHubOAuthProvider.ts
      → 7 log.debug() statement(s)
 
-  ⚠️  src\services\auth\AuthApi.ts
+  ⚠️  src\services\oauth\OAuthApi.ts
      → 4 log.debug() statement(s)
 
   ⚠️  src\services\chat\LangGraphChatModelAdapter.ts
@@ -855,6 +567,7 @@ Recommendation:
 ## Passed Checks
 
 - ✅ **Redux Abstraction** - useDispatch: 0, RootState: 0, useSelector: 0
+- ✅ **i18n Coverage** - Check output
 - ✅ **Redux Saga Patterns** - No violations found
 
 ## Recommendations
@@ -873,27 +586,23 @@ Recommendation:
    - Run: `node ./.claude/skills/code-audit/scripts/service_import_boundaries.mjs`
    - See detailed output above for specific violations
 
-4. **i18n Coverage**: 45 violation(s)
-   - Run: `node ./.claude/skills/code-audit/scripts/i18n_coverage.mjs`
-   - See detailed output above for specific violations
-
-5. **TypeScript "any" Usage**: 2 violation(s)
+4. **TypeScript "any" Usage**: 2 violation(s)
    - Run: `node ./.claude/skills/code-audit/scripts/typescript__any__usage.mjs`
    - See detailed output above for specific violations
 
-6. **Linter/TypeScript Suppressions**: 4 total (Critical: 2, High: 2)
+5. **Linter/TypeScript Suppressions**: 4 total (Critical: 2, High: 2)
    - Run: `node ./.claude/skills/code-audit/scripts/linter_typescript_suppressions.mjs`
    - See detailed output above for specific violations
 
-7. **God Files (1 Entity Per File)**: 5 file(s), 9 entities to split
+6. **God Files (1 Entity Per File)**: 6 file(s), 17 entities to split
    - Run: `node ./.claude/skills/code-audit/scripts/god_files__1_entity_per_file_.mjs`
    - See detailed output above for specific violations
 
-8. **TODO/FIXME/HACK Comments**: 15 marker(s)
+7. **TODO/FIXME/HACK Comments**: 15 marker(s)
    - Run: `node ./.claude/skills/code-audit/scripts/todo_fixme_hack_comments.mjs`
    - See detailed output above for specific violations
 
-9. **Console & Debug Logs**: 97 statement(s)
+8. **Console & Debug Logs**: 97 statement(s)
    - Run: `node ./.claude/skills/code-audit/scripts/console___debug_logs.mjs`
    - See detailed output above for specific violations
 

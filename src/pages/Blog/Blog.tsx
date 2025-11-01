@@ -10,7 +10,7 @@ export const Blog: React.FC = () => {
   const { t } = useTranslation('PageBlog');
   return (
     <>
-      <PageMeta title={t('Blog')} url="/blog" description="Blog page" />
+      <PageMeta title={t('Blog')} url="/blog" description={t('Blog page')} />
       <Container ta="center">
         <Stack>
           <Title mb={2}>Posts</Title>

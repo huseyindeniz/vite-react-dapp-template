@@ -1,6 +1,3 @@
 {
-  "{{count}} Years_one": "{{count}} Year",
-  "{{count}} Years_other": "{{count}} Years",
-  "{{count}} Months_one": "{{count}} Month",
-  "{{count}} Months_other": "{{count}} Months"
+  "Toggle color scheme": "Toggle color scheme"
 }

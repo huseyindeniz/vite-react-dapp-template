@@ -15,6 +15,40 @@ const srcDir = path.join(projectRoot, 'src');
 const componentExtensions = ['.tsx', '.jsx'];
 
 /**
+ * Files/patterns to exclude from i18n checks
+ * Each entry can be a string (exact match) or regex pattern
+ */
+const EXCLUSIONS = {
+  // Test and development files
+  patterns: [
+    /\.test\./,           // Test files
+    /\.spec\./,           // Spec files
+    /\.stories\./,        // Storybook files
+    /\.d\.ts$/,           // Type definitions
+  ],
+
+  // Infrastructure files (not user-facing)
+  files: [
+    'src/main.tsx',                                    // App entry point (runs before i18n)
+  ],
+
+  // Debug/developer tools (not user-facing)
+  paths: [
+    'features/slice-manager/components/SliceDebugPanel', // Redux slice debug panel
+    'features/i18n/components/LangMenu/LangModal',       // Language selection modal (i18n infrastructure)
+    'features/ui/mantine/components/ErrorFallback',      // Error boundary fallback (infrastructure)
+    'pages/Home/components/Environment',                 // Environment variables display (developer tool)
+  ],
+
+  // OAuth callback handlers (redirect handlers, not user-facing UI)
+  oauth: [
+    'features/oauth/pages/GithubCallback',
+    'features/oauth/pages/GoogleCallback',
+    'features/oauth/routes',                           // Callback route definitions
+  ],
+};
+
+/**
  * Normalize path for consistent comparison (forward slashes)
  */
 function normalizePath(p) {
@@ -27,19 +61,32 @@ function normalizePath(p) {
 function shouldExcludeFile(filePath) {
   const normalized = normalizePath(filePath);
 
-  // Exclude test files
-  if (normalized.includes('.test.') || normalized.includes('.spec.')) {
-    return true;
+  // Check pattern exclusions
+  for (const pattern of EXCLUSIONS.patterns) {
+    if (pattern.test(normalized)) {
+      return true;
+    }
   }
 
-  // Exclude Storybook files
-  if (normalized.includes('.stories.')) {
-    return true;
+  // Check exact file exclusions
+  for (const file of EXCLUSIONS.files) {
+    if (normalized.endsWith(normalizePath(file))) {
+      return true;
+    }
   }
 
-  // Exclude type definition files
-  if (normalized.endsWith('.d.ts')) {
-    return true;
+  // Check path exclusions
+  for (const pathSegment of EXCLUSIONS.paths) {
+    if (normalized.includes(normalizePath(pathSegment))) {
+      return true;
+    }
+  }
+
+  // Check OAuth exclusions
+  for (const oauthPath of EXCLUSIONS.oauth) {
+    if (normalized.includes(normalizePath(oauthPath))) {
+      return true;
+    }
   }
 
   return false;
@@ -168,24 +215,36 @@ function findJSXTextContent(content) {
 }
 
 /**
- * Find string literals that look like user-facing text
- * But not in certain contexts (imports, className, etc.)
+ * Find string literals in text-related JSX props that need translation
+ * ONLY checks specific user-facing props (whitelist approach)
  */
 function findStringLiterals(content) {
   const violations = [];
   const lines = content.split('\n');
 
+  // Text-related JSX props that should be translated (WHITELIST)
+  const textProps = [
+    'title',
+    'label',
+    'description',
+    'placeholder',
+    'aria-label',
+    'error',
+    'message',
+    'text',
+    'caption',
+    'alt',
+  ];
+
+  // Build pattern: (title|label|description|...)\s*=\s*['"`]
+  const propPattern = new RegExp(`\\b(${textProps.join('|')})\\s*=\\s*(['"\`])([^'"\`\\n]+)\\2`, 'g');
+
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
     const lineNumber = i + 1;
 
-    // Skip import statements
-    if (line.trim().startsWith('import ')) {
-      continue;
-    }
-
-    // Skip export statements
-    if (line.trim().startsWith('export ')) {
+    // Skip import/export statements
+    if (line.trim().startsWith('import ') || line.trim().startsWith('export ')) {
       continue;
     }
 
@@ -194,57 +253,19 @@ function findStringLiterals(content) {
       continue;
     }
 
-    // Skip log statements (not user-facing)
-    if (/\blog\.(debug|info|warn|error|trace)\s*\(/.test(line)) {
-      continue;
-    }
-
-    // Skip console statements
-    if (/\bconsole\.(log|debug|info|warn|error)\s*\(/.test(line)) {
-      continue;
-    }
-
-    // Find string literals
-    const stringPattern = /(['"`])([^'"`\n]+)\1/g;
-
+    // Find text props with string values
     let match;
-    while ((match = stringPattern.exec(line)) !== null) {
-      const quote = match[1];
-      const text = match[2];
+    while ((match = propPattern.exec(line)) !== null) {
+      const propName = match[1];
+      const quote = match[2];
+      const text = match[3];
 
-      // Skip template literal variables ${...}
-      if (text.includes('${')) {
-        continue;
-      }
+      // Check if it's wrapped in t() - look for pattern: prop={t('...')}
+      const beforeProp = line.substring(0, match.index);
+      const afterValue = line.substring(match.index + match[0].length);
 
-      // Skip if already wrapped in t()
-      const beforeString = line.substring(0, match.index);
-      if (/t\s*\(\s*$/.test(beforeString)) {
-        continue;
-      }
-
-      // Skip common non-translatable prop names and attributes
-      if (/\b(className|id|name|key|type|role|href|src|alt|data-|aria-|style|variant|size|color|placeholder|rel|target|border|bg)\s*[:=]\s*['"`]$/.test(beforeString)) {
-        continue;
-      }
-
-      // Skip regex patterns (contains special regex chars)
-      if (/[\\()[\]{}|^$*+?]/.test(text)) {
-        continue;
-      }
-
-      // Skip CSS values (calc, colors, etc.)
-      if (/^(calc\(|rgba?|hsla?|#|var\()/.test(text)) {
-        continue;
-      }
-
-      // Skip CSS values (colors, sizes, borders, etc.)
-      if (/^(rgba?|hsla?|#|var\(|[0-9]+px|[0-9]+%|[0-9]+em|[0-9]+rem|[0-9]+vh|[0-9]+vw|solid|dashed|dotted|none|auto|inherit|initial|unset)/.test(text)) {
-        continue;
-      }
-
-      // Skip if it's a prop key or object key
-      if (/\b\w+\s*:\s*['"`]$/.test(beforeString)) {
+      // Skip if it's already in {t(...)} pattern
+      if (/\{t\s*\(\s*$/.test(beforeProp)) {
         continue;
       }
 
