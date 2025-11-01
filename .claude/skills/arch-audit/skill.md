@@ -248,6 +248,59 @@ node ./.claude/skills/arch-audit/scripts/check_slice_imports.mjs
 node ./.claude/skills/arch-audit/scripts/check_sagas_imports.mjs
 ```
 
+## Circular Dependency Check
+```bash
+# Detects circular dependencies (A ↔ B or A → B → C → A)
+node ./.claude/skills/arch-audit/scripts/check_circular_deps.mjs
+```
+
+# Generating Reports (Optional)
+
+To save a comprehensive markdown report of all checks:
+
+```bash
+node ./.claude/skills/arch-audit/scripts/generate_report.mjs
+```
+
+**Output:** `reports/{YYYY-MM-DD_HH-MM}/arch-audit-report.md`
+
+**Report includes:**
+- Executive summary with pass/fail counts
+- Results table for all checks
+- Detailed violations for failed checks (collapsible)
+- Summary of passed checks
+- Architectural principles verified
+- Prioritized recommendations
+
+**Environment variable:**
+```bash
+# Custom report directory
+export REPORT_DIR="reports/my-custom-timestamp"
+node ./.claude/skills/arch-audit/scripts/generate_report.mjs
+```
+
+**Usage patterns:**
+
+```bash
+# Option 1: Console output only (default)
+node ./.claude/skills/arch-audit/scripts/run_all_checks.mjs
+
+# Option 2: Console output + Save report
+node ./.claude/skills/arch-audit/scripts/generate_report.mjs
+
+# Option 3: Specific check only
+node ./.claude/skills/arch-audit/scripts/check_core_to_domain.mjs
+```
+
+**Report structure:**
+```
+reports/
+└── 2025-11-01_14-30/               # Includes hours and minutes for multiple runs per day
+    ├── arch-audit-report.md        # This skill's report
+    ├── code-audit-report.md        # Code quality audit (separate)
+    └── ...                         # Other reports
+```
+
 # Output Format
 
 Each check produces:
@@ -316,11 +369,13 @@ Summary: 3 violation(s)
 
 - **Bash**: Run Node.js check scripts
 - **Read**: Read source files (if manual inspection needed)
+- **Write**: `reports/{timestamp}/arch-audit-report.md` (only when generating reports)
 
 # Safety
 
-- Read-only operations
-- No file modifications
+- Read-only operations (unless generating reports)
+- No source file modifications
 - No external network calls
 - Comprehensive dependency analysis
 - Each check is isolated and focused
+- Reports are saved to isolated `reports/` directory

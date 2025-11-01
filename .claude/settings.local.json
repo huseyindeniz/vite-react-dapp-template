@@ -30,7 +30,10 @@
       "Bash(cp:*)",
       "Skill(code-audit)",
       "Skill(arch-audit)",
-      "Bash(node:*)"
+      "Bash(node:*)",
+      "Skill(deps-audit)",
+      "Skill(security-audit)",
+      "Skill(test-audit)"
     ],
     "deny": [],
     "ask": []

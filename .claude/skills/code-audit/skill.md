@@ -571,6 +571,82 @@ node ./.claude/skills/code-audit/scripts/check_god_files.mjs
 - Excludes test files, type definitions (*.d.ts), and Storybook files
 - Reports violations with suggested file splits
 
+### 9. TODO/FIXME/HACK Comments Check
+```bash
+node ./.claude/skills/code-audit/scripts/check_todos.mjs
+```
+- Scans all source files for technical debt markers
+- Detects: TODO, FIXME, HACK, XXX, BUG comments
+- Categorizes by severity: FIXME (critical), HACK (warning), TODO (info)
+- Reports violations with line numbers and context
+- Helps track incomplete features and technical debt
+
+### 10. Console & Debug Logs Check
+```bash
+node ./.claude/skills/code-audit/scripts/check_logs.mjs
+```
+- Scans production code for logging statements
+- Detects: `console.log()`, `log.debug()`
+- Excludes test files and story files
+- Warns about performance overhead and information leakage
+- Reports violations by file with occurrence counts
+
+### 11. Redux Saga Patterns Check
+```bash
+node ./.claude/skills/code-audit/scripts/check_saga_patterns.mjs
+```
+- Scans saga files for inefficient patterns
+- Detects: Multiple `yield all` statements in same function
+- Recommends combining into single `yield all` for true parallelism
+- Reports violations with line numbers and recommendations
+- Improves saga performance and structure
+
+# Generating Reports (Optional)
+
+To save a comprehensive markdown report of all checks:
+
+```bash
+node ./.claude/skills/code-audit/scripts/generate_report.mjs
+```
+
+**Output:** `reports/{YYYY-MM-DD_HH-MM}/code-audit-report.md`
+
+**Report includes:**
+- Executive summary with pass/fail counts
+- Results table for all checks
+- Detailed violations for failed checks (collapsible)
+- Summary of passed checks
+- Prioritized recommendations
+
+**Environment variable:**
+```bash
+# Custom report directory
+export REPORT_DIR="reports/my-custom-timestamp"
+node ./.claude/skills/code-audit/scripts/generate_report.mjs
+```
+
+**Usage patterns:**
+
+```bash
+# Option 1: Console output only (default)
+node ./.claude/skills/code-audit/scripts/run_all_checks.mjs
+
+# Option 2: Console output + Save report
+node ./.claude/skills/code-audit/scripts/generate_report.mjs
+
+# Option 3: Specific check only
+node ./.claude/skills/code-audit/scripts/check_imports.mjs
+```
+
+**Report structure:**
+```
+reports/
+└── 2025-11-01_14-30/               # Includes hours and minutes for multiple runs per day
+    ├── code-audit-report.md        # This skill's report
+    ├── arch-audit-report.md        # Architecture audit (separate)
+    └── ...                         # Other reports
+```
+
 # Output Format
 
 ```
@@ -598,11 +674,12 @@ Summary: X violations found
 
 - **Bash**: run Node.js scripts
 - **Read**: inspect source files
-- No write operations - read-only analysis
+- **Write**: `reports/{timestamp}/code-audit-report.md` (only when generating reports)
 
 # Safety
 
-- Read-only operation
-- No file modifications
+- Read-only operation (unless generating reports)
+- No source file modifications
 - No external network calls
 - Comprehensive scan of all imports
+- Reports are saved to isolated `reports/` directory

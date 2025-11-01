@@ -40,6 +40,16 @@ function extractSummary(output, checkName) {
   if (summaryMatch) {
     return `${summaryMatch[1]} violation(s)`;
   }
+
+  // Check for circular dependencies
+  if (checkName.includes('Circular')) {
+    const circularMatch = output.match(/Found (\d+) potential circular/);
+    if (circularMatch) {
+      return `${circularMatch[1]} circular dependenc${circularMatch[1] === '1' ? 'y' : 'ies'}`;
+    }
+    return 'No circular dependencies';
+  }
+
   return 'Unknown';
 }
 
@@ -77,6 +87,10 @@ async function runAllChecks() {
     {
       name: 'Sagas Import Check',
       script: path.join(__dirname, 'check_sagas_imports.mjs'),
+    },
+    {
+      name: 'Circular Dependency Check',
+      script: path.join(__dirname, 'check_circular_deps.mjs'),
     },
   ];
 

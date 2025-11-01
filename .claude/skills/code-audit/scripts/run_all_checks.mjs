@@ -108,6 +108,24 @@ function extractSummary(output, checkName) {
     return `${files} file(s), ${entities} entities to split`;
   }
 
+  if (checkName.includes('TODO')) {
+    const totalMatch = output.match(/Found (\d+) technical debt marker/);
+    if (totalMatch) return `${totalMatch[1]} marker(s)`;
+    return 'No markers';
+  }
+
+  if (checkName.includes('Log')) {
+    const totalMatch = output.match(/Found (\d+) logging statement/);
+    if (totalMatch) return `${totalMatch[1]} statement(s)`;
+    return 'No logs';
+  }
+
+  if (checkName.includes('Saga')) {
+    const filesMatch = output.match(/Found (\d+) file.*inefficient/);
+    if (filesMatch) return `${filesMatch[1]} file(s) with patterns`;
+    return 'No pattern issues';
+  }
+
   return 'Check output';
 }
 
@@ -152,6 +170,18 @@ async function runAllChecks() {
     {
       name: 'God File Check (1 Entity Per File)',
       script: path.join(__dirname, 'check_god_files.mjs'),
+    },
+    {
+      name: 'TODO/FIXME/HACK Comments Check',
+      script: path.join(__dirname, 'check_todos.mjs'),
+    },
+    {
+      name: 'Console & Debug Logs Check',
+      script: path.join(__dirname, 'check_logs.mjs'),
+    },
+    {
+      name: 'Redux Saga Patterns Check',
+      script: path.join(__dirname, 'check_saga_patterns.mjs'),
     },
   ];
 
