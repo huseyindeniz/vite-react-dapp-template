@@ -3,8 +3,8 @@ import React, { JSX, useEffect } from 'react';
 import { RouteObject, useRoutes as useReactRouterRoutes } from 'react-router-dom';
 
 import { features } from '@/features/app/config/features';
-import { withAuthProtection } from '@/features/auth/hocs/withAuthProtection';
 import { i18nConfig } from '@/features/i18n/config';
+import { withOAuthProtection } from '@/features/oauth/hocs/withOAuthProtection';
 import { useSliceManagerInit } from '@/features/slice-manager/hooks/useSliceManagerInit';
 import { withWalletProtection } from '@/features/wallet/hocs/withWalletProtection';
 import { usePostLoginRedirect } from '@/features/wallet/hooks/usePostLoginRedirect';
@@ -69,9 +69,9 @@ const Routes: React.FC = () => {
       case ProtectionType.WALLET:
         return withWalletProtection(element);
       case ProtectionType.AUTH:
-        return withAuthProtection(element);
+        return withOAuthProtection(element);
       case ProtectionType.BOTH:
-        return withAuthProtection(withWalletProtection(element));
+        return withOAuthProtection(withWalletProtection(element));
       case ProtectionType.NONE:
       default:
         return element;

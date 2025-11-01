@@ -1,10 +1,10 @@
 import log from 'loglevel';
 
-import { AuthProviderCredentials, IAuthProvider } from '@/features/auth/types/IAuthProvider';
+import { OAuthProviderCredentials, IOAuthProvider } from '@/features/oauth/types/IOAuthProvider';
 
 import { getGitHubClientId, getGitHubRedirectUri, getGitHubScope } from './utils/env';
 
-export class GitHubAuthProvider implements IAuthProvider {
+export class GitHubAuthProvider implements IOAuthProvider {
   name = 'github' as const;
   label = 'GitHub';
   icon = 'https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png';
@@ -12,7 +12,7 @@ export class GitHubAuthProvider implements IAuthProvider {
 
   private isInitialized = false;
   private loginWindow: Window | null = null;
-  private loginResolve: ((value: AuthProviderCredentials) => void) | null = null;
+  private loginResolve: ((value: OAuthProviderCredentials) => void) | null = null;
   private loginReject: ((reason?: Error) => void) | null = null;
   private loginTimeout: NodeJS.Timeout | null = null;
   private messageListener: ((event: MessageEvent) => void) | null = null;
@@ -35,7 +35,7 @@ export class GitHubAuthProvider implements IAuthProvider {
     }
   }
 
-  login(): Promise<AuthProviderCredentials> {
+  login(): Promise<OAuthProviderCredentials> {
     log.debug('GitHubAuthProvider login called');
     if (!this.isInitialized) {
       throw new Error('GitHub Auth provider not ready');

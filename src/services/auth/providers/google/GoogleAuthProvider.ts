@@ -1,9 +1,9 @@
 import log from 'loglevel';
 
 import {
-  AuthProviderCredentials,
-  IAuthProvider,
-} from '@/features/auth/types/IAuthProvider';
+  OAuthProviderCredentials,
+  IOAuthProvider,
+} from '@/features/oauth/types/IOAuthProvider';
 
 // Types not needed for redirect mode - removed unused imports
 import {
@@ -12,7 +12,7 @@ import {
   getGoogleScope,
 } from './utils/env';
 
-export class GoogleAuthProvider implements IAuthProvider {
+export class GoogleAuthProvider implements IOAuthProvider {
   name = 'google' as const;
   label = 'Google';
   icon = 'https://developers.google.com/identity/images/g-logo.png';
@@ -20,7 +20,7 @@ export class GoogleAuthProvider implements IAuthProvider {
 
   private isInitialized = false;
   private loginWindow: Window | null = null;
-  private loginResolve: ((value: AuthProviderCredentials) => void) | null =
+  private loginResolve: ((value: OAuthProviderCredentials) => void) | null =
     null;
   private loginReject: ((reason?: Error) => void) | null = null;
   private loginTimeout: NodeJS.Timeout | null = null;
@@ -84,7 +84,7 @@ export class GoogleAuthProvider implements IAuthProvider {
     // Don't initialize OAuth2 client for redirect mode - we'll redirect directly
   }
 
-  login(): Promise<AuthProviderCredentials> {
+  login(): Promise<OAuthProviderCredentials> {
     log.debug('GoogleAuthProvider login called');
     if (!this.isInitialized) {
       throw new Error('Google Auth provider not ready');

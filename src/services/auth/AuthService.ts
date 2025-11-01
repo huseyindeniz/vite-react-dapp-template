@@ -1,13 +1,13 @@
 import log from 'loglevel';
 
-import { getAuthProviderByName } from '@/features/auth/config';
-import { AuthUser } from '@/features/auth/models/session/types/AuthUser';
+import { getOAuthProviderByName } from '@/features/oauth/config';
+import { OAuthUser } from '@/features/oauth/models/session/types/OAuthUser';
 import {
-  AuthProviderCredentials,
-  AuthProviderName,
-  IAuthProvider,
-} from '@/features/auth/types/IAuthProvider';
-import { IAuthService } from '@/features/auth/types/IAuthService';
+  OAuthProviderCredentials,
+  OAuthProviderName,
+  IOAuthProvider,
+} from '@/features/oauth/types/IOAuthProvider';
+import { IOAuthService } from '@/features/oauth/types/IOAuthService';
 
 import { AuthApi } from './AuthApi';
 import { AuthProviderService } from './providers/AuthProviderService';
@@ -15,9 +15,9 @@ import { AuthProviderService } from './providers/AuthProviderService';
 /**
  * Unified auth service that combines API calls and provider management
  * Provides high-level auth operations for the application
- * Implements IAuthService interface from features layer
+ * Implements IOAuthService interface from features layer
  */
-export class AuthService implements IAuthService {
+export class AuthService implements IOAuthService {
   private static instance: AuthService;
   private authApi: AuthApi;
   private providerService: AuthProviderService;
@@ -35,19 +35,19 @@ export class AuthService implements IAuthService {
   }
 
   // Provider management methods
-  registerProvider(provider: IAuthProvider): void {
+  registerProvider(provider: IOAuthProvider): void {
     this.providerService.registerProvider(provider);
   }
 
-  getProvider(name: AuthProviderName): IAuthProvider {
+  getProvider(name: OAuthProviderName): IOAuthProvider {
     return this.providerService.getProvider(name);
   }
 
-  getSupportedProviders(): IAuthProvider[] {
+  getSupportedProviders(): IOAuthProvider[] {
     return this.providerService.getSupportedProviders();
   }
 
-  hasProvider(name: AuthProviderName): boolean {
+  hasProvider(name: OAuthProviderName): boolean {
     return this.providerService.hasProvider(name);
   }
 
@@ -55,15 +55,15 @@ export class AuthService implements IAuthService {
     return this.providerService.initializeAll();
   }
 
-  async initializeProvider(name: AuthProviderName): Promise<void> {
+  async initializeProvider(name: OAuthProviderName): Promise<void> {
     return this.providerService.initializeProvider(name);
   }
 
-  isProviderAvailable(name: AuthProviderName): boolean {
+  isProviderAvailable(name: OAuthProviderName): boolean {
     return this.providerService.isProviderAvailable(name);
   }
 
-  getAvailableProviders(): IAuthProvider[] {
+  getAvailableProviders(): IOAuthProvider[] {
     return this.providerService.getAvailableProviders();
   }
 
@@ -73,8 +73,8 @@ export class AuthService implements IAuthService {
    * Get credentials from provider (for immediate UI feedback)
    */
   async getProviderCredentials(
-    providerName: AuthProviderName
-  ): Promise<AuthProviderCredentials> {
+    providerName: OAuthProviderName
+  ): Promise<OAuthProviderCredentials> {
     log.debug(`Getting credentials from provider: ${providerName}`);
 
     // Get provider
@@ -90,7 +90,7 @@ export class AuthService implements IAuthService {
     }
 
     // Get credentials from provider (includes immediate user data)
-    const credentials: AuthProviderCredentials = await provider.login();
+    const credentials: OAuthProviderCredentials = await provider.login();
 
     log.debug(`Got credentials from provider: ${providerName}`);
     return credentials;
@@ -100,13 +100,13 @@ export class AuthService implements IAuthService {
    * Exchange authorization code with backend for validated user data
    */
   async exchangeTokenWithBackend(
-    providerName: AuthProviderName,
-    credentials: AuthProviderCredentials
-  ): Promise<{ user: AuthUser }> {
+    providerName: OAuthProviderName,
+    credentials: OAuthProviderCredentials
+  ): Promise<{ user: OAuthUser }> {
     log.debug(`Exchanging token with backend for provider: ${providerName}`);
 
     // Exchange with backend - get token type from provider config
-    const providerConfig = getAuthProviderByName(providerName);
+    const providerConfig = getOAuthProviderByName(providerName);
     const tokenType = providerConfig.tokenType;
 
     const authResult = await this.authApi.exchangeToken({
@@ -130,8 +130,8 @@ export class AuthService implements IAuthService {
    * @deprecated Use getProviderCredentials + exchangeTokenWithBackend for better UX
    */
   async loginWithProvider(
-    providerName: AuthProviderName
-  ): Promise<{ user: AuthUser }> {
+    providerName: OAuthProviderName
+  ): Promise<{ user: OAuthUser }> {
     const credentials = await this.getProviderCredentials(providerName);
     return await this.exchangeTokenWithBackend(providerName, credentials);
   }
@@ -140,7 +140,7 @@ export class AuthService implements IAuthService {
    * Complete logout flow
    * Handles provider logout + backend logout via httpOnly cookies
    */
-  async logout(providerName?: AuthProviderName): Promise<void> {
+  async logout(providerName?: OAuthProviderName): Promise<void> {
     log.debug('Starting logout flow');
 
     // Logout from backend - backend will clear httpOnly cookies

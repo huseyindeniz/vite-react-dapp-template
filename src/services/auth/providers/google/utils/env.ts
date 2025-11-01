@@ -9,7 +9,7 @@ export const getGoogleClientId = (): string => {
 };
 
 export const getGoogleRedirectUri = (): string => {
-  return import.meta.env.VITE_GOOGLE_REDIRECT_URI || `${window.location.origin}/auth/callback/google`;
+  return import.meta.env.VITE_GOOGLE_REDIRECT_URI || `${window.location.origin}/oauth/callback/google`;
 };
 
 export const getGoogleScope = (): string => {

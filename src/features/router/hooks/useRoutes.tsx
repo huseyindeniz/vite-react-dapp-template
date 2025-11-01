@@ -3,7 +3,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { getUserPageRoutes } from '@/features/app/config/routes';
-import { getAuthRoutes } from '@/features/auth/routes';
+import { getOAuthRoutes } from '@/features/oauth/routes';
 
 import { AppRoutes } from '../types/AppRoutes';
 import { PageType } from '../types/PageType';
@@ -54,11 +54,11 @@ export const useRoutes = (): AppRoutes => {
 
   // Get user page routes with translation function
   const userPageRoutes = getUserPageRoutes(t);
-  const authRoutes = getAuthRoutes();
+  const oauthRoutes = getOAuthRoutes();
   return {
     homeRoute,
     userRoute,
     pageRoutes: userPageRoutes,
-    authRoutes,
+    authRoutes: oauthRoutes,
   };
 };

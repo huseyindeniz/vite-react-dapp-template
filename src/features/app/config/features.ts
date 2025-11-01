@@ -1,8 +1,8 @@
-import { authSaga } from '@/features/auth/sagas';
-import { authReducer } from '@/features/auth/slice';
 import { configureBlogFeature } from '@/features/blog-demo/configureBlogFeature';
 import { watchBlogDemoSaga } from '@/features/blog-demo/sagas';
 import { blogDemoReducer } from '@/features/blog-demo/slice';
+import { oauthSaga } from '@/features/oauth/sagas';
+import { oauthReducer } from '@/features/oauth/slice';
 import { watchWalletSaga } from '@/features/wallet/sagas';
 import { walletReducer } from '@/features/wallet/slice';
 
@@ -48,14 +48,14 @@ export const features = {
     },
     configureSliceManager: configureBlogFeature,
   },
-  auth: {
+  oauth: {
     enabled: true,
     store: {
-      stateKey: 'auth',
-      reducer: authReducer,
+      stateKey: 'oauth',
+      reducer: oauthReducer,
     },
     saga: {
-      saga: authSaga,
+      saga: oauthSaga,
       dependencies: [authService],
     },
   },

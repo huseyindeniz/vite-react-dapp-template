@@ -1,15 +1,15 @@
 import log from 'loglevel';
 
-import { AuthProviderName, IAuthProvider } from '@/features/auth/types/IAuthProvider';
-import { IAuthProviderService } from '@/features/auth/types/IAuthProviderService';
+import { OAuthProviderName, IOAuthProvider } from '@/features/oauth/types/IOAuthProvider';
+import { IOAuthProviderService } from '@/features/oauth/types/IOAuthProviderService';
 
 /**
  * Service for managing auth provider instances
  * Follows singleton pattern like other services in the codebase
  */
-export class AuthProviderService implements IAuthProviderService {
+export class AuthProviderService implements IOAuthProviderService {
   private static instance: AuthProviderService;
-  private providers = new Map<AuthProviderName, IAuthProvider>();
+  private providers = new Map<OAuthProviderName, IOAuthProvider>();
   private initialized = false;
 
   private constructor() {} // Private constructor to prevent instantiation
@@ -24,7 +24,7 @@ export class AuthProviderService implements IAuthProviderService {
   /**
    * Register an auth provider with the service
    */
-  registerProvider(provider: IAuthProvider): void {
+  registerProvider(provider: IOAuthProvider): void {
     log.debug(`Registering auth provider: ${provider.name}`);
     this.providers.set(provider.name, provider);
   }
@@ -32,7 +32,7 @@ export class AuthProviderService implements IAuthProviderService {
   /**
    * Get provider by name
    */
-  getProvider(name: AuthProviderName): IAuthProvider {
+  getProvider(name: OAuthProviderName): IOAuthProvider {
     const provider = this.providers.get(name);
     if (!provider) {
       const availableProviders = Array.from(this.providers.keys()).join(', ');
@@ -44,14 +44,14 @@ export class AuthProviderService implements IAuthProviderService {
   /**
    * Get all registered providers
    */
-  getSupportedProviders(): IAuthProvider[] {
+  getSupportedProviders(): IOAuthProvider[] {
     return Array.from(this.providers.values());
   }
 
   /**
    * Check if a provider is registered
    */
-  hasProvider(name: AuthProviderName): boolean {
+  hasProvider(name: OAuthProviderName): boolean {
     return this.providers.has(name);
   }
 
@@ -83,7 +83,7 @@ export class AuthProviderService implements IAuthProviderService {
   /**
    * Initialize a specific provider
    */
-  async initializeProvider(name: AuthProviderName): Promise<void> {
+  async initializeProvider(name: OAuthProviderName): Promise<void> {
     const provider = this.getProvider(name);
     try {
       await provider.initialize();
@@ -97,7 +97,7 @@ export class AuthProviderService implements IAuthProviderService {
   /**
    * Check if a provider is available
    */
-  isProviderAvailable(name: AuthProviderName): boolean {
+  isProviderAvailable(name: OAuthProviderName): boolean {
     try {
       const provider = this.getProvider(name);
       return provider.isAvailable();
@@ -109,14 +109,14 @@ export class AuthProviderService implements IAuthProviderService {
   /**
    * Get all available (ready to use) providers
    */
-  getAvailableProviders(): IAuthProvider[] {
+  getAvailableProviders(): IOAuthProvider[] {
     return this.getSupportedProviders().filter(provider => provider.isAvailable());
   }
 
   /**
    * Logout from a specific provider
    */
-  async logoutProvider(name: AuthProviderName): Promise<void> {
+  async logoutProvider(name: OAuthProviderName): Promise<void> {
     const provider = this.getProvider(name);
     try {
       await provider.logout();

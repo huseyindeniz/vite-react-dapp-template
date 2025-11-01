@@ -18,9 +18,9 @@ import { HelmetProvider } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
 import { Outlet } from 'react-router-dom';
 
-import { Auth } from '@/features/auth/components/Auth';
 import { LangMenu } from '@/features/i18n/components/LangMenu/LangMenu';
 import { useI18nWatcher } from '@/features/i18n/useI18nWatchers';
+import { OAuth } from '@/features/oauth/components/OAuth';
 import { useActiveRoute } from '@/features/router/hooks/useActiveRoute';
 import { useBreadcrumb } from '@/features/router/hooks/useBreadcrumb';
 import { usePageLink } from '@/features/router/hooks/usePageLink';
@@ -85,7 +85,7 @@ export const LayoutBase: React.FC = () => {
             <Group visibleFrom="sm">
               <LangMenu />
               <ColorSchemeSwitch />
-              <Auth size="sm" />
+              <OAuth size="sm" />
               <Wallet />
             </Group>
           </Layout.Header>
@@ -102,7 +102,7 @@ export const LayoutBase: React.FC = () => {
             <Stack align="center" gap="sm">
               <LangMenu />
               <ColorSchemeSwitch />
-              <Auth size="sm" fullWidth />
+              <OAuth size="sm" fullWidth />
               <Wallet />
             </Stack>
           </Layout.Navbar>

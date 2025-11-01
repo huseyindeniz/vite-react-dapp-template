@@ -9,7 +9,7 @@ export const getGitHubClientId = (): string => {
 };
 
 export const getGitHubRedirectUri = (): string => {
-  return import.meta.env.VITE_GITHUB_REDIRECT_URI || `${window.location.origin}/auth/callback/github`;
+  return import.meta.env.VITE_GITHUB_REDIRECT_URI || `${window.location.origin}/oauth/callback/github`;
 };
 
 export const getGitHubScope = (): string => {

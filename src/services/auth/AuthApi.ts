@@ -1,8 +1,8 @@
 import log from 'loglevel';
 
-import { IAuthApi } from '@/features/auth/IAuthApi';
-import { AuthTokenExchangeRequest } from '@/features/auth/models/session/types/AuthTokenExchangeRequest';
-import { AuthUser } from '@/features/auth/models/session/types/AuthUser';
+import { IOAuthApi } from '@/features/oauth/IOAuthApi';
+import { OAuthTokenExchangeRequest } from '@/features/oauth/models/session/types/OAuthTokenExchangeRequest';
+import { OAuthUser } from '@/features/oauth/models/session/types/OAuthUser';
 
 // const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
 
@@ -10,7 +10,7 @@ import { AuthUser } from '@/features/auth/models/session/types/AuthUser';
  * Auth API service - shows required backend endpoints
  * Currently returns mock data for development
  */
-export class AuthApi implements IAuthApi {
+export class AuthApi implements IOAuthApi {
   private static instance: AuthApi;
   private readonly baseDelay = 500; // Simulate network delay
 
@@ -27,12 +27,12 @@ export class AuthApi implements IAuthApi {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  async exchangeToken(request: AuthTokenExchangeRequest): Promise<{
-    user: AuthUser;
+  async exchangeToken(request: OAuthTokenExchangeRequest): Promise<{
+    user: OAuthUser;
   }> {
     // BACKEND ENDPOINT NEEDED: POST /api/auth/token/exchange
     // Body: { provider: string, token: string, tokenType: string, email?: string, name?: string, given_name?: string, picture?: string, sub?: string }
-    // Response: { accessToken: string, refreshToken: string, expiresAt: number, user: AuthUser }
+    // Response: { accessToken: string, refreshToken: string, expiresAt: number, user: OAuthUser }
     //
     // OAuth2 Flow Handling (All providers now use authorization_code):
     // - For all providers (Google, GitHub, LinkedIn, Apple):
@@ -127,7 +127,7 @@ export class AuthApi implements IAuthApi {
         .replace(/[^a-zA-Z0-9]/g, '')
         .slice(0, 8)}`;
 
-    const user: AuthUser = {
+    const user: OAuthUser = {
       id: userId,
       email,
       name,
