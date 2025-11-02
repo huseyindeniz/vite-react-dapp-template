@@ -10,7 +10,7 @@ export interface NetworkSwitchFailedProps {
 export const NetworkSwitchFailed: React.FC<NetworkSwitchFailedProps> = ({
   errorMessage,
 }) => {
-  const { t } = useTranslation('FeatureWallet');
+  const { t } = useTranslation('feature-wallet');
   return (
     <Alert icon={<IoIosWarning />} title={t('Unexpected Error')} color="red">
       <Text size="sm">

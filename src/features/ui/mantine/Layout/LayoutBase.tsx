@@ -54,7 +54,7 @@ export const LayoutBase: React.FC<LayoutBaseProps> = ({
   navbarExtension: NavbarExtension,
 }) => {
   useI18nWatcher();
-  const { t } = useTranslation('Layout');
+  const { t } = useTranslation('app');
   const [opened, { toggle, close }] = useDisclosure();
   const { pageLink } = usePageLink();
   const { mainMenuItems, secondaryMenuItems, pageRoutes } = usePages();

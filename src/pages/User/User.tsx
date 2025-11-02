@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { Header } from './components/Header';
 
 export const UserPage: React.FC = () => {
-  const { t } = useTranslation('PageUser');
+  const { t } = useTranslation('page-user');
   return (
     <Container>
       <Header />

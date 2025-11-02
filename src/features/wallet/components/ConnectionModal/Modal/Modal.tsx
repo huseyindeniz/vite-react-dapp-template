@@ -30,7 +30,7 @@ export const Modal: React.FC<ModalProps> = ({
   checkSignContent,
   onDisconnect,
 }) => {
-  const { t } = useTranslation('FeatureWallet');
+  const { t } = useTranslation('feature-wallet');
   const connectionSteps = (
     <Stepper active={activeStep} orientation="vertical">
       <Stepper.Step

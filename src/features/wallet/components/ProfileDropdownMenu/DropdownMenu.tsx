@@ -41,7 +41,7 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
   onCopyAddressClicked,
   onDisconnectClicked,
 }) => {
-  const { t } = useTranslation('FeatureWallet');
+  const { t } = useTranslation('feature-wallet');
 
   return (
     <Menu position="bottom-end">

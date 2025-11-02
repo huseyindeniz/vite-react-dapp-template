@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { FiExternalLink } from 'react-icons/fi';
 
 export const WhySignNeeded: React.FC = () => {
-  const { t } = useTranslation('FeatureWallet');
+  const { t } = useTranslation('feature-wallet');
   const [opened, { open, close }] = useDisclosure();
 
   return (

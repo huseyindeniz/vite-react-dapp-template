@@ -21,7 +21,7 @@ export const NetworkSwitchRejected: React.FC<NetworkSwitchRejectedProps> = ({
   supportedNetworks,
   onSwitchNetwork,
 }) => {
-  const { t } = useTranslation('FeatureWallet');
+  const { t } = useTranslation('feature-wallet');
   return (
     <Alert icon={<IoIosWarning />} title={t('Switch Rejected')} color="yellow">
       <Stack>

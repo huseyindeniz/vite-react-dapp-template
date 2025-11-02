@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { PageMeta } from '@/features/ui/mantine/components/PageMeta/PageMeta';
 
 export const CombinedAuth: React.FC = () => {
-  const { t } = useTranslation('PageCombinedAuth');
+  const { t } = useTranslation('page-authdemo-combinedauth');
 
   return (
     <>

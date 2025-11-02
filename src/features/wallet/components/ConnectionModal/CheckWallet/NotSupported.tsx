@@ -22,7 +22,7 @@ interface NotSupportedProps {
   onCancel: () => void;
 }
 export const NotSupported: React.FC<NotSupportedProps> = ({ onCancel }) => {
-  const { t } = useTranslation('FeatureWallet');
+  const { t } = useTranslation('feature-wallet');
   return (
     <Container>
       <Alert

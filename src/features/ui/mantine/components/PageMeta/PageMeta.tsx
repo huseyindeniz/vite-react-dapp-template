@@ -15,7 +15,7 @@ export const PageMeta: React.FC<PageMetaProps> = ({
   description,
   image,
 }) => {
-  const { t } = useTranslation('Layout');
+  const { t } = useTranslation('app');
   const PUBLIC_URL = window.location.host;
   const siteName = t('SITE_NAME');
   const siteDescription = t('SITE_DESCRIPTION');

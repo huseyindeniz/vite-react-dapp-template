@@ -1,63 +1,116 @@
 const fs = require('fs');
 const path = require('path');
 
-const translationsDir = './src/features/i18n/translations'; // Path to your translations directory
-const languages = ['en-US', 'tr-TR']; // Add all supported languages
+/**
+ * Validate translation completeness
+ *
+ * Structure: i18n/translations/{namespace}/{locale}.json
+ */
 
-function loadNamespace(language, namespace) {
-    const filePath = path.join(translationsDir, language, `${namespace}.json`);
-    if (!fs.existsSync(filePath)) {
-        throw new Error(`Missing file: ${filePath}`);
-    }
-    return JSON.parse(fs.readFileSync(filePath, 'utf8'));
+const translationsDir = './src/features/i18n/translations';
+const languages = ['en-US', 'tr-TR'];
+
+/**
+ * Get all namespaces (directories in translations/)
+ */
+function getNamespaces() {
+  if (!fs.existsSync(translationsDir)) {
+    throw new Error(`Missing translations directory: ${translationsDir}`);
+  }
+
+  return fs.readdirSync(translationsDir, { withFileTypes: true })
+    .filter(dirent => dirent.isDirectory())
+    .map(dirent => dirent.name)
+    .sort();
 }
 
-function getNamespaces(language) {
-    const dirPath = path.join(translationsDir, language);
-    if (!fs.existsSync(dirPath)) {
-        throw new Error(`Missing language folder: ${dirPath}`);
-    }
-    return fs.readdirSync(dirPath).map((file) => path.basename(file, '.json'));
+/**
+ * Load a translation file
+ */
+function loadNamespace(namespace, language) {
+  const filePath = path.join(translationsDir, namespace, `${language}.json`);
+
+  if (!fs.existsSync(filePath)) {
+    throw new Error(`Missing file: ${filePath}`);
+  }
+
+  return JSON.parse(fs.readFileSync(filePath, 'utf8'));
 }
 
+/**
+ * Validate translations
+ */
 function validateTranslations() {
-    const baseLanguage = languages[0]; // Use the first language as the reference
-    const baseNamespaces = getNamespaces(baseLanguage);
+  console.log('=== Validating Translations ===\n');
 
-    const errors = [];
+  const namespaces = getNamespaces();
+  const errors = [];
 
+  console.log(`Found ${namespaces.length} namespace(s):\n`);
+
+  namespaces.forEach((namespace) => {
+    console.log(`  Checking: ${namespace}`);
+
+    // Check if all locales exist
     languages.forEach((language) => {
-        const languageNamespaces = getNamespaces(language);
+      const filePath = path.join(translationsDir, namespace, `${language}.json`);
 
-        // Check if all namespaces exist in this language
-        baseNamespaces.forEach((namespace) => {
-            if (!languageNamespaces.includes(namespace)) {
-                errors.push(`Missing namespace "${namespace}" in language "${language}"`);
-                return; // Skip further checks for this namespace
-            }
-
-            // Load and compare translations for the namespace
-            const baseTranslations = loadNamespace(baseLanguage, namespace);
-            const translations = loadNamespace(language, namespace);
-
-            Object.keys(baseTranslations).forEach((key) => {
-                if (!translations.hasOwnProperty(key)) {
-                    errors.push(`Missing key "${key.substring(0, 20)}..." in namespace "${namespace}" for language "${language}"`);
-                } else if (translations[key] === '') {
-                    errors.push(`Empty value for key "${key.substring(0, 20)}..." in namespace "${namespace}" for language "${language}"`);
-                }
-            });
-        });
+      if (!fs.existsSync(filePath)) {
+        errors.push(`Missing locale "${language}" for namespace "${namespace}"`);
+        return;
+      }
     });
 
-    if (errors.length > 0) {
-        console.error('Translation validation errors found:');
-        console.error('Number of errors:', errors.length);
-        errors.forEach((error) => console.error(error));
-        process.exit(1); // Exit with error code
-    } else {
-        console.log('All translations are valid.');
+    // If all locales exist, validate keys
+    if (languages.every((language) => {
+      const filePath = path.join(translationsDir, namespace, `${language}.json`);
+      return fs.existsSync(filePath);
+    })) {
+      const baseLanguage = languages[0];
+      const baseTranslations = loadNamespace(namespace, baseLanguage);
+
+      // Check ALL languages including base language
+      languages.forEach((language) => {
+        const translations = loadNamespace(namespace, language);
+
+        // Check for missing keys
+        Object.keys(baseTranslations).forEach((key) => {
+          if (!translations.hasOwnProperty(key)) {
+            errors.push(
+              `Missing key "${key.substring(0, 30)}..." in namespace "${namespace}" for locale "${language}"`
+            );
+          } else if (translations[key] === '') {
+            errors.push(
+              `Empty value for key "${key.substring(0, 30)}..." in namespace "${namespace}" for locale "${language}"`
+            );
+          }
+        });
+
+        // Check for extra keys (only for non-base languages)
+        if (language !== baseLanguage) {
+          Object.keys(translations).forEach((key) => {
+            if (!baseTranslations.hasOwnProperty(key)) {
+              errors.push(
+                `Extra key "${key.substring(0, 30)}..." in namespace "${namespace}" for locale "${language}" (not in base locale)`
+              );
+            }
+          });
+        }
+      });
     }
+  });
+
+  // Report results
+  console.log('\n=== Validation Results ===\n');
+
+  if (errors.length > 0) {
+    console.error(`❌ Found ${errors.length} error(s):\n`);
+    errors.forEach((error) => console.error(`  - ${error}`));
+    process.exit(1);
+  } else {
+    console.log('✅ All translations are valid and complete!\n');
+  }
 }
 
+// Run validation
 validateTranslations();

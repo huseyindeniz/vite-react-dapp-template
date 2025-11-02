@@ -9,7 +9,7 @@ import { MenuType } from '../types/MenuType';
 import { useRoutes } from './useRoutes';
 
 export const usePages = () => {
-  const { i18n } = useTranslation('Menu');
+  const { i18n } = useTranslation('menu');
 
   const { homeRoute, userRoute, pageRoutes } = useRoutes();
 
@@ -59,5 +59,12 @@ export const usePages = () => {
       mainMenuItems,
       secondaryMenuItems,
     };
-  }, [i18n.resolvedLanguage, homeRoute, userRoute, pageRoutes, mainMenuItems, secondaryMenuItems]);
+  }, [
+    i18n.resolvedLanguage,
+    homeRoute,
+    userRoute,
+    pageRoutes,
+    mainMenuItems,
+    secondaryMenuItems,
+  ]);
 };

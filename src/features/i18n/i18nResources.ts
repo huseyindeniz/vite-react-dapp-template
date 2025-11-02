@@ -1,79 +1,60 @@
-import Components_EN_US from './translations/en-US/Components.json';
-import FeatureBlogDemo_EN_US from './translations/en-US/FeatureBlogDemo.json';
-import FeatureChat_EN_US from './translations/en-US/FeatureChat.json';
-import FeatureOAuth_EN_US from './translations/en-US/FeatureOAuth.json';
-import FeatureWallet_EN_US from './translations/en-US/FeatureWallet.json';
-import Layout_EN_US from './translations/en-US/Layout.json';
-import Menu_EN_US from './translations/en-US/Menu.json';
-import PageAiChat_EN_US from './translations/en-US/PageAiChat.json';
-import PageAuthDemo_EN_US from './translations/en-US/PageAuthDemo.json';
-import PageBlog_EN_US from './translations/en-US/PageBlog.json';
-import PageCombinedAuth_EN_US from './translations/en-US/PageCombinedAuth.json';
-import PageHome_EN_US from './translations/en-US/PageHome.json';
-import PageNotFound_EN_US from './translations/en-US/PageNotFound.json';
-import PageOAuthDemo_EN_US from './translations/en-US/PageOAuthDemo.json';
-import PageOAuthProtected_EN_US from './translations/en-US/PageOAuthProtected.json';
-import PageUser_EN_US from './translations/en-US/PageUser.json';
-import PageWalletBasic_EN_US from './translations/en-US/PageWalletBasic.json';
-import PageWalletProtected_EN_US from './translations/en-US/PageWalletProtected.json';
-import Components_TR_TR from './translations/tr-TR/Components.json';
-import FeatureBlogDemo_TR_TR from './translations/tr-TR/FeatureBlogDemo.json';
-import FeatureChat_TR_TR from './translations/tr-TR/FeatureChat.json';
-import FeatureOAuth_TR_TR from './translations/tr-TR/FeatureOAuth.json';
-import FeatureWallet_TR_TR from './translations/tr-TR/FeatureWallet.json';
-import Layout_TR_TR from './translations/tr-TR/Layout.json';
-import Menu_TR_TR from './translations/tr-TR/Menu.json';
-import PageAiChat_TR_TR from './translations/tr-TR/PageAiChat.json';
-import PageAuthDemo_TR_TR from './translations/tr-TR/PageAuthDemo.json';
-import PageBlog_TR_TR from './translations/tr-TR/PageBlog.json';
-import PageCombinedAuth_TR_TR from './translations/tr-TR/PageCombinedAuth.json';
-import PageHome_TR_TR from './translations/tr-TR/PageHome.json';
-import PageNotFound_TR_TR from './translations/tr-TR/PageNotFound.json';
-import PageOAuthDemo_TR_TR from './translations/tr-TR/PageOAuthDemo.json';
-import PageOAuthProtected_TR_TR from './translations/tr-TR/PageOAuthProtected.json';
-import PageUser_TR_TR from './translations/tr-TR/PageUser.json';
-import PageWalletBasic_TR_TR from './translations/tr-TR/PageWalletBasic.json';
-import PageWalletProtected_TR_TR from './translations/tr-TR/PageWalletProtected.json';
+/**
+ * Auto-discover and load translation files
+ *
+ * Structure: i18n/translations/{namespace}/{locale}.json
+ *
+ * Examples:
+ * - i18n/translations/feature-wallet/en-US.json → namespace: 'feature-wallet', locale: 'en-US'
+ * - i18n/translations/page-home/tr-TR.json → namespace: 'page-home', locale: 'tr-TR'
+ */
 
-export const resources = {
-  'en-US': {
-    Components: Components_EN_US,
-    FeatureBlogDemo: FeatureBlogDemo_EN_US,
-    FeatureChat: FeatureChat_EN_US,
-    FeatureOAuth: FeatureOAuth_EN_US,
-    FeatureWallet: FeatureWallet_EN_US,
-    Layout: Layout_EN_US,
-    Menu: Menu_EN_US,
-    PageAiChat: PageAiChat_EN_US,
-    PageAuthDemo: PageAuthDemo_EN_US,
-    PageBlog: PageBlog_EN_US,
-    PageCombinedAuth: PageCombinedAuth_EN_US,
-    PageHome: PageHome_EN_US,
-    PageNotFound: PageNotFound_EN_US,
-    PageOAuthDemo: PageOAuthDemo_EN_US,
-    PageOAuthProtected: PageOAuthProtected_EN_US,
-    PageUser: PageUser_EN_US,
-    PageWalletBasic: PageWalletBasic_EN_US,
-    PageWalletProtected: PageWalletProtected_EN_US,
+// Import all translation files
+const translationModules = import.meta.glob<Record<string, string>>(
+  './translations/*/*.json',
+  { eager: true, import: 'default' }
+);
+
+interface Resources {
+  [locale: string]: {
+    [namespace: string]: Record<string, string>;
+  };
+}
+
+/**
+ * Extract namespace and locale from file path
+ *
+ * Path format: ./translations/{namespace}/{locale}.json
+ * Example: ./translations/feature-wallet/en-US.json
+ *   → namespace: 'feature-wallet'
+ *   → locale: 'en-US'
+ */
+function parseTranslationPath(filePath: string): { namespace: string; locale: string } {
+  const normalizedPath = filePath.replace(/\\/g, '/');
+
+  // Match: ./translations/{namespace}/{locale}.json
+  const match = normalizedPath.match(/\.\/translations\/([^/]+)\/([^/]+)\.json/);
+
+  if (!match) {
+    throw new Error(`Invalid translation path: ${filePath}`);
+  }
+
+  const [, namespace, locale] = match;
+
+  return { namespace, locale };
+}
+
+// Build resources object from discovered translation files
+export const resources: Resources = Object.entries(translationModules).reduce(
+  (acc, [filePath, translations]) => {
+    const { namespace, locale } = parseTranslationPath(filePath);
+
+    if (!acc[locale]) {
+      acc[locale] = {};
+    }
+
+    acc[locale][namespace] = translations;
+
+    return acc;
   },
-  'tr-TR': {
-    Components: Components_TR_TR,
-    FeatureBlogDemo: FeatureBlogDemo_TR_TR,
-    FeatureChat: FeatureChat_TR_TR,
-    FeatureOAuth: FeatureOAuth_TR_TR,
-    FeatureWallet: FeatureWallet_TR_TR,
-    Layout: Layout_TR_TR,
-    Menu: Menu_TR_TR,
-    PageAiChat: PageAiChat_TR_TR,
-    PageAuthDemo: PageAuthDemo_TR_TR,
-    PageBlog: PageBlog_TR_TR,
-    PageCombinedAuth: PageCombinedAuth_TR_TR,
-    PageHome: PageHome_TR_TR,
-    PageNotFound: PageNotFound_TR_TR,
-    PageOAuthDemo: PageOAuthDemo_TR_TR,
-    PageOAuthProtected: PageOAuthProtected_TR_TR,
-    PageUser: PageUser_TR_TR,
-    PageWalletBasic: PageWalletBasic_TR_TR,
-    PageWalletProtected: PageWalletProtected_TR_TR,
-  },
-};
+  {} as Resources
+);

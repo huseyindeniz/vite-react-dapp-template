@@ -12,7 +12,7 @@ import { useActions } from '../../hooks/useActions';
 import { DropdownMenu } from './DropdownMenu';
 
 export const ProfileDropdownMenu: React.FC = () => {
-  const { t } = useTranslation('FeatureWallet');
+  const { t } = useTranslation('feature-wallet');
   const navigate = useNavigate();
   const { pageLink } = usePageLink();
   const actions = useActions();

@@ -22,7 +22,7 @@ export const OAuthButton: React.FC<OAuthButtonProps> = ({
   variant = 'outline',
   fullWidth = false,
 }) => {
-  const { t } = useTranslation('FeatureOAuth');
+  const { t } = useTranslation('feature-oauth');
   const auth = useOAuth();
   const { loginWith, logout } = useOAuthActions();
 

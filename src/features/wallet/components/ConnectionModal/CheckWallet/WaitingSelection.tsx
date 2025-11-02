@@ -28,7 +28,7 @@ export const WaitingSelection: React.FC<WaitingSelectionProps> = ({
   onWalletSelect,
   onCancel,
 }) => {
-  const { t } = useTranslation('FeatureWallet');
+  const { t } = useTranslation('feature-wallet');
   return (
     <Container mb={4}>
       <Alert

@@ -8,7 +8,7 @@ import { withOAuthProtection } from '@/features/oauth/hocs/withOAuthProtection';
 import { PageMeta } from '@/features/ui/mantine/components/PageMeta/PageMeta';
 
 export const OAuthDemo: React.FC = () => {
-  const { t } = useTranslation('PageOAuthDemo');
+  const { t } = useTranslation('page-authdemo-oauthdemo');
 
   return (
     <>

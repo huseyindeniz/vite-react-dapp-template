@@ -15,7 +15,7 @@ export const NotSigned: React.FC<NotSignedProps> = ({
   onSign,
   onDisconnect,
 }) => {
-  const { t } = useTranslation('FeatureWallet');
+  const { t } = useTranslation('feature-wallet');
   return (
     <Alert icon={<IoIosWarning />} title={t('Sign Required')}>
       <Stack>

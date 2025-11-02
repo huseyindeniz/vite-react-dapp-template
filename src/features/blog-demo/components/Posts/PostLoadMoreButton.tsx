@@ -10,7 +10,7 @@ export const PostLoadMoreButton: React.FC<PostLoadMoreButtonProps> = ({
   loading,
   onClick,
 }) => {
-  const { t } = useTranslation('FeatureBlogDemo');
+  const { t } = useTranslation('feature-blog-demo');
   return (
     <Button
       variant="outline"

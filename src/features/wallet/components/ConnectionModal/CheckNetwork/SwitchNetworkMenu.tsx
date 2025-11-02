@@ -19,7 +19,7 @@ export const SwitchNetworkMenu: React.FC<SwitchNetworkMenuProps> = ({
   supportedNetworks,
   onSwitchNetwork,
 }) => {
-  const { t } = useTranslation('FeatureWallet');
+  const { t } = useTranslation('feature-wallet');
   const [selectedNetwork, setSelectedNetwork] =
     React.useState<number>(defaultNetwork);
 

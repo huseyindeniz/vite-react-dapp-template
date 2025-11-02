@@ -10,7 +10,7 @@ interface AccountDetectionFailedProps {
 export const AccountDetectionFailed: React.FC<AccountDetectionFailedProps> = ({
   errorMessage,
 }) => {
-  const { t } = useTranslation('FeatureWallet');
+  const { t } = useTranslation('feature-wallet');
   return (
     <Container>
       <Alert icon={<IoIosWarning />} title={t('Unexpected Error')} color="red">

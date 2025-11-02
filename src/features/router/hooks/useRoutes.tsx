@@ -32,13 +32,13 @@ const UserPage = React.lazy(() =>
  * User routes are imported from @/pages/routes.tsx
  */
 export const useRoutes = (): AppRoutes => {
-  const { t } = useTranslation('Menu');
+  const { t } = useTranslation('menu');
 
   // System Routes - Home Page
   const homeRoute: PageType = {
     index: true,
     element: <HomePage />,
-    menuLabel: t('Home', { ns: 'Menu' }),
+    menuLabel: t('Home', { ns: 'menu' }),
     isShownInMainMenu: true,
     isShownInSecondaryMenu: true,
     protectionType: ProtectionType.NONE,
@@ -48,7 +48,7 @@ export const useRoutes = (): AppRoutes => {
   const userRoute: PageType = {
     path: 'user',
     element: <UserPage />,
-    menuLabel: t('Dashboard', { ns: 'Menu' }),
+    menuLabel: t('Dashboard', { ns: 'menu' }),
     protectionType: ProtectionType.WALLET,
   };
 

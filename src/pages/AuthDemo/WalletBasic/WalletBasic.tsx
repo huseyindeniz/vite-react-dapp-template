@@ -8,7 +8,7 @@ import { PageMeta } from '@/features/ui/mantine/components/PageMeta/PageMeta';
 import { withWalletProtection } from '@/features/wallet/hocs/withWalletProtection';
 
 export const WalletBasic: React.FC = () => {
-  const { t } = useTranslation('PageWalletBasic');
+  const { t } = useTranslation('page-authdemo-walletbasic');
 
   return (
     <>

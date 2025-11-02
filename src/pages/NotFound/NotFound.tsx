@@ -19,7 +19,7 @@ import imageBackToHomePage from './assets/images/backToTheHomepage.webp';
 import imageDelorean from './assets/images/delorean.webp';
 
 export const NotFoundPage: React.FC = () => {
-  const { t } = useTranslation('PageNotFound');
+  const { t } = useTranslation('page-notfound');
   const { pageLink } = usePageLink();
 
   return (

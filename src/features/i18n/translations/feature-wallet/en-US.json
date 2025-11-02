@@ -31,7 +31,7 @@
   "If you want to continue, please switch to any supported network.": "If you want to continue, please switch to any supported network.",
   "Sign Required": "Sign Required",
   "In order to use this app, you need to sign the login request in your wallet.": "In order to use this app, you need to sign the login request in your wallet.",
-  "SIGN_MESSAGE": "Hi there from My Awesome dApp!\nSign this message to prove you have access to this wallet and I'll log you in.\nThis won't cost you any token.\nTo stop hackers using your wallet, here's a unique message ID they can't guess:\n",
+  "SIGN_MESSAGE": "Hello from My Awesome dApp!\n\nSign this message to prove you have access to this wallet and we'll log you in.\n\nThis won't cost you any Ether.\n\nTo stop hackers using your wallet, here's a unique message ID they can't guess:\n",
   "Sign In": "Sign In",
   "Cancel": "Cancel",
   "Signed In": "Signed In",

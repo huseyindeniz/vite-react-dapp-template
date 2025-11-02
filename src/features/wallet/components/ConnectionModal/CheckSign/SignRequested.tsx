@@ -10,7 +10,7 @@ export interface SignRequestedProps {
 export const SignRequested: React.FC<SignRequestedProps> = ({
   signCounter,
 }) => {
-  const { t } = useTranslation('FeatureWallet');
+  const { t } = useTranslation('feature-wallet');
   return (
     <Container>
       <Alert

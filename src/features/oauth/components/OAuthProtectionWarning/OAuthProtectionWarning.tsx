@@ -5,7 +5,7 @@ import { FaLock } from 'react-icons/fa';
 import { OAuthButton } from '../OAuthButton/OAuthButton';
 
 export const OAuthProtectionWarning: React.FC = () => {
-  const { t } = useTranslation('FeatureOAuth');
+  const { t } = useTranslation('feature-oauth');
   return (
     <Container size="md" py="xl">
       <Center>
