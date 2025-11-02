@@ -46,7 +46,7 @@ function shouldExcludeFile(filePath) {
   // Exclude specific files that legitimately need multiple entities
   const excludedFiles = [
     'src/services/ethersV6/types/common.ts', // Ethers.js type utilities
-    'src/services/auth/providers/google/types.ts', // Google OAuth external library types
+    'src/services/oauth/providers/google/types.ts', // Google OAuth external library types
   ];
 
   if (excludedFiles.includes(normalizedPath)) {

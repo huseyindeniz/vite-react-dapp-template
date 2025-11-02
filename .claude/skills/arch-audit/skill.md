@@ -25,7 +25,7 @@ These are foundational features that provide infrastructure:
 ## Domain Features (Business Logic)
 These are business domain features (examples):
 - `wallet/` - Web3 wallet integration
-- `auth/` - Authentication
+- `oauth/` - OAuth authentication
 - `blog-demo/` - Blog demonstration
 - `chat/` - Chat feature
 
@@ -327,7 +327,7 @@ Violations
      → wallet (domain)
         File: src/features/router/Router.tsx
         File: src/features/router/hooks/usePages.tsx
-     → auth (domain)
+     → oauth (domain)
         File: src/features/router/Router.tsx
 
 Fix: Move these dependencies to src/features/app/config/

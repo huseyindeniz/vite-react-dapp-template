@@ -89,13 +89,13 @@ Perform **comprehensive static code analysis** on the codebase to ensure:
 
 ```typescript
 // ❌ WRONG - Relative import to aliased directory
-import { useAuth } from '../../features/auth/hooks/useAuth'
+import { useAuth } from '../../features/oauth/hooks/useAuth'
 import { api } from '../services/api'
 import { Home } from '../../pages/Home'
 import { useTypedSelector } from '../hooks/useTypedSelector'
 
 // ✅ CORRECT - Absolute alias
-import { useAuth } from '@/features/auth/hooks/useAuth'
+import { useAuth } from '@/features/oauth/hooks/useAuth'
 import { api } from '@/services/api'
 import { Home } from '@/pages/Home'
 import { useTypedSelector } from '@/hooks/useTypedSelector'
@@ -657,9 +657,9 @@ Path Alias Violations: X found
 
 FROM: features/wallet
   ❌ src/features/wallet/components/Wallet.tsx:5
-     import { useAuth } from '../../auth/hooks/useAuth'
+     import { useAuth } from '../../oauth/hooks/useAuth'
      → Violates: Feature → Feature (cross-feature)
-     Fix: import { useAuth } from '@/features/auth/hooks/useAuth'
+     Fix: import { useAuth } from '@/features/oauth/hooks/useAuth'
 
 FROM: pages/Home
   ❌ src/pages/Home/Home.tsx:3

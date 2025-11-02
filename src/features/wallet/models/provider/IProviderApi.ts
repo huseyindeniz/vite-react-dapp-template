@@ -1,13 +1,5 @@
-import { BrowserProvider } from 'ethers';
-
-export enum SupportedWallets {
-  METAMASK = 'metamask',
-  CORE = 'core',
-  COINBASE = 'coinbase',
-  RABBY = 'rabby',
-}
-
-export type InstalledWallets = Record<SupportedWallets, BrowserProvider>;
+import { InstalledWallets } from './types/InstalledWallets';
+import { SupportedWallets } from './types/SupportedWallets';
 
 export interface IProviderApi {
   detectWallets: () => Promise<InstalledWallets>;

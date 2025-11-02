@@ -4,7 +4,7 @@ import { MantineProvider } from '@mantine/core';
 import log from 'loglevel';
 import { Provider as ReduxProvider } from 'react-redux';
 
-import store from '@/features/app/store/store';
+import { store } from '@/features/app/store/store';
 import { Router } from '@/features/router/Router';
 import { theme } from '@/features/ui/mantine/theme';
 

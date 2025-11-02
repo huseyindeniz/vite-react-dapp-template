@@ -46,39 +46,63 @@ function shouldExcludeFile(filePath) {
 }
 
 /**
+ * Determine suppression type and severity from the matched line
+ */
+function categorizeSuppressionLine(line) {
+  // ESLint suppressions
+  if (/eslint-disable-next-line/.test(line)) {
+    return { type: 'eslint-disable-next-line', severity: 'high' };
+  }
+  if (/\/\*\s*eslint-disable/.test(line)) {
+    return { type: '/* eslint-disable */', severity: 'critical' };
+  }
+  if (/\/\/\s*eslint-disable/.test(line)) {
+    return { type: 'eslint-disable', severity: 'critical' };
+  }
+
+  // TypeScript suppressions
+  if (/@ts-ignore\b/.test(line)) {
+    return { type: '@ts-ignore', severity: 'critical' };
+  }
+  if (/@ts-expect-error\b/.test(line)) {
+    return { type: '@ts-expect-error', severity: 'high' };
+  }
+  if (/@ts-nocheck\b/.test(line)) {
+    return { type: '@ts-nocheck', severity: 'critical' };
+  }
+  if (/@ts-check\b/.test(line)) {
+    return { type: '@ts-check', severity: 'low' };
+  }
+
+  // Prettier suppressions
+  if (/prettier-ignore/.test(line)) {
+    return { type: 'prettier-ignore', severity: 'medium' };
+  }
+
+  return null;
+}
+
+/**
  * Find all suppression comments in content and return their details
  */
 function findSuppressions(content) {
   const lines = content.split('\n');
   const suppressions = [];
 
-  // Patterns to detect suppression comments
-  const suppressionPatterns = [
-    // ESLint suppressions
-    { pattern: /\/\/\s*eslint-disable-next-line/, type: 'eslint-disable-next-line', severity: 'high' },
-    { pattern: /\/\/\s*eslint-disable\b/, type: 'eslint-disable', severity: 'critical' },
-    { pattern: /\/\*\s*eslint-disable/, type: '/* eslint-disable */', severity: 'critical' },
-
-    // TypeScript suppressions
-    { pattern: /\/\/\s*@ts-ignore\b/, type: '@ts-ignore', severity: 'critical' },
-    { pattern: /\/\/\s*@ts-expect-error\b/, type: '@ts-expect-error', severity: 'high' },
-    { pattern: /\/\/\s*@ts-nocheck\b/, type: '@ts-nocheck', severity: 'critical' },
-    { pattern: /\/\/\s*@ts-check\b/, type: '@ts-check', severity: 'low' }, // This one is actually good, but track it
-
-    // Prettier suppressions
-    { pattern: /\/\/\s*prettier-ignore/, type: 'prettier-ignore', severity: 'medium' },
-  ];
+  // Single pattern to catch all suppression comments
+  const suppressionPattern = /eslint-disable|@ts-ignore|@ts-expect-error|@ts-nocheck|@ts-check|prettier-ignore/;
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
 
-    for (const { pattern, type, severity } of suppressionPatterns) {
-      if (pattern.test(line)) {
+    if (suppressionPattern.test(line)) {
+      const category = categorizeSuppressionLine(line);
+      if (category) {
         suppressions.push({
           line: i + 1,
           content: line.trim(),
-          type,
-          severity,
+          type: category.type,
+          severity: category.severity,
         });
       }
     }

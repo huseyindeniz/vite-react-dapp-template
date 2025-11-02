@@ -33,7 +33,7 @@ This file provides guidance to Claude Code when working with this React dApp tem
 
 **RULE**: Each **domain feature** organizes code by models. Each model MUST have its own directory, even if there's only ONE model.
 
-⚠️ **NOTE**: This rule applies ONLY to **domain features** (wallet, auth, blog-demo, and any new features users create). It does NOT apply to **core features** (app, i18n, router, slice-manager, ui) which are infrastructure with their own specialized structures.
+⚠️ **NOTE**: This rule applies ONLY to **domain features** (wallet, oauth, blog-demo, and any new features users create). It does NOT apply to **core features** (app, i18n, router, slice-manager, ui) which are infrastructure with their own specialized structures.
 
 #### Model Directory Structure
 
@@ -280,7 +280,7 @@ These features represent business domains and serve as **examples/guides** for u
 **Domain Features (Examples in Template):**
 
 - `wallet/` - Web3 wallet integration (3 models: provider, network, account)
-- `auth/` - Authentication (1 model: session)
+- `oauth/` - OAuth authentication (1 model: session)
 - `blog-demo/` - Blog demonstration (2 models: post, author)
 
 **Key Points:**
@@ -336,7 +336,7 @@ wallet/
 | **Models/**       | ❌ Not required                      | ✅ Required                            |
 | **Structure**     | Specialized per feature              | Standardized model pattern             |
 | **Modifiability** | ⚠️ Careful - affects everything      | ✅ User customizable                   |
-| **Examples**      | app, i18n, router, slice-manager, ui | wallet, auth, blog-demo                |
+| **Examples**      | app, i18n, router, slice-manager, ui | wallet, oauth, blog-demo               |
 | **User Action**   | Keep or modify carefully             | Remove, modify, replace, or create new |
 
 ---
@@ -372,10 +372,10 @@ npm run storybook          # Component documentation
 ### Architecture Rules
 
 1. **Each model MUST have its own directory** under `models/`, even if there's only ONE model
-   - ⚠️ **Applies to DOMAIN features only** (wallet, auth, blog-demo, and any new domain features)
+   - ⚠️ **Applies to DOMAIN features only** (wallet, oauth, blog-demo, and any new domain features)
    - ⚠️ **Does NOT apply to CORE features** (app, i18n, router, slice-manager, ui)
-   - ✅ `auth/models/session/` (domain feature, single model)
-   - ❌ `auth/models/` (files directly in models/)
+   - ✅ `oauth/models/session/` (domain feature, single model)
+   - ❌ `oauth/models/` (files directly in models/)
 
 1a. **Core features are infrastructure - be EXTRA CAREFUL**
 
@@ -458,7 +458,7 @@ npm run storybook          # Component documentation
 **Domain Features (Examples - User Customizable):**
 
 - `wallet/` - Web3 wallet (Provider, Network, Account models)
-- `auth/` - Authentication (Session model)
+- `oauth/` - OAuth authentication (Session model)
 - `blog-demo/` - Blog demo (Post, Author models)
 
 **Users will:**

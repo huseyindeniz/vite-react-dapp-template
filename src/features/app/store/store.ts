@@ -1,4 +1,8 @@
-import { combineReducers, configureStore, type Reducer } from '@reduxjs/toolkit';
+import {
+  combineReducers,
+  configureStore,
+  type Reducer,
+} from '@reduxjs/toolkit';
 import { enableMapSet } from 'immer';
 import saga, { type Saga } from 'redux-saga';
 import { all, fork } from 'redux-saga/effects';
@@ -49,7 +53,7 @@ function* rootSaga() {
 
 const sagaMiddleware = saga();
 
-const store = configureStore({
+export const store = configureStore({
   reducer: rootReducer,
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware().concat(sagaMiddleware),
@@ -59,5 +63,3 @@ const store = configureStore({
 sagaMiddleware.run(rootSaga);
 
 export type RootState = ReturnType<typeof store.getState>;
-
-export default store;

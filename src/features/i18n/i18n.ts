@@ -34,4 +34,4 @@ i18n.use(LanguageDetector).use(initReactI18next).init({
   returnEmptyString: false,
 });
 
-export default i18n;
+export { i18n };

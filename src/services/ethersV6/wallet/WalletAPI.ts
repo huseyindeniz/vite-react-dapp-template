@@ -10,10 +10,8 @@ import {
   SUPPORTED_NETWORKS,
 } from '@/features/wallet/config';
 import { AccountType } from '@/features/wallet/models/account/types/Account';
-import {
-  InstalledWallets,
-  SupportedWallets,
-} from '@/features/wallet/models/provider/IProviderApi';
+import { InstalledWallets } from '@/features/wallet/models/provider/types/InstalledWallets';
+import { SupportedWallets } from '@/features/wallet/models/provider/types/SupportedWallets';
 
 import { IWalletEthersV6ProviderApi } from '../interfaces/IWalletEthersV6ProviderApi';
 

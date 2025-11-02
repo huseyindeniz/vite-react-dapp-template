@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
 import { usePageLink } from '@/features/router/hooks/usePageLink';
-import useTypedSelector from '@/hooks/useTypedSelector';
+import { useTypedSelector } from '@/hooks/useTypedSelector';
 
 import { useActions } from '../../hooks/useActions';
 

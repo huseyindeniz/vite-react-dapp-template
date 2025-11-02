@@ -1,4 +1,4 @@
-import useTypedSelector from '@/hooks/useTypedSelector';
+import { useTypedSelector } from '@/hooks/useTypedSelector';
 
 import { WalletState } from '../models/types/WalletState';
 export const useWalletAuthentication = () => {

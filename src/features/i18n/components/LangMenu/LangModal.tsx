@@ -10,7 +10,8 @@ import {
 
 import imageTrFlag from '../../assets/images/flags/tr.webp';
 import imageUsFlag from '../../assets/images/flags/us.webp';
-import { LangCode, SupportedLang } from '../../types';
+import { LangCode } from '../../types/LangCode';
+import { SupportedLang } from '../../types/SupportedLang';
 
 import classes from './LangModal.module.css';
 

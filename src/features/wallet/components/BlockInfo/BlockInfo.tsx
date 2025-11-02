@@ -4,7 +4,7 @@ import { Group, ActionIcon, Badge } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import { MdRefresh } from 'react-icons/md';
 
-import useTypedSelector from '@/hooks/useTypedSelector';
+import { useTypedSelector } from '@/hooks/useTypedSelector';
 
 import { useActions } from '../../hooks/useActions';
 import { LoadingStatusType } from '../../models/types/LoadingStatus';

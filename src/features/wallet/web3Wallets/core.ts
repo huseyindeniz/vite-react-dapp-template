@@ -1,4 +1,4 @@
-import { SupportedWallets } from '@/features/wallet/models/provider/IProviderApi';
+import { SupportedWallets } from '@/features/wallet/models/provider/types/SupportedWallets';
 
 import { Web3Wallet } from '../models/provider/types/Web3Wallet';
 

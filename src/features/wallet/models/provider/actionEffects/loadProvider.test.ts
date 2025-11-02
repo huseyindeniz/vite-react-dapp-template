@@ -2,10 +2,8 @@ import { call } from 'redux-saga/effects';
 import { expectSaga, testSaga } from 'redux-saga-test-plan';
 import { throwError } from 'redux-saga-test-plan/providers';
 
-import {
-  IProviderApi,
-  SupportedWallets,
-} from '@/features/wallet/models/provider/IProviderApi';
+import { IProviderApi } from '@/features/wallet/models/provider/IProviderApi';
+import { SupportedWallets } from '@/features/wallet/models/provider/types/SupportedWallets';
 
 import { SlowDown } from '../../../utils';
 import * as walletStateSliceActions from '../../slice';

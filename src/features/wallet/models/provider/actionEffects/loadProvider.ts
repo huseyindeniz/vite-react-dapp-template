@@ -1,10 +1,8 @@
 import { put, call } from 'redux-saga/effects';
 
-import {
-  IProviderApi,
-  InstalledWallets,
-  SupportedWallets,
-} from '@/features/wallet/models/provider/IProviderApi';
+import { IProviderApi } from '@/features/wallet/models/provider/IProviderApi';
+import { InstalledWallets } from '@/features/wallet/models/provider/types/InstalledWallets';
+import { SupportedWallets } from '@/features/wallet/models/provider/types/SupportedWallets';
 import { Coinbase } from '@/features/wallet/web3Wallets/coinbase';
 import { Core } from '@/features/wallet/web3Wallets/core';
 import { Metamask } from '@/features/wallet/web3Wallets/metamask';

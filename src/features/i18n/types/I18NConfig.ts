@@ -1,12 +1,4 @@
-export enum LangCode {
-  TR_TR = 'tr-TR',
-  EN_US = 'en-US',
-}
-
-export type SupportedLang = {
-  code: LangCode;
-  label: string;
-};
+import { SupportedLang } from './SupportedLang';
 
 export type I18NConfig = {
   supportedLanguages: SupportedLang[];

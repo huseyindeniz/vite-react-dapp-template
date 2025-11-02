@@ -1,7 +1,7 @@
 // ConnectButton.stories.ts|tsx
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { LangCode } from '../../types';
+import { LangCode } from '../../types/LangCode';
 
 import { LangModal } from './LangModal';
 
