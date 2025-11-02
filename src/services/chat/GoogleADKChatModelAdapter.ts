@@ -1,26 +1,25 @@
 import type {
-  ChatModelAdapter,
   ChatModelRunOptions,
   ChatModelRunResult,
 } from '@assistant-ui/react';
 import log from 'loglevel';
 
+import type { AgentType } from '@/features/chat/config';
+import type { IChatModelAdapter } from '@/features/chat/interfaces/IChatModelAdapter';
+
+import { ChatService } from './ChatService';
+
 const BASE_URL = 'http://localhost:8011';
 
-export class GoogleADKChatModelAdapter implements ChatModelAdapter {
-  private baseUrl: string;
-  private getToken: () => string;
-
-  constructor(getToken: () => string) {
-    this.baseUrl = BASE_URL;
-    this.getToken = getToken;
-  }
+export class GoogleADKChatModelAdapter implements IChatModelAdapter {
+  readonly type: AgentType = 'google-adk';
+  private baseUrl: string = BASE_URL;
 
   async *run(options: ChatModelRunOptions): AsyncGenerator<ChatModelRunResult> {
     const { messages, abortSignal } = options;
 
-    // Get auth token from hook for session persistence
-    const token = this.getToken();
+    // Get auth token from ChatService for session persistence
+    const token = ChatService.getInstance().getToken();
 
     try {
       const lastUserMessage = messages

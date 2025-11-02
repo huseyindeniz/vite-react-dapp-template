@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 import { AssistantRuntimeProvider } from '@assistant-ui/react';
 import { Container, Stack, Paper, Group } from '@mantine/core';
 
-import { useChatRuntime } from '../runtime/useChatRuntime';
-import { DEFAULT_AGENT_TYPE, type AgentType } from '../types/agentTypes';
+import { DEFAULT_AGENT_TYPE, type AgentType } from '../config';
+import { useChatRuntime } from '../hooks/useChatRuntime';
 
 import { AgentSelector } from './AgentSelector';
 import { ChatThread } from './ChatThread';

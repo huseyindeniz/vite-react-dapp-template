@@ -1,6 +1,6 @@
 # Architecture Audit Report
 
-**Generated:** 2025-11-02T09:26:14.688Z
+**Generated:** 2025-11-02T10:30:03.533Z
 **Project:** vite-react-dapp-template
 
 ## Executive Summary
@@ -8,17 +8,17 @@
 | Metric | Value |
 |--------|-------|
 | **Total Checks** | 8 |
-| **Passed** | ✅ 4 |
-| **Failed** | ❌ 4 |
-| **Success Rate** | 50% |
+| **Passed** | ✅ 5 |
+| **Failed** | ❌ 3 |
+| **Success Rate** | 63% |
 
 ## Results by Check
 
 | Check | Status | Summary |
 |-------|--------|---------|
 | Core → Domain Dependency | ❌ FAILED | 7 violation(s) |
-| Service Import Boundaries | ❌ FAILED | 2 violation(s) |
-| Service Boundaries | ❌ FAILED | 1 violation(s) |
+| Service Import Boundaries | ✅ PASSED | 0 violation(s) |
+| Service Boundaries | ❌ FAILED | 4 violation(s) |
 | Pages Boundaries | ❌ FAILED | 1 violation(s) |
 | Model Internals Encapsulation | ✅ PASSED | 0 violation(s) |
 | Slice Import Rules | ✅ PASSED | 0 violation(s) |
@@ -71,42 +71,9 @@ Summary: 7 violation(s)
 
 ---
 
-### ❌ Service Import Boundaries
-
-**Summary:** 2 violation(s)
-
-<details>
-<summary>View Details</summary>
-
-```
-Service Import Check (Dependency Injection)
-================================================================================
-
-Rule: Services MUST ONLY be imported in src/features/app/config/
-Why: Enforce dependency injection pattern
-
-Violations
---------------------------------------------------------------------------------
-
-❌ Found 2 violation(s)
-
-  ❌ src/features/chat/runtime/useChatRuntime.ts
-     Line 6: @/services/chat/GoogleADKChatModelAdapter
-     Line 7: @/services/chat/LangGraphChatModelAdapter
-     Fix: Move service instantiation to src/features/app/config/services.ts
-          Use dependency injection - features receive services through interfaces
-
-================================================================================
-Summary: 2 violation(s)
-```
-
-</details>
-
----
-
 ### ❌ Service Boundaries
 
-**Summary:** 1 violation(s)
+**Summary:** 4 violation(s)
 
 <details>
 <summary>View Details</summary>
@@ -136,7 +103,37 @@ Services CANNOT import:
 Violations
 --------------------------------------------------------------------------------
 
-❌ Found 1 violation(s)
+❌ Found 4 violation(s)
+
+  ❌ src/services/chat/ChatService.ts
+     Line 3: @/features/chat/config
+     Issue: Services can only import interfaces and types from features
+     Fix: Services should only import:
+          - Feature interfaces: @/features/{feature}/interfaces/*
+          - Model interfaces: @/features/{feature}/models/{model}/interfaces/*
+          - Feature types: @/features/{feature}/types/*
+          - Model types: @/features/{feature}/models/{model}/types/*
+          - External libraries
+
+  ❌ src/services/chat/GoogleADKChatModelAdapter.ts
+     Line 7: @/features/chat/config
+     Issue: Services can only import interfaces and types from features
+     Fix: Services should only import:
+          - Feature interfaces: @/features/{feature}/interfaces/*
+          - Model interfaces: @/features/{feature}/models/{model}/interfaces/*
+          - Feature types: @/features/{feature}/types/*
+          - Model types: @/features/{feature}/models/{model}/types/*
+          - External libraries
+
+  ❌ src/services/chat/LangGraphChatModelAdapter.ts
+     Line 7: @/features/chat/config
+     Issue: Services can only import interfaces and types from features
+     Fix: Services should only import:
+          - Feature interfaces: @/features/{feature}/interfaces/*
+          - Model interfaces: @/features/{feature}/models/{model}/interfaces/*
+          - Feature types: @/features/{feature}/types/*
+          - Model types: @/features/{feature}/models/{model}/types/*
+          - External libraries
 
   ❌ src/services/oauth/OAuthService.ts
      Line 3: @/features/oauth/config
@@ -149,7 +146,7 @@ Violations
           - External libraries
 
 ================================================================================
-Summary: 1 violation(s)
+Summary: 4 violation(s)
 ```
 
 </details>
@@ -208,6 +205,7 @@ Summary: 1 violation(s)
 
 ## Passed Checks
 
+- ✅ **Service Import Boundaries** - 0 violation(s)
 - ✅ **Model Internals Encapsulation** - 0 violation(s)
 - ✅ **Slice Import Rules** - 0 violation(s)
 - ✅ **Sagas Import Rules** - 0 violation(s)
@@ -249,15 +247,11 @@ This audit ensures the following architectural patterns:
    - Run: `node ./.claude/skills/arch-audit/scripts/core___domain_dependency.mjs`
    - See detailed output above for specific violations
 
-2. **Service Import Boundaries**: 2 violation(s)
-   - Run: `node ./.claude/skills/arch-audit/scripts/service_import_boundaries.mjs`
-   - See detailed output above for specific violations
-
-3. **Service Boundaries**: 1 violation(s)
+2. **Service Boundaries**: 4 violation(s)
    - Run: `node ./.claude/skills/arch-audit/scripts/service_boundaries.mjs`
    - See detailed output above for specific violations
 
-4. **Pages Boundaries**: 1 violation(s)
+3. **Pages Boundaries**: 1 violation(s)
    - Run: `node ./.claude/skills/arch-audit/scripts/pages_boundaries.mjs`
    - See detailed output above for specific violations
 

@@ -1,6 +1,6 @@
 # Code Audit Report
 
-**Generated:** 2025-11-02T09:26:26.045Z
+**Generated:** 2025-11-02T10:29:55.641Z
 **Project:** vite-react-dapp-template
 
 ## Executive Summary
@@ -8,9 +8,9 @@
 | Metric | Value |
 |--------|-------|
 | **Total Checks** | 11 |
-| **Passed** | ✅ 7 |
-| **Failed** | ❌ 4 |
-| **Success Rate** | 64% |
+| **Passed** | ✅ 8 |
+| **Failed** | ❌ 3 |
+| **Success Rate** | 73% |
 
 ## Results by Check
 
@@ -19,7 +19,7 @@
 | Import Quality | ✅ PASSED | Check output |
 | Export Quality | ✅ PASSED | Index files: 0, Default exports: 0 |
 | Redux Abstraction | ✅ PASSED | useDispatch: 0, RootState: 0, useSelector: 0 |
-| Service Import Boundaries | ❌ FAILED | Check output |
+| Service Import Boundaries | ✅ PASSED | Check output |
 | i18n Coverage | ✅ PASSED | Check output |
 | TypeScript "any" Usage | ❌ FAILED | 2 violation(s) |
 | Linter/TypeScript Suppressions | ❌ FAILED | 2 total (Critical: 0, High: 2) |
@@ -29,55 +29,6 @@
 | Redux Saga Patterns | ✅ PASSED | See details |
 
 ## Failed Checks (Detailed)
-
-### ❌ Service Import Boundaries
-
-**Summary:** Check output
-
-<details>
-<summary>View Details</summary>
-
-```
-Service Import Check (Dependency Injection Pattern)
-================================================================================
-
-Scanning 324 files in src/...
-
-Service Import Violations
---------------------------------------------------------------------------------
-
-❌ Found 2 service import violation(s)
-
-  ❌ src/features/chat/runtime/useChatRuntime.ts (2 violation(s))
-     Line 6: import { GoogleADKChatModelAdapter } from '@/services/chat/GoogleADKChatModelAdapter';
-     Import: @/services/chat/GoogleADKChatModelAdapter
-     Line 7: import { LangGraphChatModelAdapter } from '@/services/chat/LangGraphChatModelAdapter';
-     Import: @/services/chat/LangGraphChatModelAdapter
-     Rule: Services must ONLY be imported in src/features/app/config/services.ts
-     Fix: Use dependency injection - receive service through interface
-
-================================================================================
-Summary
-
-Service import violations: 2
-
-❌ Service import violations found.
-
-Dependency Injection Pattern:
-  - Services are ONLY imported in: src/features/app/config/services.ts
-  - Features receive services through interfaces (IFeatureApi)
-  - This allows easy service swapping and testing
-
-Why this matters:
-  - Features don't depend on concrete service implementations
-  - Easy to swap implementations (EthersV5 → EthersV6)
-  - Easy to test (mock interfaces)
-  - Clear separation of concerns
-```
-
-</details>
-
----
 
 ### ❌ TypeScript "any" Usage
 
@@ -90,7 +41,7 @@ Why this matters:
 React TypeScript "any" Usage Check
 ================================================================================
 
-Scanning 324 TypeScript files in src/...
+Scanning 327 TypeScript files in src/...
 
 TypeScript "any" Type Violations
 --------------------------------------------------------------------------------
@@ -145,7 +96,7 @@ Better alternatives:
 React Linter/TypeScript Suppression Check
 ================================================================================
 
-Scanning 324 files in src/...
+Scanning 327 files in src/...
 
 Linter/TypeScript Suppression Violations
 --------------------------------------------------------------------------------
@@ -271,6 +222,7 @@ Recommendation:
 - ✅ **Import Quality** - Check output
 - ✅ **Export Quality** - Index files: 0, Default exports: 0
 - ✅ **Redux Abstraction** - useDispatch: 0, RootState: 0, useSelector: 0
+- ✅ **Service Import Boundaries** - Check output
 - ✅ **i18n Coverage** - Check output
 - ✅ **God Files (1 Entity Per File)** - 0 file(s), 0 entities to split
 - ✅ **Console Usage** - No console usage
@@ -280,19 +232,15 @@ Recommendation:
 
 ### Priority Actions
 
-1. **Service Import Boundaries**: Check output
-   - Run: `node ./.claude/skills/code-audit/scripts/service_import_boundaries.mjs`
-   - See detailed output above for specific violations
-
-2. **TypeScript "any" Usage**: 2 violation(s)
+1. **TypeScript "any" Usage**: 2 violation(s)
    - Run: `node ./.claude/skills/code-audit/scripts/typescript__any__usage.mjs`
    - See detailed output above for specific violations
 
-3. **Linter/TypeScript Suppressions**: 2 total (Critical: 0, High: 2)
+2. **Linter/TypeScript Suppressions**: 2 total (Critical: 0, High: 2)
    - Run: `node ./.claude/skills/code-audit/scripts/linter_typescript_suppressions.mjs`
    - See detailed output above for specific violations
 
-4. **TODO/FIXME/HACK Comments**: 15 marker(s)
+3. **TODO/FIXME/HACK Comments**: 15 marker(s)
    - Run: `node ./.claude/skills/code-audit/scripts/todo_fixme_hack_comments.mjs`
    - See detailed output above for specific violations
 

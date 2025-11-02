@@ -3,7 +3,7 @@ import React from 'react';
 import { Select } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 
-import { AGENT_TYPES, type AgentType } from '../types/agentTypes';
+import { CHAT_AGENTS, type AgentType } from '../config';
 
 interface AgentSelectorProps {
   value: AgentType;
@@ -16,7 +16,7 @@ export const AgentSelector: React.FC<AgentSelectorProps> = ({
 }) => {
   const { t } = useTranslation('FeatureChat');
 
-  const options = Object.entries(AGENT_TYPES).map(([key, config]) => ({
+  const options = Object.entries(CHAT_AGENTS).map(([key, config]) => ({
     value: key,
     label: config.label,
   }));
