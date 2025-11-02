@@ -1,6 +1,6 @@
 # Architecture Audit Report
 
-**Generated:** 2025-11-02T11:59:22.974Z
+**Generated:** 2025-11-02T12:41:12.348Z
 **Project:** vite-react-dapp-template
 
 ## Executive Summary
@@ -16,7 +16,7 @@
 
 | Check | Status | Summary |
 |-------|--------|---------|
-| Core → Domain Dependency | ❌ FAILED | 7 violation(s) |
+| Core → Domain Dependency | ❌ FAILED | 5 violation(s) |
 | Service Import Boundaries | ✅ PASSED | 0 violation(s) |
 | Service Boundaries | ✅ PASSED | 0 violation(s) |
 | Pages Boundaries | ✅ PASSED | 0 violation(s) |
@@ -29,7 +29,7 @@
 
 ### ❌ Core → Domain Dependency
 
-**Summary:** 7 violation(s)
+**Summary:** 5 violation(s)
 
 <details>
 <summary>View Details</summary>
@@ -44,7 +44,7 @@ Exception: src/features/app/config/ (composition root) can import anything
 Violations
 --------------------------------------------------------------------------------
 
-❌ Found 7 violation(s)
+❌ Found 5 violation(s)
 
   ❌ router (core) → domain features:
      → wallet (domain)
@@ -55,16 +55,10 @@ Violations
         File: src/features/router/hooks/useRoutes.tsx
         File: src/features/router/Router.tsx
 
-  ❌ ui (core) → domain features:
-     → oauth (domain)
-        File: src/features/ui/mantine/Layout/LayoutBase.tsx
-     → wallet (domain)
-        File: src/features/ui/mantine/Layout/LayoutBase.tsx
-
 Fix: Move these dependencies to src/features/app/config/
 
 ================================================================================
-Summary: 7 violation(s)
+Summary: 5 violation(s)
 ```
 
 </details>
@@ -113,7 +107,7 @@ This audit ensures the following architectural patterns:
 
 ### Priority Actions
 
-1. **Core → Domain Dependency**: 7 violation(s)
+1. **Core → Domain Dependency**: 5 violation(s)
    - Run: `node ./.claude/skills/arch-audit/scripts/core___domain_dependency.mjs`
    - See detailed output above for specific violations
 
