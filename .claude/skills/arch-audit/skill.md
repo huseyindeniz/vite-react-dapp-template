@@ -72,6 +72,7 @@ Services implement feature interfaces but must maintain strict boundaries.
 - ✅ Root interfaces: `@/features/{feature}/I{Feature}Api.ts`
 - ✅ Feature types: `@/features/{feature}/types/*`
 - ✅ Model types: `@/features/{feature}/models/{model}/types/*`
+- ✅ Feature config: `@/features/{feature}/config`
 - ✅ Other services: `@/services/*`
 - ✅ External libraries
 
@@ -83,13 +84,13 @@ Services implement feature interfaces but must maintain strict boundaries.
 - ❌ Model actionEffects: `@/features/{feature}/models/{model}/actionEffects/*`
 - ❌ Feature hooks: `@/features/{feature}/hooks/*`
 - ❌ Components: `@/features/{feature}/components/*`
-- ❌ Config: `@/features/{feature}/config`
 
 **Why:**
 - Services implement interfaces, they don't dictate architecture
 - Services should be swappable implementations
 - Clear boundary between service layer and feature layer
-- Services work with data contracts (interfaces + types), not implementation details
+- Services work with data contracts (interfaces + types + config), not implementation details
+- Config files contain constants (API keys, URLs, network configs) that services legitimately need
 
 **Check:** `check_service_boundaries.mjs`
 
@@ -103,6 +104,7 @@ Pages are the entry points for routes and should only use the public presentatio
 - ✅ Feature components: `@/features/{feature}/components/*`
 - ✅ Feature hooks: `@/features/{feature}/hooks/*`
 - ✅ Feature HOCs: `@/features/{feature}/hocs/*`
+- ✅ Feature config: `@/features/{feature}/config`
 - ✅ Root hooks: `@/hooks/*`
 - ✅ External libraries (React, etc.)
 
@@ -114,13 +116,13 @@ Pages are the entry points for routes and should only use the public presentatio
 - ❌ Slices: `@/features/{feature}/slice.ts`
 - ❌ Sagas: `@/features/{feature}/sagas.ts`
 - ❌ Interfaces: `@/features/{feature}/I{Feature}Api.ts`
-- ❌ Config: `@/features/{feature}/config`
 - ❌ Routes: `@/features/{feature}/routes`
 
 **Why:**
 - Pages are presentation layer - they orchestrate UI, not business logic
 - All business logic should be encapsulated in feature hooks
 - Clear separation: Pages compose UI, features provide functionality
+- Config files contain constants (feature flags, display settings) that pages may need
 - Easier to test and maintain when boundaries are clear
 
 **Check:** `check_pages_boundaries.mjs`

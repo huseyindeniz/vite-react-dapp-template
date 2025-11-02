@@ -59,6 +59,14 @@ function isAllowedFeatureImport(importPath) {
     return true;
   }
 
+  // ALLOWED: Config files
+  // Examples:
+  //   @/features/{feature}/config
+  //   @/features/{feature}/config.ts
+  if (restPath === 'config' || restPath.startsWith('config.') || restPath.startsWith('config/')) {
+    return true;
+  }
+
   return false; // Everything else is forbidden
 }
 
@@ -94,6 +102,7 @@ function checkServiceBoundaries() {
   console.log('  ✅ @/features/{feature}/models/{model}/interfaces/* - Model-level interfaces');
   console.log('  ✅ @/features/{feature}/types/* - Feature types');
   console.log('  ✅ @/features/{feature}/models/{model}/types/* - Model types');
+  console.log('  ✅ @/features/{feature}/config - Feature configuration');
   console.log('  ✅ External libraries');
   console.log('');
   console.log('Services CANNOT import:');
@@ -105,7 +114,6 @@ function checkServiceBoundaries() {
   console.log('  ❌ @/features/{feature}/models/{model}/actionEffects/*');
   console.log('  ❌ @/features/{feature}/hooks/*');
   console.log('  ❌ @/features/{feature}/components/*');
-  console.log('  ❌ @/features/{feature}/config');
   console.log('');
 
   if (!fs.existsSync(servicesDir)) {
@@ -203,6 +211,7 @@ function checkServiceBoundaries() {
       console.log('          - Model interfaces: @/features/{feature}/models/{model}/interfaces/*');
       console.log('          - Feature types: @/features/{feature}/types/*');
       console.log('          - Model types: @/features/{feature}/models/{model}/types/*');
+      console.log('          - Feature config: @/features/{feature}/config');
       console.log('          - External libraries');
       console.log('');
     }

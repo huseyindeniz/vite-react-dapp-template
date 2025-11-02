@@ -1,6 +1,6 @@
 # Architecture Audit Report
 
-**Generated:** 2025-11-02T10:30:03.533Z
+**Generated:** 2025-11-02T11:59:22.974Z
 **Project:** vite-react-dapp-template
 
 ## Executive Summary
@@ -8,9 +8,9 @@
 | Metric | Value |
 |--------|-------|
 | **Total Checks** | 8 |
-| **Passed** | ✅ 5 |
-| **Failed** | ❌ 3 |
-| **Success Rate** | 63% |
+| **Passed** | ✅ 7 |
+| **Failed** | ❌ 1 |
+| **Success Rate** | 88% |
 
 ## Results by Check
 
@@ -18,8 +18,8 @@
 |-------|--------|---------|
 | Core → Domain Dependency | ❌ FAILED | 7 violation(s) |
 | Service Import Boundaries | ✅ PASSED | 0 violation(s) |
-| Service Boundaries | ❌ FAILED | 4 violation(s) |
-| Pages Boundaries | ❌ FAILED | 1 violation(s) |
+| Service Boundaries | ✅ PASSED | 0 violation(s) |
+| Pages Boundaries | ✅ PASSED | 0 violation(s) |
 | Model Internals Encapsulation | ✅ PASSED | 0 violation(s) |
 | Slice Import Rules | ✅ PASSED | 0 violation(s) |
 | Sagas Import Rules | ✅ PASSED | 0 violation(s) |
@@ -71,141 +71,11 @@ Summary: 7 violation(s)
 
 ---
 
-### ❌ Service Boundaries
-
-**Summary:** 4 violation(s)
-
-<details>
-<summary>View Details</summary>
-
-```
-Service Boundaries Check
-================================================================================
-
-Rule: Services can ONLY import:
-  ✅ @/features/{feature}/interfaces/* - Feature-level interfaces
-  ✅ @/features/{feature}/models/{model}/interfaces/* - Model-level interfaces
-  ✅ @/features/{feature}/types/* - Feature types
-  ✅ @/features/{feature}/models/{model}/types/* - Model types
-  ✅ External libraries
-
-Services CANNOT import:
-  ❌ @/services/* - Other services (depend on feature interfaces instead)
-  ❌ @/pages/*
-  ❌ @/hooks/*
-  ❌ @/features/{feature}/models/{model}/actions.ts
-  ❌ @/features/{feature}/models/{model}/slice.ts
-  ❌ @/features/{feature}/models/{model}/actionEffects/*
-  ❌ @/features/{feature}/hooks/*
-  ❌ @/features/{feature}/components/*
-  ❌ @/features/{feature}/config
-
-Violations
---------------------------------------------------------------------------------
-
-❌ Found 4 violation(s)
-
-  ❌ src/services/chat/ChatService.ts
-     Line 3: @/features/chat/config
-     Issue: Services can only import interfaces and types from features
-     Fix: Services should only import:
-          - Feature interfaces: @/features/{feature}/interfaces/*
-          - Model interfaces: @/features/{feature}/models/{model}/interfaces/*
-          - Feature types: @/features/{feature}/types/*
-          - Model types: @/features/{feature}/models/{model}/types/*
-          - External libraries
-
-  ❌ src/services/chat/GoogleADKChatModelAdapter.ts
-     Line 7: @/features/chat/config
-     Issue: Services can only import interfaces and types from features
-     Fix: Services should only import:
-          - Feature interfaces: @/features/{feature}/interfaces/*
-          - Model interfaces: @/features/{feature}/models/{model}/interfaces/*
-          - Feature types: @/features/{feature}/types/*
-          - Model types: @/features/{feature}/models/{model}/types/*
-          - External libraries
-
-  ❌ src/services/chat/LangGraphChatModelAdapter.ts
-     Line 7: @/features/chat/config
-     Issue: Services can only import interfaces and types from features
-     Fix: Services should only import:
-          - Feature interfaces: @/features/{feature}/interfaces/*
-          - Model interfaces: @/features/{feature}/models/{model}/interfaces/*
-          - Feature types: @/features/{feature}/types/*
-          - Model types: @/features/{feature}/models/{model}/types/*
-          - External libraries
-
-  ❌ src/services/oauth/OAuthService.ts
-     Line 3: @/features/oauth/config
-     Issue: Services can only import interfaces and types from features
-     Fix: Services should only import:
-          - Feature interfaces: @/features/{feature}/interfaces/*
-          - Model interfaces: @/features/{feature}/models/{model}/interfaces/*
-          - Feature types: @/features/{feature}/types/*
-          - Model types: @/features/{feature}/models/{model}/types/*
-          - External libraries
-
-================================================================================
-Summary: 4 violation(s)
-```
-
-</details>
-
----
-
-### ❌ Pages Boundaries
-
-**Summary:** 1 violation(s)
-
-<details>
-<summary>View Details</summary>
-
-```
-Pages Boundaries Check
-================================================================================
-
-Rule: Pages can ONLY import:
-  ✅ @/features/{feature}/components/* - Feature components
-  ✅ @/features/{feature}/hooks/* - Feature hooks
-  ✅ @/features/{feature}/hocs/* - Feature HOCs
-  ✅ @/hooks/* - Root hooks
-  ✅ External libraries (React, etc.)
-
-Pages CANNOT import:
-  ❌ @/services/*
-  ❌ @/features/{feature}/models/*
-  ❌ @/features/{feature}/types/*
-  ❌ @/features/{feature}/slice.ts
-  ❌ @/features/{feature}/sagas.ts
-  ❌ @/features/{feature}/I{Feature}Api.ts
-  ❌ @/features/{feature}/config
-  ❌ @/features/{feature}/routes
-
-Violations
---------------------------------------------------------------------------------
-
-❌ Found 1 violation(s)
-
-  ❌ src/pages/Home/components/Environment.tsx
-     Line 3: @/features/router/config
-     Issue: Pages can only import components, hooks, and hocs from features
-     Fix: Pages should only import:
-          - Feature components: @/features/{feature}/components/*
-          - Feature hooks: @/features/{feature}/hooks/*
-          - Feature HOCs: @/features/{feature}/hocs/*
-          - Root hooks: @/hooks/*
-
-================================================================================
-Summary: 1 violation(s)
-```
-
-</details>
-
----
-
 ## Passed Checks
 
 - ✅ **Service Import Boundaries** - 0 violation(s)
+- ✅ **Service Boundaries** - 0 violation(s)
+- ✅ **Pages Boundaries** - 0 violation(s)
 - ✅ **Model Internals Encapsulation** - 0 violation(s)
 - ✅ **Slice Import Rules** - 0 violation(s)
 - ✅ **Sagas Import Rules** - 0 violation(s)
@@ -245,14 +115,6 @@ This audit ensures the following architectural patterns:
 
 1. **Core → Domain Dependency**: 7 violation(s)
    - Run: `node ./.claude/skills/arch-audit/scripts/core___domain_dependency.mjs`
-   - See detailed output above for specific violations
-
-2. **Service Boundaries**: 4 violation(s)
-   - Run: `node ./.claude/skills/arch-audit/scripts/service_boundaries.mjs`
-   - See detailed output above for specific violations
-
-3. **Pages Boundaries**: 1 violation(s)
-   - Run: `node ./.claude/skills/arch-audit/scripts/pages_boundaries.mjs`
    - See detailed output above for specific violations
 
 ## Next Steps

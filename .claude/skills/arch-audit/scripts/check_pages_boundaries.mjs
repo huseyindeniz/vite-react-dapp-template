@@ -53,6 +53,14 @@ function isAllowedFeatureImport(importPath) {
   if (restPath.includes('/hooks/') || restPath.startsWith('hooks/')) return true;
   if (restPath.includes('/hocs/') || restPath.startsWith('hocs/')) return true;
 
+  // ALLOWED: Config files
+  // Examples:
+  //   @/features/{feature}/config
+  //   @/features/{feature}/config.ts
+  if (restPath === 'config' || restPath.startsWith('config.') || restPath.startsWith('config/')) {
+    return true;
+  }
+
   // Everything else is FORBIDDEN
   return false;
 }
@@ -88,6 +96,7 @@ function checkPagesBoundaries() {
   console.log('  ✅ @/features/{feature}/components/* - Feature components');
   console.log('  ✅ @/features/{feature}/hooks/* - Feature hooks');
   console.log('  ✅ @/features/{feature}/hocs/* - Feature HOCs');
+  console.log('  ✅ @/features/{feature}/config - Feature configuration');
   console.log('  ✅ @/hooks/* - Root hooks');
   console.log('  ✅ External libraries (React, etc.)');
   console.log('');
@@ -98,7 +107,6 @@ function checkPagesBoundaries() {
   console.log('  ❌ @/features/{feature}/slice.ts');
   console.log('  ❌ @/features/{feature}/sagas.ts');
   console.log('  ❌ @/features/{feature}/I{Feature}Api.ts');
-  console.log('  ❌ @/features/{feature}/config');
   console.log('  ❌ @/features/{feature}/routes');
   console.log('');
 
@@ -178,6 +186,7 @@ function checkPagesBoundaries() {
       console.log('          - Feature components: @/features/{feature}/components/*');
       console.log('          - Feature hooks: @/features/{feature}/hooks/*');
       console.log('          - Feature HOCs: @/features/{feature}/hocs/*');
+      console.log('          - Feature config: @/features/{feature}/config');
       console.log('          - Root hooks: @/hooks/*');
       console.log('');
     }

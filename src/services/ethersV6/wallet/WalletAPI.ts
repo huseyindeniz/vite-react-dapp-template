@@ -15,6 +15,8 @@ import { SupportedWallets } from '@/features/wallet/models/provider/types/Suppor
 
 import { IWalletEthersV6ProviderApi } from '../interfaces/IWalletEthersV6ProviderApi';
 
+import { WalletProvider } from './types/WalletProvider';
+
 enum MetamaskRPCErrors {
   ACTION_REJECTED = 'ACTION_REJECTED',
 }
@@ -54,7 +56,7 @@ export class EthersV6WalletAPI implements IWalletEthersV6ProviderApi {
       if (window.ethereum.providers && window.ethereum.providers.length > 0) {
         log.debug('multiple provider dedected');
         window.ethereum.providers.map((p: Eip1193Provider) => {
-          const detectedWallet = this._identifyWallet(p);
+          const detectedWallet = this._identifyWallet(p as WalletProvider);
           if (detectedWallet !== null) {
             this._detectedWallets[detectedWallet] = new BrowserProvider(p);
           }
@@ -62,7 +64,9 @@ export class EthersV6WalletAPI implements IWalletEthersV6ProviderApi {
         });
       } else {
         log.debug('single provider dedected');
-        const detectedWallet = this._identifyWallet(window.ethereum);
+        const detectedWallet = this._identifyWallet(
+          window.ethereum as WalletProvider
+        );
         if (detectedWallet !== null) {
           this._detectedWallets[detectedWallet] = new BrowserProvider(
             window.ethereum
@@ -74,8 +78,7 @@ export class EthersV6WalletAPI implements IWalletEthersV6ProviderApi {
     return this._detectedWallets;
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private _identifyWallet = (p: any) => {
+  private _identifyWallet = (p: WalletProvider) => {
     if (p.coreProvider?.isAvalanche) {
       return SupportedWallets.CORE;
     }
