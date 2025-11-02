@@ -1,8 +1,8 @@
 import log from 'loglevel';
 
 import { getOAuthProviderByName } from '@/features/oauth/config';
-import { IOAuthApi } from '@/features/oauth/IOAuthApi';
-import { IOAuthProvider } from '@/features/oauth/models/provider/IOAuthProvider';
+import { IOAuthApi } from '@/features/oauth/interfaces/IOAuthApi';
+import { IOAuthProvider } from '@/features/oauth/models/provider/interfaces/IOAuthProvider';
 import { OAuthProviderCredentials } from '@/features/oauth/models/provider/types/OAuthProviderCredentials';
 import { OAuthProviderName } from '@/features/oauth/models/provider/types/OAuthProviderName';
 import { OAuthTokenExchangeRequest } from '@/features/oauth/models/session/types/OAuthTokenExchangeRequest';

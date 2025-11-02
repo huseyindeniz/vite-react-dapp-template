@@ -43,24 +43,19 @@ function isAllowedFeatureImport(importPath) {
 
   const [, feature, restPath] = match;
 
-  // ALLOWED: Root-level I*Api interfaces
-  // Examples: IWalletApi, IAuthApi, IBlogDemoApi
-  if (!restPath.includes('/')) {
-    if (restPath.startsWith('I') && restPath.includes('Api')) {
-      return true; // Valid root interface
-    }
+  // ALLOWED: Interfaces from feature-level or model-level interfaces/ folders
+  // Examples:
+  //   @/features/{feature}/interfaces/*
+  //   @/features/{feature}/models/{model}/interfaces/*
+  if (restPath.includes('/interfaces/') || restPath.startsWith('interfaces/')) {
+    return true;
   }
 
   // ALLOWED: Types from anywhere in feature
   // Examples:
   //   @/features/{feature}/types/*
   //   @/features/{feature}/models/{model}/types/*
-  if (restPath.includes('/types/') || restPath.endsWith('/types')) {
-    return true;
-  }
-
-  // Also allow if path starts with 'types/'
-  if (restPath.startsWith('types/')) {
+  if (restPath.includes('/types/') || restPath.endsWith('/types') || restPath.startsWith('types/')) {
     return true;
   }
 
@@ -95,13 +90,14 @@ function checkServiceBoundaries() {
   console.log('='.repeat(80));
   console.log('');
   console.log('Rule: Services can ONLY import:');
-  console.log('  ✅ @/features/{feature}/I{Feature}Api.ts - Root-level interfaces');
+  console.log('  ✅ @/features/{feature}/interfaces/* - Feature-level interfaces');
+  console.log('  ✅ @/features/{feature}/models/{model}/interfaces/* - Model-level interfaces');
   console.log('  ✅ @/features/{feature}/types/* - Feature types');
   console.log('  ✅ @/features/{feature}/models/{model}/types/* - Model types');
-  console.log('  ✅ @/services/* - Other services');
   console.log('  ✅ External libraries');
   console.log('');
   console.log('Services CANNOT import:');
+  console.log('  ❌ @/services/* - Other services (depend on feature interfaces instead)');
   console.log('  ❌ @/pages/*');
   console.log('  ❌ @/hooks/*');
   console.log('  ❌ @/features/{feature}/models/{model}/actions.ts');
@@ -133,7 +129,16 @@ function checkServiceBoundaries() {
       const importPath = imp.import;
 
       // Check forbidden imports
-      if (importPath.startsWith('@/pages/')) {
+      if (importPath.startsWith('@/services/')) {
+        violations.push({
+          file: relativePath,
+          line: imp.line,
+          import: importPath,
+          content: imp.content,
+          type: 'services',
+          message: 'Services cannot import other services - depend on feature interfaces instead',
+        });
+      } else if (importPath.startsWith('@/pages/')) {
         violations.push({
           file: relativePath,
           line: imp.line,
@@ -152,7 +157,7 @@ function checkServiceBoundaries() {
           message: 'Services cannot import root hooks',
         });
       } else if (importPath.startsWith('@/features/')) {
-        // Check if it's an allowed feature import (root interfaces or types)
+        // Check if it's an allowed feature import (interfaces or types from feature/model folders)
         if (!isAllowedFeatureImport(importPath)) {
           violations.push({
             file: relativePath,
@@ -160,7 +165,7 @@ function checkServiceBoundaries() {
             import: importPath,
             content: imp.content,
             type: 'feature-internals',
-            message: 'Services can only import root I*Api interfaces and types from features',
+            message: 'Services can only import interfaces and types from features',
           });
         }
       }
@@ -194,9 +199,10 @@ function checkServiceBoundaries() {
         console.log(`     Issue: ${v.message}`);
       }
       console.log('     Fix: Services should only import:');
-      console.log('          - Root interfaces: @/features/{feature}/I{Feature}Api');
-      console.log('          - Types: @/features/{feature}/types/* or .../models/{model}/types/*');
-      console.log('          - Other services: @/services/*');
+      console.log('          - Feature interfaces: @/features/{feature}/interfaces/*');
+      console.log('          - Model interfaces: @/features/{feature}/models/{model}/interfaces/*');
+      console.log('          - Feature types: @/features/{feature}/types/*');
+      console.log('          - Model types: @/features/{feature}/models/{model}/types/*');
       console.log('          - External libraries');
       console.log('');
     }

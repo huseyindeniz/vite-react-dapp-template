@@ -1,6 +1,6 @@
 import { takeLatest } from 'redux-saga/effects';
 
-import { IWalletApi } from './IWalletApi';
+import { IWalletApi } from './interfaces/IWalletApi';
 import { ActionEffectDisconnectWallet } from './models/account/actionEffects/disconnectWallet';
 import { ActionEffectLoadAccount } from './models/account/actionEffects/loadAccount';
 import {

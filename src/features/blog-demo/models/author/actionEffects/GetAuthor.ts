@@ -1,7 +1,7 @@
 import log from 'loglevel';
 import { call, put } from 'redux-saga/effects';
 
-import { IBlogDemoApi } from '@/features/blog-demo/IBlogDemoApi';
+import { IBlogDemoApi } from '@/features/blog-demo/interfaces/IBlogDemoApi';
 
 import { LoadingStatusType } from '../../shared/types/LoadingStatus';
 import * as actions from '../actions';

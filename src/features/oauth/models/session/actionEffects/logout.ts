@@ -2,7 +2,7 @@ import log from 'loglevel';
 import { put, select } from 'redux-saga/effects';
 
 import { RootState } from '@/features/app/store/store';
-import { IOAuthApi } from '@/features/oauth/IOAuthApi';
+import { IOAuthApi } from '@/features/oauth/interfaces/IOAuthApi';
 
 import * as sliceActions from '../slice';
 import { OAuthState } from '../types/OAuthState';

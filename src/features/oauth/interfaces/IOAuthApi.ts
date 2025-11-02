@@ -1,8 +1,8 @@
-import { IOAuthProvider } from './models/provider/IOAuthProvider';
-import { OAuthProviderCredentials } from './models/provider/types/OAuthProviderCredentials';
-import { OAuthProviderName } from './models/provider/types/OAuthProviderName';
-import { ISessionApi } from './models/session/ISessionApi';
-import { OAuthUser } from './models/session/types/OAuthUser';
+import { IOAuthProvider } from '../models/provider/interfaces/IOAuthProvider';
+import { OAuthProviderCredentials } from '../models/provider/types/OAuthProviderCredentials';
+import { OAuthProviderName } from '../models/provider/types/OAuthProviderName';
+import { ISessionApi } from '../models/session/interfaces/ISessionApi';
+import { OAuthUser } from '../models/session/types/OAuthUser';
 
 export interface IOAuthApi extends ISessionApi {
   // Provider management methods

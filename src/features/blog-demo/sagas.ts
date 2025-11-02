@@ -1,6 +1,6 @@
 import { takeLatest } from 'redux-saga/effects';
 
-import { IBlogDemoApi } from './IBlogDemoApi';
+import { IBlogDemoApi } from './interfaces/IBlogDemoApi';
 import { ActionEffectGetAuthor } from './models/author/actionEffects/GetAuthor';
 import * as authorsActions from './models/author/actions';
 import { ActionEffectGetPosts } from './models/post/actionEffects/GetPosts';

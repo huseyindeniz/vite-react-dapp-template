@@ -1,6 +1,6 @@
 import { put, call } from 'redux-saga/effects';
 
-import { IAccountApi } from '@/features/wallet/models/account/IAccountApi';
+import { IAccountApi } from '@/features/wallet/models/account/interfaces/IAccountApi';
 
 import { SlowDown } from '../../../utils';
 import * as networkActions from '../../network/actions';

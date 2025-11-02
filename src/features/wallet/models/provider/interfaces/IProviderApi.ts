@@ -1,5 +1,5 @@
-import { InstalledWallets } from './types/InstalledWallets';
-import { SupportedWallets } from './types/SupportedWallets';
+import { InstalledWallets } from '../types/InstalledWallets';
+import { SupportedWallets } from '../types/SupportedWallets';
 
 export interface IProviderApi {
   detectWallets: () => Promise<InstalledWallets>;

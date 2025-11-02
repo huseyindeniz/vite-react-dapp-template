@@ -10,7 +10,7 @@ import {
 } from 'redux-saga/effects';
 
 import { RootState } from '@/features/app/store/store';
-import { IAccountApi } from '@/features/wallet/models/account/IAccountApi';
+import { IAccountApi } from '@/features/wallet/models/account/interfaces/IAccountApi';
 
 import { DISABLE_WALLET_SIGN, SIGN_TIMEOUT_IN_SEC } from '../../../config';
 import { SlowDown } from '../../../utils';

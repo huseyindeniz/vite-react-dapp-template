@@ -1,5 +1,5 @@
-import { OAuthTokenExchangeRequest } from './types/OAuthTokenExchangeRequest';
-import { OAuthUser } from './types/OAuthUser';
+import { OAuthTokenExchangeRequest } from '../types/OAuthTokenExchangeRequest';
+import { OAuthUser } from '../types/OAuthUser';
 
 export interface ISessionApi {
   /**

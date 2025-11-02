@@ -1,6 +1,6 @@
 import { takeLatest, put } from 'redux-saga/effects';
 
-import { IOAuthApi } from '@/features/oauth/IOAuthApi';
+import { IOAuthApi } from '@/features/oauth/interfaces/IOAuthApi';
 
 import { ActionEffectLoginWithProvider } from './models/session/actionEffects/loginWithProvider';
 import { ActionEffectLogout } from './models/session/actionEffects/logout';

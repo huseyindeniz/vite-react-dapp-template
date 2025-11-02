@@ -1,6 +1,6 @@
 import log from 'loglevel';
 
-import { IOAuthProvider } from '@/features/oauth/models/provider/IOAuthProvider';
+import { IOAuthProvider } from '@/features/oauth/models/provider/interfaces/IOAuthProvider';
 import { OAuthProviderCredentials } from '@/features/oauth/models/provider/types/OAuthProviderCredentials';
 
 // Types not needed for redirect mode - removed unused imports

@@ -2,7 +2,7 @@ import { PayloadAction } from '@reduxjs/toolkit';
 import { SagaIterator } from 'redux-saga';
 import { call, put } from 'redux-saga/effects';
 
-import { IOAuthApi } from '@/features/oauth/IOAuthApi';
+import { IOAuthApi } from '@/features/oauth/interfaces/IOAuthApi';
 import { OAuthProviderCredentials } from '@/features/oauth/models/provider/types/OAuthProviderCredentials';
 import { OAuthProviderName } from '@/features/oauth/models/provider/types/OAuthProviderName';
 

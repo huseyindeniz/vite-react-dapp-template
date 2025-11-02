@@ -1,6 +1,6 @@
 import log from 'loglevel';
 
-import { ISessionApi } from '@/features/oauth/models/session/ISessionApi';
+import { ISessionApi } from '@/features/oauth/models/session/interfaces/ISessionApi';
 import { OAuthTokenExchangeRequest } from '@/features/oauth/models/session/types/OAuthTokenExchangeRequest';
 import { OAuthUser } from '@/features/oauth/models/session/types/OAuthUser';
 

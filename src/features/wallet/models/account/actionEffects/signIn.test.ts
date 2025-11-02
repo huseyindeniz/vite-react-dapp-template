@@ -2,7 +2,7 @@ import { call, spawn, put, delay, select } from 'redux-saga/effects';
 import { expectSaga, testSaga } from 'redux-saga-test-plan';
 import { throwError } from 'redux-saga-test-plan/providers';
 
-import { IAccountApi } from '@/features/wallet/models/account/IAccountApi';
+import { IAccountApi } from '@/features/wallet/models/account/interfaces/IAccountApi';
 
 import { SIGN_TIMEOUT_IN_SEC } from '../../../config';
 import { SlowDown } from '../../../utils';

@@ -1,5 +1,5 @@
-import { OAuthProviderCredentials } from './types/OAuthProviderCredentials';
-import { OAuthProviderName } from './types/OAuthProviderName';
+import { OAuthProviderCredentials } from '../types/OAuthProviderCredentials';
+import { OAuthProviderName } from '../types/OAuthProviderName';
 
 export interface IOAuthProvider {
   name: OAuthProviderName;

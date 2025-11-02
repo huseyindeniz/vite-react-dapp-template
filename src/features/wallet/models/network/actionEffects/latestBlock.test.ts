@@ -1,7 +1,7 @@
 import { call } from 'redux-saga/effects';
 import { expectSaga } from 'redux-saga-test-plan';
 
-import { INetworkApi } from '@/features/wallet/models/network/INetworkApi';
+import { INetworkApi } from '@/features/wallet/models/network/interfaces/INetworkApi';
 
 import * as slicesActions from '../slice';
 import { BlockInfo } from '../types/BlockInfo';

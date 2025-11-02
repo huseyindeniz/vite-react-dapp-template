@@ -3,7 +3,7 @@ import { call, put } from 'redux-saga/effects';
 
 import { RootState } from '@/features/app/store/store';
 import { BlogSlices } from '@/features/blog-demo/configureBlogFeature';
-import { IBlogDemoApi } from '@/features/blog-demo/IBlogDemoApi';
+import { IBlogDemoApi } from '@/features/blog-demo/interfaces/IBlogDemoApi';
 import { smartFetch } from '@/features/slice-manager/sagas/smartFetch';
 
 import { LoadingStatusType } from '../../shared/types/LoadingStatus';

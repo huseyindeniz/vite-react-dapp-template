@@ -1,6 +1,6 @@
 # Architecture Audit Report
 
-**Generated:** 2025-11-02T08:20:39.780Z
+**Generated:** 2025-11-02T09:26:14.688Z
 **Project:** vite-react-dapp-template
 
 ## Executive Summary
@@ -18,7 +18,7 @@
 |-------|--------|---------|
 | Core → Domain Dependency | ❌ FAILED | 7 violation(s) |
 | Service Import Boundaries | ❌ FAILED | 2 violation(s) |
-| Service Boundaries | ❌ FAILED | 7 violation(s) |
+| Service Boundaries | ❌ FAILED | 1 violation(s) |
 | Pages Boundaries | ❌ FAILED | 1 violation(s) |
 | Model Internals Encapsulation | ✅ PASSED | 0 violation(s) |
 | Slice Import Rules | ✅ PASSED | 0 violation(s) |
@@ -106,7 +106,7 @@ Summary: 2 violation(s)
 
 ### ❌ Service Boundaries
 
-**Summary:** 7 violation(s)
+**Summary:** 1 violation(s)
 
 <details>
 <summary>View Details</summary>
@@ -116,13 +116,14 @@ Service Boundaries Check
 ================================================================================
 
 Rule: Services can ONLY import:
-  ✅ @/features/{feature}/I{Feature}Api.ts - Root-level interfaces
+  ✅ @/features/{feature}/interfaces/* - Feature-level interfaces
+  ✅ @/features/{feature}/models/{model}/interfaces/* - Model-level interfaces
   ✅ @/features/{feature}/types/* - Feature types
   ✅ @/features/{feature}/models/{model}/types/* - Model types
-  ✅ @/services/* - Other services
   ✅ External libraries
 
 Services CANNOT import:
+  ❌ @/services/* - Other services (depend on feature interfaces instead)
   ❌ @/pages/*
   ❌ @/hooks/*
   ❌ @/features/{feature}/models/{model}/actions.ts
@@ -135,59 +136,20 @@ Services CANNOT import:
 Violations
 --------------------------------------------------------------------------------
 
-❌ Found 7 violation(s)
-
-  ❌ src/services/oauth/OAuthApi.ts
-     Line 3: @/features/oauth/models/session/ISessionApi
-     Issue: Services can only import root I*Api interfaces and types from features
-     Fix: Services should only import:
-          - Root interfaces: @/features/{feature}/I{Feature}Api
-          - Types: @/features/{feature}/types/* or .../models/{model}/types/*
-          - Other services: @/services/*
-          - External libraries
+❌ Found 1 violation(s)
 
   ❌ src/services/oauth/OAuthService.ts
      Line 3: @/features/oauth/config
-     Issue: Services can only import root I*Api interfaces and types from features
-     Line 5: @/features/oauth/models/provider/IOAuthProvider
-     Issue: Services can only import root I*Api interfaces and types from features
+     Issue: Services can only import interfaces and types from features
      Fix: Services should only import:
-          - Root interfaces: @/features/{feature}/I{Feature}Api
-          - Types: @/features/{feature}/types/* or .../models/{model}/types/*
-          - Other services: @/services/*
-          - External libraries
-
-  ❌ src/services/oauth/providers/github/GitHubOAuthProvider.ts
-     Line 3: @/features/oauth/models/provider/IOAuthProvider
-     Issue: Services can only import root I*Api interfaces and types from features
-     Fix: Services should only import:
-          - Root interfaces: @/features/{feature}/I{Feature}Api
-          - Types: @/features/{feature}/types/* or .../models/{model}/types/*
-          - Other services: @/services/*
-          - External libraries
-
-  ❌ src/services/oauth/providers/google/GoogleOAuthProvider.ts
-     Line 3: @/features/oauth/models/provider/IOAuthProvider
-     Issue: Services can only import root I*Api interfaces and types from features
-     Fix: Services should only import:
-          - Root interfaces: @/features/{feature}/I{Feature}Api
-          - Types: @/features/{feature}/types/* or .../models/{model}/types/*
-          - Other services: @/services/*
-          - External libraries
-
-  ❌ src/services/oauth/providers/OAuthProviderService.ts
-     Line 3: @/features/oauth/models/provider/IOAuthProvider
-     Issue: Services can only import root I*Api interfaces and types from features
-     Line 4: @/features/oauth/models/provider/IOAuthProviderService
-     Issue: Services can only import root I*Api interfaces and types from features
-     Fix: Services should only import:
-          - Root interfaces: @/features/{feature}/I{Feature}Api
-          - Types: @/features/{feature}/types/* or .../models/{model}/types/*
-          - Other services: @/services/*
+          - Feature interfaces: @/features/{feature}/interfaces/*
+          - Model interfaces: @/features/{feature}/models/{model}/interfaces/*
+          - Feature types: @/features/{feature}/types/*
+          - Model types: @/features/{feature}/models/{model}/types/*
           - External libraries
 
 ================================================================================
-Summary: 7 violation(s)
+Summary: 1 violation(s)
 ```
 
 </details>
@@ -291,7 +253,7 @@ This audit ensures the following architectural patterns:
    - Run: `node ./.claude/skills/arch-audit/scripts/service_import_boundaries.mjs`
    - See detailed output above for specific violations
 
-3. **Service Boundaries**: 7 violation(s)
+3. **Service Boundaries**: 1 violation(s)
    - Run: `node ./.claude/skills/arch-audit/scripts/service_boundaries.mjs`
    - See detailed output above for specific violations
 

@@ -1,7 +1,7 @@
 import { END, EventChannel } from 'redux-saga';
 import { put, call, take, spawn } from 'redux-saga/effects';
 
-import { INetworkApi } from '@/features/wallet/models/network/INetworkApi';
+import { INetworkApi } from '@/features/wallet/models/network/interfaces/INetworkApi';
 
 import { DISABLE_WALLET_SIGN } from '../../../config';
 import { SlowDown } from '../../../utils';

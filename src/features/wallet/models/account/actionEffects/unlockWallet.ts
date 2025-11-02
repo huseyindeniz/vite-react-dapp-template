@@ -2,8 +2,8 @@ import log from 'loglevel';
 import { put, call, select } from 'redux-saga/effects';
 
 import { RootState } from '@/features/app/store/store';
-import { IWalletApi } from '@/features/wallet/IWalletApi';
-import { IAccountApi } from '@/features/wallet/models/account/IAccountApi';
+import { IWalletApi } from '@/features/wallet/interfaces/IWalletApi';
+import { IAccountApi } from '@/features/wallet/models/account/interfaces/IAccountApi';
 
 import { SlowDown } from '../../../utils';
 import * as walletStateSliceActions from '../../slice';

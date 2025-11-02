@@ -1,7 +1,7 @@
 import log from 'loglevel';
 
-import { IOAuthProvider } from '@/features/oauth/models/provider/IOAuthProvider';
-import { IOAuthProviderService } from '@/features/oauth/models/provider/IOAuthProviderService';
+import { IOAuthProvider } from '@/features/oauth/models/provider/interfaces/IOAuthProvider';
+import { IOAuthProviderService } from '@/features/oauth/models/provider/interfaces/IOAuthProviderService';
 import { OAuthProviderName } from '@/features/oauth/models/provider/types/OAuthProviderName';
 
 /**
