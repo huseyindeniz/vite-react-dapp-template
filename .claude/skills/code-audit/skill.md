@@ -472,6 +472,8 @@ export interface FeatureConfig<TState = unknown> {
 - Test files (`*.test.ts`, `*.spec.ts`) - can have multiple test entities
 - Type definition files (`*.d.ts`) - external library typings
 - Storybook files (`*.stories.tsx`) - component stories
+- React component files - can have props interfaces (e.g., `BreadcrumbItem`, `BreadcrumbProps` with `Breadcrumb` component)
+- External library type files - for third-party SDK types (e.g., Google OAuth types)
 
 **Impact:**
 - ❌ God files are hard to navigate and understand
@@ -581,15 +583,16 @@ node ./.claude/skills/code-audit/scripts/check_todos.mjs
 - Reports violations with line numbers and context
 - Helps track incomplete features and technical debt
 
-### 10. Console & Debug Logs Check
+### 10. Console Usage Check
 ```bash
 node ./.claude/skills/code-audit/scripts/check_logs.mjs
 ```
-- Scans production code for logging statements
-- Detects: `console.log()`, `log.debug()`
+- Scans production code for `console.*` statements (FORBIDDEN in this project)
+- Detects: `console.log()`, `console.error()`, `console.warn()`, etc.
+- **Note**: `log.debug()` from loglevel is perfectly fine (disabled in production)
 - Excludes test files and story files
-- Warns about performance overhead and information leakage
 - Reports violations by file with occurrence counts
+- Recommends replacing console.* with log.* from loglevel
 
 ### 11. Redux Saga Patterns Check
 ```bash

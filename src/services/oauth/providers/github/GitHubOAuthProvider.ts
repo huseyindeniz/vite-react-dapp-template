@@ -1,18 +1,25 @@
 import log from 'loglevel';
 
-import { OAuthProviderCredentials, IOAuthProvider } from '@/features/oauth/types/IOAuthProvider';
+import { IOAuthProvider } from '@/features/oauth/models/provider/IOAuthProvider';
+import { OAuthProviderCredentials } from '@/features/oauth/models/provider/types/OAuthProviderCredentials';
 
-import { getGitHubClientId, getGitHubRedirectUri, getGitHubScope } from './utils/env';
+import {
+  getGitHubClientId,
+  getGitHubRedirectUri,
+  getGitHubScope,
+} from './utils/env';
 
 export class GitHubOAuthProvider implements IOAuthProvider {
   name = 'github' as const;
   label = 'GitHub';
-  icon = 'https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png';
+  icon =
+    'https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png';
   color = '#24292e';
 
   private isInitialized = false;
   private loginWindow: Window | null = null;
-  private loginResolve: ((value: OAuthProviderCredentials) => void) | null = null;
+  private loginResolve: ((value: OAuthProviderCredentials) => void) | null =
+    null;
   private loginReject: ((reason?: Error) => void) | null = null;
   private loginTimeout: NodeJS.Timeout | null = null;
   private messageListener: ((event: MessageEvent) => void) | null = null;
@@ -82,18 +89,24 @@ export class GitHubOAuthProvider implements IOAuthProvider {
 
         if (!this.loginWindow) {
           this.cleanup();
-          reject(new Error('Failed to open GitHub login window. Please check your popup blocker.'));
+          reject(
+            new Error(
+              'Failed to open GitHub login window. Please check your popup blocker.'
+            )
+          );
           return;
         }
 
         // Set a timeout for the login process (5 minutes)
-        this.loginTimeout = setTimeout(() => {
-          if (this.loginReject) {
-            this.cleanup();
-            reject(new Error('Login timeout - no response received'));
-          }
-        }, 5 * 60 * 1000);
-
+        this.loginTimeout = setTimeout(
+          () => {
+            if (this.loginReject) {
+              this.cleanup();
+              reject(new Error('Login timeout - no response received'));
+            }
+          },
+          5 * 60 * 1000
+        );
       } catch (error) {
         this.cleanup();
         reject(error);
@@ -110,7 +123,10 @@ export class GitHubOAuthProvider implements IOAuthProvider {
     this.messageListener = (event: MessageEvent) => {
       // Verify origin
       const expectedOrigin = new URL(getGitHubRedirectUri()).origin;
-      if (event.origin !== expectedOrigin && event.origin !== window.location.origin) {
+      if (
+        event.origin !== expectedOrigin &&
+        event.origin !== window.location.origin
+      ) {
         log.debug('Ignoring message from unexpected origin:', event.origin);
         return;
       }
@@ -124,7 +140,9 @@ export class GitHubOAuthProvider implements IOAuthProvider {
         // Validate state
         const storedState = sessionStorage.getItem('github_oauth_state');
         if (state !== storedState) {
-          this.handleError(new Error('Invalid OAuth state. Possible CSRF attack.'));
+          this.handleError(
+            new Error('Invalid OAuth state. Possible CSRF attack.')
+          );
           return;
         }
 
@@ -189,7 +207,9 @@ export class GitHubOAuthProvider implements IOAuthProvider {
   private generateState(): string {
     const array = new Uint8Array(32);
     crypto.getRandomValues(array);
-    return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
+    return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join(
+      ''
+    );
   }
 
   async logout(): Promise<void> {

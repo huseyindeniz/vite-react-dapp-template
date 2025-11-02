@@ -1,6 +1,6 @@
 # Code Audit Report
 
-**Generated:** 2025-11-02T06:51:24.569Z
+**Generated:** 2025-11-02T08:20:52.045Z
 **Project:** vite-react-dapp-template
 
 ## Executive Summary
@@ -8,9 +8,9 @@
 | Metric | Value |
 |--------|-------|
 | **Total Checks** | 11 |
-| **Passed** | ✅ 5 |
-| **Failed** | ❌ 6 |
-| **Success Rate** | 45% |
+| **Passed** | ✅ 7 |
+| **Failed** | ❌ 4 |
+| **Success Rate** | 64% |
 
 ## Results by Check
 
@@ -23,9 +23,9 @@
 | i18n Coverage | ✅ PASSED | Check output |
 | TypeScript "any" Usage | ❌ FAILED | 2 violation(s) |
 | Linter/TypeScript Suppressions | ❌ FAILED | 2 total (Critical: 0, High: 2) |
-| God Files (1 Entity Per File) | ❌ FAILED | 2 file(s), 3 entities to split |
+| God Files (1 Entity Per File) | ✅ PASSED | 0 file(s), 0 entities to split |
 | TODO/FIXME/HACK Comments | ❌ FAILED | 15 marker(s) |
-| Console & Debug Logs | ❌ FAILED | 97 statement(s) |
+| Console Usage | ✅ PASSED | No console usage |
 | Redux Saga Patterns | ✅ PASSED | See details |
 
 ## Failed Checks (Detailed)
@@ -41,7 +41,7 @@
 Service Import Check (Dependency Injection Pattern)
 ================================================================================
 
-Scanning 323 files in src/...
+Scanning 324 files in src/...
 
 Service Import Violations
 --------------------------------------------------------------------------------
@@ -90,7 +90,7 @@ Why this matters:
 React TypeScript "any" Usage Check
 ================================================================================
 
-Scanning 323 TypeScript files in src/...
+Scanning 324 TypeScript files in src/...
 
 TypeScript "any" Type Violations
 --------------------------------------------------------------------------------
@@ -145,7 +145,7 @@ Better alternatives:
 React Linter/TypeScript Suppression Check
 ================================================================================
 
-Scanning 323 files in src/...
+Scanning 324 files in src/...
 
 Linter/TypeScript Suppression Violations
 --------------------------------------------------------------------------------
@@ -188,69 +188,6 @@ Better approach:
   - If truly necessary, use @ts-expect-error with a comment explaining why
   - @ts-expect-error is better than @ts-ignore (fails if error is fixed)
   - Document WHY the suppression is needed
-```
-
-</details>
-
----
-
-### ❌ God Files (1 Entity Per File)
-
-**Summary:** 2 file(s), 3 entities to split
-
-<details>
-<summary>View Details</summary>
-
-```
-React "God File" Check (1 Entity Per File Rule)
-================================================================================
-
-Scanning 323 TypeScript files in src/...
-
-"God File" Violations (Multiple Entities Per File)
---------------------------------------------------------------------------------
-
-❌ Found 2 file(s) with multiple entities
-
-  ❌ src/features/oauth/types/IOAuthProvider.ts (3 entities)
-     Line 4: type OAuthProviderName
-     Line 6: interface OAuthProviderCredentials
-     Line 16: interface IOAuthProvider
-     Rule: 1 entity per file - NO god files!
-     Fix: Split into separate files:
-       - src/features/oauth/types/OAuthProviderName.ts
-       - src/features/oauth/types/OAuthProviderCredentials.ts
-       - src/features/oauth/types/IOAuthProvider.ts
-
-  ❌ src/features/ui/mantine/components/Breadcrumb/Breadcrumb.tsx (2 entities)
-     Line 6: interface BreadcrumbItem
-     Line 11: interface BreadcrumbProps
-     Rule: 1 entity per file - NO god files!
-     Fix: Split into separate files:
-       - src/features/ui/mantine/components/Breadcrumb/BreadcrumbItem.ts
-       - src/features/ui/mantine/components/Breadcrumb/BreadcrumbProps.ts
-
-================================================================================
-Summary
-
-Files with multiple entities: 2
-Total entities that should be in separate files: 3
-
-❌ God file violations found.
-
-Why this matters:
-  - God files become hard to navigate and understand
-  - Makes it difficult to find specific entities
-  - Encourages poor code organization
-  - Violates Single Responsibility Principle
-  - Makes imports less clear and specific
-  - Harder to reuse individual entities
-
-The Rule:
-  - 1 entity per file
-  - File name should match entity name (e.g., UserService.ts for UserService class)
-  - Each file has a clear, focused purpose
-  - Easy to find and understand
 ```
 
 </details>
@@ -329,88 +266,14 @@ Recommendation:
 
 ---
 
-### ❌ Console & Debug Logs
-
-**Summary:** 97 statement(s)
-
-<details>
-<summary>View Details</summary>
-
-```
-Code Quality Check: Console & Debug Logs
-================================================================================
-
-Scanning for console.log and log.debug statements...
-
-Production Logging Issues
---------------------------------------------------------------------------------
-
-❌ Found 97 logging statement(s) in production code
-
-Summary:
-  - log.debug():     97 in 30 file(s)
-  - console.log():   0 in 0 file(s)
-
-🟡 Warning: log.debug() Usage (Performance & Security Risk)
---------------------------------------------------------------------------------
-
-  ⚠️  src\services\ethersV6\wallet\WalletAPI.ts
-     → 18 log.debug() statement(s)
-
-  ⚠️  src\features\slice-manager\SliceLifecycleManager.ts
-     → 15 log.debug() statement(s)
-
-  ⚠️  src\services\oauth\providers\google\GoogleOAuthProvider.ts
-     → 10 log.debug() statement(s)
-
-  ⚠️  src\services\oauth\providers\OAuthProviderService.ts
-     → 8 log.debug() statement(s)
-
-  ⚠️  src\services\oauth\OAuthService.ts
-     → 7 log.debug() statement(s)
-
-  ⚠️  src\services\oauth\providers\github\GitHubOAuthProvider.ts
-     → 7 log.debug() statement(s)
-
-  ⚠️  src\services\oauth\OAuthApi.ts
-     → 4 log.debug() statement(s)
-
-  ⚠️  src\services\chat\LangGraphChatModelAdapter.ts
-     → 2 log.debug() statement(s)
-
-  ⚠️  src\services\chat\GoogleADKChatModelAdapter.ts
-     → 2 log.debug() statement(s)
-
-  ⚠️  src\features\slice-manager\lib\smart-fetch\shouldFetchData.ts
-     → 2 log.debug() statement(s)
-
-  ...and 20 more file(s) with log.debug()
-
---------------------------------------------------------------------------------
-Summary: 97 logging statement(s) found
-
-Issues:
-  - console.log() exposes information in browser console
-  - log.debug() may leak sensitive data if not filtered
-  - Performance overhead in production builds
-
-Recommendation:
-  1. Remove console.log() statements (use proper logger)
-  2. Configure log level filtering for production
-  3. Use environment-based conditional logging
-  4. Consider using a proper logging library with levels
-```
-
-</details>
-
----
-
 ## Passed Checks
 
 - ✅ **Import Quality** - Check output
 - ✅ **Export Quality** - Index files: 0, Default exports: 0
 - ✅ **Redux Abstraction** - useDispatch: 0, RootState: 0, useSelector: 0
 - ✅ **i18n Coverage** - Check output
+- ✅ **God Files (1 Entity Per File)** - 0 file(s), 0 entities to split
+- ✅ **Console Usage** - No console usage
 - ✅ **Redux Saga Patterns** - No violations found
 
 ## Recommendations
@@ -429,16 +292,8 @@ Recommendation:
    - Run: `node ./.claude/skills/code-audit/scripts/linter_typescript_suppressions.mjs`
    - See detailed output above for specific violations
 
-4. **God Files (1 Entity Per File)**: 2 file(s), 3 entities to split
-   - Run: `node ./.claude/skills/code-audit/scripts/god_files__1_entity_per_file_.mjs`
-   - See detailed output above for specific violations
-
-5. **TODO/FIXME/HACK Comments**: 15 marker(s)
+4. **TODO/FIXME/HACK Comments**: 15 marker(s)
    - Run: `node ./.claude/skills/code-audit/scripts/todo_fixme_hack_comments.mjs`
-   - See detailed output above for specific violations
-
-6. **Console & Debug Logs**: 97 statement(s)
-   - Run: `node ./.claude/skills/code-audit/scripts/console___debug_logs.mjs`
    - See detailed output above for specific violations
 
 ## Next Steps

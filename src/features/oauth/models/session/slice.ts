@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { OAuthProviderName } from '../../types/IOAuthProvider';
+import { OAuthProviderName } from '../provider/types/OAuthProviderName';
 
 import { OAuthState } from './types/OAuthState';
 import { initialOAuthState } from './types/OAuthStoreState';

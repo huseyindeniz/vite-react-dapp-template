@@ -2,13 +2,13 @@ import log from 'loglevel';
 import { put, select } from 'redux-saga/effects';
 
 import { RootState } from '@/features/app/store/store';
-import { IOAuthService } from '@/features/oauth/types/IOAuthService';
+import { IOAuthApi } from '@/features/oauth/IOAuthApi';
 
 import * as sliceActions from '../slice';
 import { OAuthState } from '../types/OAuthState';
 import { OAuthStoreState } from '../types/OAuthStoreState';
 
-export function* ActionEffectLogout(oauthService: IOAuthService) {
+export function* ActionEffectLogout(oauthApi: IOAuthApi) {
   try {
     // Set logging out state
     yield put(sliceActions.setState(OAuthState.LOGGING_OUT));
@@ -20,7 +20,7 @@ export function* ActionEffectLogout(oauthService: IOAuthService) {
 
     // Logout using the unified OAuth service - backend handles token validation via httpOnly cookies
     try {
-      yield oauthService.logout(currentProvider || undefined);
+      yield oauthApi.logout(currentProvider || undefined);
     } catch (error) {
       log.debug('Logout failed:', error);
     }

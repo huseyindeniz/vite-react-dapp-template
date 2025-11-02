@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 
-import { OAuthProviderName } from '../types/IOAuthProvider';
+import { OAuthProviderName } from '../models/provider/types/OAuthProviderName';
 
 import { useActions } from './useActions';
 

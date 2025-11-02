@@ -1,9 +1,7 @@
 import log from 'loglevel';
 
-import {
-  OAuthProviderCredentials,
-  IOAuthProvider,
-} from '@/features/oauth/types/IOAuthProvider';
+import { IOAuthProvider } from '@/features/oauth/models/provider/IOAuthProvider';
+import { OAuthProviderCredentials } from '@/features/oauth/models/provider/types/OAuthProviderCredentials';
 
 // Types not needed for redirect mode - removed unused imports
 import {
@@ -205,10 +203,14 @@ export class GoogleOAuthProvider implements IOAuthProvider {
               this.cleanup();
             }
           } catch (error) {
-            this.handleError(new Error(`Failed to process OAuth response: ${error}`));
+            this.handleError(
+              new Error(`Failed to process OAuth response: ${error}`)
+            );
           }
         } else {
-          this.handleError(new Error('No authorization code received from Google OAuth'));
+          this.handleError(
+            new Error('No authorization code received from Google OAuth')
+          );
         }
       }
     };

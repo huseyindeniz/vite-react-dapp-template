@@ -9,7 +9,7 @@ import { IoIosLogOut } from 'react-icons/io';
 import { SUPPORTED_OAUTH_PROVIDERS } from '../../config';
 import { useOAuth } from '../../hooks/useOAuth';
 import { useOAuthActions } from '../../hooks/useOAuthActions';
-import { OAuthProviderName } from '../../types/IOAuthProvider';
+import { OAuthProviderName } from '../../models/provider/types/OAuthProviderName';
 
 interface OAuthButtonProps {
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';

@@ -1,4 +1,4 @@
-import { OAuthProviderName } from '../../../types/IOAuthProvider';
+import { OAuthProviderName } from '../../provider/types/OAuthProviderName';
 
 import { OAuthState } from './OAuthState';
 import { OAuthUser } from './OAuthUser';

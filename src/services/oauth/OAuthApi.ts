@@ -1,6 +1,6 @@
 import log from 'loglevel';
 
-import { IOAuthApi } from '@/features/oauth/IOAuthApi';
+import { ISessionApi } from '@/features/oauth/models/session/ISessionApi';
 import { OAuthTokenExchangeRequest } from '@/features/oauth/models/session/types/OAuthTokenExchangeRequest';
 import { OAuthUser } from '@/features/oauth/models/session/types/OAuthUser';
 
@@ -10,7 +10,7 @@ import { OAuthUser } from '@/features/oauth/models/session/types/OAuthUser';
  * OAuth API service - shows required backend endpoints
  * Currently returns mock data for development
  */
-export class OAuthApi implements IOAuthApi {
+export class OAuthApi implements ISessionApi {
   private static instance: OAuthApi;
   private readonly baseDelay = 500; // Simulate network delay
 

@@ -1,7 +1,8 @@
 import log from 'loglevel';
 
-import { OAuthProviderName, IOAuthProvider } from '@/features/oauth/types/IOAuthProvider';
-import { IOAuthProviderService } from '@/features/oauth/types/IOAuthProviderService';
+import { IOAuthProvider } from '@/features/oauth/models/provider/IOAuthProvider';
+import { IOAuthProviderService } from '@/features/oauth/models/provider/IOAuthProviderService';
+import { OAuthProviderName } from '@/features/oauth/models/provider/types/OAuthProviderName';
 
 /**
  * Service for managing OAuth provider instances
@@ -36,7 +37,9 @@ export class OAuthProviderService implements IOAuthProviderService {
     const provider = this.providers.get(name);
     if (!provider) {
       const availableProviders = Array.from(this.providers.keys()).join(', ');
-      throw new Error(`OAuth provider ${name} not found. Available providers: ${availableProviders}`);
+      throw new Error(
+        `OAuth provider ${name} not found. Available providers: ${availableProviders}`
+      );
     }
     return provider;
   }
@@ -110,7 +113,9 @@ export class OAuthProviderService implements IOAuthProviderService {
    * Get all available (ready to use) providers
    */
   getAvailableProviders(): IOAuthProvider[] {
-    return this.getSupportedProviders().filter(provider => provider.isAvailable());
+    return this.getSupportedProviders().filter(provider =>
+      provider.isAvailable()
+    );
   }
 
   /**

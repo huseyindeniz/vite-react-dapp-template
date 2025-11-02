@@ -31,7 +31,7 @@ export const SUPPORTED_OAUTH_PROVIDERS = [
 export const SUPPORTED_PROVIDER_NAMES = SUPPORTED_OAUTH_PROVIDERS.map(p => p.name);
 
 // Import the derived type for helper functions
-import type { OAuthProviderName } from './types/IOAuthProvider';
+import type { OAuthProviderName } from './models/provider/types/OAuthProviderName';
 
 // Helper function to get provider metadata by name
 export const getOAuthProviderByName = (name: OAuthProviderName): OAuthProviderMetadata => {

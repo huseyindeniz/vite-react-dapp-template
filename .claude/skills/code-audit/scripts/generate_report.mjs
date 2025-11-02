@@ -122,9 +122,9 @@ function parseCheckResult(output, checkName) {
   } else if (checkName.includes('TODO')) {
     const match = output.match(/Found (\d+) technical debt marker/);
     result.summary = match ? `${match[1]} marker(s)` : 'No markers';
-  } else if (checkName.includes('Log')) {
-    const match = output.match(/Found (\d+) logging statement/);
-    result.summary = match ? `${match[1]} statement(s)` : 'No logs';
+  } else if (checkName.includes('Console')) {
+    const match = output.match(/Found (\d+) console\.\* statement/);
+    result.summary = match ? `${match[1]} statement(s)` : 'No console usage';
   } else if (checkName.includes('Saga')) {
     const match = output.match(/Found (\d+) file.*inefficient/);
     result.summary = match ? `${match[1]} file(s) with patterns` : 'No pattern issues';
@@ -152,7 +152,7 @@ async function generateReport() {
     { name: 'Linter/TypeScript Suppressions', script: path.join(__dirname, 'check_suppressions.mjs') },
     { name: 'God Files (1 Entity Per File)', script: path.join(__dirname, 'check_god_files.mjs') },
     { name: 'TODO/FIXME/HACK Comments', script: path.join(__dirname, 'check_todos.mjs') },
-    { name: 'Console & Debug Logs', script: path.join(__dirname, 'check_logs.mjs') },
+    { name: 'Console Usage', script: path.join(__dirname, 'check_logs.mjs') },
     { name: 'Redux Saga Patterns', script: path.join(__dirname, 'check_saga_patterns.mjs') },
   ];
 

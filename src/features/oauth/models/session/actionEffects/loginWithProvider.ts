@@ -2,18 +2,16 @@ import { PayloadAction } from '@reduxjs/toolkit';
 import { SagaIterator } from 'redux-saga';
 import { call, put } from 'redux-saga/effects';
 
-import {
-  OAuthProviderName,
-  OAuthProviderCredentials,
-} from '@/features/oauth/types/IOAuthProvider';
-import { IOAuthService } from '@/features/oauth/types/IOAuthService';
+import { IOAuthApi } from '@/features/oauth/IOAuthApi';
+import { OAuthProviderCredentials } from '@/features/oauth/models/provider/types/OAuthProviderCredentials';
+import { OAuthProviderName } from '@/features/oauth/models/provider/types/OAuthProviderName';
 
 import * as sliceActions from '../slice';
 import { OAuthState } from '../types/OAuthState';
 import { OAuthUser } from '../types/OAuthUser';
 
 export function* ActionEffectLoginWithProvider(
-  oauthService: IOAuthService,
+  oauthApi: IOAuthApi,
   action: PayloadAction<{ provider: OAuthProviderName }>
 ): SagaIterator {
   const { provider: providerName } = action.payload;
@@ -26,7 +24,7 @@ export function* ActionEffectLoginWithProvider(
 
     // Step 1: Get provider credentials (immediate user data for UI feedback)
     const credentials: OAuthProviderCredentials = yield call(
-      [oauthService, oauthService.getProviderCredentials],
+      [oauthApi, oauthApi.getProviderCredentials],
       providerName
     );
 
@@ -45,7 +43,7 @@ export function* ActionEffectLoginWithProvider(
 
     // Step 3: Exchange authorization code with backend for validated user data
     const backendResult: { user: OAuthUser } = yield call(
-      [oauthService, oauthService.exchangeTokenWithBackend],
+      [oauthApi, oauthApi.exchangeTokenWithBackend],
       providerName,
       credentials
     );

@@ -1,17 +1,5 @@
-import { SUPPORTED_OAUTH_PROVIDERS } from '@/features/oauth/config';
-
-// Automatically derive provider names from config - no more hardcoding!
-export type OAuthProviderName = typeof SUPPORTED_OAUTH_PROVIDERS[number]['name'];
-
-export interface OAuthProviderCredentials {
-  token: string;
-  email?: string;
-  name?: string;
-  given_name?: string;
-  picture?: string;
-  sub?: string; // Provider-specific user ID
-  [key: string]: unknown;
-}
+import { OAuthProviderCredentials } from './types/OAuthProviderCredentials';
+import { OAuthProviderName } from './types/OAuthProviderName';
 
 export interface IOAuthProvider {
   name: OAuthProviderName;

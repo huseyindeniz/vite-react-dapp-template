@@ -1,4 +1,4 @@
-import { OAuthProviderName } from '@/features/oauth/types/IOAuthProvider';
+import { OAuthProviderName } from '../../provider/types/OAuthProviderName';
 
 export interface OAuthTokenExchangeRequest {
   provider: OAuthProviderName;

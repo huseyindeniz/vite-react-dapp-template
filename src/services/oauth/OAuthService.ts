@@ -1,13 +1,12 @@
 import log from 'loglevel';
 
 import { getOAuthProviderByName } from '@/features/oauth/config';
+import { IOAuthApi } from '@/features/oauth/IOAuthApi';
+import { IOAuthProvider } from '@/features/oauth/models/provider/IOAuthProvider';
+import { OAuthProviderCredentials } from '@/features/oauth/models/provider/types/OAuthProviderCredentials';
+import { OAuthProviderName } from '@/features/oauth/models/provider/types/OAuthProviderName';
+import { OAuthTokenExchangeRequest } from '@/features/oauth/models/session/types/OAuthTokenExchangeRequest';
 import { OAuthUser } from '@/features/oauth/models/session/types/OAuthUser';
-import {
-  OAuthProviderCredentials,
-  OAuthProviderName,
-  IOAuthProvider,
-} from '@/features/oauth/types/IOAuthProvider';
-import { IOAuthService } from '@/features/oauth/types/IOAuthService';
 
 import { OAuthApi } from './OAuthApi';
 import { OAuthProviderService } from './providers/OAuthProviderService';
@@ -15,9 +14,9 @@ import { OAuthProviderService } from './providers/OAuthProviderService';
 /**
  * Unified OAuth service that combines API calls and provider management
  * Provides high-level OAuth operations for the application
- * Implements IOAuthService interface from features layer
+ * Implements IOAuthApi interface from features layer
  */
-export class OAuthService implements IOAuthService {
+export class OAuthService implements IOAuthApi {
   private static instance: OAuthService;
   private oauthApi: OAuthApi;
   private providerService: OAuthProviderService;
@@ -65,6 +64,14 @@ export class OAuthService implements IOAuthService {
 
   getAvailableProviders(): IOAuthProvider[] {
     return this.providerService.getAvailableProviders();
+  }
+
+  // Session API methods (delegated to OAuthApi)
+
+  async exchangeToken(
+    request: OAuthTokenExchangeRequest
+  ): Promise<{ user: OAuthUser }> {
+    return this.oauthApi.exchangeToken(request);
   }
 
   // High-level auth operations that support immediate feedback + backend validation

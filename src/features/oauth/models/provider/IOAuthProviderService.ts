@@ -1,4 +1,5 @@
-import { OAuthProviderName, IOAuthProvider } from './IOAuthProvider';
+import { IOAuthProvider } from './IOAuthProvider';
+import { OAuthProviderName } from './types/OAuthProviderName';
 
 export interface IOAuthProviderService {
   /**
