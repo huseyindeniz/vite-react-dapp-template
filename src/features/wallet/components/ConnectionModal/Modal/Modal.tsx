@@ -77,8 +77,9 @@ export const Modal: React.FC<ModalProps> = ({
             : t('Check Web3 Wallet Signature')
         }
         description={
-          DISABLE_WALLET_SIGN ??
-          t('The login request needs to be signed in the Web3 wallet.')
+          DISABLE_WALLET_SIGN
+            ? ''
+            : t('The login request needs to be signed in the Web3 wallet.')
         }
         icon={
           DISABLE_WALLET_SIGN ? <MdAccountBalanceWallet /> : <FaFileSignature />

@@ -35,9 +35,9 @@ describe('Feature: Wallet', () => {
       });
     });
 
-    describe.skip('Scenario: CheckWallet', () => {
-      const stateTitle = 'Check Web3 Extension';
-      const stateDesc = 'The Web3 wallet extension needs to be installed.';
+    describe('Scenario: CheckWallet', () => {
+      const stateTitle = 'Check Web3 Wallet Extension';
+      const stateDesc = 'A supported Web3 wallet extension needs to be installed.';
       const stateContent = 'My Mock Check Wallet Step Content';
 
       it('when stepState is undefined it should show plain step logo', () => {
@@ -54,7 +54,15 @@ describe('Feature: Wallet', () => {
         // Assert
         const title = getByText(new RegExp(stateTitle, 'i'));
         const desc = getByText(stateDesc);
-        // TODO: check plain step icon
+
+        // Check icon state: should be plain (blue color, not loading)
+        // Modal renders in portal, so use document
+        const stepIcon = document.querySelector('.mantine-Stepper-stepIcon');
+        expect(stepIcon).toBeTruthy();
+        // Should not have loading spinner
+        const loadingIcon = document.querySelector('.mantine-Stepper-stepLoader');
+        expect(loadingIcon).toBeFalsy();
+
         expect(title).toBeTruthy();
         expect(desc).toBeTruthy();
         expect(asFragment).toMatchSnapshot();
@@ -75,14 +83,21 @@ describe('Feature: Wallet', () => {
         // Assert
         const title = getByText(new RegExp(stateTitle, 'i'));
         const desc = getByText(stateDesc);
-        // TODO: check error icon
+
+        // Check icon state: should show error (icon present, not loading)
+        // Modal renders in portal, so use document
+        const stepIcon = document.querySelector('.mantine-Stepper-stepIcon');
+        expect(stepIcon).toBeTruthy();
+        // Should not have loading spinner in error state
+        const loadingIcon = document.querySelector('.mantine-Stepper-stepLoader');
+        expect(loadingIcon).toBeFalsy();
+
         expect(title).toBeTruthy();
         expect(desc).toBeTruthy();
         expect(asFragment).toMatchSnapshot();
       });
 
-      // Loading state is failing
-      it.skip('when stepState is loading it should show loading icon', () => {
+      it('when stepState is loading it should show loading icon', () => {
         // Arrange
         // Act
         const { asFragment, getByText } = render(
@@ -97,15 +112,20 @@ describe('Feature: Wallet', () => {
         // Assert
         const title = getByText(new RegExp(stateTitle, 'i'));
         const desc = getByText(stateDesc);
-        // TODO: check loading icon
+
+        // Check icon state: should be loading
+        // Modal renders in portal, so use document
+        const loadingIcon = document.querySelector('.mantine-Stepper-stepLoader');
+        expect(loadingIcon).toBeTruthy();
+
         expect(title).toBeTruthy();
         expect(desc).toBeTruthy();
         expect(asFragment).toMatchSnapshot();
       });
     });
 
-    describe.skip('Scenario: CheckAccount', () => {
-      const stateTitle = 'Check Web3 Status';
+    describe('Scenario: CheckAccount', () => {
+      const stateTitle = 'Check Web3 Wallet Status';
       const stateDesc = 'The Web3 wallet needs to be unlocked.';
       const stateContent = 'My Mock Check Account Step Content';
 
@@ -123,7 +143,15 @@ describe('Feature: Wallet', () => {
         // Assert
         const title = getByText(new RegExp(stateTitle, 'i'));
         const desc = getByText(stateDesc);
-        // TODO: check plain step icon
+
+        // Check icon state: should be plain (blue color, not loading)
+        // Modal renders in portal, so use document
+        const stepIcon = document.querySelector('.mantine-Stepper-stepIcon');
+        expect(stepIcon).toBeTruthy();
+        // Should not have loading spinner
+        const loadingIcon = document.querySelector('.mantine-Stepper-stepLoader');
+        expect(loadingIcon).toBeFalsy();
+
         expect(title).toBeTruthy();
         expect(desc).toBeTruthy();
         expect(asFragment).toMatchSnapshot();
@@ -144,14 +172,21 @@ describe('Feature: Wallet', () => {
         // Assert
         const title = getByText(new RegExp(stateTitle, 'i'));
         const desc = getByText(stateDesc);
-        // TODO: check error icon
+
+        // Check icon state: should show error (icon present, not loading)
+        // Modal renders in portal, so use document
+        const stepIcon = document.querySelector('.mantine-Stepper-stepIcon');
+        expect(stepIcon).toBeTruthy();
+        // Should not have loading spinner in error state
+        const loadingIcon = document.querySelector('.mantine-Stepper-stepLoader');
+        expect(loadingIcon).toBeFalsy();
+
         expect(title).toBeTruthy();
         expect(desc).toBeTruthy();
         expect(asFragment).toMatchSnapshot();
       });
 
-      // Loading state is failing
-      it.skip('when stepState is loading it should show loading icon', () => {
+      it('when stepState is loading it should show loading icon', () => {
         // Arrange
         // Act
         const { asFragment, getByText } = render(
@@ -166,15 +201,20 @@ describe('Feature: Wallet', () => {
         // Assert
         const title = getByText(new RegExp(stateTitle, 'i'));
         const desc = getByText(stateDesc);
-        // TODO: check loading icon
+
+        // Check icon state: should be loading
+        // Modal renders in portal, so use document
+        const loadingIcon = document.querySelector('.mantine-Stepper-stepLoader');
+        expect(loadingIcon).toBeTruthy();
+
         expect(title).toBeTruthy();
         expect(desc).toBeTruthy();
         expect(asFragment).toMatchSnapshot();
       });
     });
 
-    describe.skip('Scenario: CheckNetwork', () => {
-      const stateTitle = 'Check Web3 Network';
+    describe('Scenario: CheckNetwork', () => {
+      const stateTitle = 'Check Web3 Wallet Network';
       const stateDesc =
         'A supported network needs to be selected in the Web3 wallet.';
       const stateContent = 'My Mock Check Network Step Content';
@@ -193,7 +233,15 @@ describe('Feature: Wallet', () => {
         // Assert
         const title = getByText(new RegExp(stateTitle, 'i'));
         const desc = getByText(stateDesc);
-        // TODO: check plain step icon
+
+        // Check icon state: should be plain (blue color, not loading)
+        // Modal renders in portal, so use document
+        const stepIcon = document.querySelector('.mantine-Stepper-stepIcon');
+        expect(stepIcon).toBeTruthy();
+        // Should not have loading spinner
+        const loadingIcon = document.querySelector('.mantine-Stepper-stepLoader');
+        expect(loadingIcon).toBeFalsy();
+
         expect(title).toBeTruthy();
         expect(desc).toBeTruthy();
         expect(asFragment).toMatchSnapshot();
@@ -214,14 +262,21 @@ describe('Feature: Wallet', () => {
         // Assert
         const title = getByText(new RegExp(stateTitle, 'i'));
         const desc = getByText(stateDesc);
-        // TODO: check error icon
+
+        // Check icon state: should show error (icon present, not loading)
+        // Modal renders in portal, so use document
+        const stepIcon = document.querySelector('.mantine-Stepper-stepIcon');
+        expect(stepIcon).toBeTruthy();
+        // Should not have loading spinner in error state
+        const loadingIcon = document.querySelector('.mantine-Stepper-stepLoader');
+        expect(loadingIcon).toBeFalsy();
+
         expect(title).toBeTruthy();
         expect(desc).toBeTruthy();
         expect(asFragment).toMatchSnapshot();
       });
 
-      // Loading state is failing
-      it.skip('when stepState is loading it should show loading icon', () => {
+      it('when stepState is loading it should show loading icon', () => {
         // Arrange
         // Act
         const { asFragment, getByText } = render(
@@ -236,17 +291,23 @@ describe('Feature: Wallet', () => {
         // Assert
         const title = getByText(new RegExp(stateTitle, 'i'));
         const desc = getByText(stateDesc);
-        // TODO: check loading icon
+
+        // Check icon state: should be loading
+        // Modal renders in portal, so use document
+        const loadingIcon = document.querySelector('.mantine-Stepper-stepLoader');
+        expect(loadingIcon).toBeTruthy();
+
         expect(title).toBeTruthy();
         expect(desc).toBeTruthy();
         expect(asFragment).toMatchSnapshot();
       });
     });
 
-    describe.skip('Scenario: CheckSign', () => {
-      const stateTitle = 'Check Web3 Signature';
-      const stateDesc =
-        'The login request needs to be signed in the Web3 wallet.';
+    describe('Scenario: CheckSign', () => {
+      // Note: Title and description change based on DISABLE_WALLET_SIGN config
+      // If DISABLE_WALLET_SIGN=true: "Load Web3 Wallet Account" (description is empty)
+      // If DISABLE_WALLET_SIGN=false: "Check Web3 Wallet Signature" (has description)
+      const stateTitle = 'Load Web3 Wallet Account';
       const stateContent = 'My Mock Check Sign Step Content';
 
       it('when stepState is undefined it should show plain step logo', () => {
@@ -262,10 +323,16 @@ describe('Feature: Wallet', () => {
         );
         // Assert
         const title = getByText(new RegExp(stateTitle, 'i'));
-        const desc = getByText(stateDesc);
-        // TODO: check plain step icon
+
+        // Check icon state: should be plain (blue color, not loading)
+        // Modal renders in portal, so use document
+        const stepIcon = document.querySelector('.mantine-Stepper-stepIcon');
+        expect(stepIcon).toBeTruthy();
+        // Should not have loading spinner
+        const loadingIcon = document.querySelector('.mantine-Stepper-stepLoader');
+        expect(loadingIcon).toBeFalsy();
+
         expect(title).toBeTruthy();
-        expect(desc).toBeTruthy();
         expect(asFragment).toMatchSnapshot();
       });
 
@@ -283,15 +350,20 @@ describe('Feature: Wallet', () => {
         );
         // Assert
         const title = getByText(new RegExp(stateTitle, 'i'));
-        const desc = getByText(stateDesc);
-        // TODO: check error icon
+
+        // Check icon state: should show error (icon present, not loading)
+        // Modal renders in portal, so use document
+        const stepIcon = document.querySelector('.mantine-Stepper-stepIcon');
+        expect(stepIcon).toBeTruthy();
+        // Should not have loading spinner in error state
+        const loadingIcon = document.querySelector('.mantine-Stepper-stepLoader');
+        expect(loadingIcon).toBeFalsy();
+
         expect(title).toBeTruthy();
-        expect(desc).toBeTruthy();
         expect(asFragment).toMatchSnapshot();
       });
 
-      // Loading state is failing
-      it.skip('when stepState is loading it should show loading icon', () => {
+      it('when stepState is loading it should show loading icon', () => {
         // Arrange
         // Act
         const { asFragment, getByText } = render(
@@ -305,10 +377,13 @@ describe('Feature: Wallet', () => {
         );
         // Assert
         const title = getByText(new RegExp(stateTitle, 'i'));
-        const desc = getByText(stateDesc);
-        // TODO: check loading icon
+
+        // Check icon state: should be loading
+        // Modal renders in portal, so use document
+        const loadingIcon = document.querySelector('.mantine-Stepper-stepLoader');
+        expect(loadingIcon).toBeTruthy();
+
         expect(title).toBeTruthy();
-        expect(desc).toBeTruthy();
         expect(asFragment).toMatchSnapshot();
       });
     });

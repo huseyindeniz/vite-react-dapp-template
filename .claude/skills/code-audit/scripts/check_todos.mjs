@@ -122,6 +122,19 @@ if (results.todos.length > 0) {
   }
 }
 
+if (results.others.length > 0) {
+  console.log('⚪ Other: Miscellaneous Markers (XXX, BUG, etc.)');
+  console.log('--------------------------------------------------------------------------------\n');
+  results.others.slice(0, 10).forEach(item => {
+    console.log(`  ${item.file}:${item.line}`);
+    console.log(`  → ${item.text}`);
+    console.log('');
+  });
+  if (results.others.length > 10) {
+    console.log(`  ...and ${results.others.length - 10} more marker(s)\n`);
+  }
+}
+
 console.log('--------------------------------------------------------------------------------');
 console.log(`Summary: ${totalCount} technical debt marker(s) found\n`);
 console.log('Recommendation:');

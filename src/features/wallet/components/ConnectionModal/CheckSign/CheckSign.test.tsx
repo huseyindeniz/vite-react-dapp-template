@@ -45,12 +45,17 @@ describe('Feature: Wallet', () => {
       it('should be visible and show information', () => {
         // Arrange
         const expectedMessage = 'Waiting for the login request to be signed.';
+        const expectedCounter = SignRequested.args?.signCounter || 0;
+        const expectedCounterText = `${expectedCounter}s`;
         // Act
         const { asFragment, getByText } = render(<SignRequested />);
         // Assert
         const actualMessage = getByText(new RegExp(expectedMessage, 'i'));
-        // TODO: check the signCounter if possible
+        const actualCounter = getByText(expectedCounterText);
+
         expect(actualMessage).toHaveTextContent(expectedMessage);
+        expect(actualCounter).toBeVisible();
+        expect(actualCounter).toHaveTextContent(expectedCounterText);
         expect(asFragment).toMatchSnapshot();
       });
     });
