@@ -8,8 +8,8 @@ import {
   IoShield,
 } from 'react-icons/io5';
 
+import { ProtectionType } from '@/features/app/config/auth/ProtectionType';
 import { PageType } from '@/features/router/types/PageType';
-import { ProtectionType } from '@/features/router/types/ProtectionType';
 
 // =============================================================================
 // USER PAGE IMPORTS - Add your page imports below

@@ -10,7 +10,7 @@ const __dirname = path.dirname(__filename);
 const projectRoot = path.resolve(__dirname, '../../../..');
 const featuresDir = path.join(projectRoot, 'src', 'features');
 
-const CORE_FEATURES = ['app', 'i18n', 'router', 'slice-manager', 'ui'];
+const CORE_FEATURES = ['app', 'auth', 'i18n', 'router', 'slice-manager', 'ui'];
 const COMPOSITION_ROOT = 'src/features/app/config/';
 const validExtensions = ['.ts', '.tsx', '.js', '.jsx'];
 

@@ -11,7 +11,7 @@ export const BlogSlices = {
 } as const;
 
 // Configuration for your blog feature
-export const configureBlogFeature = () => {
+export const configureSlice = () => {
   const manager = getSliceManager();
 
   // Register the blog feature with its routes

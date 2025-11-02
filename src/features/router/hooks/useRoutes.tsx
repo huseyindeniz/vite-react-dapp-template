@@ -2,12 +2,12 @@ import React from 'react';
 
 import { useTranslation } from 'react-i18next';
 
+import { ProtectionType } from '@/features/app/config/auth/ProtectionType';
 import { getUserPageRoutes } from '@/features/app/config/routes';
-import { getOAuthRoutes } from '@/features/oauth/routes';
+import { getAuthRoutes } from '@/features/auth/utils/getAuthRoutes';
 
 import { AppRoutes } from '../types/AppRoutes';
 import { PageType } from '../types/PageType';
-import { ProtectionType } from '../types/ProtectionType';
 
 // System Pages - DO NOT MODIFY
 const HomePage = React.lazy(() =>
@@ -54,11 +54,11 @@ export const useRoutes = (): AppRoutes => {
 
   // Get user page routes with translation function
   const userPageRoutes = getUserPageRoutes(t);
-  const oauthRoutes = getOAuthRoutes();
+  const authRoutes = getAuthRoutes() as PageType[];
   return {
     homeRoute,
     userRoute,
     pageRoutes: userPageRoutes,
-    authRoutes: oauthRoutes,
+    authRoutes,
   };
 };

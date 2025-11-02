@@ -1,6 +1,6 @@
 # Architecture Audit Report
 
-**Generated:** 2025-11-02T12:41:12.348Z
+**Generated:** 2025-11-02T15:49:03.824Z
 **Project:** vite-react-dapp-template
 
 ## Executive Summary
@@ -8,15 +8,15 @@
 | Metric | Value |
 |--------|-------|
 | **Total Checks** | 8 |
-| **Passed** | ✅ 7 |
-| **Failed** | ❌ 1 |
-| **Success Rate** | 88% |
+| **Passed** | ✅ 8 |
+| **Failed** | ❌ 0 |
+| **Success Rate** | 100% |
 
 ## Results by Check
 
 | Check | Status | Summary |
 |-------|--------|---------|
-| Core → Domain Dependency | ❌ FAILED | 5 violation(s) |
+| Core → Domain Dependency | ✅ PASSED | 0 violation(s) |
 | Service Import Boundaries | ✅ PASSED | 0 violation(s) |
 | Service Boundaries | ✅ PASSED | 0 violation(s) |
 | Pages Boundaries | ✅ PASSED | 0 violation(s) |
@@ -25,48 +25,9 @@
 | Sagas Import Rules | ✅ PASSED | 0 violation(s) |
 | Circular Dependencies | ✅ PASSED | No circular dependencies |
 
-## Failed Checks (Detailed)
-
-### ❌ Core → Domain Dependency
-
-**Summary:** 5 violation(s)
-
-<details>
-<summary>View Details</summary>
-
-```
-Core → Domain Dependency Check
-================================================================================
-
-Rule: Core features (infrastructure) MUST NOT depend on domain features
-Exception: src/features/app/config/ (composition root) can import anything
-
-Violations
---------------------------------------------------------------------------------
-
-❌ Found 5 violation(s)
-
-  ❌ router (core) → domain features:
-     → wallet (domain)
-        File: src/features/router/hooks/usePages.tsx
-        File: src/features/router/Router.tsx
-        File: src/features/router/Router.tsx
-     → oauth (domain)
-        File: src/features/router/hooks/useRoutes.tsx
-        File: src/features/router/Router.tsx
-
-Fix: Move these dependencies to src/features/app/config/
-
-================================================================================
-Summary: 5 violation(s)
-```
-
-</details>
-
----
-
 ## Passed Checks
 
+- ✅ **Core → Domain Dependency** - 0 violation(s)
 - ✅ **Service Import Boundaries** - 0 violation(s)
 - ✅ **Service Boundaries** - 0 violation(s)
 - ✅ **Pages Boundaries** - 0 violation(s)
@@ -105,11 +66,7 @@ This audit ensures the following architectural patterns:
 
 ## Recommendations
 
-### Priority Actions
-
-1. **Core → Domain Dependency**: 5 violation(s)
-   - Run: `node ./.claude/skills/arch-audit/scripts/core___domain_dependency.mjs`
-   - See detailed output above for specific violations
+🎉 **All architecture checks passed!** Your codebase follows excellent architectural patterns.
 
 ## Next Steps
 

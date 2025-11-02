@@ -18,9 +18,7 @@ const buildReducers = () => {
   const reducers: Record<string, Reducer> = {};
 
   for (const [, feature] of Object.entries(features)) {
-    if (feature.enabled) {
-      reducers[feature.store.stateKey] = feature.store.reducer;
-    }
+    reducers[feature.store.stateKey] = feature.store.reducer;
   }
 
   return reducers;
@@ -35,16 +33,14 @@ function* rootSaga() {
   const sagas = [];
 
   for (const [, feature] of Object.entries(features)) {
-    if (feature.enabled) {
-      const { saga: sagaFn, dependencies } = feature.saga;
-      // Cast to Saga type to satisfy TypeScript when iterating dynamically
-      const typedSaga = sagaFn as Saga;
+    const { saga: sagaFn, dependencies } = feature.saga;
+    // Cast to Saga type to satisfy TypeScript when iterating dynamically
+    const typedSaga = sagaFn as Saga;
 
-      if (dependencies && dependencies.length > 0) {
-        sagas.push(fork(typedSaga, ...dependencies));
-      } else {
-        sagas.push(fork(typedSaga));
-      }
+    if (dependencies && dependencies.length > 0) {
+      sagas.push(fork(typedSaga, ...dependencies));
+    } else {
+      sagas.push(fork(typedSaga));
     }
   }
 

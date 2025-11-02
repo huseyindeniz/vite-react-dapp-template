@@ -2,7 +2,7 @@ import log from 'loglevel';
 import { call, put } from 'redux-saga/effects';
 
 import { RootState } from '@/features/app/store/store';
-import { BlogSlices } from '@/features/blog-demo/configureBlogFeature';
+import { BlogSlices } from '@/features/blog-demo/configureSlice';
 import { IBlogDemoApi } from '@/features/blog-demo/interfaces/IBlogDemoApi';
 import { smartFetch } from '@/features/slice-manager/sagas/smartFetch';
 

@@ -1,20 +1,20 @@
 import React, { JSX, useEffect } from 'react';
 
-import { RouteObject, useRoutes as useReactRouterRoutes } from 'react-router-dom';
+import {
+  RouteObject,
+  useRoutes as useReactRouterRoutes,
+} from 'react-router-dom';
 
 import { features } from '@/features/app/config/features';
 import { HeaderExtension } from '@/features/app/config/layout-extensions/headerExtension';
 import { NavbarExtension } from '@/features/app/config/layout-extensions/navbarExtension';
+import { applyProtection } from '@/features/auth/utils/applyProtection';
 import { i18nConfig } from '@/features/i18n/config';
-import { withOAuthProtection } from '@/features/oauth/hocs/withOAuthProtection';
 import { useSliceManagerInit } from '@/features/slice-manager/hooks/useSliceManagerInit';
-import { withWalletProtection } from '@/features/wallet/hocs/withWalletProtection';
-import { usePostLoginRedirect } from '@/features/wallet/hooks/usePostLoginRedirect';
 
 import { isHashRouter } from './config';
 import { useRoutes } from './hooks/useRoutes';
 import { PageType } from './types/PageType';
-import { ProtectionType } from './types/ProtectionType';
 
 const HashRouter = React.lazy(() =>
   import(/* webpackChunkName: "Router" */ 'react-router-dom').then(module => ({
@@ -51,8 +51,7 @@ const NotFoundPage = React.lazy(() =>
 );
 
 const Routes: React.FC = () => {
-  // Handle post-login redirect (only triggers on auth state transition)
-  usePostLoginRedirect();
+  // Note: Auth providers handle their own redirects internally
 
   // Initialize the slice manager
   const sliceManager = useSliceManagerInit();
@@ -61,8 +60,8 @@ const Routes: React.FC = () => {
     if (sliceManager) {
       // Configure slice manager for all features that need it
       Object.values(features).forEach(feature => {
-        if (feature.enabled && 'configureSliceManager' in feature && feature.configureSliceManager) {
-          feature.configureSliceManager();
+        if ('configureSlice' in feature && feature.configureSlice) {
+          feature.configureSlice();
         }
       });
     }
@@ -71,20 +70,6 @@ const Routes: React.FC = () => {
   // Get all routes (system + user routes combined)
   const routes = useRoutes();
   const { homeRoute, userRoute, pageRoutes, authRoutes } = routes;
-
-  const applyProtection = (element: JSX.Element, protectionType?: ProtectionType): JSX.Element => {
-    switch (protectionType) {
-      case ProtectionType.WALLET:
-        return withWalletProtection(element);
-      case ProtectionType.AUTH:
-        return withOAuthProtection(element);
-      case ProtectionType.BOTH:
-        return withOAuthProtection(withWalletProtection(element));
-      case ProtectionType.NONE:
-      default:
-        return element;
-    }
-  };
 
   // Flatten routes - extract subRoutes and create flat list for React Router
   const flattenRoutes = (routes: PageType[]): PageType[] => {

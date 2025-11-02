@@ -3,7 +3,6 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { i18nConfig } from '@/features/i18n/config';
-import { useWalletAuthentication } from '@/features/wallet/hooks/useWalletAuthentication';
 
 import { MenuType } from '../types/MenuType';
 
@@ -11,7 +10,6 @@ import { useRoutes } from './useRoutes';
 
 export const usePages = () => {
   const { i18n } = useTranslation('Menu');
-  const { isAuthenticated } = useWalletAuthentication();
 
   const { homeRoute, userRoute, pageRoutes } = useRoutes();
 
@@ -61,5 +59,5 @@ export const usePages = () => {
       mainMenuItems,
       secondaryMenuItems,
     };
-  }, [i18n.resolvedLanguage, isAuthenticated]);
+  }, [i18n.resolvedLanguage, homeRoute, userRoute, pageRoutes, mainMenuItems, secondaryMenuItems]);
 };

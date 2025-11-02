@@ -10,6 +10,9 @@ import { theme } from '@/features/ui/mantine/theme';
 
 import '@/features/i18n/i18n';
 
+// Register auth providers (composition root)
+import './config/auth/auth';
+
 import { composeProviders } from './context-providers/composeProviders';
 import { createProvider } from './context-providers/createProvider';
 
