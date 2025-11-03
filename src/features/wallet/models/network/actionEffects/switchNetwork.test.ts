@@ -2,7 +2,7 @@ import { call } from 'redux-saga/effects';
 import { expectSaga } from 'redux-saga-test-plan';
 import { throwError } from 'redux-saga-test-plan/providers';
 
-import { IWalletNetworkApi } from '@/features/wallet/interfaces/IWalletNetworkApi';
+import { INetworkApi } from '@/features/wallet/models/network/interfaces/INetworkApi';
 
 import { HardhatChain } from '../../../chains/hardhat';
 import { SlowDown } from '../../../utils';
@@ -16,7 +16,7 @@ import {
   HandleStateNetworkSwitchRequested,
 } from './switchNetwork';
 
-const mockWalletNetworkApi: IWalletNetworkApi = {
+const mockWalletNetworkApi: INetworkApi = {
   loadNetwork: vi.fn(),
   getNetwork: vi.fn(),
   switchNetwork: vi.fn(),

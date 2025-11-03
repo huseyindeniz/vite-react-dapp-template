@@ -19,7 +19,7 @@ import logo from './assets/images/logo.svg';
 import { Environment } from './components/Environment';
 
 export const HomePage: React.FC = () => {
-  const { t } = useTranslation('PageHome');
+  const { t } = useTranslation('page-home');
   const title: string = t('React dApp Template (Vite)');
   const description: string = t(
     'React dApp Template (Vite) is a Vite React template specifically designed for decentralized application (dApp) frontend development.'

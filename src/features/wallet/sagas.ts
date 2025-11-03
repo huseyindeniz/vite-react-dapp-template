@@ -1,6 +1,6 @@
 import { takeLatest } from 'redux-saga/effects';
 
-import { IWalletAPI } from './interfaces/IWalletAPI';
+import { IWalletApi } from './interfaces/IWalletApi';
 import { ActionEffectDisconnectWallet } from './models/account/actionEffects/disconnectWallet';
 import { ActionEffectLoadAccount } from './models/account/actionEffects/loadAccount';
 import {
@@ -20,7 +20,7 @@ import {
 import * as providerActions from './models/provider/actions';
 
 // ACTION EFFECTS
-export function* watchWalletSaga(walletApi: IWalletAPI) {
+export function* watchWalletSaga(walletApi: IWalletApi) {
   yield takeLatest(
     providerActions.connectWallet.type,
     ActionEffectLoadProvider,

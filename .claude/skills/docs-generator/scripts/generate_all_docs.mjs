@@ -1,0 +1,380 @@
+#!/usr/bin/env node
+
+import { generateFeatureDocs } from './generate_feature_docs.mjs';
+import { analyzeArchitecture } from './analyze_architecture.mjs';
+import { generateDiagrams } from './generate_diagrams_plantuml.mjs';
+import { generateGuides } from './generate_guides.mjs';
+import { generateExecutiveDocs } from './generate_executive_docs.mjs';
+import { getAllFeatures, ensureDocsOutputDir, writeFile } from './utils/fileUtils.mjs';
+import path from 'path';
+
+/**
+ * Generate documentation for ALL features
+ */
+async function generateAllDocs() {
+  console.log('\n' + '='.repeat(80));
+  console.log('GENERATING DOCUMENTATION FOR ALL FEATURES');
+  console.log('='.repeat(80));
+
+  const allFeatures = getAllFeatures();
+  const results = {
+    success: [],
+    failed: []
+  };
+
+  console.log(`\nFound ${allFeatures.length} features to document:\n`);
+  allFeatures.forEach((f, i) => console.log(`  ${i + 1}. ${f}`));
+
+  console.log('\n' + '='.repeat(80));
+  console.log('Starting documentation generation...');
+  console.log('='.repeat(80));
+
+  for (const feature of allFeatures) {
+    try {
+      console.log(`\n[${results.success.length + results.failed.length + 1}/${allFeatures.length}] Processing: ${feature}...`);
+      const outputPath = generateFeatureDocs(feature);
+      results.success.push({ feature, path: outputPath });
+      console.log(`✅ Success: ${feature}`);
+    } catch (error) {
+      results.failed.push({ feature, error: error.message });
+      console.error(`❌ Failed: ${feature} - ${error.message}`);
+    }
+  }
+
+  // Generate architecture analysis
+  console.log('\n' + '='.repeat(80));
+  console.log('Generating architecture analysis...');
+  console.log('='.repeat(80));
+
+  let architecture;
+  try {
+    architecture = analyzeArchitecture();
+  } catch (error) {
+    console.error(`❌ Architecture analysis failed: ${error.message}`);
+    architecture = null;
+  }
+
+  // Generate diagrams
+  console.log('\n' + '='.repeat(80));
+  console.log('Generating diagrams...');
+  console.log('='.repeat(80));
+
+  let diagrams;
+  try {
+    diagrams = generateDiagrams();
+  } catch (error) {
+    console.error(`❌ Diagram generation failed: ${error.message}`);
+    diagrams = [];
+  }
+
+  // Generate guides
+  console.log('\n' + '='.repeat(80));
+  console.log('Generating guides...');
+  console.log('='.repeat(80));
+
+  let guides;
+  try {
+    guides = generateGuides();
+  } catch (error) {
+    console.error(`❌ Guide generation failed: ${error.message}`);
+    guides = [];
+  }
+
+  // Generate executive documentation
+  console.log('\n' + '='.repeat(80));
+  console.log('Generating executive documentation...');
+  console.log('='.repeat(80));
+
+  let executiveDocs;
+  try {
+    executiveDocs = generateExecutiveDocs();
+  } catch (error) {
+    console.error(`❌ Executive docs generation failed: ${error.message}`);
+    executiveDocs = [];
+  }
+
+  // Generate index/README files
+  console.log('\n' + '='.repeat(80));
+  console.log('Generating index files...');
+  console.log('='.repeat(80));
+
+  const outputDir = ensureDocsOutputDir();
+
+  // Generate main README
+  generateMainReadme(outputDir, allFeatures, results, architecture, diagrams, guides);
+
+  // Generate features README
+  generateFeaturesReadme(outputDir, allFeatures, results);
+
+  // Generate architecture README
+  if (architecture) {
+    generateArchitectureReadme(outputDir, architecture, diagrams);
+  }
+
+  // Print final summary
+  console.log('\n' + '='.repeat(80));
+  console.log('DOCUMENTATION GENERATION COMPLETE');
+  console.log('='.repeat(80));
+
+  console.log(`\n📊 Summary:`);
+  console.log(`  ✅ Success: ${results.success.length}`);
+  console.log(`  ❌ Failed: ${results.failed.length}`);
+  console.log(`  📁 Output: ${outputDir}`);
+
+  if (results.success.length > 0) {
+    console.log(`\n✅ Successfully documented features:`);
+    results.success.forEach(r => console.log(`  - ${r.feature}`));
+  }
+
+  if (results.failed.length > 0) {
+    console.log(`\n❌ Failed to document features:`);
+    results.failed.forEach(r => console.log(`  - ${r.feature}: ${r.error}`));
+  }
+
+  console.log(`\n📊 Generated:`);
+  console.log(`  - Feature Docs: ${results.success.length}`);
+  console.log(`  - Diagrams: ${diagrams ? diagrams.length : 0}`);
+  console.log(`  - Guides: ${guides ? guides.length : 0}`);
+  console.log(`  - Executive Docs: ${executiveDocs ? executiveDocs.length : 0}`);
+  console.log(`  - Architecture Analysis: ${architecture ? '✅' : '❌'}`);
+
+  console.log(`\n📖 View documentation:`);
+  console.log(`  - Main: ${outputDir}/README.md`);
+  console.log(`  - Architecture: ${outputDir}/ARCHITECTURE.md`);
+  console.log(`  - Tech Stack: ${outputDir}/TECH_STACK.md`);
+  console.log(`  - Dependencies: ${outputDir}/DEPENDENCIES.md`);
+  console.log('='.repeat(80));
+
+  process.exit(results.failed.length > 0 ? 1 : 0);
+}
+
+/**
+ * Generate main README.md
+ */
+function generateMainReadme(outputDir, allFeatures, results, architecture, diagrams, guides) {
+  const date = new Date().toISOString().split('T')[0];
+
+  const content = `# Documentation
+
+**Generated:** ${new Date().toISOString()}
+**Date:** ${date}
+**Total Features:** ${allFeatures.length}
+
+## Overview
+
+This documentation was automatically generated by analyzing the codebase structure, patterns, and implementation details.
+
+## Quick Start
+
+- 📖 [Getting Started Guide](./guides/getting-started.md)
+- 🏗️ [Architecture Guide](./guides/architecture-guide.md)
+- ➕ [Adding New Feature](./guides/adding-new-feature.md)
+- 🧪 [Testing Guide](./guides/testing-guide.md)
+
+## Documentation Sections
+
+### 📚 Features
+- [All Features](./features/README.md)
+- [Core Features (${allFeatures.filter(f => ['app', 'auth', 'i18n', 'router', 'slice-manager', 'ui'].includes(f)).length})](./features/README.md#core-features-infrastructure)
+- [Domain Features (${allFeatures.filter(f => !['app', 'auth', 'i18n', 'router', 'slice-manager', 'ui'].includes(f)).length})](./features/README.md#domain-features-business-logic)
+
+### 🏗️ Architecture
+${architecture ? `- [Architecture Overview](./architecture/README.md)
+- [Patterns & Principles](./architecture/README.md#patterns)
+- [Diagrams](./architecture/diagrams/)` : '- Architecture analysis not available'}
+
+### 📖 Guides
+${guides && guides.length > 0 ? guides.map(g => `- [${g.name}](./guides/${path.basename(g.path)})`).join('\n') : '- Guides not available'}
+
+## Structure
+
+\`\`\`
+docs/${date}/
+├── README.md (this file)
+├── features/              # Feature documentation
+│   ├── core/             # Infrastructure features
+│   └── domain/           # Business domain features
+├── architecture/          # Architecture overview & analysis
+│   ├── README.md
+│   └── diagrams/         # Mermaid diagrams
+└── guides/               # How-to guides
+    ├── getting-started.md
+    ├── adding-new-feature.md
+    ├── creating-new-model.md
+    ├── testing-guide.md
+    └── architecture-guide.md
+\`\`\`
+
+## Features by Category
+
+### Core Features (Infrastructure)
+${allFeatures.filter(f => ['app', 'auth', 'i18n', 'router', 'slice-manager', 'ui'].includes(f))
+  .map(f => `- [${f}](./features/core/${f}.md) - ${getFeatureDescription(f)}`).join('\n')}
+
+### Domain Features (Business Logic)
+${allFeatures.filter(f => !['app', 'auth', 'i18n', 'router', 'slice-manager', 'ui'].includes(f))
+  .map(f => `- [${f}](./features/domain/${f}.md) - ${getFeatureDescription(f)}`).join('\n')}
+
+${architecture ? `
+## Architecture Health
+
+- **Total Features:** ${architecture.features.total} (${architecture.features.core.length} core, ${architecture.features.domain.length} domain)
+- **Violations:** ${architecture.violations.length} ${architecture.violations.length === 0 ? '✅' : '❌'}
+- **Pattern Adoption:** ${Math.round((architecture.patterns.featureModelArchitecture.adopted.length / architecture.features.domain.length) * 100)}%
+` : ''}
+
+---
+
+*Generated by docs-generator skill on ${date}*
+`;
+
+  const readmePath = path.join(outputDir, 'README.md');
+  writeFile(readmePath, content);
+  console.log(`✅ Generated: ${readmePath}`);
+}
+
+/**
+ * Generate features/README.md
+ */
+function generateFeaturesReadme(outputDir, allFeatures, results) {
+  const coreFeatures = ['app', 'auth', 'i18n', 'router', 'slice-manager', 'ui'];
+  const domainFeatures = allFeatures.filter(f => !coreFeatures.includes(f));
+
+  const content = `# Features
+
+This directory contains documentation for all features in the codebase.
+
+## Feature Categories
+
+### Core Features (${coreFeatures.filter(f => allFeatures.includes(f)).length})
+
+Infrastructure features that provide foundational functionality:
+
+${coreFeatures.filter(f => allFeatures.includes(f))
+  .map(f => `- [${f}](./core/${f}.md) - ${getFeatureDescription(f)}`).join('\n')}
+
+### Domain Features (${domainFeatures.length})
+
+Business domain features that implement application-specific logic:
+
+${domainFeatures
+  .map(f => `- [${f}](./domain/${f}.md) - ${getFeatureDescription(f)}`).join('\n')}
+
+## Architecture
+
+- **Core features** provide infrastructure and should NOT depend on domain features
+- **Domain features** implement business logic using the feature-model architecture pattern
+- All features follow strict architectural patterns enforced by audit skills
+
+---
+
+*Generated by docs-generator skill*
+`;
+
+  const featuresPath = path.join(outputDir, 'features', 'README.md');
+  writeFile(featuresPath, content);
+  console.log(`✅ Generated: ${featuresPath}`);
+}
+
+/**
+ * Generate architecture/README.md
+ */
+function generateArchitectureReadme(outputDir, architecture, diagrams) {
+  const content = `# Architecture
+
+This section contains the overall architecture analysis and diagrams.
+
+## Overview
+
+- **Total Features:** ${architecture.features.total}
+  - Core (Infrastructure): ${architecture.features.core.length}
+  - Domain (Business): ${architecture.features.domain.length}
+
+## Diagrams
+
+${diagrams && diagrams.length > 0 ? diagrams.map(d => `- [${d.name}](./diagrams/${path.basename(d.path)})`).join('\n') : 'No diagrams available'}
+
+## Dependencies
+
+- **Core → Domain:** ${architecture.dependencies.coreToDomain.length} ${architecture.dependencies.coreToDomain.length > 0 ? '❌ VIOLATION' : '✅'}
+- **Domain → Core:** ${architecture.dependencies.domainToCore.length} ✅
+- **Domain → Domain:** ${architecture.dependencies.domainToDomain.length} ✅
+- **Core → Core:** ${architecture.dependencies.coreToCore.length} ✅
+
+## Patterns
+
+### Feature-Model Architecture
+- **Adopted:** ${architecture.patterns.featureModelArchitecture.adopted.length}/${architecture.features.domain.length} domain features
+- **Features:** ${architecture.patterns.featureModelArchitecture.adopted.join(', ')}
+
+### Dependency Injection
+- **Using:** ${architecture.patterns.dependencyInjection.used.length}/${architecture.features.domain.length} domain features
+- **Features:** ${architecture.patterns.dependencyInjection.used.join(', ')}
+
+### Hook Abstraction
+- **Using:** ${architecture.patterns.hookAbstraction.used.length}/${architecture.features.domain.length} domain features
+- **Features:** ${architecture.patterns.hookAbstraction.used.join(', ')}
+
+${architecture.violations.length > 0 ? `
+## Violations
+
+${architecture.violations.map(v => {
+  const icon = v.severity === 'error' ? '❌' : '⚠️';
+  return `### ${icon} ${v.type} (${v.severity})
+
+**Count:** ${v.count}
+**Message:** ${v.message}
+
+**Details:**
+${v.details.map(d => typeof d === 'string' ? `- ${d}` : `- ${d.from || d.feature}`).join('\n')}
+`;
+}).join('\n')}
+` : '## ✅ No Violations\n\nArchitecture is clean! All patterns followed correctly.\n'}
+
+${architecture.recommendations.length > 0 ? `
+## Recommendations
+
+${architecture.recommendations.map((r, i) => `${i + 1}. **[${r.priority.toUpperCase()}]** ${r.message}`).join('\n')}
+` : ''}
+
+---
+
+*Generated by docs-generator skill*
+`;
+
+  const archPath = path.join(outputDir, 'architecture', 'README.md');
+  writeFile(archPath, content);
+  console.log(`✅ Generated: ${archPath}`);
+}
+
+/**
+ * Get category for feature
+ */
+function getCategoryForFeature(feature) {
+  const coreFeatures = ['app', 'auth', 'i18n', 'router', 'slice-manager', 'ui'];
+  return coreFeatures.includes(feature) ? 'core' : 'domain';
+}
+
+/**
+ * Get feature description
+ */
+function getFeatureDescription(feature) {
+  const descriptions = {
+    'app': 'Application bootstrap and composition root',
+    'auth': 'Authentication infrastructure and utilities',
+    'i18n': 'Internationalization infrastructure',
+    'router': 'Routing infrastructure and utilities',
+    'slice-manager': 'Redux slice lifecycle management',
+    'ui': 'Mantine theme and design system',
+    'wallet': 'Web3 wallet integration',
+    'oauth': 'OAuth authentication provider',
+    'blog-demo': 'Blog demonstration feature'
+  };
+  return descriptions[feature] || 'Business domain feature';
+}
+
+// Run
+generateAllDocs().catch(error => {
+  console.error('\n❌ Fatal error:', error);
+  process.exit(1);
+});

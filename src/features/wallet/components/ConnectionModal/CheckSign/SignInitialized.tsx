@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { IoIosWarning } from 'react-icons/io';
 
 export const SignInitialized: React.FC = () => {
-  const { t } = useTranslation('FeatureWallet');
+  const { t } = useTranslation('feature-wallet');
   return (
     <Container>
       <Alert icon={<IoIosWarning />} title={t('Preparing Sign Request')}>

@@ -8,7 +8,7 @@ export interface SignFailedProps {
   errorMessage: string | null;
 }
 export const SignFailed: React.FC<SignFailedProps> = ({ errorMessage }) => {
-  const { t } = useTranslation('FeatureWallet');
+  const { t } = useTranslation('feature-wallet');
   return (
     <Container>
       <Alert icon={<IoIosWarning />} title={t('Unexpected Error')} color="red">

@@ -1,4 +1,6 @@
-import { I18NConfig, LangCode, SupportedLang } from './types';
+import { I18NConfig } from './types/I18NConfig';
+import { LangCode } from './types/LangCode';
+import { SupportedLang } from './types/SupportedLang';
 
 const langENUS: SupportedLang = {
   code: LangCode.EN_US,

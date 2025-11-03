@@ -13,7 +13,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { IoIosInformationCircle } from 'react-icons/io';
 
-import { SupportedWallets } from '@/features/wallet/interfaces/IWalletProviderApi';
+import { SupportedWallets } from '@/features/wallet/models/provider/types/SupportedWallets';
 import { Web3Wallet } from '@/features/wallet/models/provider/types/Web3Wallet';
 
 import { WalletLogo } from '../../WalletLogo/WalletLogo';
@@ -28,7 +28,7 @@ export const WaitingSelection: React.FC<WaitingSelectionProps> = ({
   onWalletSelect,
   onCancel,
 }) => {
-  const { t } = useTranslation('FeatureWallet');
+  const { t } = useTranslation('feature-wallet');
   return (
     <Container mb={4}>
       <Alert

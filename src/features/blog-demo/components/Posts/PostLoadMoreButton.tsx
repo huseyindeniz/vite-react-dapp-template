@@ -1,4 +1,5 @@
 import { Button } from '@mantine/core';
+import { useTranslation } from 'react-i18next';
 
 export interface PostLoadMoreButtonProps {
   loading: boolean;
@@ -9,6 +10,7 @@ export const PostLoadMoreButton: React.FC<PostLoadMoreButtonProps> = ({
   loading,
   onClick,
 }) => {
+  const { t } = useTranslation('feature-blog-demo');
   return (
     <Button
       variant="outline"
@@ -19,7 +21,7 @@ export const PostLoadMoreButton: React.FC<PostLoadMoreButtonProps> = ({
       mt="md"
       disabled={loading}
     >
-      {loading ? 'Loading...' : 'Load More'}
+      {loading ? t('Loading...') : t('Load More')}
     </Button>
   );
 };

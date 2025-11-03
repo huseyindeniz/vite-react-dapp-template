@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { IoChevronUp } from 'react-icons/io5';
 
 export const ScrollToTopButton: React.FC = () => {
-  const { t } = useTranslation('Layout');
+  const { t } = useTranslation('feature-ui');
   const [scrollPosition, setScrollPosition] = useState(0);
   const scrollToTop = () => {
     window.scrollTo({

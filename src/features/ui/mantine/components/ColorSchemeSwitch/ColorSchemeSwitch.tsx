@@ -3,9 +3,11 @@ import {
   useMantineColorScheme,
   useComputedColorScheme,
 } from '@mantine/core';
+import { useTranslation } from 'react-i18next';
 import { IoMdMoon, IoMdSunny } from 'react-icons/io';
 
 export const ColorSchemeSwitch: React.FC = () => {
+  const { t } = useTranslation('feature-ui');
   const { toggleColorScheme } = useMantineColorScheme();
   const computedColorScheme = useComputedColorScheme('light', {
     getInitialValueInEffect: true,
@@ -16,7 +18,7 @@ export const ColorSchemeSwitch: React.FC = () => {
       onClick={toggleColorScheme}
       variant="default"
       size="lg"
-      aria-label="Toggle color scheme"
+      aria-label={t('Toggle color scheme')}
     >
       {computedColorScheme === 'light' ? <IoMdMoon /> : <IoMdSunny />}
     </ActionIcon>

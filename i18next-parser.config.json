@@ -22,7 +22,7 @@
   "lineEnding": "auto",
   "locales": ["en-US", "tr-TR"],
   "namespaceSeparator": false,
-  "output": "src/features/i18n/translations/$LOCALE/$NAMESPACE.json",
+  "output": "src/features/i18n/translations/$NAMESPACE/$LOCALE.json",
   "pluralSeparator": "_",
   "input": null,
   "sort": false,

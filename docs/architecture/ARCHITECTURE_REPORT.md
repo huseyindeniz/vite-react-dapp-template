@@ -337,7 +337,6 @@ Import path aliases for clean architecture:
   "@/services/*": ["./src/services/*"],
   "@/pages/*": ["./src/pages/*"],
   "@/hooks/*": ["./src/hooks/*"],
-  "@/store/*": ["./src/store/*"],
   "@test-utils": ["./src/test-utils/index.ts"]
 }
 ```

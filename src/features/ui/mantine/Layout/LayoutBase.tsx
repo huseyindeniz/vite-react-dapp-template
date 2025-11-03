@@ -18,17 +18,13 @@ import { HelmetProvider } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
 import { Outlet } from 'react-router-dom';
 
-import { Auth } from '@/features/auth/components/Auth';
-import { LangMenu } from '@/features/i18n/components/LangMenu/LangMenu';
 import { useI18nWatcher } from '@/features/i18n/useI18nWatchers';
 import { useActiveRoute } from '@/features/router/hooks/useActiveRoute';
 import { useBreadcrumb } from '@/features/router/hooks/useBreadcrumb';
 import { usePageLink } from '@/features/router/hooks/usePageLink';
 import { usePages } from '@/features/router/hooks/usePages';
-import { Wallet } from '@/features/wallet/components/Wallet';
 
 import { Breadcrumb } from '../components/Breadcrumb/Breadcrumb';
-import { ColorSchemeSwitch } from '../components/ColorSchemeSwitch/ColorSchemeSwitch';
 import { CookieConsentMessage } from '../components/CookieConsent/CookieConsentMessage';
 import { Copyright } from '../components/Copyright/Copyright';
 import { ErrorFallback } from '../components/ErrorFallback/ErrorFallback';
@@ -48,9 +44,17 @@ const myErrorHandler = (error: Error, info: ErrorInfo) => {
   log.error(info.componentStack);
 };
 
-export const LayoutBase: React.FC = () => {
+interface LayoutBaseProps {
+  headerExtension?: React.FC;
+  navbarExtension?: React.FC;
+}
+
+export const LayoutBase: React.FC<LayoutBaseProps> = ({
+  headerExtension: HeaderExtension,
+  navbarExtension: NavbarExtension,
+}) => {
   useI18nWatcher();
-  const { t } = useTranslation('Layout');
+  const { t } = useTranslation('app');
   const [opened, { toggle, close }] = useDisclosure();
   const { pageLink } = usePageLink();
   const { mainMenuItems, secondaryMenuItems, pageRoutes } = usePages();
@@ -83,21 +87,21 @@ export const LayoutBase: React.FC = () => {
               </Group>
             </Group>
             <Group visibleFrom="sm">
-              <LangMenu />
-              <ColorSchemeSwitch />
-              <Auth size="sm" />
-              <Wallet />
+              {HeaderExtension && <HeaderExtension />}
             </Group>
           </Layout.Header>
 
           <Layout.Navbar>
             <MainMenu mainMenuItems={mainMenuItems} onClick={close} vertical />
+            {hasSubRoutes && (
+              <>
+                <Divider my="sm" />
+                <SideNav items={subRoutes} />
+              </>
+            )}
             <Divider my="sm" />
             <Stack align="center" gap="sm">
-              <LangMenu />
-              <ColorSchemeSwitch />
-              <Auth size="sm" fullWidth />
-              <Wallet />
+              {NavbarExtension && <NavbarExtension />}
             </Stack>
           </Layout.Navbar>
 

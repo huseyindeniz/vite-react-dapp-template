@@ -4,14 +4,17 @@ import { MantineProvider } from '@mantine/core';
 import log from 'loglevel';
 import { Provider as ReduxProvider } from 'react-redux';
 
+import { mantineProviderProps } from '@/features/app/config/ui';
+import { store } from '@/features/app/store/store';
 import { Router } from '@/features/router/Router';
-import { theme } from '@/features/ui/mantine/theme';
-import { routes } from '@/pages/routes';
-import store from '@/store/store';
 
 import '@/features/i18n/i18n';
 
-import { composeProviders, createProvider } from './composeContextProviders';
+// Register auth providers (composition root)
+import './config/auth/auth';
+
+import { composeProviders } from './context-providers/composeProviders';
+import { createProvider } from './context-providers/createProvider';
 
 log.setDefaultLevel('silent');
 
@@ -25,7 +28,10 @@ if (import.meta.env.MODE !== 'production') {
 // they will wrap each other in the order they are listed
 const providers = [
   createProvider(ReduxProvider, { store }),
-  createProvider(MantineProvider, { theme, defaultColorScheme: 'auto' }),
+  createProvider(MantineProvider, {
+    theme: mantineProviderProps.theme,
+    defaultColorScheme: mantineProviderProps.defaultColorScheme,
+  }),
 ];
 
 const ComposedProviders = composeProviders(providers);
@@ -33,7 +39,7 @@ const ComposedProviders = composeProviders(providers);
 export const App: React.FC = () => {
   return (
     <ComposedProviders>
-      <Router routes={routes()} />
+      <Router />
     </ComposedProviders>
   );
 };

@@ -10,7 +10,7 @@ interface LockedProps {
   onUnlock: () => void;
 }
 export const Locked: React.FC<LockedProps> = ({ onUnlock }) => {
-  const { t } = useTranslation('FeatureWallet');
+  const { t } = useTranslation('feature-wallet');
   return (
     <Container>
       <Alert

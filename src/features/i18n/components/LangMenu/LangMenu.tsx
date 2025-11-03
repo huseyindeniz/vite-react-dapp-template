@@ -16,7 +16,7 @@ const LangModal = React.lazy(() =>
 
 export const LangMenu: React.FC = () => {
   const location = useLocation();
-  const { i18n } = useTranslation('Layout');
+  const { i18n } = useTranslation('feature-ui');
   const { changeLanguage } = useChangeLanguage(
     location.pathname,
     i18n.resolvedLanguage ?? i18nConfig.fallbackLang.code

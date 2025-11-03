@@ -7,10 +7,10 @@ import { Posts } from '@/features/blog-demo/components/Posts/Posts';
 import { PageMeta } from '@/features/ui/mantine/components/PageMeta/PageMeta';
 
 export const Blog: React.FC = () => {
-  const { t } = useTranslation('PageBlog');
+  const { t } = useTranslation('page-blog');
   return (
     <>
-      <PageMeta title={t('Blog')} url="/blog" description="Blog page" />
+      <PageMeta title={t('Blog')} url="/blog" description={t('Blog page')} />
       <Container ta="center">
         <Stack>
           <Title mb={2}>Posts</Title>

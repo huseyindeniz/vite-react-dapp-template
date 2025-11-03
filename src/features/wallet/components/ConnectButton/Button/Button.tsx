@@ -10,7 +10,7 @@ export interface ButtonProps {
 }
 
 export const Button: React.FC<ButtonProps> = ({ onClick, isLoading }) => {
-  const { t } = useTranslation('FeatureWallet');
+  const { t } = useTranslation('feature-wallet');
   return (
     <MantineButton
       ml={2}

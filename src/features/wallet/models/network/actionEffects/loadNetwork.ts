@@ -1,7 +1,7 @@
 import { END, EventChannel } from 'redux-saga';
 import { put, call, take, spawn } from 'redux-saga/effects';
 
-import { IWalletNetworkApi } from '@/features/wallet/interfaces/IWalletNetworkApi';
+import { INetworkApi } from '@/features/wallet/models/network/interfaces/INetworkApi';
 
 import { DISABLE_WALLET_SIGN } from '../../../config';
 import { SlowDown } from '../../../utils';
@@ -14,7 +14,7 @@ import * as slicesActions from '../slice';
 import { Network } from '../types/Network';
 import { NetworkLoadState } from '../types/NetworkLoadState';
 
-export function* ActionEffectLoadNetwork(walletApi: IWalletNetworkApi) {
+export function* ActionEffectLoadNetwork(walletApi: INetworkApi) {
   yield put(walletStateSliceActions.setLoading(LoadingStatusType.PENDING));
   yield put(walletStateSliceActions.setState(WalletState.CHECKING_NETWORK));
   const isNetworkLoaded: boolean = yield call(
@@ -33,7 +33,7 @@ export function* ActionEffectLoadNetwork(walletApi: IWalletNetworkApi) {
 }
 
 export function* HandleStateNetworkRequested(
-  walletNetworkApi: IWalletNetworkApi
+  walletNetworkApi: INetworkApi
 ) {
   try {
     yield put(
@@ -73,7 +73,7 @@ export function* HandleStateWrongNetwork() {
 }
 
 export function* handleEventNetworkChanged(
-  walletNetworkApi: IWalletNetworkApi
+  walletNetworkApi: INetworkApi
 ) {
   const channel: EventChannel<string> = yield call(
     walletNetworkApi.listenNetworkChange

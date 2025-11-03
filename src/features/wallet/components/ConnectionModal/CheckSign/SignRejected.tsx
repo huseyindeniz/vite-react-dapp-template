@@ -14,7 +14,7 @@ export const SignRejected: React.FC<SignRejectedProps> = ({
   onSign,
   onDisconnect,
 }) => {
-  const { t } = useTranslation('FeatureWallet');
+  const { t } = useTranslation('feature-wallet');
   return (
     <Container>
       <Alert icon={<IoIosWarning />} title={t('Sign Rejected')} color="yellow">

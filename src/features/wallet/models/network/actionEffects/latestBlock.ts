@@ -1,19 +1,19 @@
 import { put, call } from 'redux-saga/effects';
 
-import { IWalletNetworkApi } from '@/features/wallet/interfaces/IWalletNetworkApi';
+import { INetworkApi } from '@/features/wallet/models/network/interfaces/INetworkApi';
 
 import { LoadingStatusType } from '../../types/LoadingStatus';
 import * as slicesActions from '../slice';
 import { BlockInfo } from '../types/BlockInfo';
 
-export function* ActionEffectLatestBlock(walletApi: IWalletNetworkApi) {
+export function* ActionEffectLatestBlock(walletApi: INetworkApi) {
   yield put(slicesActions.setBlockInfoLoading(LoadingStatusType.PENDING));
   yield call(HandleStateBlockRequested, walletApi);
   yield put(slicesActions.setBlockInfoLoading(LoadingStatusType.IDLE));
 }
 
 export function* HandleStateBlockRequested(
-  walletNetworkApi: IWalletNetworkApi
+  walletNetworkApi: INetworkApi
 ) {
   const latestBlockNumber: number | undefined = yield call(
     walletNetworkApi.getLatestBlock

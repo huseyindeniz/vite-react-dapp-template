@@ -10,7 +10,7 @@ interface UnlockRejectedProps {
   onUnlock: () => void;
 }
 export const UnlockRejected: React.FC<UnlockRejectedProps> = ({ onUnlock }) => {
-  const { t } = useTranslation('FeatureWallet');
+  const { t } = useTranslation('feature-wallet');
   return (
     <Container>
       <Alert icon={<IoIosWarning />} title={t('Unlock Rejected')} color="red">

@@ -21,9 +21,21 @@
       "WebFetch(domain:developers.google.com)",
       "Bash(npx tsc:*)",
       "Bash(npm test:*)",
-      "Bash(git rm:*)",
       "WebFetch(domain:mantine.dev)",
-      "Bash(npm run check-translations)"
+      "Bash(npm run check-translations)",
+      "Skill(deps-minor)",
+      "Skill(architecture-documenter)",
+      "WebFetch(domain:github.com)",
+      "Bash(cp:*)",
+      "Skill(code-audit)",
+      "Skill(arch-audit)",
+      "Bash(node:*)",
+      "Skill(deps-audit)",
+      "Skill(security-audit)",
+      "Skill(test-audit)",
+      "Skill(docs-generator)",
+      "Bash(npm run extract:*)",
+      "Bash(cat:*)"
     ],
     "deny": [],
     "ask": []

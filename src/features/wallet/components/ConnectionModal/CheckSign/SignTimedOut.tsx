@@ -14,7 +14,7 @@ export const SignTimedOut: React.FC<SignTimedOutProps> = ({
   onSign,
   onDisconnect,
 }) => {
-  const { t } = useTranslation('FeatureWallet');
+  const { t } = useTranslation('feature-wallet');
   return (
     <Container>
       <Alert icon={<IoIosWarning />} title={t('Sign Timed Out')} color="yellow">

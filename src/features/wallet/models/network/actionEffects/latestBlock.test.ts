@@ -1,14 +1,14 @@
 import { call } from 'redux-saga/effects';
 import { expectSaga } from 'redux-saga-test-plan';
 
-import { IWalletNetworkApi } from '@/features/wallet/interfaces/IWalletNetworkApi';
+import { INetworkApi } from '@/features/wallet/models/network/interfaces/INetworkApi';
 
 import * as slicesActions from '../slice';
 import { BlockInfo } from '../types/BlockInfo';
 
 import { HandleStateBlockRequested } from './latestBlock';
 
-const mockWalletNetworkApi: IWalletNetworkApi = {
+const mockWalletNetworkApi: INetworkApi = {
   loadNetwork: vi.fn(),
   getNetwork: vi.fn(),
   switchNetwork: vi.fn(),

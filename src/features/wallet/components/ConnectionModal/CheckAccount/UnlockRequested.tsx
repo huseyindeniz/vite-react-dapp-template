@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { IoIosInformationCircle } from 'react-icons/io';
 
 export const UnlockRequested = () => {
-  const { t } = useTranslation('FeatureWallet');
+  const { t } = useTranslation('feature-wallet');
   return (
     <Container>
       <Alert icon={<IoIosInformationCircle />} title={t('Unlock Requested')}>

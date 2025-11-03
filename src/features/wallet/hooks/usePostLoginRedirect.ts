@@ -13,13 +13,13 @@ export const usePostLoginRedirect = () => {
   const navigate = useNavigate();
   const { isAuthenticated } = useWalletAuthentication();
   const { pageLink } = usePageLink();
-  const { homeRoute, userRoute, pageRoutes } = usePages();
+  const { homeRoute, pageRoutes } = usePages();
   const prevAuthenticatedRef = useRef(isAuthenticated);
   const isMountedRef = useRef(true);
 
   const isValidRoute = useCallback(
     (path: string) => {
-      const allRoutes = [homeRoute, userRoute, ...pageRoutes];
+      const allRoutes = [homeRoute, ...pageRoutes];
       return allRoutes.some(route => {
         if (route.index && path === '/') {
           return true;
@@ -27,7 +27,7 @@ export const usePostLoginRedirect = () => {
         return route.path === path?.replace(/^\//, '');
       });
     },
-    [homeRoute, userRoute, pageRoutes]
+    [homeRoute, pageRoutes]
   );
 
   useEffect(() => {
@@ -59,5 +59,5 @@ export const usePostLoginRedirect = () => {
       const redirectPath = pageLink(POST_LOGIN_REDIRECT_PATH);
       navigate(redirectPath);
     }
-  }, [isAuthenticated, navigate, pageLink, homeRoute, userRoute, pageRoutes]);
+  }, [isAuthenticated, navigate, pageLink, homeRoute, pageRoutes]);
 };

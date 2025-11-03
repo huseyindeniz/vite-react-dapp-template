@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 
 import { useDisclosure } from '@mantine/hooks';
 
-import useTypedSelector from '@/hooks/useTypedSelector';
+import { useTypedSelector } from '@/hooks/useTypedSelector';
 
 import { useActions } from '../../hooks/useActions';
 import { LoadingStatusType } from '../../models/types/LoadingStatus';

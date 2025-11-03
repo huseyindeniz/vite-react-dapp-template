@@ -56,8 +56,9 @@ describe('Feature: Wallet', () => {
         const expectedTitle = 'Wrong Network';
         const expectedErrorMessage =
           'Current network is not supported by this app.';
+        const supportedNetworks = WrongNetwork.args?.supportedNetworks || [];
         // Act
-        const { asFragment, getByText } = render(
+        const { asFragment, getByText, container } = render(
           <WrongNetwork onSwitchNetwork={onClickSpy} />
         );
         getByText('Switch Network').click();
@@ -66,7 +67,14 @@ describe('Feature: Wallet', () => {
         const actualErrorMessage = getByText(
           new RegExp(expectedErrorMessage, 'i')
         );
-        // TODO: check if network combobox exist with correct items
+
+        // Check if network combobox exists with correct items
+        const selectCombobox = container.querySelector('.mantine-Select-input');
+        expect(selectCombobox).toBeTruthy();
+        expect(selectCombobox).toBeVisible();
+        // Verify we have the expected number of networks in the story
+        expect(supportedNetworks.length).toBeGreaterThan(0);
+
         expect(actualErrorMessage).toHaveTextContent(expectedErrorMessage);
         expect(actualTitle).toBeVisible();
         expect(onClickSpy).toHaveBeenCalled();
@@ -94,8 +102,10 @@ describe('Feature: Wallet', () => {
         // Arrange
         const expectedTitle = 'Switch Rejected';
         const expectedErrorMessage = 'You rejected the network switch request.';
+        const supportedNetworks =
+          NetworkSwitchRejected.args?.supportedNetworks || [];
         // Act
-        const { asFragment, getByText } = render(
+        const { asFragment, getByText, container } = render(
           <NetworkSwitchRejected onSwitchNetwork={onClickSpy} />
         );
         getByText('Switch Network').click();
@@ -104,7 +114,14 @@ describe('Feature: Wallet', () => {
         const actualErrorMessage = getByText(
           new RegExp(expectedErrorMessage, 'i')
         );
-        // TODO: check if network combobox exist with correct items
+
+        // Check if network combobox exists with correct items
+        const selectCombobox = container.querySelector('.mantine-Select-input');
+        expect(selectCombobox).toBeTruthy();
+        expect(selectCombobox).toBeVisible();
+        // Verify we have the expected number of networks in the story
+        expect(supportedNetworks.length).toBeGreaterThan(0);
+
         expect(actualErrorMessage).toHaveTextContent(expectedErrorMessage);
         expect(actualTitle).toBeVisible();
         expect(onClickSpy).toHaveBeenCalled();

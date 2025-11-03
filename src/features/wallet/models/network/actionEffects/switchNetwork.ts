@@ -1,7 +1,7 @@
 import { put, call } from 'redux-saga/effects';
 
-import { IWalletAPI } from '@/features/wallet/interfaces/IWalletAPI';
-import { IWalletNetworkApi } from '@/features/wallet/interfaces/IWalletNetworkApi';
+import { IWalletApi } from '@/features/wallet/interfaces/IWalletApi';
+import { INetworkApi } from '@/features/wallet/models/network/interfaces/INetworkApi';
 
 import { SlowDown } from '../../../utils';
 import * as providerActions from '../../provider/actions';
@@ -13,7 +13,7 @@ import * as slicesActions from '../slice';
 import { NetworkLoadState } from '../types/NetworkLoadState';
 
 export function* ActionEffectSwitchNetwork(
-  walletApi: IWalletAPI,
+  walletApi: IWalletApi,
   action: ReturnType<typeof actions.switchNetwork>
 ) {
   yield put(walletStateSliceActions.setLoading(LoadingStatusType.PENDING));
@@ -32,7 +32,7 @@ export function* ActionEffectSwitchNetwork(
 
 export function* HandleStateNetworkSwitchRequested(
   networkId: number,
-  walletNetworkApi: IWalletNetworkApi
+  walletNetworkApi: INetworkApi
 ) {
   try {
     yield put(

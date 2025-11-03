@@ -5,7 +5,7 @@ import { FaWallet } from 'react-icons/fa';
 import { ConnectButton } from '../ConnectButton/ConnectButton';
 
 export const WalletProtectionWarning: React.FC = () => {
-  const { t } = useTranslation('FeatureWallet');
+  const { t } = useTranslation('feature-wallet');
   return (
     <Container size="md" py="xl">
       <Center>

@@ -1,137 +1,482 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to Claude Code when working with this React dApp template. Follow these patterns strictly to maintain architectural consistency.
+
+---
+
+## 📋 Code Quality Enforcement
+
+⚠️ **AUTOMATED CHECKS**: Code quality and architecture rules are automatically enforced by skills:
+
+### Code-Level Checks (`code-audit` skill):
+- Import/export patterns (path aliases, no default exports, no index files)
+- Redux abstraction (no direct useDispatch/useSelector in components)
+- Service dependency injection (services only imported in composition root)
+- i18n coverage (all UI text must use t() function)
+- TypeScript type safety (no "any" type usage)
+- No linter/TypeScript suppressions
+- 1 entity per file (no god files)
+
+**See `.claude/skills/code-audit/skill.md` for detailed rules and examples.**
+
+### Architecture-Level Checks (`arch-audit` skill):
+- Feature dependency rules (core features cannot depend on domain features)
+- Cross-feature dependency analysis and visualization
+
+**See `.claude/skills/arch-audit/skill.md` for architecture dependency rules.**
+
+---
+
+## ⚠️ CRITICAL ARCHITECTURE PATTERNS (NEVER VIOLATE)
+
+### 1. Feature-Model Architecture Pattern
+
+**RULE**: Each **domain feature** organizes code by models. Each model MUST have its own directory, even if there's only ONE model.
+
+⚠️ **NOTE**: This rule applies ONLY to **domain features** (wallet, oauth, blog-demo, and any new features users create). It does NOT apply to **core features** (app, i18n, router, slice-manager, ui) which are infrastructure with their own specialized structures.
+
+#### Model Directory Structure
+
+```
+src/features/{feature}/
+├── models/
+│   ├── {model}/              # Each model has own directory
+│   │   ├── IModelApi.ts      # Interface for external dependencies
+│   │   ├── actions.ts        # Redux action creators
+│   │   ├── slice.ts          # Redux slice (state only)
+│   │   ├── actionEffects/    # Business logic (Redux Saga)
+│   │   │   ├── *.ts          # Individual action effect files
+│   │   └── types/            # TypeScript types
+│   └── {model2}/             # Another model (if exists)
+├── hooks/                    # Feature-specific hooks (CRITICAL)
+│   ├── useActions.ts         # Action dispatchers for components
+│   └── use{Feature}.ts       # State access hooks (e.g., useWallet, useAuth)
+├── hocs/                     # Higher Order Components (when applicable)
+├── IFeatureApi.ts            # Root: Combined interface
+├── slice.ts                  # Root: combineReducers from all models
+└── sagas.ts                  # Root: Saga watchers
+```
+
+**Root Slice Pattern (REQUIRED):**
+
+```typescript
+// src/features/{feature}/slice.ts
+import { combineReducers } from '@reduxjs/toolkit';
+import { sessionReducer } from './models/session/slice';
+
+export const authReducer = combineReducers({
+  session: sessionReducer,
+});
+```
+
+**State Access Pattern:**
+
+```typescript
+// ⚠️ State is nested by model: state.{feature}.{model}
+// Components access state via feature hooks, NOT direct useSelector
+// - Feature hooks (useWallet, useAuth): for feature's own state
+// - useTypedSelector: for cross-feature state access
+// Example state paths:
+//   state.auth.session
+//   state.wallet.provider
+//   state.wallet.network
+```
+
+---
+
+### 2. Business Logic Separation (MOST CRITICAL)
+
+**RULE**: Business logic lives in EXACTLY ONE PLACE: `actionEffects/` (Redux Saga generators). NEVER put business logic anywhere else.
+
+#### ✅ Business Logic ONLY in actionEffects/
+
+**What belongs in actionEffects:**
+
+- State machine logic (HandleState\* functions)
+- API calls (`yield call(api.method)`)
+- Error handling and retry logic
+- Complex async workflows
+- Side effects (logging, analytics)
+- Business rules and validation
+- Conditional logic based on state
+- ALL business logic goes here
+
+#### ❌ Slices are PURE State Containers
+
+**What belongs in slices:**
+
+- Simple state updates ONLY: `state.field = action.payload`
+- ❌ NO API calls
+- ❌ NO async logic
+- ❌ NO business rules
+- ❌ NO calculations
+- ❌ NO conditional logic
+
+#### ❌ Components are PURE Presentation
+
+**What belongs in components:**
+
+- Render UI based on state
+- Call feature hook actions: `walletActions.connectWallet()` (NOT dispatch directly)
+- Use feature hooks for state: `useWallet()`, `useAuth()` (NOT useSelector directly)
+- Use `useTypedSelector` for cross-feature state access
+- Handle user interactions (click, input)
+- ❌ NO business logic
+- ❌ NO API calls
+- ❌ NO state machines
+- ❌ NO async workflows
+- ❌ NO direct useDispatch() or useSelector()
+
+#### Summary: Separation of Concerns
+
+| Layer              | Location         | Responsibility            | Contains Logic?         |
+| ------------------ | ---------------- | ------------------------- | ----------------------- |
+| **Business Logic** | `actionEffects/` | HOW and WHY things happen | ✅ YES - ALL logic here |
+| **State**          | `slice.ts`       | WHAT the current state is | ❌ NO - just mutations  |
+| **Presentation**   | Components       | WHAT to display           | ❌ NO - just render     |
+
+---
+
+### 3. Interface Architecture (Dependency Inversion Principle)
+
+**RULE**: Features define interfaces for what they need. Services implement those interfaces. This achieves decoupling.
+
+#### Pattern Structure
+
+**Each model defines its own interface:**
+
+- Location: `src/features/{feature}/models/{model}/IModelApi.ts`
+- Contains: Method signatures the model needs from external services
+
+**Root combines model interfaces:**
+
+- Location: `src/features/{feature}/IFeatureApi.ts`
+- Pattern: `export interface IFeatureApi extends IModel1Api, IModel2Api {}`
+
+**Services implement the interfaces:**
+
+- Location: `src/services/{service}/`
+- Pattern: `class Service implements IFeatureApi { ... }`
+
+**ActionEffects receive interfaces (Dependency Injection):**
+
+- Pattern: `function* ActionEffect(api: IModelApi) { ... }`
+- API could be any implementation (EthersV5, EthersV6, mock, etc.)
+- ActionEffects don't know or care about concrete implementation
+
+#### Why This Matters
+
+```
+Without Dependency Inversion (❌ WRONG):
+Feature → imports → Service → imports → External Library
+(tight coupling, hard to test, hard to swap)
+
+With Dependency Inversion (✅ CORRECT):
+Feature → defines → Interface ← implements ← Service → uses → External Library
+(loose coupling, easy to test, easy to swap)
+```
+
+**Benefits:**
+
+- Features don't know about external libraries (ethers.js, axios, etc.)
+- Easy to swap implementations (EthersV5 → EthersV6)
+- Easy to test (mock interfaces)
+- Clear boundaries between layers
+
+**Naming Convention:**
+
+```
+models/account/IAccountApi.ts   # NOT IWalletAccountApi
+models/provider/IProviderApi.ts # NOT IWalletProviderApi
+models/network/INetworkApi.ts   # NOT IWalletNetworkApi
+
+IWalletApi.ts                   # Root combined interface
+IBlogDemoApi.ts                 # Root combined interface
+IAuthApi.ts                     # Root combined interface
+```
+
+---
+
+### 4. Component-Hook Abstraction (CRITICAL)
+
+**RULE**: React components NEVER use Redux/RTK directly. They ALWAYS use feature-specific hooks.
+
+#### Abstraction Layers
+
+**Components use Feature Hooks:**
+
+- Each feature has `hooks/` directory with custom hooks
+- `useActions` hook: provides all action dispatchers for the feature
+- Custom state hooks: provide typed state access (e.g., `useWallet`, `useAuth`)
+- Components call these hooks instead of RTK primitives
+
+**Feature Hooks use Root Hooks:**
+
+- Feature hooks internally use `useTypedSelector` from `src/hooks/`
+- Provides type-safe state access
+- Abstracts Redux implementation details from components
+
+**State Access Patterns:**
+
+- **Own feature state**: Use feature-specific hooks (`useWallet()`, `useAuth()`)
+- **Cross-feature state**: Use root `useTypedSelector` from `src/hooks/`
+
+**HOCs (Higher Order Components):**
+
+- Some features provide HOCs when applicable
+- Use for cross-cutting concerns (auth protection, route guards, etc.)
+
+#### Why This Matters
+
+**Abstraction Benefits:**
+
+- Components don't know about Redux/RTK internals
+- Easy to swap state management library
+- Feature hooks can add memoization/logic
+- Clear, type-safe API for components
+- Centralized state access patterns
+
+**Rules:**
+
+- ❌ NEVER use `useDispatch()` directly in components
+- ❌ NEVER use `useSelector()` directly in components
+- ✅ ALWAYS use feature hooks (`useWalletActions()`, `useAuth()`, etc.)
+- ✅ Use root `useTypedSelector` only for cross-feature state access
+- ✅ Each feature provides its own hooks in `hooks/` directory
+
+---
+
+## Feature Categories: Core vs Domain
+
+This template contains two distinct types of features with different structural requirements.
+
+### ⚠️ Core Features (Infrastructure - EXCEPTIONS to Model Rules)
+
+These features are **foundational infrastructure** that all other features depend on. They do NOT follow the model-based architecture pattern and have their own specialized structures.
+
+**Core Features:**
+
+- `app/` - Application root, provider composition, lazy loading
+- `i18n/` - Internationalization infrastructure (i18next setup)
+- `router/` - Routing infrastructure and utilities (React Router)
+- `slice-manager/` - Redux slice lifecycle management system
+- `ui/` - Mantine theme configuration and design system components
+
+**Key Points:**
+
+- ❌ **Do NOT apply model architecture rules to these features**
+- ❌ **Do NOT expect models/ directories in these features**
+- ❌ **Do NOT try to "fix" their structure to match domain features**
+- ⚠️ **Be EXTRA CAREFUL when modifying - they affect ALL features**
+- ⚠️ **Changes to core features require extra scrutiny**
+- ✅ These are intentionally structured differently
+- ✅ They are fixed parts of the template
+- ✅ Each has its own specialized structure (no models/ directories)
+
+### ✅ Domain Features (Business Logic - MUST Follow Model Rules)
+
+These features represent business domains and serve as **examples/guides** for users building their applications. They MUST follow the strict model-based architecture pattern.
+
+**Domain Features (Examples in Template):**
+
+- `wallet/` - Web3 wallet integration (3 models: provider, network, account)
+- `oauth/` - OAuth authentication (1 model: session)
+- `blog-demo/` - Blog demonstration (2 models: post, author)
+
+**Key Points:**
+
+- ✅ **MUST follow model-based architecture** (Pattern #1)
+- ✅ **Business logic ONLY in actionEffects/** (Pattern #2)
+- ✅ **Features define interfaces, services implement** (Pattern #3)
+- ✅ **Components use feature hooks, not RTK directly** (Pattern #4)
+- ℹ️ Users may remove, modify, or replace these examples
+- ℹ️ Users will create their own domain features (e.g., products, orders, inventory, users)
+- ℹ️ **These are guides showing HOW to structure domain features correctly**
+
+**Example Domain Feature Structure:**
+
+```
+wallet/
+├── models/                          # ✅ Required for domain features
+│   ├── provider/
+│   │   ├── IProviderApi.ts
+│   │   ├── actions.ts
+│   │   ├── slice.ts
+│   │   ├── actionEffects/
+│   │   └── types/
+│   ├── network/
+│   │   ├── INetworkApi.ts
+│   │   ├── actions.ts
+│   │   ├── slice.ts
+│   │   ├── actionEffects/
+│   │   └── types/
+│   └── account/
+│       ├── IAccountApi.ts
+│       ├── actions.ts
+│       ├── slice.ts
+│       ├── actionEffects/
+│       └── types/
+├── hooks/                           # ✅ Feature-specific hooks
+│   ├── useWalletActions.ts          # Action dispatchers
+│   └── useWallet.ts                 # State access
+├── hocs/                            # Higher Order Components (if applicable)
+├── components/                      # UI components
+├── IWalletApi.ts                    # Root combined interface
+├── slice.ts                         # combineReducers from models
+└── sagas.ts                         # Saga watchers
+```
+
+✅ **Notice**: Has `models/` directory with proper structure - REQUIRED for domain features!
+
+### Structure Comparison
+
+| Aspect            | Core Features                        | Domain Features                        |
+| ----------------- | ------------------------------------ | -------------------------------------- |
+| **Purpose**       | Infrastructure for template          | Business logic examples                |
+| **Models/**       | ❌ Not required                      | ✅ Required                            |
+| **Structure**     | Specialized per feature              | Standardized model pattern             |
+| **Modifiability** | ⚠️ Careful - affects everything      | ✅ User customizable                   |
+| **Examples**      | app, i18n, router, slice-manager, ui | wallet, oauth, blog-demo               |
+| **User Action**   | Keep or modify carefully             | Remove, modify, replace, or create new |
+
+---
 
 ## Development Commands
 
-### Core Commands
+**Verification (REQUIRED after any code changes):**
 
-- `npm run dev` - Start development server
-- `npm run build` - Build for production (runs TypeScript compilation and Vite build)
-- `npm run lint` - Run ESLint with zero warnings tolerance
-- `npm run test` - Run unit tests with Vitest (supports `vitest run` for single run)
-- `npm run coverage` - Run tests with coverage report
-- `npm run preview` - Preview production build locally
+```bash
+npm run lint    # Must pass with 0 warnings
+npm run test    # All tests must pass
+npm run build   # Must build successfully
+```
 
-### Storybook
+**Development:**
 
-- `npm run storybook` - Start Storybook development server on port 6006
-- `npm run build-storybook` - Build Storybook for production
+```bash
+npm run dev                # Start dev server
+npm run extract            # Extracts texts from components to resource files.
+npm run check-translations # Validate i18n completeness
+```
 
-### Internationalization
+**Storybook:**
 
-- `npm run extract` - Extract translation keys from source files
-- `npm run check-translations` - Validate translation completeness
+```bash
+npm run storybook          # Component documentation
+```
 
-### Release
+---
 
-- `npm run release` - Bump version using custom script
-- `npm run prepare` - Setup Husky git hooks
+## ⚠️ GENERAL RULES (NEVER VIOLATE)
 
-## Architecture Overview
+### Architecture Rules
 
-This is a React dApp template built with Vite, designed for Web3/blockchain frontend applications.
+1. **Each model MUST have its own directory** under `models/`, even if there's only ONE model
+   - ⚠️ **Applies to DOMAIN features only** (wallet, oauth, blog-demo, and any new domain features)
+   - ⚠️ **Does NOT apply to CORE features** (app, i18n, router, slice-manager, ui)
+   - ✅ `oauth/models/session/` (domain feature, single model)
+   - ❌ `oauth/models/` (files directly in models/)
+
+1a. **Core features are infrastructure - be EXTRA CAREFUL**
+
+- ⚠️ **Changes to core features (app, i18n, router, slice-manager, ui) affect EVERYTHING**
+- ⚠️ **Core features have their own structure - DO NOT try to apply model patterns**
+- ⚠️ **When modifying core features, understand the impact on all domain features**
+- ℹ️ **When in doubt about modifying core features, ASK the user first**
+
+2. **Business logic ONLY in `actionEffects/`** - NEVER in slices or components
+   - ✅ API calls, state machines, error handling → `actionEffects/`
+   - ❌ Business logic in components or slices
+
+2a. **Components use feature hooks - NEVER use RTK directly**
+
+- ❌ NEVER use `useDispatch()` or `useSelector()` in components
+- ✅ ALWAYS use feature hooks: `useWalletActions()`, `useAuth()`, etc.
+- ✅ Use root `useTypedSelector` from `src/hooks/` for cross-feature state
+- ✅ Each feature has `hooks/` directory with `useActions` and state hooks
+
+3. **Features define interfaces, services implement them**
+   - ✅ Each model has `IModelApi.ts`
+   - ✅ Root has `IFeatureApi.ts` extending model interfaces
+   - ✅ Services implement feature interfaces
+
+4. **Whenever any code changes:**
+   - MUST run: `npm run lint` (0 warnings required)
+   - MUST run: `npm run test` (all tests pass)
+   - MUST run: `npm run build` (successful build)
+
+### Code Quality Rules
+
+5. **NEVER use `npm run lint --fix`** - Fix ESLint issues manually
+
+6. **React Hook Dependencies** - NEVER add unnecessary dependencies:
+   - ❌ DON'T add stable references that never change (e.g., `t` from useTranslation, `actions` from hooks)
+   - ❌ DON'T add props/params recreated on every render with same content (e.g., `allRoutes`)
+   - ✅ DO add only values that should trigger re-computation (e.g., `location.pathname`, `i18n.resolvedLanguage`)
+   - Each unnecessary dependency creates exponential re-render combinations!
+
+7. **Always follow best practices**
+   - Never lead to hacky dead ends
+   - Check latest documentation before designing
+   - Never reinvent the wheel - use battle-tested, trusted, widely-adopted solutions
+
+8. **ALWAYS use react-icons for icons**
+   - ❌ NEVER use @tabler/icons-react
+   - ❌ NEVER use any other icon library
+   - ✅ ALWAYS use react-icons (e.g., `import { MdError } from 'react-icons/md'`)
+   - Available icon sets: Material Design (Md), Font Awesome (Fa), Bootstrap (Bs), etc.
+
+---
+
+## Quick Reference
 
 ### Tech Stack
 
-- **Build Tool**: Vite with React plugin and TypeScript paths
-- **UI Framework**: Mantine (v7) - switched from Chakra UI in v0.7.0
-- **State Management**: Redux Toolkit + Redux Saga for async operations
+- **Build**: Vite + TypeScript
+- **UI**: React 19 + Mantine v7
+- **State**: Redux Toolkit + Redux Saga
 - **Routing**: React Router DOM v7
-- **Web3**: Ethers.js v6 (configurable to v5)
-- **Testing**: Vitest + React Testing Library + Storybook
-- **Internationalization**: i18next with browser language detection
+- **Web3**: Ethers.js v6
+- **Testing**: Vitest + React Testing Library
+- **i18n**: i18next
+- **Icons**: react-icons (NOT @tabler/icons-react)
 
-### Project Structure
+### Import Aliases
 
-#### Feature-Based Organization
+```typescript
+@/features/*   // Feature modules
+@/services/*   // Service implementations
+@/pages/*      // Page components
+@/hooks/*      // Custom hooks
+@/store/*      // Redux store
+@test-utils    // Testing utilities
+```
 
-- `src/features/` - Core application features:
-  - `app/` - Main app component and provider composition
-  - `wallet/` - Web3 wallet integration with Redux state management
-  - `ui/` - Mantine-based UI components and theme
-  - `router/` - Routing configuration and utilities
-  - `i18n/` - Internationalization setup and components
+### Feature Categories
 
-#### Pages and Services
+**Core Features (Infrastructure - Fixed):**
 
-- `src/pages/` - Application pages with route definitions
-- `src/services/` - External service integrations (Ethers.js, oauth)
-- `src/store/` - Redux store configuration with root reducer
+- `app/` - Application bootstrap and provider composition
+- `i18n/` - Internationalization (i18next)
+- `router/` - Routing infrastructure (React Router)
+- `slice-manager/` - Redux slice lifecycle management
+- `ui/` - Mantine theme and design system
 
-### Web3 Integration
+**Domain Features (Examples - User Customizable):**
 
-The wallet system uses a sophisticated state machine with three main models:
+- `wallet/` - Web3 wallet (Provider, Network, Account models)
+- `oauth/` - OAuth authentication (Session model)
+- `blog-demo/` - Blog demo (Post, Author models)
 
-- **Provider**: Detects and manages Web3 wallet connections
-- **Network**: Handles chain switching and network validation
-- **Account**: Manages user authentication and signing
+**Users will:**
 
-Supported wallets: MetaMask, Core, Coinbase, Rabby
-Supported chains: Ethereum, Polygon, Avalanche, BSC (+ testnets)
+- Keep core features unchanged (or modify very carefully)
+- Remove/modify/replace domain features as needed
+- Create new domain features following the model pattern (e.g., products, orders, inventory)
 
-### Key Configuration Files
+### Configuration Files
 
-- `src/features/wallet/config.ts` - Wallet and network configuration
-- `src/features/ui/mantine/theme.tsx` - Mantine theme customization
-- `vite.config.ts` - Build configuration with manual chunking
-- `vitest.config.ts` - Test configuration with coverage thresholds
-
-### Import Path Aliases
-
-Uses TypeScript path mapping for clean imports:
-
-- `@/features/*` - Feature modules
-- `@/services/*` - Service layer
-- `@/pages/*` - Page components
-- `@/hooks/*` - Custom hooks
-- `@/store/*` - Redux store
-- `@test-utils` - Testing utilities
-
-### Testing Strategy
-
-- Unit tests with Vitest (globals enabled)
-- Component testing with React Testing Library
-- Storybook for component documentation and visual testing
-- Coverage thresholds set to 30% across all metrics
-
-### Development Notes
-
-- Uses React 19 with strict mode
-- Lazy loading for main App component
-- Provider composition pattern for context management
-- Redux Saga for complex async flows
-- Supports both Ethers v5 and v6 (currently configured for v6)
-
-### Advanced Architecture
-
-#### Slice Manager System
-
-The codebase includes a sophisticated slice management system for automatic Redux state cleanup:
-
-- **SliceLifecycleManager**: Manages feature-based Redux slices with automatic cleanup strategies
-- **Cleanup Strategies**: `component` (cleanup when components unmount), `route` (cleanup when leaving routes), `cached` (time-based cleanup), `persistent` (never cleanup), `manual` (explicit cleanup only)
-- **Feature Registration**: Register features with route patterns and associated slices using `FeatureRouteConfig`
-- Use `configureBlogFeature.ts` as a reference for setting up new features with slice management
-
-#### External API Integration
-
-- JSONPlaceholder service (`src/services/jsonplaceholder/`) demonstrates REST API integration patterns
-- Blog demo feature shows complete feature architecture with models, actions, sagas, and components
-- Services layer uses dependency injection pattern with interface definitions (`IApi` types)
-
-### General Rules
-
-- Whenever any code changes, npm run lint, nopm run test and npm run build commands should be run and no error or warning observed!
-- in each file, there should be only 1 entity!
-- never ever export all the entities under a folder by using index files!
-- always follow the best practices
-- never ever lead to hacky dead ends when you don't find the correct path
-- always check latest documentation before designing anything
-- never ever reinvent the wheel, always check ready to use battle tested, thurasted, widely apapted solutions first
-- **React Hook Dependencies**: NEVER add unnecessary dependencies to useMemo/useCallback/useEffect arrays:
-  - ❌ DON'T add stable references that never change (e.g., `t` from useTranslation, `actions` from custom hooks)
-  - ❌ DON'T add props/params that are recreated on every render but have same content (e.g., `allRoutes` from routes())
-  - ✅ DO add only values that should trigger re-computation when they actually change (e.g., `location.pathname`, `i18n.resolvedLanguage`)
-  - Each unnecessary dependency creates exponential re-render combinations - keep arrays minimal!
-- never ever run npm run lint with --fix arg
+- `src/features/wallet/config.ts` - Wallet configuration
+- `src/features/ui/mantine/theme.tsx` - Mantine theme
+- `vite.config.ts` - Build configuration
+- `vitest.config.ts` - Test configuration

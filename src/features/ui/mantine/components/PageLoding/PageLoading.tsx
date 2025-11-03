@@ -2,7 +2,7 @@ import { Box, Stack, Text, Progress } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 
 export const PageLoading: React.FC = () => {
-  const { t } = useTranslation('Layout');
+  const { t } = useTranslation('feature-ui');
   return (
     <Stack mt="xl" align="center">
       <Text size="xs">

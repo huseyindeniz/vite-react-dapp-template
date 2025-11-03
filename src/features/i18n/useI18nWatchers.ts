@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useParams, useNavigate } from 'react-router-dom';
 
-import { isHashRouter } from '../router/config';
+import { isHashRouter } from '@/features/router/config';
 
 import { i18nConfig } from './config';
 

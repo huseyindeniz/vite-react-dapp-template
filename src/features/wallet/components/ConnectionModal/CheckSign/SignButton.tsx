@@ -11,7 +11,7 @@ export const SignButton: React.FC<SignButtonProps> = ({
   onSign,
   onDisconnect,
 }) => {
-  const { t } = useTranslation('FeatureWallet');
+  const { t } = useTranslation('feature-wallet');
   const signMessage = t('SIGN_MESSAGE');
   return (
     <Group gap="xs">

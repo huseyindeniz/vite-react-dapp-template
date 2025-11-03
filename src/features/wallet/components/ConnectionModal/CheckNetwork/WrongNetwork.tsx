@@ -21,7 +21,7 @@ export const WrongNetwork: React.FC<WrongNetworkProps> = ({
   supportedNetworks,
   onSwitchNetwork,
 }) => {
-  const { t } = useTranslation('FeatureWallet');
+  const { t } = useTranslation('feature-wallet');
   return (
     <Alert icon={<IoIosWarning />} title={t('Wrong Network')} color="yellow">
       <Stack>

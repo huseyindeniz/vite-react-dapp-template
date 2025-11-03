@@ -4,13 +4,13 @@ import { Group, ActionIcon, Badge } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import { MdRefresh } from 'react-icons/md';
 
-import useTypedSelector from '@/hooks/useTypedSelector';
+import { useTypedSelector } from '@/hooks/useTypedSelector';
 
 import { useActions } from '../../hooks/useActions';
 import { LoadingStatusType } from '../../models/types/LoadingStatus';
 
 export const BlockInfo: React.FC = () => {
-  const { t } = useTranslation('FeatureWallet');
+  const { t } = useTranslation('feature-wallet');
   const actions = useActions();
   const currentNetwork = useTypedSelector(
     state => state.wallet.network.network

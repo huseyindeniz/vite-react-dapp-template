@@ -1,18 +1,20 @@
 import React, { JSX, useEffect } from 'react';
 
-import { RouteObject, useRoutes } from 'react-router-dom';
+import {
+  RouteObject,
+  useRoutes as useReactRouterRoutes,
+} from 'react-router-dom';
 
-import { withAuthProtection } from '@/features/auth/hocs/withAuthProtection';
-import { configureBlogFeature } from '@/features/blog-demo/configureBlogFeature';
+import { features } from '@/features/app/config/features';
+import { HeaderExtension } from '@/features/app/config/layout-extensions/headerExtension';
+import { NavbarExtension } from '@/features/app/config/layout-extensions/navbarExtension';
+import { applyProtection } from '@/features/auth/utils/applyProtection';
 import { i18nConfig } from '@/features/i18n/config';
 import { useSliceManagerInit } from '@/features/slice-manager/hooks/useSliceManagerInit';
-import { withWalletProtection } from '@/features/wallet/hocs/withWalletProtection';
-import { usePostLoginRedirect } from '@/features/wallet/hooks/usePostLoginRedirect';
 
 import { isHashRouter } from './config';
-import { AppRoutes } from './types/AppRoutes';
+import { useRoutes } from './hooks/useRoutes';
 import { PageType } from './types/PageType';
-import { ProtectionType } from './types/ProtectionType';
 
 const HashRouter = React.lazy(() =>
   import(/* webpackChunkName: "Router" */ 'react-router-dom').then(module => ({
@@ -32,7 +34,13 @@ const Layout = React.lazy(() =>
   import(
     /* webpackChunkName: "Layout" */ '@/features/ui/mantine/Layout/LayoutBase'
   ).then(module => ({
-    default: module.LayoutBase,
+    default: (props: Record<string, never>) => (
+      <module.LayoutBase
+        {...props}
+        headerExtension={HeaderExtension}
+        navbarExtension={NavbarExtension}
+      />
+    ),
   }))
 );
 
@@ -42,40 +50,26 @@ const NotFoundPage = React.lazy(() =>
   ).then(module => ({ default: module.NotFoundPage }))
 );
 
-export interface RoutesProps {
-  routes: AppRoutes;
-}
-
-const Routes: React.FC<RoutesProps> = ({ routes }) => {
-  // Handle post-login redirect (only triggers on auth state transition)
-  usePostLoginRedirect();
+const Routes: React.FC = () => {
+  // Note: Auth providers handle their own redirects internally
 
   // Initialize the slice manager
   const sliceManager = useSliceManagerInit();
 
   useEffect(() => {
     if (sliceManager) {
-      // Configure all your features
-      configureBlogFeature();
-      // configureProductFeature();
+      // Configure slice manager for all features that need it
+      Object.values(features).forEach(feature => {
+        if ('configureSlice' in feature && typeof feature.configureSlice === 'function') {
+          feature.configureSlice();
+        }
+      });
     }
   }, [sliceManager]);
 
-  const { homeRoute, userRoute, pageRoutes, authRoutes } = routes;
-
-  const applyProtection = (element: JSX.Element, protectionType?: ProtectionType): JSX.Element => {
-    switch (protectionType) {
-      case ProtectionType.WALLET:
-        return withWalletProtection(element);
-      case ProtectionType.AUTH:
-        return withAuthProtection(element);
-      case ProtectionType.BOTH:
-        return withAuthProtection(withWalletProtection(element));
-      case ProtectionType.NONE:
-      default:
-        return element;
-    }
-  };
+  // Get all routes (system + user routes combined)
+  const routes = useRoutes();
+  const { homeRoute, pageRoutes, authRoutes } = routes;
 
   // Flatten routes - extract subRoutes and create flat list for React Router
   const flattenRoutes = (routes: PageType[]): PageType[] => {
@@ -139,21 +133,16 @@ const Routes: React.FC<RoutesProps> = ({ routes }) => {
     };
   });
 
-  const UserWithLang = {
-    ...userRoute,
-    path: `/:${i18nConfig.urlParam}/${userRoute.path}`,
-  };
-
   const routeRootWithLang: RouteObject = {
     path: `/:${i18nConfig.urlParam}`,
-    children: [homeRoute, UserWithLang, ...PagesWithLang, NotFound],
+    children: [homeRoute, ...PagesWithLang, NotFound],
   };
 
   // Create routes with Layout wrapper
   const layoutRoutes: RouteObject = {
     path: '/',
     element: <Layout />,
-    children: [homeRoute, userRoute, ...protectedRoutes, routeRootWithLang],
+    children: [homeRoute, ...protectedRoutes, routeRootWithLang],
   };
 
   // Create root route structure
@@ -170,21 +159,17 @@ const Routes: React.FC<RoutesProps> = ({ routes }) => {
     ],
   };
 
-  return useRoutes([routeRoot]);
+  return useReactRouterRoutes([routeRoot]);
 };
 
-export interface RouterProps {
-  routes: AppRoutes;
-}
-
-export const Router: React.FC<RouterProps> = ({ routes }) => {
+export const Router: React.FC = () => {
   return isHashRouter ? (
     <HashRouter>
-      <Routes routes={routes} />
+      <Routes />
     </HashRouter>
   ) : (
     <BrowserRouter basename={import.meta.env.BASE_URL}>
-      <Routes routes={routes} />
+      <Routes />
     </BrowserRouter>
   );
 };

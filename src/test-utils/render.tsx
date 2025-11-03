@@ -2,13 +2,13 @@
 import { MantineProvider } from '@mantine/core';
 import { render as testingLibraryRender } from '@testing-library/react';
 
-import { theme } from '@/features/ui/mantine/theme';
+import { mantineProviderProps } from '@/features/app/config/ui';
 // Import your theme object
 
 export function render(ui: React.ReactNode) {
   return testingLibraryRender(<>{ui}</>, {
     wrapper: ({ children }: { children: React.ReactNode }) => (
-      <MantineProvider theme={theme}>{children}</MantineProvider>
+      <MantineProvider {...mantineProviderProps}>{children}</MantineProvider>
     ),
   });
 }

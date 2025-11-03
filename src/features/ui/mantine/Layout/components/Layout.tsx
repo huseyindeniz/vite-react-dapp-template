@@ -31,7 +31,7 @@ export const Layout: React.FC<LayoutProps> & {
       }}
       aside={{
         width: 250,
-        breakpoint: 'md',
+        breakpoint: 'sm',
         collapsed: { desktop: !asideVisible, mobile: true },
       }}
       footer={{ height: 150 }}

@@ -1,225 +1,239 @@
-# React dApp Template (Vite)
+# Vite React dApp Template
 
 ![version](https://img.shields.io/github/package-json/version/huseyindeniz/vite-react-dapp-template)
 ![GitHub stars](https://img.shields.io/github/stars/huseyindeniz/vite-react-dapp-template?style=social) ![GitHub forks](https://img.shields.io/github/forks/huseyindeniz/vite-react-dapp-template?style=social)
 ![GitHub repo size](https://img.shields.io/github/repo-size/huseyindeniz/vite-react-dapp-template?style=plastic) ![GitHub language count](https://img.shields.io/github/languages/count/huseyindeniz/vite-react-dapp-template?style=plastic) ![GitHub top language](https://img.shields.io/github/languages/top/huseyindeniz/vite-react-dapp-template?style=plastic) ![GitHub last commit](https://img.shields.io/github/last-commit/huseyindeniz/vite-react-dapp-template?color=red&style=plastic)
 
-A sophisticated, production-ready React template specifically designed for decentralized application (dApp) frontend development with modern Web3 integration.
+A sophisticated, production-ready React application template with enterprise-grade architecture. Build **traditional Web2 apps**, **Web3 dApps**, or **AI-powered applications** - all with the same robust foundation.
+
+> **🚀 Version 1.0.0 - Universal Template**
+> This release represents a fundamental architectural evolution. The template is now **truly universal** - Web3 wallet integration, OAuth, and AI chat are all **optional domain features** that can be easily removed. Build anything from a traditional SaaS app to a cutting-edge AI agent platform.
 
 🚀 **[Live Demo](https://snazzy-sorbet-15dcef.netlify.app)** | 📚 **[Documentation](https://huseyindeniz.github.io/react-dapp-template-documentation/)**
 
 ## Quick Start
 
 ```bash
-npx degit huseyindeniz/vite-react-dapp-template my-dapp
-cd my-dapp
+npx degit huseyindeniz/vite-react-dapp-template my-app
+cd my-app
 npm install
 npm run dev
 ```
 
-> **⚠️ UI Library Migration Notice:**  
-> Starting from **v0.7.0**, this template uses **Mantine** as the UI library. Previous versions used Chakra UI.
-
 ## Why Choose This Template?
 
-### 🎯 **Built for Web3**
+### 🌐 Universal Application Foundation
 
-- **Multi-Wallet Support**: MetaMask, Core, Coinbase, Rabby with extensible architecture
-- **Multi-Chain Ready**: Ethereum, Polygon, Avalanche, BSC + all major testnets
-- **Dual Authentication**: Web3 wallet + Google OAuth 2.0 for mainstream user onboarding
-- **Advanced Web3 State Management**: Sophisticated three-model wallet system (Provider, Network, Account)
+Build ANY web application architecture:
 
-### ⚡ **Modern Development Experience**
+- **Web2 Applications**: Traditional apps with OAuth authentication, REST APIs
+- **Web3 dApps**: Blockchain apps with multi-wallet and multi-chain support
+- **AI Agent Applications**: AI-powered apps with chat interfaces and agent integration
+- **Hybrid Applications**: Combine Web2 + Web3 + AI in a single architecture
 
-- **Latest React 19**: Concurrent features, improved Suspense, optimized rendering
-- **Vite 7**: Lightning-fast development and optimized production builds
-- **TypeScript 5**: Full type safety with advanced features
-- **Feature-Based Architecture**: Scalable organization by business domains
+### 🏗️ Core vs Domain Architecture
 
-### 🧠 **Advanced State Management**
+**Core Features** (Infrastructure - Keep these):
 
-- **Redux Toolkit + Redux Saga**: Predictable state with complex async workflows
-- **Slice Lifecycle Management**: Automatic cleanup strategies for optimal memory usage
-- **Feature-Based Slices**: Organized by business domains rather than technical layers
+- React 19, TypeScript 5, Vite 7
+- Redux Toolkit + Redux Saga
+- Mantine UI component library
+- i18next internationalization
+- React Router with lazy loading
+- Automatic slice lifecycle management
 
-### 🎨 **Modern UI/UX**
+**Domain Features** (Examples - Remove/Replace as needed):
 
-- **Mantine v8**: Comprehensive component library with excellent TypeScript support
-- **Responsive Design**: Mobile-first approach with flexible layouts
-- **Dark/Light Mode**: Built-in theme switching capabilities
-- **Accessibility**: ARIA compliant components out of the box
+- `wallet/` - Web3 integration (MetaMask, Core, Coinbase, Rabby)
+- `oauth/` - OAuth 2.0 authentication (Google, GitHub)
+- `chat/` - AI agent chat interface (LangGraph/Google ADK)
+- `blog-demo/` - REST API integration example (JSONPlaceholder)
 
-## Core Features
+Each domain feature is completely self-contained and removable.
 
-### 🔐 **Web3 Wallet Integration**
+### ⚡ Key Capabilities
 
-- **Multi-Wallet Support**: [MetaMask](https://metamask.io), [Core](https://core.app), [Coinbase](https://www.coinbase.com), [Rabby](https://www.rabby.io)
-- **Multi-Chain Support**: Ethereum, Polygon, Avalanche, BSC + testnets
+- **Modern Stack**: React 19, TypeScript 5, Vite 7
+- **Enterprise State Management**: Redux Toolkit + Redux Saga with automatic lifecycle management
+- **Feature-Based Architecture**: Clear boundaries, dependency injection, interface-driven design
+- **UI/UX**: Mantine components, responsive design, dark/light mode, accessibility
+- **Testing & Quality**: Vitest, React Testing Library, Storybook, ESLint, Prettier
+- **AI-Ready**: Pre-built chat interface with LangGraph and Google ADK support
 
-### 🌍 **Internationalization (i18n)**
+## What's Included
 
-- **Multi-Language Support**: English, Turkish (easily extensible)
-- **Browser Detection**: Automatic language detection
-- **Namespace Organization**: Feature-based translation keys
+### 🏗️ Core Features (Infrastructure - Required)
 
-### 🚦 **Routing & Navigation**
+#### Application Bootstrap (`app/`)
 
-- **React Router v7**: Latest routing with improved performance
-- **Protected Routes**: Wallet-based authentication guards
-- **Lazy Loading**: Route-based code splitting for optimal performance
-- **SEO Optimization**: Server-side rendering ready
+- Centralized configuration system (`src/features/app/config/`)
+- Provider composition and service dependency injection
+- Lazy loading and code splitting
 
-### 🧪 **Comprehensive Testing**
+#### Internationalization (`i18n/`)
 
-- **Unit Tests**: Vitest with 30% coverage threshold
-- **Component Tests**: React Testing Library integration
-- **Visual Testing**: Storybook with multiple addons
-- **E2E Testing**: Cypress + Synpress setup (ready to implement)
+- Multi-language support (English, Turkish - easily extensible)
+- Browser language detection and feature-based namespaces
+- Automatic key extraction from components
+
+#### Routing (`router/`)
+
+- React Router with lazy loading and code splitting
+- Automatic menu generation from route configuration
+- Flexible protection system for authenticated routes
+
+#### UI System (`ui/`)
+
+- Mantine component library with customizable theme
+- Responsive layout components and dark/light mode support
+
+#### Slice Manager (`slice-manager/`)
+
+- Automatic Redux slice lifecycle management
+- 5 cleanup strategies: Component, Route, Cached, Persistent, Manual
+- Memory leak prevention
+
+### 🎯 Domain Features (Optional - Examples)
+
+#### Web3 Wallet Integration (`wallet/`)
+
+- Multi-wallet: MetaMask, Core, Coinbase, Rabby
+- Multi-chain: Ethereum, Polygon, Avalanche, BSC + testnets
+- Three-model state machine: Provider, Network, Account
+- Wallet-based authentication with optional message signing
+
+#### OAuth Authentication (`oauth/`)
+
+- Providers: Google OAuth 2.0, GitHub OAuth
+- Token management and profile pages
+- Works independently or alongside wallet auth
+
+#### AI Chat Interface (`chat/`) - New in v1.0
+
+- Complete chat UI with message threading
+- LangGraph and Google ADK adapters
+- Python backend examples in `dev/backend/`
+
+#### Blog Demo (`blog-demo/`)
+
+- REST API integration example (JSONPlaceholder)
+- Two-model architecture: Posts and Authors
+- Reference implementation for building new features
+
+### 🧪 Development & Testing
+
+- Vitest + React Testing Library
+- Storybook for component documentation
+- Claude Code Skills for automated audits
+- ESLint + Prettier with pre-commit hooks
 
 ## Technology Stack
 
-### **Core Technologies**
+| Technology                    | Purpose                 |
+| ----------------------------- | ----------------------- |
+| **React (19.x)**              | UI framework            |
+| **TypeScript (5.x)**          | Type safety             |
+| **Vite (7.x)**                | Build tool              |
+| **Mantine (8.x)**             | UI component library    |
+| **Redux Toolkit (2.x)**       | State management        |
+| **Redux Saga (1.x)**          | Side effect management  |
+| **React Router (7.x)**        | Client-side routing     |
+| **i18next (25.x)**            | Internationalization    |
+| **Vitest (3.x)**              | Testing framework       |
+| **Storybook (8.x)**           | Component documentation |
+| **React Testing Lib (16.x)**  | Component testing       |
+| **ESLint (9.x)**              | Code linting            |
+| **Prettier (3.x)**            | Code formatting         |
 
-| Technology        | Version | Purpose                              |
-| ----------------- | ------- | ------------------------------------ |
-| **React**         | ^19.1.1 | UI framework with latest features    |
-| **TypeScript**    | ^5.9.2  | Type safety and developer experience |
-| **Vite**          | ^7.1.3  | Build tool and development server    |
-| **Mantine**       | ^8.2.7  | UI component library                 |
-| **Redux Toolkit** | ^2.8.2  | State management                     |
-| **Redux Saga**    | ^1.3.0  | Async side effects                   |
-| **React Router**  | ^7.8.2  | Client-side routing                  |
-| **Ethers.js**     | ^6.15.0 | Web3/blockchain integration          |
-| **i18next**       | ^25.4.2 | Internationalization                 |
-| **Vitest**        | ^3.2.4  | Testing framework                    |
-| **Storybook**     | ^8.6.14 | Component documentation              |
+**Optional Domain Dependencies** (only if you keep the features):
 
-### **Advanced Features**
+| Technology           | Feature      | Purpose                     |
+| -------------------- | ------------ | --------------------------- |
+| **Ethers.js (6.x)**  | `wallet/`    | Web3/blockchain integration |
+| **Axios (1.x)**      | `blog-demo/` | REST API integration        |
 
-#### **Slice Lifecycle Manager**
-
-Automatic Redux slice cleanup with multiple strategies:
-
-- **Component**: Cleanup when components unmount
-- **Route**: Cleanup when leaving routes
-- **Cached**: Time-based cleanup with configurable timeout
-- **Persistent**: Never cleanup automatically
-- **Manual**: Only cleanup when explicitly triggered
-
-#### **Web3 State Machine**
-
-Sophisticated three-model architecture:
-
-- **Provider Model**: Wallet detection and connection
-- **Network Model**: Chain switching and validation
-- **Account Model**: User authentication and signing
-
-#### **Service Layer Abstraction**
-
-Interface-driven architecture for external integrations:
-
-- **Ethers.js Service**: Blockchain interaction abstraction
-- **JSONPlaceholder Demo**: REST API integration example
-- **Extensible Design**: Easy to add new services
-
-## Architecture Overview
-
-![System Architecture](docs/architecture/diagrams/system-overview.png)
-
-The template follows a **feature-based architecture** with clear separation of concerns:
-
-### **📁 Project Structure**
+## Project Structure
 
 ```
 src/
 ├── features/           # Feature-based organization
-│   ├── app/           # Application bootstrap & providers
-│   ├── wallet/        # Web3 wallet integration
-│   ├── ui/            # Mantine-based design system
-│   ├── router/        # Routing configuration
+│   ├── app/           # Application bootstrap & configuration
 │   ├── i18n/          # Internationalization
+│   ├── router/        # Routing configuration
+│   ├── ui/            # Mantine-based design system
 │   ├── slice-manager/ # Redux lifecycle management
-│   └── blog-demo/     # Complete feature example
+│   ├── wallet/        # Web3 wallet (optional)
+│   ├── oauth/         # OAuth auth (optional)
+│   ├── chat/          # AI chat (optional)
+│   └── blog-demo/     # REST API example (optional)
 ├── pages/             # Application pages
 ├── services/          # External API integrations
-├── store/             # Redux store configuration
-└── hooks/             # Custom React hooks
+│   ├── ethersV6/      # Web3 service (optional)
+│   ├── oauth/         # OAuth services (optional)
+│   ├── chat/          # Chat services (optional)
+│   └── jsonplaceholder/ # REST API service (optional)
+└── hooks/             # Global React hooks
 ```
-
-### **🔄 Data Flow**
-
-![Data Flow](docs/architecture/diagrams/data-flow.png)
-
-1. **UI Layer**: React components with Mantine design system
-2. **State Layer**: Redux Toolkit with automatic slice management
-3. **Service Layer**: Ethers.js and REST API abstractions
-4. **External**: Blockchain networks and REST APIs
 
 ## Development Commands
 
-### **Core Commands**
-
 ```bash
+# Core
 npm run dev          # Development server with HMR
-npm run build        # Production build (TypeScript + Vite)
-npm run test         # Unit tests with Vitest
-npm run lint         # ESLint with zero warnings tolerance
-npm run coverage     # Test coverage report
+npm run build        # Production build
+npm run test         # Unit tests
+npm run lint         # ESLint (zero warnings tolerance)
+npm run coverage     # Test coverage
 npm run preview      # Preview production build
-```
 
-### **Storybook**
-
-```bash
-npm run storybook         # Component development environment
+# Storybook
+npm run storybook         # Component development
 npm run build-storybook   # Build static Storybook
-```
 
-### **Internationalization**
-
-```bash
+# Internationalization
 npm run extract             # Extract translation keys
 npm run check-translations  # Validate translations
-```
 
-### **Release**
-
-```bash
+# Release
 npm run release      # Version bump and release
 npm run prepare      # Setup git hooks
 ```
 
 ## Configuration
 
-### **Environment Variables**
+### Centralized App Configuration (New in v1.0)
+
+All configuration centralized in `src/features/app/config/`:
+
+```
+src/features/app/config/
+├── routes.tsx              # Route definitions
+├── services.ts             # Service dependency injection
+├── features.ts             # Feature registration
+├── ui.tsx                  # UI configuration
+└── auth/                   # Authentication configuration
+    ├── auth.ts             # Auth provider registration
+    └── ProtectionType.ts   # Protection type definitions
+```
+
+### Environment Variables
 
 ```bash
-# Wallet Configuration
-VITE_WALLET_SIGN_TIMEOUT_IN_SEC=60
-VITE_WALLET_DISABLE_SIGN=false
-VITE_WALLET_POST_LOGIN_REDIRECT_PATH=/dashboard
-
-# Router Configuration
+# Router
 VITE_ROUTER_USE_HASH=false
 
-# Performance
-VITE_WALLET_SLOW_DOWN_IN_MS=500
+# Wallet (optional - only if using wallet feature)
+VITE_WALLET_SIGN_TIMEOUT_IN_SEC=60
+VITE_WALLET_DISABLE_SIGN=false
+VITE_WALLET_POST_LOGIN_REDIRECT_PATH=/wallet-profile
+
+# OAuth (optional - only if using oauth feature)
+VITE_OAUTH_GOOGLE_CLIENT_ID=your_client_id
+VITE_OAUTH_GITHUB_CLIENT_ID=your_client_id
+VITE_OAUTH_POST_LOGIN_REDIRECT_PATH=/oauth-profile
 ```
 
-### **Supported Networks**
-
-```typescript
-// Pre-configured networks
-SUPPORTED_NETWORKS = [
-  AvalancheChain,
-  BinanceSmartChain,
-  PolygonChain,
-  EthereumMainnetChain,
-  // + All major testnets
-];
-```
-
-### **TypeScript Path Aliases**
+### TypeScript Path Aliases
 
 ```typescript
 "paths": {
@@ -227,62 +241,88 @@ SUPPORTED_NETWORKS = [
   "@/services/*": ["./src/services/*"],
   "@/pages/*": ["./src/pages/*"],
   "@/hooks/*": ["./src/hooks/*"],
-  "@/store/*": ["./src/store/*"]
+  "@test-utils": ["./src/test-utils/index.ts"]
 }
 ```
 
-## Performance & Optimization
+## Removing Domain Features
 
-### **Bundle Optimization**
+### Remove Wallet Feature
 
-- ✅ **Manual Chunking**: Strategic code splitting
-- ✅ **Tree Shaking**: Dead code elimination
-- ✅ **Lazy Loading**: Route-based dynamic imports
-- ✅ **Memory Management**: Automatic Redux cleanup
+1. Delete `src/features/wallet/` directory
+2. Delete `src/services/ethersV6/` directory
+3. Remove wallet routes from `src/features/app/config/routes.tsx`
+4. Remove wallet service from `src/features/app/config/services.ts`
+5. Remove wallet auth from `src/features/app/config/auth/auth.ts`
+6. Uninstall: `npm uninstall ethers @metamask/jazzicon`
 
-### **Build Output**
+### Remove OAuth Feature
 
-```
-📦 Optimized Chunks:
-├── ethers.js      (~255KB) - Web3 functionality
-├── mantine.js     (~250KB) - UI components
-├── router.js      (~200KB) - Routing logic
-├── rtk.js         (~23KB)  - State management
-└── app.js         (~166KB) - Application code
-```
+1. Delete `src/features/oauth/` directory
+2. Delete `src/services/oauth/` directory
+3. Remove OAuth routes from `src/features/app/config/routes.tsx`
+4. Remove OAuth service from `src/features/app/config/services.ts`
+5. Remove OAuth auth from `src/features/app/config/auth/auth.ts`
 
-## Documentation
+### Remove Chat Feature
 
-### **📚 Comprehensive Documentation**
+1. Delete `src/features/chat/` directory
+2. Delete `src/services/chat/` directory
+3. Remove chat routes from `src/features/app/config/routes.tsx`
+4. Remove chat service from `src/features/app/config/services.ts`
+5. Uninstall: `npm uninstall axios` (if not used by other features)
 
-- **[Official Documentation](https://huseyindeniz.github.io/react-dapp-template-documentation/)**: Complete setup guide
-- **[Architecture Report](docs/architecture/ARCHITECTURE_REPORT.md)**: Detailed technical documentation
-- **[Technology Stack](docs/architecture/TECH_STACK.md)**: Technology analysis and recommendations
-- **[Dependencies](docs/architecture/DEPENDENCIES.md)**: Dependency management guide
+### Remove Blog Demo Feature
 
-### **🎨 Visual Documentation**
+1. Delete `src/features/blog-demo/` directory
+2. Delete `src/services/jsonplaceholder/` directory
+3. Remove blog routes from `src/features/app/config/routes.tsx`
+4. Remove blog service from `src/features/app/config/services.ts`
+5. Uninstall: `npm uninstall axios` (if not used by other features)
 
-- **[System Overview](docs/architecture/diagrams/system-overview.png)**: High-level architecture
-- **[Component Hierarchy](docs/architecture/diagrams/component-hierarchy.png)**: UI component structure
-- **[Wallet State Flow](docs/architecture/diagrams/wallet-state-flow.png)**: Web3 state management
-- **[Redux Architecture](docs/architecture/diagrams/redux-architecture.png)**: State management flow
+## Breaking Changes from v0.x
+
+### v1.0.0 - Major Architectural Changes
+
+1. **Auth Feature Split**: The `auth` feature split into two separate features:
+   - `oauth/` - OAuth 2.0 authentication (Google, GitHub)
+   - `wallet/` - Web3 wallet authentication
+   - Both are now **optional** and removable independently
+
+2. **Centralized Configuration**: All configuration moved to `src/features/app/config/`
+   - Route definitions: `config/routes.tsx`
+   - Service injection: `config/services.ts`
+   - Feature registration: `config/features.ts`
+
+3. **Protection Provider System**: New pluggable authentication
+   - `withWalletProtection` HOC for wallet-protected routes
+   - `withOAuthProtection` HOC for OAuth-protected routes
+   - Register custom auth providers in `config/auth/auth.ts`
+
+4. **Chat Feature Added**: New optional AI chat feature
+   - Complete chat UI with LangGraph and Google ADK adapters
+   - Python backend examples in `dev/backend/`
+
+5. **Store Configuration**: Redux store now in `src/features/app/store/store.ts`
+   - Removed centralized `src/store/` directory
+
+6. **Translation Files**: Reorganized to `src/features/i18n/translations/{namespace}/{lang}.json`
+   - Feature-based namespaces for better organization
 
 ## Alternative Versions
 
-- **[Create React App Version](https://github.com/huseyindeniz/cra-template-dapp)**: CRA-based template
+- **[Create React App Version](https://github.com/huseyindeniz/cra-template-dapp)**: CRA-based template (deprecated)
 - **Legacy Versions**: v0.6.x and earlier used Chakra UI
 
 ## Contributing
 
 We welcome contributions from the community!
 
-### **How to Contribute**
-
-- 💬 **Discussions**: [GitHub Discussions](https://github.com/huseyindeniz/vite-react-dapp-template/discussions) for suggestions
+- 💬 **Discussions**: [GitHub Discussions](https://github.com/huseyindeniz/vite-react-dapp-template/discussions)
 - 🐛 **Bug Reports**: [GitHub Issues](https://github.com/huseyindeniz/vite-react-dapp-template/issues)
 - 🔧 **Pull Requests**: [GitHub PRs](https://github.com/huseyindeniz/vite-react-dapp-template/pulls)
 
-### **Development Setup**
+### Development Setup
 
 ```bash
 git clone https://github.com/huseyindeniz/vite-react-dapp-template.git
@@ -297,6 +337,8 @@ This project is licensed under the [MIT License](./LICENSE).
 
 ---
 
-**🚀 Ready to build the next generation of decentralized applications?**
+**🚀 Ready to build your next application?**
+
+Whether you're building a traditional SaaS, a Web3 dApp, or an AI agent platform - this template has you covered.
 
 [Get Started Now](https://huseyindeniz.github.io/react-dapp-template-documentation/) | [View Live Demo](https://snazzy-sorbet-15dcef.netlify.app) | [Star on GitHub ⭐](https://github.com/huseyindeniz/vite-react-dapp-template)

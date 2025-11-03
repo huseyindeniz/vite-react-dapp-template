@@ -1,0 +1,25 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Feature: Wallet > Component: ConnectionModal/Modal > Scenario: CheckAccount > when stepState is error it should show error icon 1`] = `[Function]`;
+
+exports[`Feature: Wallet > Component: ConnectionModal/Modal > Scenario: CheckAccount > when stepState is loading it should show loading icon 1`] = `[Function]`;
+
+exports[`Feature: Wallet > Component: ConnectionModal/Modal > Scenario: CheckAccount > when stepState is undefined it should show plain step logo 1`] = `[Function]`;
+
+exports[`Feature: Wallet > Component: ConnectionModal/Modal > Scenario: CheckNetwork > when stepState is error it should show error icon 1`] = `[Function]`;
+
+exports[`Feature: Wallet > Component: ConnectionModal/Modal > Scenario: CheckNetwork > when stepState is loading it should show loading icon 1`] = `[Function]`;
+
+exports[`Feature: Wallet > Component: ConnectionModal/Modal > Scenario: CheckNetwork > when stepState is undefined it should show plain step logo 1`] = `[Function]`;
+
+exports[`Feature: Wallet > Component: ConnectionModal/Modal > Scenario: CheckSign > when stepState is error it should show error icon 1`] = `[Function]`;
+
+exports[`Feature: Wallet > Component: ConnectionModal/Modal > Scenario: CheckSign > when stepState is loading it should show loading icon 1`] = `[Function]`;
+
+exports[`Feature: Wallet > Component: ConnectionModal/Modal > Scenario: CheckSign > when stepState is undefined it should show plain step logo 1`] = `[Function]`;
+
+exports[`Feature: Wallet > Component: ConnectionModal/Modal > Scenario: CheckWallet > when stepState is error it should show error icon 1`] = `[Function]`;
+
+exports[`Feature: Wallet > Component: ConnectionModal/Modal > Scenario: CheckWallet > when stepState is loading it should show loading icon 1`] = `[Function]`;
+
+exports[`Feature: Wallet > Component: ConnectionModal/Modal > Scenario: CheckWallet > when stepState is undefined it should show plain step logo 1`] = `[Function]`;

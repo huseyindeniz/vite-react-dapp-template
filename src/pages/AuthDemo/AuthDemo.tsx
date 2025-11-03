@@ -4,7 +4,7 @@ import { Title, Text, Stack, Card, List } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 
 export const AuthDemo: React.FC = () => {
-  const { t } = useTranslation('PageAuthDemo');
+  const { t } = useTranslation('page-authdemo');
 
   return (
     <Stack gap="md">

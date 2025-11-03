@@ -9,8 +9,8 @@ import {
   take,
 } from 'redux-saga/effects';
 
-import { IWalletAccountApi } from '@/features/wallet/interfaces/IWalletAccountApi';
-import { RootState } from '@/store/store';
+import { RootState } from '@/features/app/store/store';
+import { IAccountApi } from '@/features/wallet/models/account/interfaces/IAccountApi';
 
 import { DISABLE_WALLET_SIGN, SIGN_TIMEOUT_IN_SEC } from '../../../config';
 import { SlowDown } from '../../../utils';
@@ -31,7 +31,7 @@ export function* ActionEffectWaitSignIn() {
 }
 
 export function* ActionEffectSignIn(
-  walletApi: IWalletAccountApi,
+  walletApi: IAccountApi,
   action: ReturnType<typeof actions.signIn>
 ) {
   yield put(walletStateSliceActions.setLoading(LoadingStatusType.PENDING));
@@ -65,7 +65,7 @@ export function* HandleStateNotSigned() {
 }
 
 export function* HandleStateSignRequested(
-  walletSignApi: IWalletAccountApi,
+  walletSignApi: IAccountApi,
   message: string
 ) {
   let isSigned: boolean = false;
@@ -161,7 +161,7 @@ export function* HandleStateSignFailed(error: string) {
   yield put(slicesActions.setAccountSignState(AccountSignState.SIGN_FAILED));
 }
 
-export function* HandleStateSigned(walletSignApi: IWalletAccountApi) {
+export function* HandleStateSigned(walletSignApi: IAccountApi) {
   yield put(slicesActions.setAccountSignState(AccountSignState.SIGNED));
   yield call(SlowDown);
   yield call(SlowDown);
@@ -174,15 +174,13 @@ export function* HandleStateSigned(walletSignApi: IWalletAccountApi) {
 }
 
 export function* HandleStateUserAuthenticated(
-  walletAuthenticatedApi: IWalletAccountApi
+  walletAuthenticatedApi: IAccountApi
 ) {
   yield spawn(handleEventAccountsChanged, walletAuthenticatedApi);
 }
 
 // WalletApi Event Handlers
-function* handleEventAccountsChanged(
-  walletAuthenticatedApi: IWalletAccountApi
-) {
+function* handleEventAccountsChanged(walletAuthenticatedApi: IAccountApi) {
   const channel: EventChannel<string[]> = yield call(
     walletAuthenticatedApi.listenAccountChange
   );

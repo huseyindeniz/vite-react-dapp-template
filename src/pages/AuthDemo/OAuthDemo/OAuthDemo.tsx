@@ -4,11 +4,11 @@ import { Stack, Title, Text, Alert } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import { IoIosWarning } from 'react-icons/io';
 
-import { withAuthProtection } from '@/features/auth/hocs/withAuthProtection';
+import { withOAuthProtection } from '@/features/oauth/hocs/withOAuthProtection';
 import { PageMeta } from '@/features/ui/mantine/components/PageMeta/PageMeta';
 
 export const OAuthDemo: React.FC = () => {
-  const { t } = useTranslation('PageOAuthDemo');
+  const { t } = useTranslation('page-authdemo-oauthdemo');
 
   return (
     <>
@@ -22,7 +22,7 @@ export const OAuthDemo: React.FC = () => {
         <Text>
           {t('This page demonstrates OAuth authentication with social providers like Google and GitHub. Use the Auth button in the header to sign in.')}
         </Text>
-        {withAuthProtection(
+        {withOAuthProtection(
           <Alert title={t('Logged In!')} color="green">
             {t('You have successfully authenticated using OAuth. This content is only visible to authenticated users.')}
           </Alert>,
@@ -31,7 +31,7 @@ export const OAuthDemo: React.FC = () => {
           </Alert>
         )}
         <Text c="dimmed" size="sm">
-          {t('This demonstrates the withAuthProtection HOC pattern for OAuth-based conditional rendering.')}
+          {t('This demonstrates the withOAuthProtection HOC pattern for OAuth-based conditional rendering.')}
         </Text>
       </Stack>
     </>

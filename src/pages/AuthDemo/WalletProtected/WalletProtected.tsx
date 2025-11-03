@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { PageMeta } from '@/features/ui/mantine/components/PageMeta/PageMeta';
 
 export const WalletProtected: React.FC = () => {
-  const { t } = useTranslation('PageWalletProtected');
+  const { t } = useTranslation('page-authdemo-walletprotected');
 
   return (
     <>

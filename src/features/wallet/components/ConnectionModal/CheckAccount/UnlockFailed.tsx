@@ -8,7 +8,7 @@ interface UnlockFailedProps {
   errorMessage: string | null;
 }
 export const UnlockFailed: React.FC<UnlockFailedProps> = ({ errorMessage }) => {
-  const { t } = useTranslation('FeatureWallet');
+  const { t } = useTranslation('feature-wallet');
   return (
     <Container>
       <Alert icon={<IoIosWarning />} title={t('Unexpected Error')} color="red">

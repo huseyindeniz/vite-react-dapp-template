@@ -7,82 +7,82 @@
 
 ### Build System & Development
 
-| Technology | Version | Purpose | Configuration |
-|------------|---------|---------|---------------|
-| **Vite** | ^7.1.3 | Fast development server and build tool | `vite.config.ts` |
-| **TypeScript** | ^5.9.2 | Type safety and enhanced developer experience | `tsconfig.json` |
-| **Node.js** | 22.13.0 | Runtime environment (via Volta) | `package.json` volta config |
-| **npm** | 10.9.2 | Package manager | `package-lock.json` |
+| Technology     | Version | Purpose                                       | Configuration               |
+| -------------- | ------- | --------------------------------------------- | --------------------------- |
+| **Vite**       | ^7.1.3  | Fast development server and build tool        | `vite.config.ts`            |
+| **TypeScript** | ^5.9.2  | Type safety and enhanced developer experience | `tsconfig.json`             |
+| **Node.js**    | 22.13.0 | Runtime environment (via Volta)               | `package.json` volta config |
+| **npm**        | 10.9.2  | Package manager                               | `package-lock.json`         |
 
 ### Frontend Framework
 
-| Technology | Version | Purpose | Notes |
-|------------|---------|---------|-------|
-| **React** | ^19.1.1 | Core UI framework | Latest version with Concurrent features |
-| **React DOM** | ^19.1.1 | DOM rendering | Server-side rendering ready |
-| **React Router DOM** | ^7.8.2 | Client-side routing | Latest v7 with improved performance |
+| Technology           | Version | Purpose             | Notes                                   |
+| -------------------- | ------- | ------------------- | --------------------------------------- |
+| **React**            | ^19.1.1 | Core UI framework   | Latest version with Concurrent features |
+| **React DOM**        | ^19.1.1 | DOM rendering       | Server-side rendering ready             |
+| **React Router DOM** | ^7.8.2  | Client-side routing | Latest v7 with improved performance     |
 
 ### State Management
 
-| Technology | Version | Purpose | Pattern |
-|------------|---------|---------|---------|
-| **Redux Toolkit** | ^2.8.2 | State management | Modern Redux with less boilerplate |
-| **React Redux** | ^9.2.0 | React-Redux bindings | Hooks-based API |
-| **Redux Saga** | ^1.3.0 | Side effect management | Generator-based async flow control |
-| **Immer** | Built-in RTK | Immutable updates | Automatic immutable state updates |
+| Technology        | Version      | Purpose                | Pattern                            |
+| ----------------- | ------------ | ---------------------- | ---------------------------------- |
+| **Redux Toolkit** | ^2.8.2       | State management       | Modern Redux with less boilerplate |
+| **React Redux**   | ^9.2.0       | React-Redux bindings   | Hooks-based API                    |
+| **Redux Saga**    | ^1.3.0       | Side effect management | Generator-based async flow control |
+| **Immer**         | Built-in RTK | Immutable updates      | Automatic immutable state updates  |
 
 ### UI Framework
 
-| Technology | Version | Purpose | Migration Notes |
-|------------|---------|---------|-----------------|
-| **Mantine Core** | ^8.2.7 | Component library | Migrated from Chakra UI in v0.7.0 |
-| **Mantine Hooks** | ^8.2.7 | Utility hooks | Form handling, animations, utilities |
-| **Mantine Notifications** | ^8.2.7 | Notification system | Toast notifications and alerts |
-| **React Icons** | ^5.5.0 | Icon library | Comprehensive icon set |
+| Technology                | Version | Purpose             | Migration Notes                      |
+| ------------------------- | ------- | ------------------- | ------------------------------------ |
+| **Mantine Core**          | ^8.2.7  | Component library   | Migrated from Chakra UI in v0.7.0    |
+| **Mantine Hooks**         | ^8.2.7  | Utility hooks       | Form handling, animations, utilities |
+| **Mantine Notifications** | ^8.2.7  | Notification system | Toast notifications and alerts       |
+| **React Icons**           | ^5.5.0  | Icon library        | Comprehensive icon set               |
 
 ### Web3 Integration
 
-| Technology | Version | Purpose | Configuration |
-|------------|---------|---------|---------------|
-| **Ethers.js** | ^6.15.0 | Blockchain interaction | Configurable v5/v6 support |
-| **MetaMask Jazzicon** | ^2.0.0 | Avatar generation | Wallet address visualization |
+| Technology            | Version | Purpose                | Configuration                |
+| --------------------- | ------- | ---------------------- | ---------------------------- |
+| **Ethers.js**         | ^6.15.0 | Blockchain interaction | Configurable v5/v6 support   |
+| **MetaMask Jazzicon** | ^2.0.0  | Avatar generation      | Wallet address visualization |
 
 ### Internationalization
 
-| Technology | Version | Purpose | Features |
-|------------|---------|---------|----------|
-| **i18next** | ^25.4.2 | Core i18n framework | Namespace support, interpolation |
-| **react-i18next** | ^15.7.3 | React integration | Hook-based API, Suspense support |
-| **i18next-browser-languagedetector** | ^8.2.0 | Language detection | Browser language detection |
-| **i18next-parser** | ^9.3.0 | Translation extraction | CLI tool for key extraction |
+| Technology                           | Version | Purpose                | Features                         |
+| ------------------------------------ | ------- | ---------------------- | -------------------------------- |
+| **i18next**                          | ^25.4.2 | Core i18n framework    | Namespace support, interpolation |
+| **react-i18next**                    | ^15.7.3 | React integration      | Hook-based API, Suspense support |
+| **i18next-browser-languagedetector** | ^8.2.0  | Language detection     | Browser language detection       |
+| **i18next-parser**                   | ^9.3.0  | Translation extraction | CLI tool for key extraction      |
 
 ### Testing Stack
 
-| Technology | Version | Purpose | Configuration |
-|------------|---------|---------|---------------|
-| **Vitest** | ^3.2.4 | Test runner | `vitest.config.ts` |
-| **@testing-library/react** | ^16.3.0 | Component testing | React-specific testing utilities |
-| **@testing-library/jest-dom** | ^6.8.0 | DOM matchers | Extended Jest matchers |
-| **@testing-library/user-event** | ^14.6.1 | User interaction testing | Realistic user interactions |
-| **jsdom** | ^26.1.0 | DOM environment | Browser environment simulation |
-| **@vitest/coverage-v8** | ^3.2.4 | Code coverage | V8 coverage provider |
+| Technology                      | Version | Purpose                  | Configuration                    |
+| ------------------------------- | ------- | ------------------------ | -------------------------------- |
+| **Vitest**                      | ^3.2.4  | Test runner              | `vitest.config.ts`               |
+| **@testing-library/react**      | ^16.3.0 | Component testing        | React-specific testing utilities |
+| **@testing-library/jest-dom**   | ^6.8.0  | DOM matchers             | Extended Jest matchers           |
+| **@testing-library/user-event** | ^14.6.1 | User interaction testing | Realistic user interactions      |
+| **jsdom**                       | ^26.1.0 | DOM environment          | Browser environment simulation   |
+| **@vitest/coverage-v8**         | ^3.2.4  | Code coverage            | V8 coverage provider             |
 
 ### Development Tools
 
-| Technology | Version | Purpose | Configuration |
-|------------|---------|---------|---------------|
-| **ESLint** | ^9.34.0 | Code linting | `eslint.config.mjs` |
-| **Prettier** | ^3.6.2 | Code formatting | `.prettierrc` |
-| **Husky** | ^9.1.7 | Git hooks | `.husky/` directory |
+| Technology            | Version | Purpose            | Configuration        |
+| --------------------- | ------- | ------------------ | -------------------- |
+| **ESLint**            | ^9.34.0 | Code linting       | `eslint.config.mjs`  |
+| **Prettier**          | ^3.6.2  | Code formatting    | `.prettierrc`        |
+| **Husky**             | ^9.1.7  | Git hooks          | `.husky/` directory  |
 | **TypeScript ESLint** | ^8.41.0 | TypeScript linting | Strict type checking |
 
 ### Documentation & Visual Testing
 
-| Technology | Version | Purpose | Configuration |
-|------------|---------|---------|---------------|
-| **Storybook** | ^8.6.14 | Component documentation | `.storybook/` |
-| **Storybook React** | ^8.6.14 | React integration | Component stories |
-| **Storybook Addons** | Various | Enhanced functionality | Accessibility, interactions, etc. |
+| Technology           | Version | Purpose                 | Configuration                     |
+| -------------------- | ------- | ----------------------- | --------------------------------- |
+| **Storybook**        | ^8.6.14 | Component documentation | `.storybook/`                     |
+| **Storybook React**  | ^8.6.14 | React integration       | Component stories                 |
+| **Storybook Addons** | Various | Enhanced functionality  | Accessibility, interactions, etc. |
 
 ## Development Dependencies Analysis
 
@@ -91,7 +91,7 @@
 ```json
 {
   "eslint-config-mantine": "^4.0.3",
-  "eslint-config-prettier": "^10.1.8", 
+  "eslint-config-prettier": "^10.1.8",
   "eslint-plugin-import": "^2.32.0",
   "eslint-plugin-jsx-a11y": "^6.10.2",
   "eslint-plugin-react": "^7.37.5",
@@ -171,7 +171,6 @@ manualChunks: {
   "@/services/*": ["./src/services/*"],
   "@/pages/*": ["./src/pages/*"],
   "@/hooks/*": ["./src/hooks/*"],
-  "@/store/*": ["./src/store/*"],
   "@test-utils": ["./src/test-utils/index.ts"]
 }
 ```
@@ -253,7 +252,7 @@ Uses **Volta** for consistent Node.js and npm versions across environments:
 ### Future Considerations
 
 1. **Package Updates**: Keep dependencies current with automated tools
-2. **Performance Monitoring**: Add bundle analysis CI checks  
+2. **Performance Monitoring**: Add bundle analysis CI checks
 3. **Security Scanning**: Implement automated vulnerability scanning
 
 ---
