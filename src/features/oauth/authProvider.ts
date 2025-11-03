@@ -9,7 +9,7 @@ import { getOAuthRoutes } from './routes';
  * Implements IProtectionProvider to integrate OAuth authentication with auth system
  */
 export const oauthProtectionProvider: IProtectionProvider = {
-  protectionType: ProtectionType.AUTH,
+  protectionType: ProtectionType.OAUTH,
   withProtection: withOAuthProtection,
   getAuthRoutes: getOAuthRoutes,
 };

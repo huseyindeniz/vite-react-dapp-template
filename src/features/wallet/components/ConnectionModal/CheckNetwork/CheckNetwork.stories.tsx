@@ -6,7 +6,7 @@ import { NetworkLoadState } from '../../../models/network/types/NetworkLoadState
 
 import { CheckNetwork } from './CheckNetwork';
 
-const supportedNetworks = SUPPORTED_NETWORKS.filter(Boolean).map(network => {
+const supportedNetworks = SUPPORTED_NETWORKS.map(network => {
   return {
     id: network.chainId,
     name: network.chainName,

@@ -2,8 +2,9 @@
 
 import { generateFeatureDocs } from './generate_feature_docs.mjs';
 import { analyzeArchitecture } from './analyze_architecture.mjs';
-import { generateDiagrams } from './generate_diagrams.mjs';
+import { generateDiagrams } from './generate_diagrams_plantuml.mjs';
 import { generateGuides } from './generate_guides.mjs';
+import { generateExecutiveDocs } from './generate_executive_docs.mjs';
 import { getAllFeatures, ensureDocsOutputDir, writeFile } from './utils/fileUtils.mjs';
 import path from 'path';
 
@@ -79,6 +80,19 @@ async function generateAllDocs() {
     guides = [];
   }
 
+  // Generate executive documentation
+  console.log('\n' + '='.repeat(80));
+  console.log('Generating executive documentation...');
+  console.log('='.repeat(80));
+
+  let executiveDocs;
+  try {
+    executiveDocs = generateExecutiveDocs();
+  } catch (error) {
+    console.error(`❌ Executive docs generation failed: ${error.message}`);
+    executiveDocs = [];
+  }
+
   // Generate index/README files
   console.log('\n' + '='.repeat(80));
   console.log('Generating index files...');
@@ -121,9 +135,14 @@ async function generateAllDocs() {
   console.log(`  - Feature Docs: ${results.success.length}`);
   console.log(`  - Diagrams: ${diagrams ? diagrams.length : 0}`);
   console.log(`  - Guides: ${guides ? guides.length : 0}`);
+  console.log(`  - Executive Docs: ${executiveDocs ? executiveDocs.length : 0}`);
   console.log(`  - Architecture Analysis: ${architecture ? '✅' : '❌'}`);
 
-  console.log(`\n📖 View documentation: ${outputDir}/README.md`);
+  console.log(`\n📖 View documentation:`);
+  console.log(`  - Main: ${outputDir}/README.md`);
+  console.log(`  - Architecture: ${outputDir}/ARCHITECTURE.md`);
+  console.log(`  - Tech Stack: ${outputDir}/TECH_STACK.md`);
+  console.log(`  - Dependencies: ${outputDir}/DEPENDENCIES.md`);
   console.log('='.repeat(80));
 
   process.exit(results.failed.length > 0 ? 1 : 0);

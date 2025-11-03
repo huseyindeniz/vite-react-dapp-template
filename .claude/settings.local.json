@@ -32,7 +32,8 @@
       "Bash(node:*)",
       "Skill(deps-audit)",
       "Skill(security-audit)",
-      "Skill(test-audit)"
+      "Skill(test-audit)",
+      "Skill(docs-generator)"
     ],
     "deny": [],
     "ask": []

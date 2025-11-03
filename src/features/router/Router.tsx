@@ -60,7 +60,7 @@ const Routes: React.FC = () => {
     if (sliceManager) {
       // Configure slice manager for all features that need it
       Object.values(features).forEach(feature => {
-        if ('configureSlice' in feature && feature.configureSlice) {
+        if ('configureSlice' in feature && typeof feature.configureSlice === 'function') {
           feature.configureSlice();
         }
       });

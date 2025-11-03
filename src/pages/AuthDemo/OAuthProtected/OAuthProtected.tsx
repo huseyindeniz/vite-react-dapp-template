@@ -24,7 +24,7 @@ export const OAuthProtected: React.FC = () => {
           {t('Unlike the OAuth Demo page which uses conditional rendering, this page uses route-level protection configured in the routes configuration.')}
         </Text>
         <Code block>
-          protectionType: ProtectionType.AUTH
+          protectionType: ProtectionType.OAUTH
         </Code>
         <Text c="dimmed" size="sm">
           {t('If you can see this page, you have successfully authenticated via OAuth.')}

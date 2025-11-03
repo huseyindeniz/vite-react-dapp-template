@@ -4,7 +4,7 @@
  */
 export enum ProtectionType {
   NONE = 'none',
-  AUTH = 'auth',
+  OAUTH = 'oauth',
   WALLET = 'wallet',
   BOTH = 'both',
 }

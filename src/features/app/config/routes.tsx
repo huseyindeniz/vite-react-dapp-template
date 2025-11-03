@@ -150,7 +150,7 @@ export const getUserPageRoutes = (
         path: 'oauth-protected',
         element: <OAuthProtected />,
         menuLabel: t('OAuth - Protected', { ns: 'menu' }),
-        protectionType: ProtectionType.AUTH,
+        protectionType: ProtectionType.OAUTH,
         icon: <IoShieldCheckmark size={18} />,
       },
       {
