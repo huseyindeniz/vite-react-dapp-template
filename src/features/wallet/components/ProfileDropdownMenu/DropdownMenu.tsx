@@ -10,9 +10,9 @@ import {
   Center,
 } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
-import { FaExternalLinkAlt } from 'react-icons/fa';
+import { FaExternalLinkAlt, FaUser } from 'react-icons/fa';
 import { IoIosLogOut } from 'react-icons/io';
-import { MdContentCopy, MdDashboard } from 'react-icons/md';
+import { MdContentCopy } from 'react-icons/md';
 import { Link as RouterLink } from 'react-router-dom';
 
 import { Network } from '../../models/network/types/Network';
@@ -27,7 +27,7 @@ export interface DropdownMenuProps {
   currentNetwork: Network | null;
   connectedWallet: Web3Wallet | null;
   addressExplorerUrl: string | undefined;
-  userPageLink: string;
+  profileLink: string;
   onCopyAddressClicked: () => void;
   onDisconnectClicked: () => void;
 }
@@ -37,7 +37,7 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
   currentNetwork,
   connectedWallet,
   addressExplorerUrl,
-  userPageLink,
+  profileLink,
   onCopyAddressClicked,
   onDisconnectClicked,
 }) => {
@@ -78,11 +78,11 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
         </Menu.Item>
         <Menu.Divider />
         <Menu.Item
-          leftSection={<MdDashboard />}
+          leftSection={<FaUser size={16} />}
           component={RouterLink}
-          to={userPageLink}
+          to={profileLink}
         >
-          {t('Dashboard')}
+          {t('My Profile')}
         </Menu.Item>
         <Menu.Item
           leftSection={<MdContentCopy />}

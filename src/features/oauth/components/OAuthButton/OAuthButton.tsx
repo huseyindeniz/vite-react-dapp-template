@@ -5,11 +5,15 @@ import log from 'loglevel';
 import { useTranslation } from 'react-i18next';
 import { FaChevronDown, FaUser } from 'react-icons/fa';
 import { IoIosLogOut } from 'react-icons/io';
+import { Link } from 'react-router-dom';
+
+import { usePageLink } from '@/features/router/hooks/usePageLink';
 
 import { SUPPORTED_OAUTH_PROVIDERS } from '../../config';
 import { useOAuth } from '../../hooks/useOAuth';
 import { useOAuthActions } from '../../hooks/useOAuthActions';
 import { OAuthProviderName } from '../../models/provider/types/OAuthProviderName';
+import { OAuthState } from '../../models/session/types/OAuthState';
 
 interface OAuthButtonProps {
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
@@ -23,7 +27,8 @@ export const OAuthButton: React.FC<OAuthButtonProps> = ({
   fullWidth = false,
 }) => {
   const { t } = useTranslation('feature-oauth');
-  const auth = useOAuth();
+  const { pageLink } = usePageLink();
+  const { state, user, currentProvider, isLoading } = useOAuth();
   const { loginWith, logout } = useOAuthActions();
 
   const handleProviderLogin = (providerName: string) => {
@@ -33,7 +38,7 @@ export const OAuthButton: React.FC<OAuthButtonProps> = ({
   };
 
   // Loading state
-  if (auth.isLoggingIn) {
+  if (state === OAuthState.LOGGING_IN) {
     return (
       <Button size={size} variant={variant} fullWidth={fullWidth} loading>
         {t('Signing in...')}
@@ -42,7 +47,7 @@ export const OAuthButton: React.FC<OAuthButtonProps> = ({
   }
 
   // Logging out state
-  if (auth.isLoggingOut) {
+  if (state === OAuthState.LOGGING_OUT) {
     return (
       <Button size={size} variant={variant} fullWidth={fullWidth} loading>
         {t('Signing out...')}
@@ -51,7 +56,7 @@ export const OAuthButton: React.FC<OAuthButtonProps> = ({
   }
 
   // Authenticated state
-  if (auth.isAuthenticated && auth.user) {
+  if (state === OAuthState.AUTHENTICATED && user) {
     return (
       <Menu shadow="md" width="auto">
         <Menu.Target>
@@ -61,34 +66,42 @@ export const OAuthButton: React.FC<OAuthButtonProps> = ({
             fullWidth={fullWidth}
             rightSection={<FaChevronDown size={16} />}
             leftSection={
-              auth.user.avatarUrl ? (
-                <Avatar src={auth.user.avatarUrl} size={20} radius="xl" />
+              user.avatarUrl ? (
+                <Avatar src={user.avatarUrl} size={20} radius="xl" />
               ) : (
                 <FaUser size={16} />
               )
             }
           >
-            {auth.user.given_name || auth.user.name || auth.user.email}
+            {user.given_name || user.name || user.email}
           </Button>
         </Menu.Target>
 
         <Menu.Dropdown>
           <Menu.Label>
             <Group gap="sm">
-              {auth.user.avatarUrl && (
-                <Avatar src={auth.user.avatarUrl} size={24} radius="xl" />
+              {user.avatarUrl && (
+                <Avatar src={user.avatarUrl} size={24} radius="xl" />
               )}
               <div>
                 <Text size="sm" fw={500}>
-                  {auth.user.given_name || auth.user.name}
+                  {user.given_name || user.name}
                 </Text>
                 <Text size="xs" c="dimmed">
-                  {t('Signed in with')} {auth.currentProvider}
+                  {t('Signed in with')} {currentProvider}
                 </Text>
               </div>
             </Group>
           </Menu.Label>
-          <Menu.Item>{auth.user.email}</Menu.Item>
+          <Menu.Item>{user.email}</Menu.Item>
+          <Menu.Divider />
+          <Menu.Item
+            leftSection={<FaUser size={16} />}
+            component={Link}
+            to={pageLink('/oauth-profile')}
+          >
+            {t('My Profile')}
+          </Menu.Item>
           <Menu.Divider />
           <Menu.Item leftSection={<IoIosLogOut size={14} />} onClick={logout}>
             {t('Sign out')}
@@ -117,7 +130,7 @@ export const OAuthButton: React.FC<OAuthButtonProps> = ({
           ) : null
         }
         onClick={() => handleProviderLogin(provider.name)}
-        disabled={auth.isLoading || !auth.isReady}
+        disabled={isLoading || state !== OAuthState.READY}
       >
         {t('Sign in with')} {provider.label}
       </Button>
@@ -133,7 +146,7 @@ export const OAuthButton: React.FC<OAuthButtonProps> = ({
           variant={variant}
           fullWidth={fullWidth}
           rightSection={<FaChevronDown size={16} />}
-          disabled={auth.isLoading || !auth.isReady}
+          disabled={isLoading || state !== OAuthState.READY}
         >
           {t('Sign in')}
         </Button>

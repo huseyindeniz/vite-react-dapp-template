@@ -33,7 +33,9 @@
       "Skill(deps-audit)",
       "Skill(security-audit)",
       "Skill(test-audit)",
-      "Skill(docs-generator)"
+      "Skill(docs-generator)",
+      "Bash(npm run extract:*)",
+      "Bash(cat:*)"
     ],
     "deny": [],
     "ask": []

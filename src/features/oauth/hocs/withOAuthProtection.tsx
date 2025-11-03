@@ -2,14 +2,15 @@ import React, { JSX } from 'react';
 
 import { OAuthProtectionWarning } from '../components/OAuthProtectionWarning/OAuthProtectionWarning';
 import { useOAuth } from '../hooks/useOAuth';
+import { OAuthState } from '../models/session/types/OAuthState';
 
 export const withOAuthProtection = (
   ChildWithProps: React.ComponentType<unknown> | JSX.Element,
   CustomWarning: React.ReactElement | undefined = undefined
 ) => {
   const WithProtection: React.FC = () => {
-    const { isAuthenticated } = useOAuth();
-    if (isAuthenticated) {
+    const { state } = useOAuth();
+    if (state === OAuthState.AUTHENTICATED) {
       if (React.isValidElement(ChildWithProps)) {
         return ChildWithProps;
       }

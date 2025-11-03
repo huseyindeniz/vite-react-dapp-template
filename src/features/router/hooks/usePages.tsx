@@ -11,7 +11,7 @@ import { useRoutes } from './useRoutes';
 export const usePages = () => {
   const { i18n } = useTranslation('menu');
 
-  const { homeRoute, userRoute, pageRoutes } = useRoutes();
+  const { homeRoute, pageRoutes } = useRoutes();
 
   const homeMenuItem: MenuType = {
     ...homeRoute,
@@ -54,17 +54,9 @@ export const usePages = () => {
   return React.useMemo(() => {
     return {
       homeRoute,
-      userRoute,
       pageRoutes,
       mainMenuItems,
       secondaryMenuItems,
     };
-  }, [
-    i18n.resolvedLanguage,
-    homeRoute,
-    userRoute,
-    pageRoutes,
-    mainMenuItems,
-    secondaryMenuItems,
-  ]);
+  }, [i18n.resolvedLanguage, homeRoute, pageRoutes, mainMenuItems, secondaryMenuItems]);
 };

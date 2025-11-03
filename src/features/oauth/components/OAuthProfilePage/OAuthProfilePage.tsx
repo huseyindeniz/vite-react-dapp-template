@@ -3,17 +3,16 @@ import React from 'react';
 import { Box, Container } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 
-import { Header } from './components/Header';
+import { Header } from './Header';
 
-export const UserPage: React.FC = () => {
-  const { t } = useTranslation('page-user');
+export const OAuthProfilePage: React.FC = () => {
+  const { t } = useTranslation('page-oauth-profile');
+
   return (
     <Container>
       <Header />
       <Box mt={10} ta="center">
-        {t(
-          "As an example, you can put current user's latest transactions here..."
-        )}
+        {t('Your OAuth profile content...')}
       </Box>
     </Container>
   );

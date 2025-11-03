@@ -89,6 +89,22 @@ const BlogPostPage = React.lazy(() =>
   )
 );
 
+const WalletProfile = React.lazy(() =>
+  import(
+    /* webpackChunkName: "WalletProfilePage" */ '@/pages/WalletProfile/WalletProfile'
+  ).then(module => ({
+    default: module.WalletProfile,
+  }))
+);
+
+const OAuthProfile = React.lazy(() =>
+  import(
+    /* webpackChunkName: "OAuthProfilePage" */ '@/pages/OAuthProfile/OAuthProfile'
+  ).then(module => ({
+    default: module.OAuthProfile,
+  }))
+);
+
 // =============================================================================
 // USER PAGE ROUTES - Define your page routes below
 // =============================================================================
@@ -185,6 +201,35 @@ export const getUserPageRoutes = (
     protectionType: ProtectionType.NONE,
   };
 
+  // Wallet Profile Route
+  const WalletProfileRoute: PageType = {
+    id: 'wallet-profile',
+    path: 'wallet-profile',
+    element: <WalletProfile />,
+    menuLabel: null,
+    isShownInMainMenu: false,
+    isShownInSecondaryMenu: false,
+    protectionType: ProtectionType.WALLET,
+  };
+
+  // OAuth Profile Route
+  const OAuthProfileRoute: PageType = {
+    id: 'oauth-profile',
+    path: 'oauth-profile',
+    element: <OAuthProfile />,
+    menuLabel: null,
+    isShownInMainMenu: false,
+    isShownInSecondaryMenu: false,
+    protectionType: ProtectionType.OAUTH,
+  };
+
   // Add your page routes to this array
-  return [AiChatRoute, AuthDemoRoute, BlogHome, BlogPostRoute];
+  return [
+    AiChatRoute,
+    AuthDemoRoute,
+    BlogHome,
+    BlogPostRoute,
+    WalletProfileRoute,
+    OAuthProfileRoute,
+  ];
 };

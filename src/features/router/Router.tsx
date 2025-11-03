@@ -69,7 +69,7 @@ const Routes: React.FC = () => {
 
   // Get all routes (system + user routes combined)
   const routes = useRoutes();
-  const { homeRoute, userRoute, pageRoutes, authRoutes } = routes;
+  const { homeRoute, pageRoutes, authRoutes } = routes;
 
   // Flatten routes - extract subRoutes and create flat list for React Router
   const flattenRoutes = (routes: PageType[]): PageType[] => {
@@ -133,21 +133,16 @@ const Routes: React.FC = () => {
     };
   });
 
-  const UserWithLang = {
-    ...userRoute,
-    path: `/:${i18nConfig.urlParam}/${userRoute.path}`,
-  };
-
   const routeRootWithLang: RouteObject = {
     path: `/:${i18nConfig.urlParam}`,
-    children: [homeRoute, UserWithLang, ...PagesWithLang, NotFound],
+    children: [homeRoute, ...PagesWithLang, NotFound],
   };
 
   // Create routes with Layout wrapper
   const layoutRoutes: RouteObject = {
     path: '/',
     element: <Layout />,
-    children: [homeRoute, userRoute, ...protectedRoutes, routeRootWithLang],
+    children: [homeRoute, ...protectedRoutes, routeRootWithLang],
   };
 
   // Create root route structure

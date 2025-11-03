@@ -420,6 +420,12 @@ npm run storybook          # Component documentation
    - Check latest documentation before designing
    - Never reinvent the wheel - use battle-tested, trusted, widely-adopted solutions
 
+8. **ALWAYS use react-icons for icons**
+   - ❌ NEVER use @tabler/icons-react
+   - ❌ NEVER use any other icon library
+   - ✅ ALWAYS use react-icons (e.g., `import { MdError } from 'react-icons/md'`)
+   - Available icon sets: Material Design (Md), Font Awesome (Fa), Bootstrap (Bs), etc.
+
 ---
 
 ## Quick Reference
@@ -433,6 +439,7 @@ npm run storybook          # Component documentation
 - **Web3**: Ethers.js v6
 - **Testing**: Vitest + React Testing Library
 - **i18n**: i18next
+- **Icons**: react-icons (NOT @tabler/icons-react)
 
 ### Import Aliases
 

@@ -18,14 +18,6 @@ const HomePage = React.lazy(() =>
   )
 );
 
-const UserPage = React.lazy(() =>
-  import(/* webpackChunkName: "UserPage" */ '@/pages/User/User').then(
-    module => ({
-      default: module.UserPage,
-    })
-  )
-);
-
 /**
  * Main routes hook - combines system and user routes
  * System routes (Home, User, Auth callbacks) are defined here
@@ -44,20 +36,11 @@ export const useRoutes = (): AppRoutes => {
     protectionType: ProtectionType.NONE,
   };
 
-  // System Routes - User Dashboard
-  const userRoute: PageType = {
-    path: 'user',
-    element: <UserPage />,
-    menuLabel: t('Dashboard', { ns: 'menu' }),
-    protectionType: ProtectionType.WALLET,
-  };
-
   // Get user page routes with translation function
   const userPageRoutes = getUserPageRoutes(t);
   const authRoutes = getAuthRoutes() as PageType[];
   return {
     homeRoute,
-    userRoute,
     pageRoutes: userPageRoutes,
     authRoutes,
   };

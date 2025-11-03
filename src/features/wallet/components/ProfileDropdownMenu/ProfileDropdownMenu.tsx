@@ -55,7 +55,7 @@ export const ProfileDropdownMenu: React.FC = () => {
       currentNetwork={currentNetwork}
       connectedWallet={connectedWallet}
       addressExplorerUrl={addressExplorerUrl}
-      userPageLink={pageLink('/user')}
+      profileLink={pageLink('/wallet-profile')}
       onCopyAddressClicked={onCopyClicked}
       onDisconnectClicked={onDisconnectClick}
     />
