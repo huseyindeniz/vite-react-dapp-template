@@ -6,6 +6,7 @@ import { ColorSchemeSwitch } from '@/features/components/ColorSchemeSwitch/Color
 import { MainMenu } from '@/features/components/MainMenu/MainMenu';
 import { SideNav } from '@/features/components/SideNav/SideNav';
 import { LangMenu } from '@/features/i18n/components/LangMenu/LangMenu';
+import { Layout } from '@/features/layout/components/Layout';
 import { OAuth } from '@/features/oauth/components/OAuth';
 import { MenuType } from '@/features/router/types/MenuType';
 import { Wallet } from '@/features/wallet/components/Wallet';
@@ -24,7 +25,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   close,
 }) => {
   return (
-    <>
+    <Layout.Navbar>
       <MainMenu mainMenuItems={mainMenuItems} onClick={close} vertical />
       {hasSubRoutes && (
         <>
@@ -39,6 +40,6 @@ export const Navbar: React.FC<NavbarProps> = ({
         <OAuth size="sm" fullWidth />
         <Wallet />
       </Stack>
-    </>
+    </Layout.Navbar>
   );
 };

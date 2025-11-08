@@ -9,17 +9,18 @@ import classes from './SideNav.module.css';
 
 export interface SideNavProps {
   items: MenuType[];
+  collapsed?: boolean;
 }
 
-export const SideNav: React.FC<SideNavProps> = ({ items }) => {
+export const SideNav: React.FC<SideNavProps> = ({ items, collapsed = false }) => {
   const renderNavItem = (item: MenuType, index: number) => {
     if (item.subRoutes && item.subRoutes.length > 0) {
       return (
         <NavLink
           key={index}
-          label={item.menuLabel}
+          label={collapsed ? undefined : item.menuLabel}
           leftSection={item.icon}
-          childrenOffset={28}
+          childrenOffset={collapsed ? 0 : 28}
         >
           {item.subRoutes.map((child, childIndex) => renderNavItem(child, childIndex))}
         </NavLink>
@@ -31,7 +32,7 @@ export const SideNav: React.FC<SideNavProps> = ({ items }) => {
         key={index}
         component={RouterNavLink}
         to={item.path ?? ''}
-        label={item.menuLabel}
+        label={collapsed ? undefined : item.menuLabel}
         leftSection={item.icon}
       />
     );

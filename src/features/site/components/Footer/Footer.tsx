@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { CookieConsentMessage } from '@/features/components/CookieConsent/CookieConsentMessage';
 import { ScrollToTopButton } from '@/features/components/ScrollToTopButton/ScrollToTopButton';
 import { SecondaryMenu } from '@/features/components/SecondaryMenu/SecondaryMenu';
+import { Layout } from '@/features/layout/components/Layout';
 import { usePageLink } from '@/features/router/hooks/usePageLink';
 import { usePages } from '@/features/router/hooks/usePages';
 
@@ -22,7 +23,7 @@ export const Footer: React.FC = () => {
   const baseUrl = pageLink('/');
 
   return (
-    <>
+    <Layout.Footer>
       <Container>
         <Center>
           <SecondaryMenu secondaryMenuItems={secondaryMenuItems} />
@@ -44,6 +45,6 @@ export const Footer: React.FC = () => {
       </Container>
       <ScrollToTopButton />
       <CookieConsentMessage />
-    </>
+    </Layout.Footer>
   );
 };

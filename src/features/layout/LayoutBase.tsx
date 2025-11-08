@@ -7,18 +7,12 @@ import { Notifications } from '@mantine/notifications';
 import log from 'loglevel';
 import { ErrorBoundary } from 'react-error-boundary';
 import { HelmetProvider } from 'react-helmet-async';
-import { Outlet } from 'react-router-dom';
 
-import { Breadcrumb } from '@/features/components/Breadcrumb/Breadcrumb';
 import { ErrorFallback } from '@/features/components/ErrorFallback/ErrorFallback';
-import { SideNav } from '@/features/components/SideNav/SideNav';
 import { useI18nWatcher } from '@/features/i18n/useI18nWatchers';
 import { useActiveRoute } from '@/features/router/hooks/useActiveRoute';
-import { useBreadcrumb } from '@/features/router/hooks/useBreadcrumb';
 import { usePages } from '@/features/router/hooks/usePages';
 import { MenuType } from '@/features/router/types/MenuType';
-
-import { Layout } from './components/Layout';
 
 const myErrorHandler = (error: Error, info: ErrorInfo) => {
   // Do something with the error
@@ -28,14 +22,28 @@ const myErrorHandler = (error: Error, info: ErrorInfo) => {
 };
 
 interface LayoutBaseProps {
-  shellExtension?: React.FC<{ navbarCollapsed: boolean; asideVisible: boolean; children: React.ReactNode }>;
-  headerExtension?: React.FC<{ opened: boolean; toggle: () => void; close: () => void }>;
+  shellExtension?: React.FC<{
+    navbarCollapsed: boolean;
+    asideVisible: boolean;
+    asideCollapsed: boolean;
+    children: React.ReactNode;
+  }>;
+  headerExtension?: React.FC<{
+    opened: boolean;
+    toggle: () => void;
+    close: () => void;
+  }>;
   navbarExtension?: React.FC<{
     mainMenuItems: MenuType[];
     hasSubRoutes: boolean;
     subRoutes: MenuType[];
     close: () => void;
   }>;
+  asideExtension?: React.FC<{
+    hasSubRoutes: boolean;
+    subRoutes: MenuType[];
+  }>;
+  mainExtension?: React.FC<{ fullWidth: boolean }>;
   footerExtension?: React.FC;
 }
 
@@ -43,6 +51,8 @@ export const LayoutBase: React.FC<LayoutBaseProps> = ({
   shellExtension: ShellExtension,
   headerExtension: HeaderExtension,
   navbarExtension: NavbarExtension,
+  asideExtension: AsideExtension,
+  mainExtension: MainExtension,
   footerExtension: FooterExtension,
 }) => {
   useI18nWatcher();
@@ -51,10 +61,7 @@ export const LayoutBase: React.FC<LayoutBaseProps> = ({
 
   // Detect active route and check if it has subRoutes
   const { hasSubRoutes, subRoutes, fullWidth } = useActiveRoute(pageRoutes);
-
-  // Get breadcrumb items
-  const breadcrumbItems = useBreadcrumb(pageRoutes);
-
+  const asideVisible = subRoutes.filter(r => r.menuLabel !== null).length > 0;
   return (
     <HelmetProvider>
       <ErrorBoundary FallbackComponent={ErrorFallback} onError={myErrorHandler}>
@@ -62,39 +69,29 @@ export const LayoutBase: React.FC<LayoutBaseProps> = ({
         {ShellExtension && (
           <ShellExtension
             navbarCollapsed={opened}
-            asideVisible={hasSubRoutes && !fullWidth}
+            asideVisible={asideVisible}
+            asideCollapsed={false}
           >
-            <Layout.Header>
-              {HeaderExtension && (
-                <HeaderExtension opened={opened} toggle={toggle} close={close} />
-              )}
-            </Layout.Header>
-
-            <Layout.Navbar>
-              {NavbarExtension && (
-                <NavbarExtension
-                  mainMenuItems={mainMenuItems}
-                  hasSubRoutes={hasSubRoutes}
-                  subRoutes={subRoutes}
-                  close={close}
-                />
-              )}
-            </Layout.Navbar>
-
-            {hasSubRoutes && !fullWidth && (
-              <Layout.Aside>
-                <SideNav items={subRoutes} />
-              </Layout.Aside>
+            {HeaderExtension && (
+              <HeaderExtension opened={opened} toggle={toggle} close={close} />
             )}
 
-            <Layout.Content fullWidth={fullWidth}>
-              <Breadcrumb items={breadcrumbItems} />
-              <Outlet />
-            </Layout.Content>
+            {NavbarExtension && (
+              <NavbarExtension
+                mainMenuItems={mainMenuItems}
+                hasSubRoutes={hasSubRoutes}
+                subRoutes={subRoutes}
+                close={close}
+              />
+            )}
 
-            <Layout.Footer>
-              {FooterExtension && <FooterExtension />}
-            </Layout.Footer>
+            {AsideExtension && (
+              <AsideExtension hasSubRoutes={hasSubRoutes} subRoutes={subRoutes} />
+            )}
+
+            {MainExtension && <MainExtension fullWidth={fullWidth} />}
+
+            {FooterExtension && <FooterExtension />}
           </ShellExtension>
         )}
       </ErrorBoundary>

@@ -188,7 +188,6 @@ export const getUserPageRoutes = (
     isShownInMainMenu: true,
     isShownInSecondaryMenu: true,
     protectionType: ProtectionType.NONE,
-    fullWidth: true,
     subRoutes: [
       {
         path: ':postId',

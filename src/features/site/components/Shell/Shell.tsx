@@ -2,9 +2,12 @@ import React from 'react';
 
 import { AppShell } from '@mantine/core';
 
+import { LAYOUT_BREAKPOINTS } from '@/config/ui/layout-breakpoints';
+
 interface ShellProps {
   navbarCollapsed: boolean;
   asideVisible: boolean;
+  asideCollapsed: boolean;
   children: React.ReactNode;
 }
 
@@ -18,12 +21,12 @@ export const Shell: React.FC<ShellProps> = ({
       header={{ height: 60 }}
       navbar={{
         width: 300,
-        breakpoint: 'sm',
+        breakpoint: LAYOUT_BREAKPOINTS.MOBILE,
         collapsed: { desktop: true, mobile: !navbarCollapsed },
       }}
       aside={{
-        width: 250,
-        breakpoint: 'sm',
+        width: 0, // Always 0 - width managed by fixed positioning overlay in Aside.tsx
+        breakpoint: LAYOUT_BREAKPOINTS.MOBILE,
         collapsed: { desktop: !asideVisible, mobile: true },
       }}
       padding="md"

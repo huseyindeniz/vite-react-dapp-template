@@ -6,8 +6,10 @@ import {
 } from 'react-router-dom';
 
 import { features } from '@/config/features';
+import { AsideExtension } from '@/config/ui/layout-extensions/asideExtension';
 import { FooterExtension } from '@/config/ui/layout-extensions/footerExtension';
 import { HeaderExtension } from '@/config/ui/layout-extensions/headerExtension';
+import { MainExtension } from '@/config/ui/layout-extensions/mainExtension';
 import { NavbarExtension } from '@/config/ui/layout-extensions/navbarExtension';
 import { ShellExtension } from '@/config/ui/layout-extensions/shellExtension';
 import { applyProtection } from '@/features/auth/utils/applyProtection';
@@ -42,6 +44,8 @@ const Layout = React.lazy(() =>
         shellExtension={ShellExtension}
         headerExtension={HeaderExtension}
         navbarExtension={NavbarExtension}
+        asideExtension={AsideExtension}
+        mainExtension={MainExtension}
         footerExtension={FooterExtension}
       />
     ),

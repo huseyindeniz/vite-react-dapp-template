@@ -5,12 +5,12 @@ import { useLocation } from 'react-router-dom';
 
 import { PageLoading } from '@/features/components/PageLoading/PageLoading';
 
-interface LayoutContentProps {
+interface LayoutMainProps {
   children: React.ReactNode;
   fullWidth?: boolean;
 }
 
-export const LayoutContent: React.FC<LayoutContentProps> = ({
+export const LayoutMain: React.FC<LayoutMainProps> = ({
   children,
   fullWidth = false,
 }) => {
