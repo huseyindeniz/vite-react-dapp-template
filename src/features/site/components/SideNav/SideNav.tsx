@@ -10,11 +10,13 @@ import classes from './SideNav.module.css';
 export interface SideNavProps {
   items: MenuType[];
   collapsed?: boolean;
+  onClick?: () => void;
 }
 
 export const SideNav: React.FC<SideNavProps> = ({
   items,
   collapsed = false,
+  onClick,
 }) => {
   const renderNavItem = (item: MenuType, index: number) => {
     if (item.subRoutes && item.subRoutes.length > 0) {
@@ -41,6 +43,7 @@ export const SideNav: React.FC<SideNavProps> = ({
         label={collapsed ? undefined : item.menuLabel}
         leftSection={item.icon}
         styles={{ root: { paddingLeft: 5 } }}
+        onClick={onClick}
       />
     );
   };

@@ -4,9 +4,10 @@ import { ActionIcon, Stack } from '@mantine/core';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
 
-import { SideNav } from '@/features/components/SideNav/SideNav';
 import { Layout } from '@/features/layout/components/Layout';
 import { MenuType } from '@/features/router/types/MenuType';
+
+import { SideNav } from '../SideNav/SideNav';
 
 interface AsideProps {
   hasSubRoutes: boolean;
@@ -39,12 +40,7 @@ export const Aside: React.FC<AsideProps> = ({ hasSubRoutes, subRoutes }) => {
   return (
     <Layout.Aside opened size={drawerSize}>
       <Stack gap="xs" p="xs" style={{ height: '100%' }}>
-        <ActionIcon
-          onClick={toggle}
-          variant="default"
-          size="md"
-          aria-label="Toggle aside menu"
-        >
+        <ActionIcon onClick={toggle} variant="default" size="md">
           {collapsed ? (
             <MdKeyboardArrowLeft size={20} />
           ) : (

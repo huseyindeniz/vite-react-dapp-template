@@ -35,18 +35,20 @@ export const useActiveRoute = (allRoutes: MenuType[]): ActiveRouteInfo => {
     // Remove trailing slash
     pathname = pathname.replace(/\/$/, '') || '/';
 
-    // Find parent route that matches current path
+    // Find route that matches current path
     let matchedRoute: MenuType | undefined;
 
     for (const route of allRoutes) {
       const routePath = route.path?.replace(/\/$/, '') || '/';
 
-      // Check if we're on this route or a child of it
-      if (
-        pathname === `/${routePath}` ||
-        pathname.startsWith(`/${routePath}/`)
-      ) {
-        // If this route has subRoutes, it's our parent
+      // Exact match - could be a route with or without subRoutes
+      if (pathname === `/${routePath}`) {
+        matchedRoute = route;
+        break;
+      }
+
+      // Path starts with this route - check if it's a parent with subRoutes
+      if (pathname.startsWith(`/${routePath}/`)) {
         if (route.subRoutes && route.subRoutes.length > 0) {
           matchedRoute = route;
           break;

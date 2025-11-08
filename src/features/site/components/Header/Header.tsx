@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next';
 
 import { LAYOUT_BREAKPOINTS } from '@/config/ui/layout-breakpoints';
 import { ColorSchemeSwitch } from '@/features/components/ColorSchemeSwitch/ColorSchemeSwitch';
-import { MainMenu } from '@/features/components/MainMenu/MainMenu';
 import { LangMenu } from '@/features/i18n/components/LangMenu/LangMenu';
 import { Layout } from '@/features/layout/components/Layout';
 import { OAuth } from '@/features/oauth/components/OAuth';
@@ -13,6 +12,7 @@ import { usePageLink } from '@/features/router/hooks/usePageLink';
 import { usePages } from '@/features/router/hooks/usePages';
 import { Wallet } from '@/features/wallet/components/Wallet';
 
+import { MainMenu } from '../MainMenu/MainMenu';
 import { SiteLogo } from '../SiteLogo/SiteLogo';
 
 interface HeaderProps {

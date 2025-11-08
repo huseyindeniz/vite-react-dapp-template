@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 
 import { notifications } from '@mantine/notifications';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 
 import { usePageLink } from '@/features/router/hooks/usePageLink';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
@@ -13,7 +12,6 @@ import { DropdownMenu } from './DropdownMenu';
 
 export const ProfileDropdownMenu: React.FC = () => {
   const { t } = useTranslation('feature-wallet');
-  const navigate = useNavigate();
   const { pageLink } = usePageLink();
   const actions = useActions();
   const account = useTypedSelector(state => state.wallet.account.account);
@@ -46,7 +44,6 @@ export const ProfileDropdownMenu: React.FC = () => {
 
   const onDisconnectClick = () => {
     actions.disconnectWallet();
-    navigate('/');
   };
 
   return account && account.address && account.address !== '' ? (

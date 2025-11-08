@@ -3,13 +3,14 @@ import React from 'react';
 import { Divider, Stack } from '@mantine/core';
 
 import { ColorSchemeSwitch } from '@/features/components/ColorSchemeSwitch/ColorSchemeSwitch';
-import { MainMenu } from '@/features/components/MainMenu/MainMenu';
-import { SideNav } from '@/features/components/SideNav/SideNav';
 import { LangMenu } from '@/features/i18n/components/LangMenu/LangMenu';
 import { Layout } from '@/features/layout/components/Layout';
 import { OAuth } from '@/features/oauth/components/OAuth';
 import { MenuType } from '@/features/router/types/MenuType';
 import { Wallet } from '@/features/wallet/components/Wallet';
+
+import { MainMenu } from '../MainMenu/MainMenu';
+import { SideNav } from '../SideNav/SideNav';
 
 interface NavbarProps {
   mainMenuItems: MenuType[];
@@ -30,7 +31,7 @@ export const Navbar: React.FC<NavbarProps> = ({
       {hasSubRoutes && (
         <>
           <Divider my="sm" />
-          <SideNav items={subRoutes} />
+          <SideNav items={subRoutes} onClick={close} />
         </>
       )}
       <Divider my="sm" />

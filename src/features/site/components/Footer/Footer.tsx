@@ -5,12 +5,12 @@ import { useTranslation } from 'react-i18next';
 
 import { CookieConsentMessage } from '@/features/components/CookieConsent/CookieConsentMessage';
 import { ScrollToTopButton } from '@/features/components/ScrollToTopButton/ScrollToTopButton';
-import { SecondaryMenu } from '@/features/components/SecondaryMenu/SecondaryMenu';
 import { Layout } from '@/features/layout/components/Layout';
 import { usePageLink } from '@/features/router/hooks/usePageLink';
 import { usePages } from '@/features/router/hooks/usePages';
 
 import { Copyright } from '../Copyright/Copyright';
+import { SecondaryMenu } from '../SecondaryMenu/SecondaryMenu';
 import { SiteLogo } from '../SiteLogo/SiteLogo';
 import { SocialMenu } from '../SocialMenu/SocialMenu';
 

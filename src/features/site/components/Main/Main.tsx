@@ -17,7 +17,7 @@ export const Main: React.FC<MainProps> = ({ fullWidth }) => {
 
   return (
     <Layout.Main fullWidth={fullWidth}>
-      <Breadcrumb items={breadcrumbItems} />
+      {!fullWidth && <Breadcrumb items={breadcrumbItems} />}
       <Outlet />
     </Layout.Main>
   );

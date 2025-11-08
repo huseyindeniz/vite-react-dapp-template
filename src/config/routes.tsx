@@ -126,6 +126,7 @@ export const getUserPageRoutes = (
     path: 'demo-ai-assistant',
     element: <DemoAIAssistantPage />,
     menuLabel: t('Demo AI Assistant', { ns: 'menu' }),
+    fullWidth: true,
     isShownInMainMenu: true,
     isShownInSecondaryMenu: true,
     protectionType: ProtectionType.NONE,
@@ -134,7 +135,7 @@ export const getUserPageRoutes = (
   // Demo Auth Parent Route with sub-routes
   const DemoAuthRoute: PageType = {
     id: 'demo-auth',
-    path: 'demo-auth',
+    path: 'auth',
     element: <DemoAuth />,
     menuLabel: t('Demo Auth', { ns: 'menu' }),
     isShownInMainMenu: true,
@@ -182,7 +183,7 @@ export const getUserPageRoutes = (
   // Demo Blog Route with sub-routes
   const DemoBlogRoute: PageType = {
     id: 'demo-blog',
-    path: 'demo-blog',
+    path: 'blog',
     element: <DemoBlogPage />,
     menuLabel: t('Demo Blog', { ns: 'menu' }),
     isShownInMainMenu: true,
