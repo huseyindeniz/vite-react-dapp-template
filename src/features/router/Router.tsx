@@ -5,9 +5,10 @@ import {
   useRoutes as useReactRouterRoutes,
 } from 'react-router-dom';
 
-import { features } from '@/features/app/config/features';
-import { HeaderExtension } from '@/features/app/config/layout-extensions/headerExtension';
-import { NavbarExtension } from '@/features/app/config/layout-extensions/navbarExtension';
+import { features } from '@/config/features';
+import { HeaderExtension } from '@/config/ui/layout-extensions/headerExtension';
+import { NavbarExtension } from '@/config/ui/layout-extensions/navbarExtension';
+import { SocialMenuExtension } from '@/config/ui/layout-extensions/socialMenuExtension';
 import { applyProtection } from '@/features/auth/utils/applyProtection';
 import { i18nConfig } from '@/features/i18n/config';
 import { useSliceManagerInit } from '@/features/slice-manager/hooks/useSliceManagerInit';
@@ -39,6 +40,7 @@ const Layout = React.lazy(() =>
         {...props}
         headerExtension={HeaderExtension}
         navbarExtension={NavbarExtension}
+        socialMenuExtension={SocialMenuExtension}
       />
     ),
   }))
@@ -60,7 +62,10 @@ const Routes: React.FC = () => {
     if (sliceManager) {
       // Configure slice manager for all features that need it
       Object.values(features).forEach(feature => {
-        if ('configureSlice' in feature && typeof feature.configureSlice === 'function') {
+        if (
+          'configureSlice' in feature &&
+          typeof feature.configureSlice === 'function'
+        ) {
           feature.configureSlice();
         }
       });

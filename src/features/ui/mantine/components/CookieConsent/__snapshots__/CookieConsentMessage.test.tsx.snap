@@ -7,9 +7,9 @@ exports[`Feature: UI > Component: Layout/CookieConsentMessage > should render wi
   >
     :root{--mantine-font-family: Open Sans, sans-serif;--mantine-font-family-headings: Open Sans, sans-serif;}
 
+:root[data-mantine-color-scheme="dark"]{--app-shell-bg: #020202;--app-shell-box-shadow: inset 0px 0px 40px -10px #efefef;}
 
-
-
+:root[data-mantine-color-scheme="light"]{--app-shell-bg: #efefef;--app-shell-box-shadow: inset 0px 0px 20px -10px #020202;}
   </style>
   <style
     data-mantine-styles="classes"
@@ -79,9 +79,9 @@ exports[`Feature: UI > Component: Layout/CookieConsentMessage > should render wi
   >
     :root{--mantine-font-family: Open Sans, sans-serif;--mantine-font-family-headings: Open Sans, sans-serif;}
 
+:root[data-mantine-color-scheme="dark"]{--app-shell-bg: #020202;--app-shell-box-shadow: inset 0px 0px 40px -10px #efefef;}
 
-
-
+:root[data-mantine-color-scheme="light"]{--app-shell-bg: #efefef;--app-shell-box-shadow: inset 0px 0px 20px -10px #020202;}
   </style>
   <style
     data-mantine-styles="classes"

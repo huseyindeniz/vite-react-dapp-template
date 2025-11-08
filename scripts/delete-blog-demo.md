@@ -28,9 +28,9 @@ All checks passed after cleanup:
 The build errors clearly pointed to exactly what needs to be fixed:
 
 ```
-src/features/app/config/features.ts(2,58): Cannot find module '@/features/blog-demo/configureSlice'
-src/features/app/config/features.ts(3,35): Cannot find module '@/features/blog-demo/sagas'
-src/features/app/config/features.ts(4,33): Cannot find module '@/features/blog-demo/slice'
+src/config/features.ts(2,58): Cannot find module '@/features/blog-demo/configureSlice'
+src/config/features.ts(3,35): Cannot find module '@/features/blog-demo/sagas'
+src/config/features.ts(4,33): Cannot find module '@/features/blog-demo/slice'
 src/pages/Blog/Blog.tsx(6,23): Cannot find module '@/features/blog-demo/components/Posts/Posts'
 src/services/jsonplaceholder/BlogDemoApi.ts(4,30): Cannot find module '@/features/blog-demo/interfaces/IBlogDemoApi'
 ```
@@ -38,18 +38,18 @@ src/services/jsonplaceholder/BlogDemoApi.ts(4,30): Cannot find module '@/feature
 ### 3. **Required Fixes** (What developers need to do)
 
 #### A. Remove from Feature Configuration
-- File: `src/features/app/config/features.ts`
+- File: `src/config/features.ts`
 - Remove blog-demo imports (lines 2-4)
 - Remove `blogDemoApi` from services import
 - Remove entire `blogDemo` feature config object
 
 #### B. Remove from Services Configuration
-- File: `src/features/app/config/services.ts`
+- File: `src/config/services.ts`
 - Remove `BlogDemoApi` import
 - Remove `blogDemoApi` instantiation
 
 #### C. Remove Blog Routes
-- File: `src/features/app/config/routes.tsx`
+- File: `src/config/routes.tsx`
 - Remove `BlogPage` and `BlogPostPage` lazy imports
 - Remove `BlogHome` and `BlogPostRoute` from routes array
 
@@ -69,8 +69,8 @@ src/services/jsonplaceholder/BlogDemoApi.ts(4,30): Cannot find module '@/feature
 - Developers would naturally notice this during the fix process
 
 #### G. Delete Translation Files
-- Delete: `src/features/i18n/translations/feature-blog-demo/`
-- Delete: `src/features/i18n/translations/page-blog/`
+- Delete: `src/config/i18n/translations/feature-blog-demo/`
+- Delete: `src/config/i18n/translations/page-blog/`
 - Update: Remove "Blog" and "Post" entries from `menu/en-US.json` and `menu/tr-TR.json`
 
 ---
@@ -110,16 +110,16 @@ src/services/jsonplaceholder/BlogDemoApi.ts(4,30): Cannot find module '@/feature
 - `src/features/blog-demo/` (entire feature)
 - `src/pages/Blog/` (Blog pages)
 - `src/services/jsonplaceholder/` (BlogDemoApi service)
-- `src/features/i18n/translations/feature-blog-demo/`
-- `src/features/i18n/translations/page-blog/`
+- `src/config/i18n/translations/feature-blog-demo/`
+- `src/config/i18n/translations/page-blog/`
 
 ### Modified:
-- `src/features/app/config/features.ts` (removed blog-demo registration)
-- `src/features/app/config/services.ts` (removed blogDemoApi)
-- `src/features/app/config/routes.tsx` (removed blog routes)
+- `src/config/features.ts` (removed blog-demo registration)
+- `src/config/services.ts` (removed blogDemoApi)
+- `src/config/routes.tsx` (removed blog routes)
 - `src/features/router/Router.tsx` (fixed type narrowing)
-- `src/features/i18n/translations/menu/en-US.json` (removed blog entries)
-- `src/features/i18n/translations/menu/tr-TR.json` (removed blog entries)
+- `src/config/i18n/translations/menu/en-US.json` (removed blog entries)
+- `src/config/i18n/translations/menu/tr-TR.json` (removed blog entries)
 
 ---
 
@@ -138,8 +138,8 @@ Based on this test, here's what should be in the "How to Remove a Domain Feature
    - Delete related pages from `src/pages/`
 4. **Look for feature-specific services** in `src/services/` and delete them
 5. **Clean up translations:**
-   - Delete `src/features/i18n/translations/feature-{name}/`
-   - Delete `src/features/i18n/translations/page-{name}/`
+   - Delete `src/config/i18n/translations/feature-{name}/`
+   - Delete `src/config/i18n/translations/page-{name}/`
    - Update menu translations
 6. **Verify:** `npm run build && npm run lint && npm run test`
 

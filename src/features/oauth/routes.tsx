@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ProtectionType } from '@/features/app/config/auth/ProtectionType';
+import { ProtectionType } from '@/config/auth/ProtectionType';
 import { PageType } from '@/features/router/types/PageType';
 
 const GithubCallbackPage = React.lazy(() =>

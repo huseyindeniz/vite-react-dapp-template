@@ -42,7 +42,10 @@ export const useActiveRoute = (allRoutes: MenuType[]): ActiveRouteInfo => {
       const routePath = route.path?.replace(/\/$/, '') || '/';
 
       // Check if we're on this route or a child of it
-      if (pathname === `/${routePath}` || pathname.startsWith(`/${routePath}/`)) {
+      if (
+        pathname === `/${routePath}` ||
+        pathname.startsWith(`/${routePath}/`)
+      ) {
         // If this route has subRoutes, it's our parent
         if (route.subRoutes && route.subRoutes.length > 0) {
           matchedRoute = route;
@@ -51,20 +54,26 @@ export const useActiveRoute = (allRoutes: MenuType[]): ActiveRouteInfo => {
       }
     }
 
-    const hasSubRoutes = !!(matchedRoute?.subRoutes && matchedRoute.subRoutes.length > 0);
+    const hasSubRoutes = !!(
+      matchedRoute?.subRoutes && matchedRoute.subRoutes.length > 0
+    );
 
     // Build full paths for subRoutes including language prefix
-    const subRoutes = matchedRoute?.subRoutes?.map(subRoute => {
-      const fullPath = matchedRoute.path ? `${matchedRoute.path}/${subRoute.path}` : subRoute.path;
-      const pathWithLang = currentLang === i18nConfig.fallbackLang.code
-        ? fullPath
-        : `/${currentLang}/${fullPath}`;
+    const subRoutes =
+      matchedRoute?.subRoutes?.map(subRoute => {
+        const fullPath = matchedRoute.path
+          ? `${matchedRoute.path}/${subRoute.path}`
+          : subRoute.path;
+        const pathWithLang =
+          currentLang === i18nConfig.fallbackLang.code
+            ? fullPath
+            : `/${currentLang}/${fullPath}`;
 
-      return {
-        ...subRoute,
-        path: pathWithLang,
-      };
-    }) || [];
+        return {
+          ...subRoute,
+          path: pathWithLang,
+        };
+      }) || [];
 
     const fullWidth = matchedRoute?.fullWidth || false;
 

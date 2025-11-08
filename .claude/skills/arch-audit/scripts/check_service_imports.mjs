@@ -8,9 +8,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const projectRoot = path.resolve(__dirname, '../../../..');
-const featuresDir = path.join(projectRoot, 'src', 'features');
+const srcDir = path.join(projectRoot, 'src');
 
-const COMPOSITION_ROOT = 'src/features/app/config/';
+const COMPOSITION_ROOT = 'src/config/';
 const validExtensions = ['.ts', '.tsx', '.js', '.jsx'];
 
 function normalizePath(p) {
@@ -68,11 +68,11 @@ function checkServiceImports() {
   console.log('Service Import Check (Dependency Injection)');
   console.log('='.repeat(80));
   console.log('');
-  console.log('Rule: Services MUST ONLY be imported in src/features/app/config/');
+  console.log('Rule: Services MUST ONLY be imported in src/config/');
   console.log('Why: Enforce dependency injection pattern');
   console.log('');
 
-  const files = getAllFiles(featuresDir);
+  const files = getAllFiles(srcDir);
   const violations = [];
 
   for (const file of files) {
@@ -119,7 +119,7 @@ function checkServiceImports() {
       for (const v of viols) {
         console.log(`     Line ${v.line}: ${v.import}`);
       }
-      console.log('     Fix: Move service instantiation to src/features/app/config/services.ts');
+      console.log('     Fix: Move service instantiation to src/config/services.ts');
       console.log('          Use dependency injection - features receive services through interfaces');
       console.log('');
     }

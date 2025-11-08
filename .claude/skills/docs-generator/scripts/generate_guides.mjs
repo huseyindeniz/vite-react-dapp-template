@@ -359,7 +359,7 @@ export function useProductActions() {
 
 ## Step 10: Register Feature
 
-In \`src/features/app/config/features.ts\`:
+In \`src/config/features.ts\`:
 
 ${codeBlock(`import { productsReducer } from '@/features/products/slice';
 import { productsSaga } from '@/features/products/sagas';
@@ -834,7 +834,7 @@ ${codeBlock(`✅ ALLOWED:
 
 ## Composition Root
 
-\`src/features/app/config/\` is the ONLY place where:
+\`src/config/\` is the ONLY place where:
 - Services are imported
 - Features are wired together
 - Dependencies are injected

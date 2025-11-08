@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 
 import { RouteObject } from 'react-router-dom';
 
-import { ProtectionType } from '@/features/app/config/auth/ProtectionType';
+import { ProtectionType } from '@/config/auth/ProtectionType';
 
 export type MenuType = {
   path?: string;

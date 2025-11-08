@@ -14,14 +14,14 @@ The `auth` core feature provides a simple, configuration-driven system for **pag
 
 ## Configuration File
 
-**All auth configuration lives in ONE file:** `src/features/app/config/auth.ts`
+**All auth configuration lives in ONE file:** `src/config/auth/auth.ts`
 
 This file contains:
 1. **ProtectionType enum** - defines available protection types
 2. **Provider registration** - wires domain features to the auth system
 
 ```typescript
-// src/features/app/config/auth.ts
+// src/config/auth/ProtectionType.ts
 
 export enum ProtectionType {
   NONE = 'none',
@@ -30,6 +30,7 @@ export enum ProtectionType {
   BOTH = 'both',
 }
 
+// src/config/auth/auth.ts
 registerProtectionProvider(walletProtectionProvider);
 registerProtectionProvider(oauthProtectionProvider);
 ```
@@ -42,8 +43,8 @@ Each auth-capable feature exports a provider:
 
 ```typescript
 // features/wallet/authProvider.ts
-import { ProtectionType } from '@/features/app/config/auth';
-import { IProtectionProvider } from '@/features/auth';
+import { ProtectionType } from '@/config/auth/ProtectionType';
+import { IProtectionProvider } from '@/features/auth/types/IProtectionProvider';
 
 export const walletProtectionProvider: IProtectionProvider = {
   protectionType: ProtectionType.WALLET,
@@ -56,7 +57,7 @@ export const walletProtectionProvider: IProtectionProvider = {
 ### 2. Providers Registered in Config
 
 ```typescript
-// src/features/app/config/auth.ts
+// src/config/auth/auth.ts
 import { walletProtectionProvider } from '@/features/wallet/authProvider';
 
 registerProtectionProvider(walletProtectionProvider);
@@ -100,7 +101,7 @@ function MyComponent() {
 ### Step 1: Add to ProtectionType
 
 ```typescript
-// src/features/app/config/auth.ts
+// src/config/auth/ProtectionType.ts
 export enum ProtectionType {
   NONE = 'none',
   AUTH = 'auth',
@@ -114,8 +115,8 @@ export enum ProtectionType {
 
 ```typescript
 // features/web3auth/authProvider.ts
-import { ProtectionType } from '@/features/app/config/auth';
-import { IProtectionProvider } from '@/features/auth';
+import { ProtectionType } from '@/config/auth/ProtectionType';
+import { IProtectionProvider } from '@/features/auth/types/IProtectionProvider';
 
 export const web3authProtectionProvider: IProtectionProvider = {
   protectionType: ProtectionType.WEB3AUTH,
@@ -127,7 +128,7 @@ export const web3authProtectionProvider: IProtectionProvider = {
 ### Step 3: Register Provider
 
 ```typescript
-// src/features/app/config/auth.ts
+// src/config/auth/auth.ts
 import { web3authProtectionProvider } from '@/features/web3auth/authProvider';
 
 registerProtectionProvider(web3authProtectionProvider);
@@ -142,7 +143,7 @@ registerProtectionProvider(web3authProtectionProvider);
 ### Step 1: Remove from ProtectionType
 
 ```typescript
-// src/features/app/config/auth.ts
+// src/config/auth/ProtectionType.ts
 export enum ProtectionType {
   NONE = 'none',
   AUTH = 'auth',
@@ -154,7 +155,7 @@ export enum ProtectionType {
 ### Step 2: Remove Registration
 
 ```typescript
-// src/features/app/config/auth.ts
+// src/config/auth/auth.ts
 // import { walletProtectionProvider } from '@/features/wallet/authProvider'; // ← Remove
 // registerProtectionProvider(walletProtectionProvider); // ← Remove
 ```
@@ -173,7 +174,7 @@ The auth feature is minimal and focused. Import directly from source files:
 
 ```typescript
 // Types
-import { ProtectionType } from '@/features/app/config/auth';
+import { ProtectionType } from '@/config/auth/ProtectionType';
 import { IProtectionProvider } from '@/features/auth/types/IProtectionProvider';
 
 // Registry (used in composition root)
@@ -197,13 +198,14 @@ import { getAuthRoutes } from '@/features/auth/utils/getAuthRoutes';
 ## File Structure
 
 ```
-src/features/
-├── app/config/
-│   └── auth.ts                    ← SINGLE SOURCE OF TRUTH
-│       ├── ProtectionType enum
-│       └── Provider registration
+src/
+├── config/                        ← Configuration root
+│   └── auth/                      ← Auth configuration
+│       ├── ProtectionType.ts      ← ProtectionType enum
+│       └── auth.ts                ← Provider registration
 │
-├── auth/                          ← Minimal core feature
+├── features/
+│   ├── auth/                      ← Minimal core feature
 │   ├── types/
 │   │   └── IProtectionProvider.ts ← Contract
 │   ├── registry/
@@ -227,6 +229,6 @@ src/features/
 
 - **Router:** Uses `applyProtection()` for page-level protection
 - **Components:** Import feature hooks directly (`useWalletAuthentication`, etc.)
-- **Configuration:** Everything in `app/config/auth.ts`
+- **Configuration:** Everything in `src/config/auth/`
 - **Providers:** Domain features export `IProtectionProvider` implementations
 - **No abstraction:** No central `useAuth()` hook - keep it simple!

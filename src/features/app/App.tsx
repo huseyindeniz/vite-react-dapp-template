@@ -4,14 +4,14 @@ import { MantineProvider } from '@mantine/core';
 import log from 'loglevel';
 import { Provider as ReduxProvider } from 'react-redux';
 
-import { mantineProviderProps } from '@/features/app/config/ui';
+import { mantineProviderProps } from '@/config/ui/mantineProviderProps';
 import { store } from '@/features/app/store/store';
 import { Router } from '@/features/router/Router';
 
 import '@/features/i18n/i18n';
 
 // Register auth providers (composition root)
-import './config/auth/auth';
+import '@/config/auth/auth';
 
 import { composeProviders } from './context-providers/composeProviders';
 import { createProvider } from './context-providers/createProvider';
@@ -31,6 +31,7 @@ const providers = [
   createProvider(MantineProvider, {
     theme: mantineProviderProps.theme,
     defaultColorScheme: mantineProviderProps.defaultColorScheme,
+    cssVariablesResolver: mantineProviderProps.cssVariablesResolver,
   }),
 ];
 

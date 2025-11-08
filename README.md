@@ -66,7 +66,7 @@ Each domain feature is completely self-contained and removable.
 
 #### Application Bootstrap (`app/`)
 
-- Centralized configuration system (`src/features/app/config/`)
+- Centralized configuration system (`src/config/`)
 - Provider composition and service dependency injection
 - Lazy loading and code splitting
 
@@ -154,26 +154,43 @@ Each domain feature is completely self-contained and removable.
 
 ## Project Structure
 
+### Three-Layer Architecture
+
 ```
 src/
-├── features/           # Feature-based organization
-│   ├── app/           # Application bootstrap & configuration
-│   ├── i18n/          # Internationalization
-│   ├── router/        # Routing configuration
+├── config/            # 🏛️ COMPOSITION ROOT (top-level layer)
+│   ├── services.ts    # Service instantiation & dependency injection
+│   ├── features.ts    # Feature registration with Redux store
+│   ├── routes.tsx     # Application route definitions
+│   ├── auth/          # Auth provider registration
+│   ├── ui/            # UI configuration (theme, layout)
+│   └── i18n/          # Translation files
+│
+├── features/          # ⚙️ FEATURE LAYER
+│   ├── app/           # Application bootstrap
+│   ├── i18n/          # Internationalization infrastructure
+│   ├── router/        # Routing infrastructure
 │   ├── ui/            # Mantine-based design system
 │   ├── slice-manager/ # Redux lifecycle management
-│   ├── wallet/        # Web3 wallet (optional)
-│   ├── oauth/         # OAuth auth (optional)
-│   ├── chat/          # AI chat (optional)
-│   └── blog-demo/     # REST API example (optional)
-├── pages/             # Application pages
-├── services/          # External API integrations
-│   ├── ethersV6/      # Web3 service (optional)
-│   ├── oauth/         # OAuth services (optional)
-│   ├── chat/          # Chat services (optional)
+│   ├── wallet/        # 📦 Web3 wallet (optional domain feature)
+│   ├── oauth/         # 📦 OAuth auth (optional domain feature)
+│   └── blog-demo/     # 📦 REST API example (optional domain feature)
+│
+├── services/          # 🔌 SERVICE LAYER
+│   ├── ethersV6/      # Web3 service implementation (optional)
+│   ├── oauth/         # OAuth service implementation (optional)
 │   └── jsonplaceholder/ # REST API service (optional)
-└── hooks/             # Global React hooks
+│
+├── pages/             # 🎨 PRESENTATION LAYER
+└── hooks/             # 🪝 Global React hooks
 ```
+
+**Layer Responsibilities:**
+
+- **Composition Root** (`src/config/`): Wires the entire application together. ONLY place where services are imported and features are registered.
+- **Feature Layer** (`src/features/`): Business logic and infrastructure features. Define interfaces, receive services via dependency injection.
+- **Service Layer** (`src/services/`): Implement feature interfaces. Integrate with external libraries (ethers.js, axios, etc.).
+- **Presentation Layer** (`src/pages/`): Route entry points. Orchestrate UI using feature components and hooks.
 
 ## Development Commands
 
@@ -201,20 +218,44 @@ npm run prepare      # Setup git hooks
 
 ## Configuration
 
-### Centralized App Configuration (New in v1.0)
+### Composition Root Pattern (New in v1.0)
 
-All configuration centralized in `src/features/app/config/`:
+The `src/config/` directory is the **Composition Root** - a top-level architectural layer where the entire application is wired together.
+
+**What is the Composition Root?**
+
+This is NOT just a config folder - it's a **fundamental architectural pattern** where:
+- ALL services are instantiated and injected into features
+- ALL features are registered with the Redux store
+- ALL routes are defined and configured
+- ALL cross-feature dependencies are resolved
+- Architecture rules are suspended here (this is the ONE place where cross-boundary imports are allowed)
+
+**Structure:**
 
 ```
-src/features/app/config/
-├── routes.tsx              # Route definitions
-├── services.ts             # Service dependency injection
-├── features.ts             # Feature registration
-├── ui.tsx                  # UI configuration
-└── auth/                   # Authentication configuration
-    ├── auth.ts             # Auth provider registration
-    └── ProtectionType.ts   # Protection type definitions
+src/config/
+├── services.ts             # Service instantiation (ONLY place to import services)
+├── features.ts             # Feature registration (Redux store + sagas)
+├── routes.tsx              # Application route definitions
+├── auth/                   # Authentication configuration
+│   ├── auth.ts             # Auth provider registration
+│   └── ProtectionType.ts   # Protection type definitions
+├── ui/                     # UI configuration
+│   ├── mantineProviderProps.ts    # Mantine provider configuration
+│   └── layout-extensions/         # Header/navbar customization
+└── i18n/                   # Internationalization
+    └── translations/       # Translation files by namespace
 ```
+
+**Why This Matters:**
+
+By centralizing all wiring in one place:
+- Features remain isolated and don't know about each other
+- Services are injected rather than hard-coded
+- Easy to swap implementations (e.g., EthersV5 → EthersV6)
+- Clear single source of truth for application composition
+- Follows Dependency Injection best practices
 
 ### Environment Variables
 
@@ -237,6 +278,7 @@ VITE_OAUTH_POST_LOGIN_REDIRECT_PATH=/oauth-profile
 
 ```typescript
 "paths": {
+  "@/config/*": ["./src/config/*"],
   "@/features/*": ["./src/features/*"],
   "@/services/*": ["./src/services/*"],
   "@/pages/*": ["./src/pages/*"],
@@ -251,33 +293,33 @@ VITE_OAUTH_POST_LOGIN_REDIRECT_PATH=/oauth-profile
 
 1. Delete `src/features/wallet/` directory
 2. Delete `src/services/ethersV6/` directory
-3. Remove wallet routes from `src/features/app/config/routes.tsx`
-4. Remove wallet service from `src/features/app/config/services.ts`
-5. Remove wallet auth from `src/features/app/config/auth/auth.ts`
+3. Remove wallet routes from `src/config/routes.tsx`
+4. Remove wallet service from `src/config/services.ts`
+5. Remove wallet auth from `src/config/auth/auth.ts`
 6. Uninstall: `npm uninstall ethers @metamask/jazzicon`
 
 ### Remove OAuth Feature
 
 1. Delete `src/features/oauth/` directory
 2. Delete `src/services/oauth/` directory
-3. Remove OAuth routes from `src/features/app/config/routes.tsx`
-4. Remove OAuth service from `src/features/app/config/services.ts`
-5. Remove OAuth auth from `src/features/app/config/auth/auth.ts`
+3. Remove OAuth routes from `src/config/routes.tsx`
+4. Remove OAuth service from `src/config/services.ts`
+5. Remove OAuth auth from `src/config/auth/auth.ts`
 
 ### Remove Chat Feature
 
 1. Delete `src/features/chat/` directory
 2. Delete `src/services/chat/` directory
-3. Remove chat routes from `src/features/app/config/routes.tsx`
-4. Remove chat service from `src/features/app/config/services.ts`
+3. Remove chat routes from `src/config/routes.tsx`
+4. Remove chat service from `src/config/services.ts`
 5. Uninstall: `npm uninstall axios` (if not used by other features)
 
 ### Remove Blog Demo Feature
 
 1. Delete `src/features/blog-demo/` directory
 2. Delete `src/services/jsonplaceholder/` directory
-3. Remove blog routes from `src/features/app/config/routes.tsx`
-4. Remove blog service from `src/features/app/config/services.ts`
+3. Remove blog routes from `src/config/routes.tsx`
+4. Remove blog service from `src/config/services.ts`
 5. Uninstall: `npm uninstall axios` (if not used by other features)
 
 ## Breaking Changes from v0.x
@@ -289,7 +331,7 @@ VITE_OAUTH_POST_LOGIN_REDIRECT_PATH=/oauth-profile
    - `wallet/` - Web3 wallet authentication
    - Both are now **optional** and removable independently
 
-2. **Centralized Configuration**: All configuration moved to `src/features/app/config/`
+2. **Centralized Configuration**: All configuration moved to `src/config/`
    - Route definitions: `config/routes.tsx`
    - Service injection: `config/services.ts`
    - Feature registration: `config/features.ts`
@@ -306,7 +348,7 @@ VITE_OAUTH_POST_LOGIN_REDIRECT_PATH=/oauth-profile
 5. **Store Configuration**: Redux store now in `src/features/app/store/store.ts`
    - Removed centralized `src/store/` directory
 
-6. **Translation Files**: Reorganized to `src/features/i18n/translations/{namespace}/{lang}.json`
+6. **Translation Files**: Reorganized to `src/config/i18n/translations/{namespace}/{lang}.json`
    - Feature-based namespaces for better organization
 
 ## Alternative Versions

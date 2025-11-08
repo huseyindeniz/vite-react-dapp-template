@@ -70,7 +70,7 @@ rm -rf src/pages/AiChat/
 
 #### Fix 2: Remove Chat Route from routes.tsx
 
-**Location**: `src/features/app/config/routes.tsx:19-25,112`
+**Location**: `src/config/routes.tsx:19-25,112`
 
 **Removed**:
 ```typescript
@@ -106,7 +106,7 @@ rm -rf src/services/chat/
 
 #### Fix 4: Remove Chat Service from services.ts
 
-**Location**: `src/features/app/config/services.ts:4-6,13-15`
+**Location**: `src/config/services.ts:4-6,13-15`
 
 **Removed**:
 ```typescript
@@ -133,13 +133,13 @@ npm run build
 
 #### Deleted Translation Directories
 ```bash
-rm -rf src/features/i18n/translations/feature-chat
-rm -rf src/features/i18n/translations/page-aichat
+rm -rf src/config/i18n/translations/feature-chat
+rm -rf src/config/i18n/translations/page-aichat
 ```
 
 #### Updated Menu Translation Files
 
-**File**: `src/features/i18n/translations/menu/en-US.json`
+**File**: `src/config/i18n/translations/menu/en-US.json`
 ```json
 {
   // "AI Chat": "AI Chat",  // REMOVED
@@ -156,7 +156,7 @@ rm -rf src/features/i18n/translations/page-aichat
 }
 ```
 
-**File**: `src/features/i18n/translations/menu/tr-TR.json`
+**File**: `src/config/i18n/translations/menu/tr-TR.json`
 ```json
 {
   // "AI Chat": "Yapay Zeka Sohbeti",  // REMOVED
@@ -190,25 +190,25 @@ npm run build && npm run lint && npm run test
 1. `src/features/chat/` - Entire chat feature
 2. `src/pages/AiChat/` - AI Chat page components
 3. `src/services/chat/` - Chat service and model adapters
-4. `src/features/i18n/translations/feature-chat/` - Feature translations
-5. `src/features/i18n/translations/page-aichat/` - Page translations
+4. `src/config/i18n/translations/feature-chat/` - Feature translations
+5. `src/config/i18n/translations/page-aichat/` - Page translations
 
 ### Modified Files
-1. `src/features/app/config/routes.tsx`
+1. `src/config/routes.tsx`
    - Removed AiChatPage lazy import
    - Removed AiChatRoute definition
    - Updated getUserPageRoutes return array
 
-2. `src/features/app/config/services.ts`
+2. `src/config/services.ts`
    - Removed ChatService import
    - Removed GoogleADKChatModelAdapter import
    - Removed LangGraphChatModelAdapter import
    - Removed chatService instantiation and adapter registrations
 
-3. `src/features/i18n/translations/menu/en-US.json`
+3. `src/config/i18n/translations/menu/en-US.json`
    - Removed "AI Chat" entry
 
-4. `src/features/i18n/translations/menu/tr-TR.json`
+4. `src/config/i18n/translations/menu/tr-TR.json`
    - Removed "AI Chat" entry
 
 ## Key Findings

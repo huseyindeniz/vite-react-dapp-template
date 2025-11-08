@@ -1,4 +1,4 @@
-import { FeatureConfig } from '@/features/app/types/FeatureConfig';
+import { defineFeature } from '@/features/app/types/FeatureConfig';
 import { configureSlice as configureBlogDemoSlice } from '@/features/blog-demo/configureSlice';
 import { watchBlogDemoSaga } from '@/features/blog-demo/sagas';
 import { blogDemoReducer } from '@/features/blog-demo/slice';
@@ -24,7 +24,7 @@ import { oauthService, blogDemoApi, walletApi } from './services';
  * - Clear dependency injection for sagas
  */
 export const features = {
-  wallet: {
+  wallet: defineFeature({
     store: {
       stateKey: 'wallet',
       reducer: walletReducer,
@@ -33,8 +33,8 @@ export const features = {
       saga: watchWalletSaga,
       dependencies: [walletApi],
     },
-  } satisfies FeatureConfig,
-  blogDemo: {
+  }),
+  blogDemo: defineFeature({
     store: {
       stateKey: 'blogDemo',
       reducer: blogDemoReducer,
@@ -44,8 +44,8 @@ export const features = {
       dependencies: [blogDemoApi],
     },
     configureSlice: configureBlogDemoSlice,
-  } satisfies FeatureConfig,
-  oauth: {
+  }),
+  oauth: defineFeature({
     store: {
       stateKey: 'oauth',
       reducer: oauthReducer,
@@ -54,5 +54,5 @@ export const features = {
       saga: oauthSaga,
       dependencies: [oauthService],
     },
-  } satisfies FeatureConfig,
+  }),
 };

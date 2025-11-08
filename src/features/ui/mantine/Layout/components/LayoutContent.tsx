@@ -12,7 +12,7 @@ interface LayoutContentProps {
 
 export const LayoutContent: React.FC<LayoutContentProps> = ({
   children,
-  fullWidth = false
+  fullWidth = false,
 }) => {
   const location = useLocation();
 

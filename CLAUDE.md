@@ -1,3 +1,38 @@
+# 🛑 STOP - READ THIS FIRST (MANDATORY)
+
+**Claude, you have a documented pattern of rushing to code without understanding architecture and code quality standards.**
+
+You skip reading documentation, pattern-match instead of thinking, take lazy shortcuts, and violate both architectural rules AND code quality/style rules constantly. This wastes the user's time and degrades the codebase.
+
+## Before ANY Task - You MUST:
+
+1. **📖 Read this ENTIRE CLAUDE.md file** (yes, all of it - not skim, READ)
+2. **🎯 Read the relevant skill.md files** for the area you're working in:
+   - `.claude/skills/arch-audit/skill.md` - Architecture dependency rules
+   - `.claude/skills/code-audit/skill.md` - Code quality and style rules
+3. **🏗️ Identify which architectural layer(s)** you'll be working in
+4. **📋 List BOTH architecture AND code quality rules** that apply to your task
+5. **✍️ Write an "Architectural Intent Statement"** (see below) explaining your approach
+6. **🤔 Pause and verify** you truly understand before writing ANY code
+
+## If You Skip This Process:
+
+- ❌ You WILL violate architecture rules (arch-audit failures)
+- ❌ You WILL violate code quality/style rules (code-audit failures)
+- ❌ You WILL create technical debt
+- ❌ You WILL waste the user's time
+- ❌ You WILL have to redo your work
+
+## The Core Problem:
+
+You go: Task → Pattern Match → Write Code → Show "Completion"
+
+You skip: READ → UNDERSTAND → PLAN → VERIFY → Then Code
+
+**SLOW DOWN. THINK ARCHITECTURALLY AND FOLLOW CODE QUALITY STANDARDS. THEN CODE.**
+
+---
+
 # CLAUDE.md
 
 This file provides guidance to Claude Code when working with this React dApp template. Follow these patterns strictly to maintain architectural consistency.
@@ -24,6 +59,330 @@ This file provides guidance to Claude Code when working with this React dApp tem
 - Cross-feature dependency analysis and visualization
 
 **See `.claude/skills/arch-audit/skill.md` for architecture dependency rules.**
+
+---
+
+## 🏛️ Architecture Layers
+
+This template uses a **three-layer architecture** with clear separation of concerns:
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  COMPOSITION ROOT (src/config/)                             │
+│  • Wires entire application together                        │
+│  • Imports and instantiates services                        │
+│  • Registers features with Redux                            │
+│  • Defines routes and auth providers                        │
+│  • ALL architecture rules suspended here                    │
+└─────────────────────────────────────────────────────────────┘
+                            │
+                            ↓
+┌─────────────────────────────────────────────────────────────┐
+│  FEATURE LAYER (src/features/)                              │
+│  • Core Features: Infrastructure (app, i18n, router, ui)    │
+│  • Domain Features: Business logic (wallet, oauth, blog)    │
+│  • Define interfaces, receive services via DI               │
+│  • Architecture rules enforced here                         │
+└─────────────────────────────────────────────────────────────┘
+                            │
+                            ↓
+┌─────────────────────────────────────────────────────────────┐
+│  SERVICE LAYER (src/services/)                              │
+│  • Implement feature interfaces                             │
+│  • Integrate with external libraries (ethers, axios)        │
+│  • Swappable implementations                                │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Composition Root (src/config/)
+
+⚠️ **This is NOT a feature** - it's a **special top-level architectural layer** above all features.
+
+**Purpose:**
+- Central wiring point where application composition happens
+- ONLY place where services are imported and instantiated
+- ONLY place where features are registered with Redux store
+- ALL architecture rules are suspended here (it's the composition layer)
+
+**Key Files:**
+- `services.ts` - Service instantiation (ONLY place to import `@/services/*`)
+- `features.ts` - Feature registration (Redux store + sagas)
+- `routes.tsx` - Application route definitions
+- `auth/` - Authentication provider registration
+- `ui/` - UI configuration (theme, Mantine provider props, layout extensions)
+- `i18n/translations/` - Translation files
+
+**Why This Matters:**
+This is the **Composition Root Pattern** from Dependency Injection. All cross-feature dependencies, service wiring, and application-level configuration happens in ONE place. Features remain isolated and testable.
+
+---
+
+## 📐 MANDATORY: Architectural Intent Statement
+
+**REQUIRED before writing ANY code for ANY task.**
+
+You MUST write this statement and show it to the user BEFORE touching any code:
+
+```
+## Architectural Intent Statement
+
+**Task**: [What I'm being asked to do]
+
+**Files/Components I'll modify**:
+- [Specific file paths]
+
+**Architectural Layer(s)**:
+- [ ] Composition Root (src/config/)
+- [ ] Feature Layer - Core (app, i18n, router, slice-manager, ui)
+- [ ] Feature Layer - Domain (wallet, oauth, blog-demo, etc.)
+- [ ] Service Layer (src/services/)
+- [ ] Presentation Layer (src/pages/)
+
+**Architecture Rules That Apply**:
+1. [Specific rule from CLAUDE.md - e.g., "Business logic only in actionEffects/"]
+2. [Another rule - e.g., "Components use feature hooks, not RTK directly"]
+3. [etc.]
+
+**Code Quality/Style Rules That Apply**:
+1. [Specific rule from code-audit - e.g., "Use path aliases (@/features/*, not relative)"]
+2. [Another rule - e.g., "No default exports, named exports only"]
+3. [Another rule - e.g., "All UI text must use t() function for i18n"]
+4. [etc.]
+
+**Why My Approach Follows These Rules**:
+[Detailed explanation of how your implementation respects BOTH architecture AND code quality]
+
+**Potential Violations I Need to Avoid**:
+- Architecture: [What architectural mistakes you might make]
+- Code Quality: [What style/quality mistakes you might make]
+- Shortcuts to resist: [What lazy paths you need to avoid]
+
+**Verification Plan**:
+- [ ] Skill: code-audit (11 checks for code quality/style)
+- [ ] Skill: arch-audit (8 checks for architecture dependencies)
+- [ ] npm run lint (0 warnings required)
+- [ ] npm run build (TypeScript + Vite)
+- [ ] npm run test (all must pass)
+```
+
+**This is what you SHOW the user - the plan. The rest of this document is your internal process.**
+
+**If you cannot fill this out completely, you do NOT understand the task well enough to proceed.**
+
+---
+
+## 🛑 BEFORE Writing ANY Code - Pre-Flight Checklist
+
+**INTERNAL PROCESS - Don't spam the user with this. Just DO IT.**
+
+Before making ANY code change, you MUST complete this checklist:
+
+### 1. 📖 Understanding Phase
+- [ ] I have READ (not skimmed) the relevant sections of CLAUDE.md
+- [ ] I have READ the relevant skill.md files (code-audit, arch-audit, etc.)
+- [ ] I understand which architectural layer(s) I'm working in
+- [ ] I can explain WHY this task requires these changes
+
+### 2. 📋 Rules Identification
+- [ ] I have listed ALL architecture rules that apply to this task (from arch-audit skill)
+- [ ] I have listed ALL code quality/style rules that apply (from code-audit skill)
+- [ ] I understand the consequences of violating these rules
+- [ ] I have identified potential violations I need to avoid
+
+**Code Quality Rules Checklist** (from code-audit):
+- [ ] Using path aliases (@/features/*, @/services/*), not relative imports
+- [ ] Named exports only (no default exports)
+- [ ] No index.ts barrel files
+- [ ] Components use feature hooks (not useDispatch/useSelector directly)
+- [ ] Services only imported in src/config/services.ts
+- [ ] All UI text uses t() function for i18n
+- [ ] No "any" type usage
+- [ ] No linter suppressions (eslint-disable, @ts-ignore, @ts-nocheck)
+- [ ] 1 entity per file (no god files)
+- [ ] react-icons library (NOT @tabler/icons-react)
+
+### 3. 🏗️ Architecture Planning
+- [ ] I have written an Architectural Intent Statement (above)
+- [ ] I have verified my approach follows the architecture patterns
+- [ ] I have identified which pattern(s) apply (Feature-Model, Business Logic Separation, Interface Architecture, Component-Hook Abstraction)
+- [ ] I can explain my approach to a junior developer
+
+### 4. ✅ Ready to Code
+- [ ] I have completed ALL of the above
+- [ ] I have shown my Architectural Intent Statement to the user
+- [ ] I have paused to verify I truly understand
+- [ ] I am confident this will follow the architecture
+
+**If you cannot check ALL boxes, DO NOT write code yet. Go back and complete the missing steps.**
+
+---
+
+## ✅ MANDATORY: Post-Change Architectural Review
+
+**INTERNAL PROCESS - Reflect internally, don't spam the user with your reflection.**
+
+After EVERY code change, you MUST complete this review:
+
+### 1. Run All Verifications
+- Use Skill tool: `code-audit` (11 code quality checks)
+- Use Skill tool: `arch-audit` (8 architecture checks)
+- Run: `npm run lint` (0 warnings required)
+- Run: `npm run build` (TypeScript + Vite)
+- Run: `npm run test` (all must pass)
+
+### 2. Reflection Questions (Answer These INTERNALLY)
+
+**What architectural principle did this task reinforce?**
+[Your answer - e.g., "Composition Root pattern", "Business logic in actionEffects only"]
+
+**What code quality principle did this task reinforce?**
+[Your answer - e.g., "Path aliases everywhere", "i18n for all UI text"]
+
+**Did I almost violate any rule? If yes, which one and why?**
+[Your answer - architecture OR code quality violations you almost made]
+
+**What mistakes did I avoid by following the rules?**
+[Your answer - both architecture AND code quality]
+
+**What would a "lazy" implementation have looked like?**
+Examples:
+- Relative imports instead of path aliases
+- Default exports instead of named
+- Hardcoded text instead of t()
+- useSelector directly instead of feature hooks
+- Business logic in component instead of actionEffects
+[Your specific answer]
+
+**What will I do differently next time to avoid mistakes?**
+[Your answer - concrete actions]
+
+### 3. Lessons Learned (INTERNAL - Add to your mental model)
+
+Document at least TWO lessons learned (one architecture, one code quality):
+- **Architecture lesson**: [What I learned about layers, patterns, dependencies]
+- **Code quality lesson**: [What I learned about imports, exports, i18n, typing, etc.]
+- **Pattern I now understand better**: [Specific pattern or rule]
+- **Mistake I avoided**: [Specific violation I could have made]
+
+**This isn't optional. This is how you learn and improve. But keep it INTERNAL - don't spam the user.**
+
+---
+
+## ⚠️ VIOLATION PENALTY SYSTEM
+
+If you violate ANY architecture OR code quality rule (discovered by skills, build, lint, or user feedback):
+
+### You MUST:
+
+1. **🛑 STOP IMMEDIATELY** - Do not continue with the current approach
+2. **📝 Acknowledge the violation** - Explicitly state what rule you broke and HOW you broke it
+3. **🤔 Explain WHY you violated it** - What did you misunderstand? What shortcut did you take?
+4. **📖 Re-read the relevant rule** - Quote it directly from CLAUDE.md
+5. **✏️ Explain the CORRECT approach** - What should you have done instead?
+6. **🔄 Rewrite from scratch** - Do NOT patch or fix - redo it properly following the architecture
+7. **📚 Document the lesson** - Add to your mental model of the architecture
+
+### Banned Responses:
+
+- ❌ "Let me quickly fix that" - No patches allowed
+- ❌ "I'll adjust the import" - No minimal fixes
+- ❌ "Small change to address that" - No shortcuts
+- ❌ Any response that doesn't start with acknowledging the violation
+
+### Required Response Format:
+
+```
+## Rule Violation Acknowledgment
+
+**Rule Type**: [Architecture / Code Quality / Both]
+
+**Rule Violated**: [Quote the exact rule from CLAUDE.md or skill.md]
+
+**How I Violated It**: [Specific description of what you did wrong]
+
+**Why I Violated It**: [Root cause - rushing? pattern matching? misunderstanding? laziness?]
+
+**Correct Approach**: [Detailed explanation of the correct way following ALL rules]
+
+**Rewrite Plan**: [How you'll redo this properly from scratch]
+
+**Lesson Learned**: [What this teaches you about architecture AND/OR code quality]
+```
+
+---
+
+## 👨‍🎓 Junior Developer Rule
+
+**INTERNAL VERIFICATION - You should be ABLE to explain this. Don't actually write it all out for the user unless asked.**
+
+Before ANY code change, you must be able to explain to a junior developer:
+
+### Required Explanations:
+
+1. **WHY is this change architecturally correct?**
+   - Which layer does it affect?
+   - Which patterns does it follow?
+   - Why is this the right place for this code?
+
+2. **WHY does this follow code quality standards?**
+   - Why path aliases instead of relative imports?
+   - Why named exports instead of default?
+   - Why t() for all UI text?
+   - Why feature hooks instead of direct Redux?
+
+3. **WHICH rules apply here?**
+   - Architecture rules (list explicitly)
+   - Code quality rules (list explicitly)
+   - Explain why each one matters
+   - Show how your code follows each one
+
+4. **WHAT would the WRONG approach look like?**
+   - Architectural shortcuts someone might take
+   - Code quality violations that seem "easier"
+   - Why those shortcuts/violations are problematic
+   - What problems would they cause?
+
+5. **HOW does this fit into the overall architecture?**
+   - Show the flow: Composition Root → Features → Services
+   - Explain dependency injection if relevant
+   - Demonstrate the separation of concerns
+
+**If you cannot clearly explain these five points, you do NOT understand the task well enough to code it.**
+
+---
+
+## 🎯 Success Criteria
+
+You are successfully following this process when:
+
+- ✅ You write the Architectural Intent Statement BEFORE coding
+- ✅ You list BOTH architecture AND code quality rules that apply
+- ✅ You can explain your approach clearly to a junior developer
+- ✅ Code-audit (11/11) and arch-audit (8/8) pass on first try
+- ✅ Lint passes with 0 warnings on first try
+- ✅ You don't need to "fix" or "patch" after violations
+- ✅ You catch potential mistakes BEFORE writing code
+- ✅ You understand WHY the architecture rules exist
+- ✅ You understand WHY the code quality rules exist
+- ✅ You slow down, think, plan, THEN code
+
+## 🚫 Failure Indicators
+
+You are NOT following this process when:
+
+- ❌ You write code before the Architectural Intent Statement
+- ❌ Code-audit or arch-audit find violations after you claim completion
+- ❌ Lint fails or shows warnings
+- ❌ You say "let me quickly fix that" after a violation
+- ❌ You can't explain WHY your approach is correct
+- ❌ You use relative imports instead of path aliases
+- ❌ You use default exports
+- ❌ You hardcode text instead of using t()
+- ❌ You use useDispatch/useSelector directly in components
+- ❌ You put business logic in components or slices
+- ❌ You rush from task to code without planning
+- ❌ You pattern-match instead of thinking architecturally
+- ❌ The user has to correct your mistakes
 
 ---
 
@@ -444,6 +803,7 @@ npm run storybook          # Component documentation
 ### Import Aliases
 
 ```typescript
+@/config/*     // Application configuration (composition root)
 @/features/*   // Feature modules
 @/services/*   // Service implementations
 @/pages/*      // Page components
@@ -476,7 +836,22 @@ npm run storybook          # Component documentation
 
 ### Configuration Files
 
-- `src/features/wallet/config.ts` - Wallet configuration
+**Composition Root (Application-Level):**
+
+- `src/config/services.ts` - Service instantiation (ONLY place to import services)
+- `src/config/features.ts` - Feature registration (Redux store + sagas)
+- `src/config/routes.tsx` - Application routes
+- `src/config/auth/` - Auth provider registration
+- `src/config/ui/` - UI configuration (theme, Mantine props, layout extensions)
+- `src/config/i18n/translations/` - i18n translation files
+
+**Feature-Level:**
+
+- `src/features/wallet/config.ts` - Wallet feature configuration
 - `src/features/ui/mantine/theme.tsx` - Mantine theme
+
+**Build-Level:**
+
 - `vite.config.ts` - Build configuration
 - `vitest.config.ts` - Test configuration
+- `i18next-parser.config.json` - i18n extraction configuration

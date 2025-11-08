@@ -246,7 +246,7 @@ This audit ensures the following architectural patterns:
 - Features use proper boundaries and interfaces
 
 ### ✅ Dependency Injection
-- Services are only imported in composition root (\`src/features/app/config/services.ts\`)
+- Services are only imported in composition root (\`src/config/services.ts\`)
 - Features receive services through dependency injection
 - No direct service imports scattered throughout the codebase
 

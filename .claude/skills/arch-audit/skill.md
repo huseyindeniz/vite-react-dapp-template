@@ -12,22 +12,44 @@ Analyze **architectural dependencies** between features and services to ensure:
 - Composition root files (slice.ts, sagas.ts) are only imported in features.ts
 - Clear separation between infrastructure (core) and business logic (domain)
 
-# Feature Categories
+# Architecture Layers
+
+## Composition Root (Top-Level Configuration)
+**Location:** `src/config/`
+
+This is NOT a feature - it's a **special top-level architectural layer** above all features.
+
+**Purpose:**
+- Wires the entire application together
+- Imports and instantiates services
+- Registers features with Redux store
+- Defines application routes
+- Cross-feature dependency composition
+
+**Files:**
+- `services.ts` - Service instantiation (ONLY place to import `@/services/*`)
+- `features.ts` - Feature registration (slices, sagas)
+- `routes.tsx` - Route configuration
+- `auth/` - Auth provider registration
+- `ui/` - UI configuration (theme, Mantine props)
+
+**Key Point:** This is where ALL architecture rules are ALLOWED to be broken, because it's the composition layer.
 
 ## Core Features (Infrastructure)
 These are foundational features that provide infrastructure:
-- `app/` - Application bootstrap and composition
+- `app/` - Application bootstrap (App.tsx, store, context providers)
+- `auth/` - Route protection system (withProtection HOCs, protection registry)
 - `i18n/` - Internationalization
 - `router/` - Routing infrastructure
 - `slice-manager/` - Redux slice lifecycle
-- `ui/` - Design system and theming
+- `ui/` - Design system and theming (Mantine components)
 
 ## Domain Features (Business Logic)
 These are business domain features (examples):
 - `wallet/` - Web3 wallet integration
 - `oauth/` - OAuth authentication
 - `blog-demo/` - Blog demonstration
-- `chat/` - Chat feature
+- `chat/` - AI chat feature
 
 Users create their own domain features (products, orders, users, etc.)
 
@@ -43,8 +65,10 @@ Users create their own domain features (products, orders, users, etc.)
 **Violations:**
 - ❌ Core feature → Domain feature (infrastructure cannot know about business domains)
 
-**Exception:**
-- ✅ `src/features/app/config/*` can import anything (composition root)
+**Note on Composition Root:**
+- `src/config/` is NOT checked by this rule - it's not a feature at all
+- `src/config/` sits above the feature layer and can import anything
+- Only code in `src/features/` is subject to this rule
 
 **Check:** `check_core_to_domain.mjs`
 
@@ -53,7 +77,7 @@ Users create their own domain features (products, orders, users, etc.)
 **Services MUST ONLY be imported in the composition root.**
 
 **Allowed:**
-- ✅ `src/features/app/config/services.ts` - ONLY place to import services
+- ✅ `src/config/services.ts` - ONLY place to import services
 
 **Violations:**
 - ❌ Any other file importing from `@/services/*`
@@ -162,7 +186,7 @@ Even when a feature dependency is architecturally allowed, you CANNOT import mod
 **Feature `slice.ts` files MUST ONLY be imported in composition root.**
 
 **Allowed:**
-- ✅ `src/features/app/config/features.ts` - ONLY place to import slices
+- ✅ `src/config/features.ts` - ONLY place to import slices
 
 **Violations:**
 - ❌ Any other file importing `@/features/{feature}/slice`
@@ -176,7 +200,7 @@ Even when a feature dependency is architecturally allowed, you CANNOT import mod
 **Feature `sagas.ts` files MUST ONLY be imported in composition root.**
 
 **Allowed:**
-- ✅ `src/features/app/config/features.ts` - ONLY place to import sagas
+- ✅ `src/config/features.ts` - ONLY place to import sagas
 
 **Violations:**
 - ❌ Any other file importing `@/features/{feature}/sagas`
@@ -185,27 +209,41 @@ Even when a feature dependency is architecturally allowed, you CANNOT import mod
 
 **Check:** `check_sagas_imports.mjs`
 
-## Rule 8: Composition Root Exception
+## Rule 8: Composition Root (Top-Level Configuration Layer)
 
-**`src/features/app/config/` is the ONLY place where cross-references and composition happen.**
+**`src/config/` is NOT a feature - it's a top-level architectural layer where ALL rules are suspended.**
 
-This directory is the **Composition Root** - where the entire application is wired together.
+This directory sits ABOVE the feature layer and is responsible for wiring the entire application together.
 
-**Allowed in `src/features/app/config/*`:**
-- ✅ Import services
+**Architectural Position:**
+```
+src/
+├── config/              ← Composition Root (THIS LAYER)
+│   ├── services.ts      ← Service instantiation
+│   ├── features.ts      ← Feature registration
+│   ├── routes.tsx       ← Route definitions
+│   ├── auth/            ← Auth configuration
+│   └── ui/              ← UI configuration
+├── features/            ← Feature Layer (Core + Domain)
+├── services/            ← Service Layer (Implementations)
+├── pages/               ← Presentation Layer
+└── hooks/               ← Shared Hooks
+```
+
+**Allowed in `src/config/*` (ALL rules suspended):**
+- ✅ Import services directly (`@/services/*`)
 - ✅ Import all features (core and domain)
-- ✅ Import model internals (actions, slices, sagas)
-- ✅ Cross-reference features
+- ✅ Import model internals (actions, slices, sagas, actionEffects)
+- ✅ Cross-reference between any features
 - ✅ Wire up dependency injection
-- ✅ Configure the application
+- ✅ Break any other architecture rule
 
-**Files in composition root:**
-- `services.ts` - Service instantiation and export
-- `features.ts` - Feature registration (reducers, sagas)
-- `routes.ts` - Route configuration
-- Other configuration files
-
-**Why:** There must be ONE place where everything comes together. This is that place.
+**Why:**
+- Every application needs ONE place where everything is composed together
+- This is the "main()" function of the architecture
+- All dependency injection happens here
+- All feature registration happens here
+- This is intentionally outside the feature hierarchy
 
 # Available Checks
 
@@ -318,7 +356,7 @@ Core → Domain Dependency Check
 ================================================================================
 
 Rule: Core features (infrastructure) MUST NOT depend on domain features
-Exception: src/features/app/config/ (composition root) can import anything
+Exception: src/config/ (composition root) can import anything
 
 Violations
 --------------------------------------------------------------------------------
@@ -332,7 +370,7 @@ Violations
      → oauth (domain)
         File: src/features/router/Router.tsx
 
-Fix: Move these dependencies to src/features/app/config/
+Fix: Move these dependencies to src/config/
 
 ================================================================================
 Summary: 3 violation(s)
@@ -340,20 +378,36 @@ Summary: 3 violation(s)
 
 # Architecture Benefits
 
-## Proper Layering
-- Core (infrastructure) doesn't know about Domain (business)
-- Clear separation of concerns
-- Easy to understand system architecture
+## Layered Architecture
+```
+┌─────────────────────────────────────┐
+│  Composition Root (src/config/)     │ ← Top Layer: Wiring & Configuration
+├─────────────────────────────────────┤
+│  Feature Layer (src/features/)      │ ← Middle Layer: Core + Domain Features
+│  - Core: app, i18n, router, ui      │
+│  - Domain: wallet, oauth, blog      │
+├─────────────────────────────────────┤
+│  Service Layer (src/services/)      │ ← Bottom Layer: External Integrations
+│  - EthersV6, OAuth, API clients     │
+└─────────────────────────────────────┘
+```
+
+**Benefits:**
+- Clear separation: Composition → Features → Services
+- Core infrastructure doesn't know about business domains
+- Easy to understand system architecture at a glance
 
 ## Dependency Injection
 - Features don't depend on concrete service implementations
 - Easy to swap implementations (EthersV5 → EthersV6)
 - Easy to test (mock interfaces)
+- All wiring happens in `src/config/services.ts`
 
-## Composition Root
-- Single place where everything is wired together
+## Composition Root Pattern
+- Single top-level place (`src/config/`) where everything is wired together
+- Not part of any feature - sits above the feature layer
 - Clear understanding of application structure
-- Easy to see all dependencies
+- Easy to see all dependencies and composition logic
 
 ## Encapsulation
 - Model internals are hidden from other features

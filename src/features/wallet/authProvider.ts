@@ -1,4 +1,4 @@
-import { ProtectionType } from '@/features/app/config/auth/ProtectionType';
+import { ProtectionType } from '@/config/auth/ProtectionType';
 import { IProtectionProvider } from '@/features/auth/types/IProtectionProvider';
 
 import { withWalletProtection } from './hocs/withWalletProtection';

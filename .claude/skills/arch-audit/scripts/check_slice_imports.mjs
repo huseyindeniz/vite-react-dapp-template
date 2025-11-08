@@ -10,7 +10,7 @@ const __dirname = path.dirname(__filename);
 const projectRoot = path.resolve(__dirname, '../../../..');
 const featuresDir = path.join(projectRoot, 'src', 'features');
 
-const ALLOWED_FILE = 'src/features/app/config/features.ts';
+const ALLOWED_FILE = 'src/config/features.ts';
 const validExtensions = ['.ts', '.tsx', '.js', '.jsx'];
 
 function normalizePath(p) {

@@ -11,7 +11,7 @@ const projectRoot = path.resolve(__dirname, '../../../..');
 const featuresDir = path.join(projectRoot, 'src', 'features');
 
 const CORE_FEATURES = ['app', 'auth', 'i18n', 'router', 'slice-manager', 'ui'];
-const COMPOSITION_ROOT = 'src/features/app/config/';
+const COMPOSITION_ROOT = 'src/config/';
 const validExtensions = ['.ts', '.tsx', '.js', '.jsx'];
 
 function normalizePath(p) {
@@ -69,7 +69,7 @@ function checkCoreToDomain() {
   console.log('='.repeat(80));
   console.log('');
   console.log('Rule: Core features (infrastructure) MUST NOT depend on domain features');
-  console.log('Exception: src/features/app/config/ (composition root) can import anything');
+  console.log('Exception: src/config/ (composition root) can import anything');
   console.log('');
 
   const violations = [];
@@ -137,7 +137,7 @@ function checkCoreToDomain() {
       console.log('');
     }
 
-    console.log('Fix: Move these dependencies to src/features/app/config/');
+    console.log('Fix: Move these dependencies to src/config/');
   }
 
   console.log('');

@@ -1,6 +1,6 @@
 import { JSX } from 'react';
 
-import { ProtectionType } from '@/features/app/config/auth/ProtectionType';
+import { ProtectionType } from '@/config/auth/ProtectionType';
 
 import {
   getProtectionProvider,

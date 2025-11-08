@@ -16,7 +16,6 @@ import { FaExternalLinkAlt } from 'react-icons/fa';
 import { PageMeta } from '@/features/ui/mantine/components/PageMeta/PageMeta';
 
 import logo from './assets/images/logo.svg';
-import { Environment } from './components/Environment';
 
 export const HomePage: React.FC = () => {
   const { t } = useTranslation('page-home');
@@ -69,7 +68,6 @@ export const HomePage: React.FC = () => {
               })}
             </Badge>
           </Center>
-          <Environment />
           <Stack gap={6}>
             <Anchor
               href="https://reactjs.org"

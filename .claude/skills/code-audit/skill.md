@@ -530,7 +530,7 @@ node ./.claude/skills/code-audit/scripts/check_service_imports.mjs
 ```
 - Scans ALL source files in src/ (features, pages, hooks, everywhere)
 - Checks for service imports from @/services/*
-- Ensures services are ONLY imported in src/features/app/config/services.ts
+- Ensures services are ONLY imported in src/config/services.ts
 - Reports violations with explanation
 
 ### 5. i18n Coverage Check

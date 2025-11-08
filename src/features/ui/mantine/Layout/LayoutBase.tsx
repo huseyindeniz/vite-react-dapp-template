@@ -9,6 +9,7 @@ import {
   Group,
   Container,
   Stack,
+  Text,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Notifications } from '@mantine/notifications';
@@ -33,7 +34,6 @@ import { ScrollToTopButton } from '../components/ScrollToTopButton/ScrollToTopBu
 import { SecondaryMenu } from '../components/SecondaryMenu/SecondaryMenu';
 import { SideNav } from '../components/SideNav/SideNav';
 import { SiteLogo } from '../components/SiteLogo/SiteLogo';
-import { SocialMenu } from '../components/SocialMenu/SocialMenu';
 
 import { Layout } from './components/Layout';
 
@@ -47,11 +47,13 @@ const myErrorHandler = (error: Error, info: ErrorInfo) => {
 interface LayoutBaseProps {
   headerExtension?: React.FC;
   navbarExtension?: React.FC;
+  socialMenuExtension?: React.FC;
 }
 
 export const LayoutBase: React.FC<LayoutBaseProps> = ({
   headerExtension: HeaderExtension,
   navbarExtension: NavbarExtension,
+  socialMenuExtension: SocialMenuExtension,
 }) => {
   useI18nWatcher();
   const { t } = useTranslation('app');
@@ -72,7 +74,12 @@ export const LayoutBase: React.FC<LayoutBaseProps> = ({
     <HelmetProvider>
       <ErrorBoundary FallbackComponent={ErrorFallback} onError={myErrorHandler}>
         <Notifications />
-        <Layout navbarCollapsed={opened} asideVisible={hasSubRoutes}>
+        <Layout
+          navbarCollapsed={opened}
+          asideVisible={
+            hasSubRoutes && subRoutes.filter(r => r.menuLabel).length > 0
+          }
+        >
           <Layout.Header>
             <Burger
               opened={opened}
@@ -105,7 +112,7 @@ export const LayoutBase: React.FC<LayoutBaseProps> = ({
             </Stack>
           </Layout.Navbar>
 
-          {hasSubRoutes && (
+          {hasSubRoutes && subRoutes.filter(r => r.menuLabel).length > 0 && (
             <Layout.Aside>
               <SideNav items={subRoutes} />
             </Layout.Aside>
@@ -122,11 +129,18 @@ export const LayoutBase: React.FC<LayoutBaseProps> = ({
                 <SecondaryMenu secondaryMenuItems={secondaryMenuItems} />
               </Center>
               <Divider
-                label={<SiteLogo siteName={siteName} baseUrl={baseUrl} />}
+                label={
+                  <Stack gap={0} align="center" justify="center">
+                    <SiteLogo siteName={siteName} baseUrl={baseUrl} />
+                    <Text c="dimmed" fz="xs">
+                      v{__VITE_REACT_APP_VERSION__}
+                    </Text>
+                  </Stack>
+                }
               />
               <Group justify="space-between" style={{ flex: 1 }} mt={-10}>
                 <Copyright />
-                <SocialMenu />
+                {SocialMenuExtension && <SocialMenuExtension />}
               </Group>
             </Container>
             <ScrollToTopButton />

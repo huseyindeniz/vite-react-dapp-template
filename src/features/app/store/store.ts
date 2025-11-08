@@ -1,27 +1,31 @@
 import {
   combineReducers,
   configureStore,
-  type Reducer,
 } from '@reduxjs/toolkit';
 import { enableMapSet } from 'immer';
 import saga, { type Saga } from 'redux-saga';
 import { all, fork } from 'redux-saga/effects';
 
-import { features } from '../config/features';
+import { features } from '@/config/features';
 
 enableMapSet();
 
 /**
- * Build reducers object dynamically from features config
+ * Type helper to extract reducer map from features config
+ * Preserves specific reducer types for proper RootState inference
  */
-const buildReducers = () => {
-  const reducers: Record<string, Reducer> = {};
+type FeatureReducers = {
+  [K in keyof typeof features]: (typeof features)[K]['store']['reducer'];
+};
 
-  for (const [, feature] of Object.entries(features)) {
-    reducers[feature.store.stateKey] = feature.store.reducer;
-  }
-
-  return reducers;
+/**
+ * Build reducers object dynamically from features config
+ * Returns properly typed object to preserve RootState type inference
+ */
+const buildReducers = (): FeatureReducers => {
+  return Object.fromEntries(
+    Object.entries(features).map(([key, feature]) => [key, feature.store.reducer])
+  ) as FeatureReducers;
 };
 
 const rootReducer = combineReducers(buildReducers());

@@ -8,7 +8,7 @@ import {
   IoShield,
 } from 'react-icons/io5';
 
-import { ProtectionType } from '@/features/app/config/auth/ProtectionType';
+import { ProtectionType } from '@/config/auth/ProtectionType';
 import { PageType } from '@/features/router/types/PageType';
 
 // =============================================================================
@@ -179,7 +179,7 @@ export const getUserPageRoutes = (
     ],
   };
 
-  // Blog Route
+  // Blog Route with sub-routes
   const BlogHome: PageType = {
     id: 'blog-home',
     path: 'blog',
@@ -188,17 +188,14 @@ export const getUserPageRoutes = (
     isShownInMainMenu: true,
     isShownInSecondaryMenu: true,
     protectionType: ProtectionType.NONE,
-  };
-
-  // Blog Post Route
-  const BlogPostRoute: PageType = {
-    id: 'blog-post',
-    path: 'blog/:postId',
-    element: <BlogPostPage />,
-    menuLabel: t('Post', { ns: 'menu' }),
-    isShownInMainMenu: false,
-    isShownInSecondaryMenu: false,
-    protectionType: ProtectionType.NONE,
+    subRoutes: [
+      {
+        path: ':postId',
+        element: <BlogPostPage />,
+        menuLabel: null,
+        protectionType: ProtectionType.NONE,
+      },
+    ],
   };
 
   // Wallet Profile Route
@@ -228,7 +225,6 @@ export const getUserPageRoutes = (
     AiChatRoute,
     AuthDemoRoute,
     BlogHome,
-    BlogPostRoute,
     WalletProfileRoute,
     OAuthProfileRoute,
   ];

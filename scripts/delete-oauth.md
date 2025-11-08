@@ -33,11 +33,11 @@ All checks passed after cleanup:
 The build errors clearly pointed to what needs to be fixed:
 
 ```
-src/features/app/config/auth/auth.ts(24,41): Cannot find module '@/features/oauth/authProvider'
-src/features/app/config/features.ts(5,27): Cannot find module '@/features/oauth/sagas'
-src/features/app/config/features.ts(6,30): Cannot find module '@/features/oauth/slice'
-src/features/app/config/layout-extensions/headerExtension.tsx(4,23): Cannot find module '@/features/oauth/components/OAuth'
-src/features/app/config/layout-extensions/navbarExtension.tsx(4,23): Cannot find module '@/features/oauth/components/OAuth'
+src/config/auth/auth.ts(24,41): Cannot find module '@/features/oauth/authProvider'
+src/config/features.ts(5,27): Cannot find module '@/features/oauth/sagas'
+src/config/features.ts(6,30): Cannot find module '@/features/oauth/slice'
+src/config/layout-extensions/headerExtension.tsx(4,23): Cannot find module '@/features/oauth/components/OAuth'
+src/config/layout-extensions/navbarExtension.tsx(4,23): Cannot find module '@/features/oauth/components/OAuth'
 src/features/chat/hooks/useChatRuntime.ts(6,26): Cannot find module '@/features/oauth/hooks/useOAuth'
 src/pages/AuthDemo/OAuthDemo/OAuthDemo.tsx(7,37): Cannot find module '@/features/oauth/hocs/withOAuthProtection'
 src/services/oauth/OAuthApi.ts(3,29): Cannot find module '@/features/oauth/models/session/interfaces/ISessionApi'
@@ -48,31 +48,31 @@ src/services/oauth/OAuthService.ts(3,40): Cannot find module '@/features/oauth/c
 ### 3. **Required Fixes** (What developers need to do)
 
 #### A. Remove from Feature Configuration
-- File: `src/features/app/config/features.ts`
+- File: `src/config/features.ts`
 - Remove oauth imports (sagas, reducer)
 - Remove `oauthService` from services import
 - Remove entire `oauth` feature config object
 
 #### B. Remove from Services Configuration
-- File: `src/features/app/config/services.ts`
+- File: `src/config/services.ts`
 - Remove `OAuthService` import
 - Remove `GoogleOAuthProvider` and `GitHubOAuthProvider` imports
 - Remove `oauthService` instantiation
 - Remove OAuth provider registrations
 
 #### C. Remove from Auth Configuration
-- File: `src/features/app/config/auth/auth.ts`
+- File: `src/config/auth/auth.ts`
 - Remove `oauthProtectionProvider` import and registration
 
 #### D. Remove OAuth from Layout Extensions
-- File: `src/features/app/config/layout-extensions/headerExtension.tsx`
+- File: `src/config/layout-extensions/headerExtension.tsx`
 - Remove `OAuth` component import and usage
 
-- File: `src/features/app/config/layout-extensions/navbarExtension.tsx`
+- File: `src/config/layout-extensions/navbarExtension.tsx`
 - Remove `OAuth` component import and usage
 
 #### E. Remove OAuth Routes and Pages
-- File: `src/features/app/config/routes.tsx`
+- File: `src/config/routes.tsx`
 - Remove `OAuthDemo`, `OAuthProtected`, `CombinedAuth` lazy imports
 - Remove oauth icon imports (`IoLogIn`, `IoShieldCheckmark`, `IoShield`)
 - Remove OAuth sub-routes from `AuthDemoRoute`
@@ -99,9 +99,9 @@ This demonstrates cross-feature dependency that needs handling!
 - Includes provider implementations (GitHub, Google)
 
 #### H. Delete Translation Files
-- Delete: `src/features/i18n/translations/feature-oauth/`
-- Delete: `src/features/i18n/translations/page-authdemo-oauthdemo/`
-- Delete: `src/features/i18n/translations/page-authdemo-oauthprotected/`
+- Delete: `src/config/i18n/translations/feature-oauth/`
+- Delete: `src/config/i18n/translations/page-authdemo-oauthdemo/`
+- Delete: `src/config/i18n/translations/page-authdemo-oauthprotected/`
 - Update: Remove OAuth-related entries from `menu/en-US.json` and `menu/tr-TR.json`:
   - "OAuth - Basic"
   - "OAuth - Protected"
@@ -167,21 +167,21 @@ This demonstrates cross-feature dependency that needs handling!
 - `src/pages/AuthDemo/OAuthProtected/`
 - `src/pages/AuthDemo/CombinedAuth/`
 - `src/services/oauth/` (OAuth service with GitHub/Google providers)
-- `src/features/i18n/translations/feature-oauth/`
-- `src/features/i18n/translations/page-authdemo-oauthdemo/`
-- `src/features/i18n/translations/page-authdemo-oauthprotected/`
+- `src/config/i18n/translations/feature-oauth/`
+- `src/config/i18n/translations/page-authdemo-oauthdemo/`
+- `src/config/i18n/translations/page-authdemo-oauthprotected/`
 
 ### Modified Files (10 total):
-1. `src/features/app/config/features.ts` (removed oauth feature registration)
-2. `src/features/app/config/services.ts` (removed oauthService and providers)
-3. `src/features/app/config/auth/auth.ts` (removed oauth auth provider)
-4. `src/features/app/config/auth/ProtectionType.ts` (removed OAUTH enum value)
-5. `src/features/app/config/layout-extensions/headerExtension.tsx` (removed OAuth component)
-6. `src/features/app/config/layout-extensions/navbarExtension.tsx` (removed OAuth component)
-7. `src/features/app/config/routes.tsx` (removed OAuth routes and imports)
+1. `src/config/features.ts` (removed oauth feature registration)
+2. `src/config/services.ts` (removed oauthService and providers)
+3. `src/config/auth/auth.ts` (removed oauth auth provider)
+4. `src/config/auth/ProtectionType.ts` (removed OAUTH enum value)
+5. `src/config/layout-extensions/headerExtension.tsx` (removed OAuth component)
+6. `src/config/layout-extensions/navbarExtension.tsx` (removed OAuth component)
+7. `src/config/routes.tsx` (removed OAuth routes and imports)
 8. `src/features/chat/hooks/useChatRuntime.ts` (removed OAuth dependency, simplified user tracking)
-9. `src/features/i18n/translations/menu/en-US.json` (removed OAuth entries)
-10. `src/features/i18n/translations/menu/tr-TR.json` (removed OAuth entries)
+9. `src/config/i18n/translations/menu/en-US.json` (removed OAuth entries)
+10. `src/config/i18n/translations/menu/tr-TR.json` (removed OAuth entries)
 
 **Not Modified (Automatic!):**
 - OAuth callback routes (automatically excluded via provider system)

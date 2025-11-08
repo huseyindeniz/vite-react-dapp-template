@@ -34,7 +34,6 @@ export const Layout: React.FC<LayoutProps> & {
         breakpoint: 'sm',
         collapsed: { desktop: !asideVisible, mobile: true },
       }}
-      footer={{ height: 150 }}
       padding="md"
     >
       {children}

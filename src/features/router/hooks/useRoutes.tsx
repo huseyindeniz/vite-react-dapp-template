@@ -2,8 +2,8 @@ import React from 'react';
 
 import { useTranslation } from 'react-i18next';
 
-import { ProtectionType } from '@/features/app/config/auth/ProtectionType';
-import { getUserPageRoutes } from '@/features/app/config/routes';
+import { ProtectionType } from '@/config/auth/ProtectionType';
+import { getUserPageRoutes } from '@/config/routes';
 import { getAuthRoutes } from '@/features/auth/utils/getAuthRoutes';
 
 import { AppRoutes } from '../types/AppRoutes';

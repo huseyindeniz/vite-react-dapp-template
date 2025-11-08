@@ -15,7 +15,7 @@ const srcDir = path.join(projectRoot, 'src');
 const validExtensions = ['.ts', '.tsx', '.js', '.jsx'];
 
 // The ONLY file allowed to import services
-const ALLOWED_SERVICE_IMPORT_FILE = 'src/features/app/config/services.ts';
+const ALLOWED_SERVICE_IMPORT_FILE = 'src/config/services.ts';
 
 /**
  * Normalize path for consistent comparison (forward slashes)

@@ -2,7 +2,7 @@ import { useMemo, useCallback, useEffect } from 'react';
 
 import { useLocalRuntime } from '@assistant-ui/react';
 
-import { chatService } from '@/features/app/config/services';
+import { chatService } from '@/config/services';
 import { useOAuth } from '@/features/oauth/hooks/useOAuth';
 
 import type { AgentType } from '../config';

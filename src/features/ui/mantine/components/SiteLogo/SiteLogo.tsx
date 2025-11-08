@@ -1,7 +1,7 @@
 import { Avatar, Box } from '@mantine/core';
 import { Link } from 'react-router-dom';
 
-import imageSiteLogo from '../../../assets/images/logo.webp';
+import imageSiteLogo from '@/config/ui/assets/images/site-logo.webp';
 
 export interface SiteLogoProps {
   siteName: string;

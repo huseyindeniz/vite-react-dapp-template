@@ -33,11 +33,11 @@ All checks passed after cleanup:
 The build errors clearly pointed to what needs to be fixed:
 
 ```
-src/features/app/config/auth/auth.ts(25,42): Cannot find module '@/features/wallet/authProvider'
-src/features/app/config/features.ts(7,33): Cannot find module '@/features/wallet/sagas'
-src/features/app/config/features.ts(8,31): Cannot find module '@/features/wallet/slice'
-src/features/app/config/layout-extensions/headerExtension.tsx(6,24): Cannot find module '@/features/wallet/components/Wallet'
-src/features/app/config/layout-extensions/navbarExtension.tsx(6,24): Cannot find module '@/features/wallet/components/Wallet'
+src/config/auth/auth.ts(25,42): Cannot find module '@/features/wallet/authProvider'
+src/config/features.ts(7,33): Cannot find module '@/features/wallet/sagas'
+src/config/features.ts(8,31): Cannot find module '@/features/wallet/slice'
+src/config/layout-extensions/headerExtension.tsx(6,24): Cannot find module '@/features/wallet/components/Wallet'
+src/config/layout-extensions/navbarExtension.tsx(6,24): Cannot find module '@/features/wallet/components/Wallet'
 src/pages/AuthDemo/WalletBasic/WalletBasic.tsx(8,38): Cannot find module '@/features/wallet/hocs/withWalletProtection'
 src/pages/Home/components/Environment.tsx(9,8): Cannot find module '@/features/wallet/config'
 src/pages/User/components/Header.tsx(6,27): Cannot find module '@/features/wallet/components/BlockInfo/BlockInfo'
@@ -47,36 +47,36 @@ src/services/ethersV6/interfaces/IWalletEthersV6ProviderApi.ts(3,28): Cannot fin
 ### 3. **Required Fixes** (What developers need to do)
 
 #### A. Remove from Feature Configuration
-- File: `src/features/app/config/features.ts`
+- File: `src/config/features.ts`
 - Remove wallet imports (sagas, reducer)
 - Remove `walletApi` from services import
 - Remove entire `wallet` feature config object
 
 #### B. Remove from Services Configuration
-- File: `src/features/app/config/services.ts`
+- File: `src/config/services.ts`
 - Remove `EthersV6WalletAPI` import
 - Remove `walletApi` instantiation
 
 #### C. Remove from Auth Configuration
-- File: `src/features/app/config/auth/auth.ts`
+- File: `src/config/auth/auth.ts`
 - Remove `walletProtectionProvider` import and registration
 
 #### D. Update ProtectionType Enum
-- File: `src/features/app/config/auth/ProtectionType.ts`
+- File: `src/config/auth/ProtectionType.ts`
 - Remove `WALLET = 'wallet'` enum value
 - Remove `BOTH = 'both'` enum value
 
 **Note**: No need to modify `applyProtection.tsx` - it's data-driven and automatically works with registered providers!
 
 #### F. Remove Wallet from Layout Extensions
-- File: `src/features/app/config/layout-extensions/headerExtension.tsx`
+- File: `src/config/layout-extensions/headerExtension.tsx`
 - Remove `Wallet` component import and usage
 
-- File: `src/features/app/config/layout-extensions/navbarExtension.tsx`
+- File: `src/config/layout-extensions/navbarExtension.tsx`
 - Remove `Wallet` component import and usage
 
 #### G. Remove Wallet Routes and Pages
-- File: `src/features/app/config/routes.tsx`
+- File: `src/config/routes.tsx`
 - Remove `WalletBasic`, `WalletProtected`, `CombinedAuth` lazy imports
 - Remove wallet icon imports (`IoWallet`, `IoWalletOutline`, `IoShield`)
 - Remove wallet sub-routes from `AuthDemoRoute`
@@ -105,10 +105,10 @@ src/services/ethersV6/interfaces/IWalletEthersV6ProviderApi.ts(3,28): Cannot fin
 - Deleting this removes the large ethers.js dependency (~256KB)
 
 #### K. Delete Translation Files
-- Delete: `src/features/i18n/translations/feature-wallet/`
-- Delete: `src/features/i18n/translations/page-authdemo-walletbasic/`
-- Delete: `src/features/i18n/translations/page-authdemo-walletprotected/`
-- Delete: `src/features/i18n/translations/page-authdemo-combinedauth/`
+- Delete: `src/config/i18n/translations/feature-wallet/`
+- Delete: `src/config/i18n/translations/page-authdemo-walletbasic/`
+- Delete: `src/config/i18n/translations/page-authdemo-walletprotected/`
+- Delete: `src/config/i18n/translations/page-authdemo-combinedauth/`
 - Update: Remove wallet-related entries from `menu/en-US.json` and `menu/tr-TR.json`:
   - "Wallet - Basic"
   - "Wallet - Protected"
@@ -176,24 +176,24 @@ src/services/ethersV6/interfaces/IWalletEthersV6ProviderApi.ts(3,28): Cannot fin
 - `src/pages/AuthDemo/WalletProtected/`
 - `src/pages/AuthDemo/CombinedAuth/`
 - `src/services/ethersV6/` (EthersV6 wallet service)
-- `src/features/i18n/translations/feature-wallet/`
-- `src/features/i18n/translations/page-authdemo-walletbasic/`
-- `src/features/i18n/translations/page-authdemo-walletprotected/`
-- `src/features/i18n/translations/page-authdemo-combinedauth/`
+- `src/config/i18n/translations/feature-wallet/`
+- `src/config/i18n/translations/page-authdemo-walletbasic/`
+- `src/config/i18n/translations/page-authdemo-walletprotected/`
+- `src/config/i18n/translations/page-authdemo-combinedauth/`
 
 ### Modified Files (12 total):
-1. `src/features/app/config/features.ts` (removed wallet feature registration)
-2. `src/features/app/config/services.ts` (removed walletApi)
-3. `src/features/app/config/auth/auth.ts` (removed wallet auth provider)
-4. `src/features/app/config/auth/ProtectionType.ts` (removed WALLET and BOTH)
-5. `src/features/app/config/layout-extensions/headerExtension.tsx` (removed Wallet component)
-6. `src/features/app/config/layout-extensions/navbarExtension.tsx` (removed Wallet component)
-7. `src/features/app/config/routes.tsx` (removed wallet routes and imports)
+1. `src/config/features.ts` (removed wallet feature registration)
+2. `src/config/services.ts` (removed walletApi)
+3. `src/config/auth/auth.ts` (removed wallet auth provider)
+4. `src/config/auth/ProtectionType.ts` (removed WALLET and BOTH)
+5. `src/config/layout-extensions/headerExtension.tsx` (removed Wallet component)
+6. `src/config/layout-extensions/navbarExtension.tsx` (removed Wallet component)
+7. `src/config/routes.tsx` (removed wallet routes and imports)
 8. `src/features/router/hooks/useRoutes.tsx` (changed user route protection)
 9. `src/pages/Home/components/Environment.tsx` (removed wallet config display)
 10. `src/pages/User/components/Header.tsx` (simplified, removed wallet integration)
-11. `src/features/i18n/translations/menu/en-US.json` (removed wallet entries)
-12. `src/features/i18n/translations/menu/tr-TR.json` (removed wallet entries)
+11. `src/config/i18n/translations/menu/en-US.json` (removed wallet entries)
+12. `src/config/i18n/translations/menu/tr-TR.json` (removed wallet entries)
 
 **Note**: `applyProtection.tsx` is data-driven, no changes needed!
 
