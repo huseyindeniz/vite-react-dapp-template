@@ -6,9 +6,10 @@ import {
 } from 'react-router-dom';
 
 import { features } from '@/config/features';
+import { FooterExtension } from '@/config/ui/layout-extensions/footerExtension';
 import { HeaderExtension } from '@/config/ui/layout-extensions/headerExtension';
 import { NavbarExtension } from '@/config/ui/layout-extensions/navbarExtension';
-import { SocialMenuExtension } from '@/config/ui/layout-extensions/socialMenuExtension';
+import { ShellExtension } from '@/config/ui/layout-extensions/shellExtension';
 import { applyProtection } from '@/features/auth/utils/applyProtection';
 import { i18nConfig } from '@/features/i18n/config';
 import { useSliceManagerInit } from '@/features/slice-manager/hooks/useSliceManagerInit';
@@ -33,14 +34,15 @@ const BrowserRouter = React.lazy(() =>
 
 const Layout = React.lazy(() =>
   import(
-    /* webpackChunkName: "Layout" */ '@/features/ui/mantine/Layout/LayoutBase'
+    /* webpackChunkName: "Layout" */ '@/features/layout/LayoutBase'
   ).then(module => ({
     default: (props: Record<string, never>) => (
       <module.LayoutBase
         {...props}
+        shellExtension={ShellExtension}
         headerExtension={HeaderExtension}
         navbarExtension={NavbarExtension}
-        socialMenuExtension={SocialMenuExtension}
+        footerExtension={FooterExtension}
       />
     ),
   }))
@@ -48,8 +50,8 @@ const Layout = React.lazy(() =>
 
 const NotFoundPage = React.lazy(() =>
   import(
-    /* webpackChunkName: "NotFoundPage" */ '@/pages/NotFound/NotFound'
-  ).then(module => ({ default: module.NotFoundPage }))
+    /* webpackChunkName: "NotFoundPage" */ '@/config/pages/notFoundExtension'
+  ).then(module => ({ default: module.NotFoundExtension }))
 );
 
 const Routes: React.FC = () => {

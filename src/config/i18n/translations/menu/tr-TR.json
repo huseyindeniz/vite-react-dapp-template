@@ -1,11 +1,11 @@
 {
-  "AI Chat": "Yapay Zeka Sohbeti",
-  "Auth Demo": "Yetkilendirme Demosu",
+  "Demo AI Assistant": "",
+  "Demo Auth": "",
   "Wallet - Basic": "Cüzdan - Basit",
   "Wallet - Protected": "Cüzdan - Korumalı",
   "OAuth - Basic": "OAuth - Basit",
   "OAuth - Protected": "OAuth - Korumalı",
   "Combined Auth": "Birleşik Yetkilendirme",
-  "Blog": "Günlük",
+  "Demo Blog": "",
   "Home": "Anasayfa"
 }

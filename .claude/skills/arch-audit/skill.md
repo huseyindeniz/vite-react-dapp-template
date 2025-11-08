@@ -39,17 +39,19 @@ This is NOT a feature - it's a **special top-level architectural layer** above a
 These are foundational features that provide infrastructure:
 - `app/` - Application bootstrap (App.tsx, store, context providers)
 - `auth/` - Route protection system (withProtection HOCs, protection registry)
+- `components/` - Reusable design components (ErrorFallback, PageLoading, Breadcrumb, etc.)
 - `i18n/` - Internationalization
+- `layout/` - Page structure system (header, footer, navbar, aside, content)
 - `router/` - Routing infrastructure
 - `slice-manager/` - Redux slice lifecycle
-- `ui/` - Design system and theming (Mantine components)
 
 ## Domain Features (Business Logic)
 These are business domain features (examples):
-- `wallet/` - Web3 wallet integration
-- `oauth/` - OAuth authentication
 - `blog-demo/` - Blog demonstration
 - `chat/` - AI chat feature
+- `oauth/` - OAuth authentication
+- `site/` - Site-specific content and branding
+- `wallet/` - Web3 wallet integration
 
 Users create their own domain features (products, orders, users, etc.)
 

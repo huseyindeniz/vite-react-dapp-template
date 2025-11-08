@@ -3,8 +3,8 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 
+import { BreadcrumbItem } from '@/features/components/Breadcrumb/Breadcrumb';
 import { i18nConfig } from '@/features/i18n/config';
-import { BreadcrumbItem } from '@/features/ui/mantine/components/Breadcrumb/Breadcrumb';
 
 import { MenuType } from '../types/MenuType';
 

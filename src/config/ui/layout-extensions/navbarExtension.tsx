@@ -1,17 +1,27 @@
 import React from 'react';
 
-import { LangMenu } from '@/features/i18n/components/LangMenu/LangMenu';
-import { OAuth } from '@/features/oauth/components/OAuth';
-import { ColorSchemeSwitch } from '@/features/ui/mantine/components/ColorSchemeSwitch/ColorSchemeSwitch';
-import { Wallet } from '@/features/wallet/components/Wallet';
+import { MenuType } from '@/features/router/types/MenuType';
+import { Navbar } from '@/features/site/components/Navbar/Navbar';
 
-export const NavbarExtension: React.FC = () => {
+interface NavbarExtensionProps {
+  mainMenuItems: MenuType[];
+  hasSubRoutes: boolean;
+  subRoutes: MenuType[];
+  close: () => void;
+}
+
+export const NavbarExtension: React.FC<NavbarExtensionProps> = ({
+  mainMenuItems,
+  hasSubRoutes,
+  subRoutes,
+  close,
+}) => {
   return (
-    <>
-      <LangMenu />
-      <ColorSchemeSwitch />
-      <OAuth size="sm" fullWidth />
-      <Wallet />
-    </>
+    <Navbar
+      mainMenuItems={mainMenuItems}
+      hasSubRoutes={hasSubRoutes}
+      subRoutes={subRoutes}
+      close={close}
+    />
   );
 };

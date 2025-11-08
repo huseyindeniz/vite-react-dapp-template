@@ -13,7 +13,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { FaExternalLinkAlt } from 'react-icons/fa';
 
-import { PageMeta } from '@/features/ui/mantine/components/PageMeta/PageMeta';
+import { PageMeta } from '@/features/components/PageMeta/PageMeta';
 
 import logo from './assets/images/logo.svg';
 

@@ -1,0 +1,17 @@
+{
+  "Authentication Demo": "",
+  "This section demonstrates different authentication scenarios in the dApp template.": "",
+  "Overview": "",
+  "Use the side navigation to explore different authentication patterns:": "",
+  "Wallet - Basic:": "",
+  "Demonstrates Web3 wallet authentication using conditional rendering": "",
+  "Wallet - Protected:": "",
+  "Route-level protection requiring wallet connection": "",
+  "OAuth - Basic:": "",
+  "Demonstrates OAuth authentication (Google, GitHub) using conditional rendering": "",
+  "OAuth - Protected:": "",
+  "Route-level protection requiring OAuth login": "",
+  "Combined Auth:": "",
+  "Requires both OAuth and Web3 wallet authentication": "",
+  "This parent page serves as an introduction while the side navigation provides quick access to specific examples.": ""
+}

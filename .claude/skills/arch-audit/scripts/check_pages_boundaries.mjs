@@ -46,9 +46,13 @@ function isAllowedFeatureImport(importPath) {
   // ALLOWED: components, hooks, hocs (anywhere in the path)
   // Examples:
   //   @/features/{feature}/components/Button
-  //   @/features/ui/mantine/components/PageMeta/PageMeta
+  //   @/features/components/PageMeta/PageMeta (components core feature)
   //   @/features/{feature}/hooks/useAuth
   //   @/features/{feature}/hocs/withAuth
+
+  // Special case: Core features that ARE the thing (components, layout)
+  if (feature === 'components' || feature === 'layout') return true;
+
   if (restPath.includes('/components/') || restPath.startsWith('components/')) return true;
   if (restPath.includes('/hooks/') || restPath.startsWith('hooks/')) return true;
   if (restPath.includes('/hocs/') || restPath.startsWith('hocs/')) return true;

@@ -616,10 +616,12 @@ These features are **foundational infrastructure** that all other features depen
 **Core Features:**
 
 - `app/` - Application root, provider composition, lazy loading
+- `auth/` - Route protection system (withProtection HOCs, protection registry)
+- `components/` - Reusable design components (ErrorFallback, PageLoading, Breadcrumb, etc.)
 - `i18n/` - Internationalization infrastructure (i18next setup)
+- `layout/` - Page structure system (header, footer, navbar, aside, content)
 - `router/` - Routing infrastructure and utilities (React Router)
 - `slice-manager/` - Redux slice lifecycle management system
-- `ui/` - Mantine theme configuration and design system components
 
 **Key Points:**
 
@@ -638,9 +640,11 @@ These features represent business domains and serve as **examples/guides** for u
 
 **Domain Features (Examples in Template):**
 
-- `wallet/` - Web3 wallet integration (3 models: provider, network, account)
-- `oauth/` - OAuth authentication (1 model: session)
 - `blog-demo/` - Blog demonstration (2 models: post, author)
+- `chat/` - AI chat feature (1 model: session)
+- `oauth/` - OAuth authentication (1 model: session)
+- `site/` - Site-specific content and branding (user customizes SocialMenu, Copyright, SiteLogo)
+- `wallet/` - Web3 wallet integration (3 models: provider, network, account)
 
 **Key Points:**
 
@@ -817,16 +821,20 @@ npm run storybook          # Component documentation
 **Core Features (Infrastructure - Fixed):**
 
 - `app/` - Application bootstrap and provider composition
+- `auth/` - Route protection system (withProtection HOCs)
+- `components/` - Reusable design components (ErrorFallback, PageLoading, etc.)
 - `i18n/` - Internationalization (i18next)
+- `layout/` - Page structure system (AppShell with header, footer, navbar, aside, content)
 - `router/` - Routing infrastructure (React Router)
 - `slice-manager/` - Redux slice lifecycle management
-- `ui/` - Mantine theme and design system
 
 **Domain Features (Examples - User Customizable):**
 
-- `wallet/` - Web3 wallet (Provider, Network, Account models)
-- `oauth/` - OAuth authentication (Session model)
 - `blog-demo/` - Blog demo (Post, Author models)
+- `chat/` - AI chat interface (Session model)
+- `oauth/` - OAuth authentication (Session model)
+- `site/` - Site branding and content (SocialMenu, Copyright, SiteLogo)
+- `wallet/` - Web3 wallet (Provider, Network, Account models)
 
 **Users will:**
 

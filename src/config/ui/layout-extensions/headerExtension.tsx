@@ -1,17 +1,13 @@
 import React from 'react';
 
-import { LangMenu } from '@/features/i18n/components/LangMenu/LangMenu';
-import { OAuth } from '@/features/oauth/components/OAuth';
-import { ColorSchemeSwitch } from '@/features/ui/mantine/components/ColorSchemeSwitch/ColorSchemeSwitch';
-import { Wallet } from '@/features/wallet/components/Wallet';
+import { Header } from '@/features/site/components/Header/Header';
 
-export const HeaderExtension: React.FC = () => {
-  return (
-    <>
-      <LangMenu />
-      <ColorSchemeSwitch />
-      <OAuth size="sm" />
-      <Wallet />
-    </>
-  );
+interface HeaderExtensionProps {
+  opened: boolean;
+  toggle: () => void;
+  close: () => void;
+}
+
+export const HeaderExtension: React.FC<HeaderExtensionProps> = ({ opened, toggle, close }) => {
+  return <Header opened={opened} toggle={toggle} close={close} />;
 };

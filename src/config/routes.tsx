@@ -15,93 +15,93 @@ import { PageType } from '@/features/router/types/PageType';
 // USER PAGE IMPORTS - Add your page imports below
 // =============================================================================
 
-const AiChatPage = React.lazy(() =>
-  import(/* webpackChunkName: "AiChatPage" */ '@/pages/AiChat/AiChat').then(
-    module => ({
-      default: module.AiChatPage,
-    })
-  )
-);
-
-// Auth Demo Parent Page
-const AuthDemo = React.lazy(() =>
+const DemoAIAssistantPage = React.lazy(() =>
   import(
-    /* webpackChunkName: "AuthDemoPage" */ '@/pages/AuthDemo/AuthDemo'
+    /* webpackChunkName: "DemoAIAssistantPage" */ '@/pages/DemoAIAssistant/DemoAIAssistant'
   ).then(module => ({
-    default: module.AuthDemo,
+    default: module.DemoAIAssistantPage,
   }))
 );
 
-// Auth Demo Sub-pages
+// Demo Auth Parent Page
+const DemoAuth = React.lazy(() =>
+  import(
+    /* webpackChunkName: "DemoAuthPage" */ '@/pages/DemoAuth/DemoAuth'
+  ).then(module => ({
+    default: module.DemoAuthPage,
+  }))
+);
+
+// Demo Auth Sub-pages
 const WalletBasic = React.lazy(() =>
   import(
-    /* webpackChunkName: "WalletBasicPage" */ '@/pages/AuthDemo/WalletBasic/WalletBasic'
+    /* webpackChunkName: "WalletBasicPage" */ '@/pages/DemoAuth/WalletBasic/WalletBasic'
   ).then(module => ({
-    default: module.WalletBasic,
+    default: module.WalletBasicPage,
   }))
 );
 
 const WalletProtected = React.lazy(() =>
   import(
-    /* webpackChunkName: "WalletProtectedPage" */ '@/pages/AuthDemo/WalletProtected/WalletProtected'
+    /* webpackChunkName: "WalletProtectedPage" */ '@/pages/DemoAuth/WalletProtected/WalletProtected'
   ).then(module => ({
-    default: module.WalletProtected,
+    default: module.WalletProtectedPage,
   }))
 );
 
 const OAuthDemo = React.lazy(() =>
   import(
-    /* webpackChunkName: "OAuthDemoPage" */ '@/pages/AuthDemo/OAuthDemo/OAuthDemo'
+    /* webpackChunkName: "OAuthDemoPage" */ '@/pages/DemoAuth/OAuthDemo/OAuthDemo'
   ).then(module => ({
-    default: module.OAuthDemo,
+    default: module.OAuthDemoPage,
   }))
 );
 
 const OAuthProtected = React.lazy(() =>
   import(
-    /* webpackChunkName: "OAuthProtectedPage" */ '@/pages/AuthDemo/OAuthProtected/OAuthProtected'
+    /* webpackChunkName: "OAuthProtectedPage" */ '@/pages/DemoAuth/OAuthProtected/OAuthProtected'
   ).then(module => ({
-    default: module.OAuthProtected,
+    default: module.OAuthProtectedPage,
   }))
 );
 
 const CombinedAuth = React.lazy(() =>
   import(
-    /* webpackChunkName: "CombinedAuthPage" */ '@/pages/AuthDemo/CombinedAuth/CombinedAuth'
+    /* webpackChunkName: "CombinedAuthPage" */ '@/pages/DemoAuth/CombinedAuth/CombinedAuth'
   ).then(module => ({
-    default: module.CombinedAuth,
+    default: module.CombinedAuthPage,
   }))
 );
 
-const BlogPage = React.lazy(() =>
-  import(/* webpackChunkName: "BlogPage" */ '@/pages/Blog/Blog').then(
-    module => ({
-      default: module.Blog,
-    })
-  )
+const DemoBlogPage = React.lazy(() =>
+  import(
+    /* webpackChunkName: "DemoBlogPage" */ '@/pages/DemoBlog/DemoBlog'
+  ).then(module => ({
+    default: module.DemoBlogPage,
+  }))
 );
 
-const BlogPostPage = React.lazy(() =>
-  import(/* webpackChunkName: "BlogPostPage" */ '@/pages/Blog/BlogPost').then(
-    module => ({
-      default: module.BlogPost,
-    })
-  )
+const DemoBlogPostPage = React.lazy(() =>
+  import(
+    /* webpackChunkName: "DemoBlogPostPage" */ '@/pages/DemoBlog/DemoBlogPost'
+  ).then(module => ({
+    default: module.DemoBlogPostPage,
+  }))
 );
 
 const WalletProfile = React.lazy(() =>
   import(
-    /* webpackChunkName: "WalletProfilePage" */ '@/pages/WalletProfile/WalletProfile'
+    /* webpackChunkName: "WalletProfilePage" */ '@/config/pages/walletProfileExtension'
   ).then(module => ({
-    default: module.WalletProfile,
+    default: module.WalletProfileExtension,
   }))
 );
 
 const OAuthProfile = React.lazy(() =>
   import(
-    /* webpackChunkName: "OAuthProfilePage" */ '@/pages/OAuthProfile/OAuthProfile'
+    /* webpackChunkName: "OAuthProfilePage" */ '@/config/pages/oauthProfileExtension'
   ).then(module => ({
-    default: module.OAuthProfile,
+    default: module.OAuthProfileExtension,
   }))
 );
 
@@ -120,23 +120,23 @@ const OAuthProfile = React.lazy(() =>
 export const getUserPageRoutes = (
   t: (key: string, options?: { ns?: string }) => string
 ): PageType[] => {
-  // AI Chat Route
-  const AiChatRoute: PageType = {
-    id: 'ai-chat',
-    path: 'ai-chat',
-    element: <AiChatPage />,
-    menuLabel: t('AI Chat', { ns: 'menu' }),
+  // AI Assistant Demo Route
+  const DemoAIAssistantRoute: PageType = {
+    id: 'demo-ai-assistant',
+    path: 'demo-ai-assistant',
+    element: <DemoAIAssistantPage />,
+    menuLabel: t('Demo AI Assistant', { ns: 'menu' }),
     isShownInMainMenu: true,
     isShownInSecondaryMenu: true,
     protectionType: ProtectionType.NONE,
   };
 
-  // Auth Demo Parent Route with sub-routes
-  const AuthDemoRoute: PageType = {
-    id: 'auth-demo',
-    path: 'auth-demo',
-    element: <AuthDemo />,
-    menuLabel: t('Auth Demo', { ns: 'menu' }),
+  // Demo Auth Parent Route with sub-routes
+  const DemoAuthRoute: PageType = {
+    id: 'demo-auth',
+    path: 'demo-auth',
+    element: <DemoAuth />,
+    menuLabel: t('Demo Auth', { ns: 'menu' }),
     isShownInMainMenu: true,
     isShownInSecondaryMenu: true,
     protectionType: ProtectionType.NONE,
@@ -179,19 +179,20 @@ export const getUserPageRoutes = (
     ],
   };
 
-  // Blog Route with sub-routes
-  const BlogHome: PageType = {
-    id: 'blog-home',
-    path: 'blog',
-    element: <BlogPage />,
-    menuLabel: t('Blog', { ns: 'menu' }),
+  // Demo Blog Route with sub-routes
+  const DemoBlogRoute: PageType = {
+    id: 'demo-blog',
+    path: 'demo-blog',
+    element: <DemoBlogPage />,
+    menuLabel: t('Demo Blog', { ns: 'menu' }),
     isShownInMainMenu: true,
     isShownInSecondaryMenu: true,
     protectionType: ProtectionType.NONE,
+    fullWidth: true,
     subRoutes: [
       {
         path: ':postId',
-        element: <BlogPostPage />,
+        element: <DemoBlogPostPage />,
         menuLabel: null,
         protectionType: ProtectionType.NONE,
       },
@@ -222,9 +223,9 @@ export const getUserPageRoutes = (
 
   // Add your page routes to this array
   return [
-    AiChatRoute,
-    AuthDemoRoute,
-    BlogHome,
+    DemoAIAssistantRoute,
+    DemoAuthRoute,
+    DemoBlogRoute,
     WalletProfileRoute,
     OAuthProfileRoute,
   ];

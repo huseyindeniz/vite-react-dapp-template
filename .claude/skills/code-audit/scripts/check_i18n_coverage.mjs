@@ -36,7 +36,7 @@ const EXCLUSIONS = {
   paths: [
     'features/slice-manager/components/SliceDebugPanel', // Redux slice debug panel
     'features/i18n/components/LangMenu/LangModal',       // Language selection modal (i18n infrastructure)
-    'features/ui/mantine/components/ErrorFallback',      // Error boundary fallback (infrastructure)
+    'features/components/ErrorFallback',                 // Error boundary fallback (infrastructure)
     'pages/Home/components/Environment',                 // Environment variables display (developer tool)
   ],
 
