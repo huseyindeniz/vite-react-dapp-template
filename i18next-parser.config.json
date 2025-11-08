@@ -19,7 +19,7 @@
     "default": ["JavascriptLexer"]
   },
 
-  "lineEnding": "auto",
+  "lineEnding": "lf",
   "locales": ["en-US", "tr-TR"],
   "namespaceSeparator": false,
   "output": "src/config/i18n/translations/$NAMESPACE/$LOCALE.json",
