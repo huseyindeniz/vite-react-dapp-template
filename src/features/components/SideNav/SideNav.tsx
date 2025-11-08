@@ -12,7 +12,10 @@ export interface SideNavProps {
   collapsed?: boolean;
 }
 
-export const SideNav: React.FC<SideNavProps> = ({ items, collapsed = false }) => {
+export const SideNav: React.FC<SideNavProps> = ({
+  items,
+  collapsed = false,
+}) => {
   const renderNavItem = (item: MenuType, index: number) => {
     if (item.subRoutes && item.subRoutes.length > 0) {
       return (
@@ -21,8 +24,11 @@ export const SideNav: React.FC<SideNavProps> = ({ items, collapsed = false }) =>
           label={collapsed ? undefined : item.menuLabel}
           leftSection={item.icon}
           childrenOffset={collapsed ? 0 : 28}
+          styles={{ root: { paddingLeft: 5 } }}
         >
-          {item.subRoutes.map((child, childIndex) => renderNavItem(child, childIndex))}
+          {item.subRoutes.map((child, childIndex) =>
+            renderNavItem(child, childIndex)
+          )}
         </NavLink>
       );
     }
@@ -34,6 +40,7 @@ export const SideNav: React.FC<SideNavProps> = ({ items, collapsed = false }) =>
         to={item.path ?? ''}
         label={collapsed ? undefined : item.menuLabel}
         leftSection={item.icon}
+        styles={{ root: { paddingLeft: 5 } }}
       />
     );
   };

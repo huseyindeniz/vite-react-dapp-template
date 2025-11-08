@@ -1,19 +1,38 @@
 import React from 'react';
 
-import { AppShell } from '@mantine/core';
+import { Drawer } from '@mantine/core';
 
 export const LayoutAside = ({
   children,
-  style,
-  visibleFrom,
+  opened,
+  size,
 }: {
   children: React.ReactNode;
-  style?: React.CSSProperties;
-  visibleFrom?: string;
+  opened: boolean;
+  size: string | number;
 }) => {
   return (
-    <AppShell.Aside p="md" style={style} visibleFrom={visibleFrom}>
+    <Drawer
+      opened={opened}
+      onClose={() => {}} // No-op, controlled externally
+      position="right"
+      size={size}
+      withCloseButton={false}
+      withOverlay={false}
+      offset={60}
+      removeScrollProps={{ enabled: false }}
+      styles={{
+        content: {
+          marginRight: 0,
+          height: 'auto',
+        },
+        body: {
+          padding: 0,
+          margin: 0,
+        },
+      }}
+    >
       {children}
-    </AppShell.Aside>
+    </Drawer>
   );
 };

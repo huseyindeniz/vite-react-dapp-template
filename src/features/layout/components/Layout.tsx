@@ -18,8 +18,8 @@ export const Layout = {
   Navbar: React.FC<{ children: React.ReactNode }>;
   Aside: React.FC<{
     children: React.ReactNode;
-    style?: React.CSSProperties;
-    visibleFrom?: string;
+    opened: boolean;
+    size: string | number;
   }>;
   Main: React.FC<{ children: React.ReactNode; fullWidth?: boolean }>;
   Footer: React.FC<{ children: React.ReactNode }>;
