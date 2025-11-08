@@ -9,7 +9,7 @@ import { useActions } from '@/features/wallet/hooks/useActions';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 
 export const Header: React.FC = () => {
-  const { t } = useTranslation('page-wallet-profile');
+  const { t } = useTranslation('feature-wallet');
   const actions = useActions();
   const account = useTypedSelector(state => state.wallet.account);
   const currentNetwork = useTypedSelector(

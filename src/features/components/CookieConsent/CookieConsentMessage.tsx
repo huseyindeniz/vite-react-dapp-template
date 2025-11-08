@@ -11,7 +11,7 @@ export const CookieConsentMessage: React.FC<CookieConsentMessageProps> = ({
   debug = false,
   expires = 365,
 }) => {
-  const { t } = useTranslation('feature-ui');
+  const { t } = useTranslation('feature-components');
   return (
     <CookieConsent
       location="bottom"

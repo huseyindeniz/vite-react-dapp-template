@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useTranslation } from 'react-i18next';
 
-import { ChatInterface } from '@/features/chat/components/ChatInterface';
+import { ChatInterface } from '@/features/ai-assistant/components/ChatInterface';
 import { PageMeta } from '@/features/components/PageMeta/PageMeta';
 
 export const DemoAIAssistantPage: React.FC = () => {
@@ -14,7 +14,11 @@ export const DemoAIAssistantPage: React.FC = () => {
 
   return (
     <>
-      <PageMeta title={title} description={description} url="/demo-ai-assistant" />
+      <PageMeta
+        title={title}
+        description={description}
+        url="/demo-ai-assistant"
+      />
       <ChatInterface />
     </>
   );

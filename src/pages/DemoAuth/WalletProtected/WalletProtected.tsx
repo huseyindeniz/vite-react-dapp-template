@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { PageMeta } from '@/features/components/PageMeta/PageMeta';
 
 export const WalletProtectedPage: React.FC = () => {
-  const { t } = useTranslation('page-authdemo-walletprotected');
+  const { t } = useTranslation('page-demoauth-walletprotected');
 
   return (
     <>
@@ -18,16 +18,20 @@ export const WalletProtectedPage: React.FC = () => {
       <Stack gap="md">
         <Title order={2}>{t('Wallet Protected Page')}</Title>
         <Alert title={t('Protected Route')} color="blue">
-          {t('This entire page is protected by wallet authentication at the route level. You can only access this page if you have connected your wallet.')}
+          {t(
+            'This entire page is protected by wallet authentication at the route level. You can only access this page if you have connected your wallet.'
+          )}
         </Alert>
         <Text>
-          {t('Unlike the Basic Wallet page which uses conditional rendering, this page uses route-level protection configured in the routes configuration.')}
+          {t(
+            'Unlike the Basic Wallet page which uses conditional rendering, this page uses route-level protection configured in the routes configuration.'
+          )}
         </Text>
-        <Code block>
-          protectionType: ProtectionType.WALLET
-        </Code>
+        <Code block>protectionType: ProtectionType.WALLET</Code>
         <Text c="dimmed" size="sm">
-          {t('If you can see this page, you have successfully connected your Web3 wallet.')}
+          {t(
+            'If you can see this page, you have successfully connected your Web3 wallet.'
+          )}
         </Text>
       </Stack>
     </>

@@ -199,6 +199,11 @@ function findJSXTextContent(content) {
         continue;
       }
 
+      // Skip if it's inside a <Code> block (code examples, not user-facing text)
+      if (/<Code\b/.test(beforeText)) {
+        continue;
+      }
+
       // Check if it looks like user-facing text
       if (looksLikeUserText(text)) {
         violations.push({

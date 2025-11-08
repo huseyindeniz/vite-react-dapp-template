@@ -47,8 +47,8 @@ These are foundational features that provide infrastructure:
 
 ## Domain Features (Business Logic)
 These are business domain features (examples):
+- `ai-assistant/` - AI assistant chat feature
 - `blog-demo/` - Blog demonstration
-- `chat/` - AI chat feature
 - `oauth/` - OAuth authentication
 - `site/` - Site-specific content and branding
 - `wallet/` - Web3 wallet integration

@@ -20,7 +20,7 @@ interface HeaderProps {
 }
 
 export const Header: React.FC<HeaderProps> = ({ opened, toggle, close }) => {
-  const { t } = useTranslation('app');
+  const { t } = useTranslation('feature-site');
   const { pageLink } = usePageLink();
   const { mainMenuItems } = usePages();
 

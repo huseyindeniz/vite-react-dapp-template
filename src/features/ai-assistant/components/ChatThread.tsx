@@ -9,7 +9,7 @@ import { ChatComposer } from './ChatComposer';
 import { UserMessage } from './UserMessage';
 
 export const ChatThread: React.FC = () => {
-  const { t } = useTranslation('feature-chat');
+  const { t } = useTranslation('feature-ai-assistant');
 
   return (
     <ThreadPrimitive.Root

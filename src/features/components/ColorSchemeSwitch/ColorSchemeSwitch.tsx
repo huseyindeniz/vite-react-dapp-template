@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { IoMdMoon, IoMdSunny } from 'react-icons/io';
 
 export const ColorSchemeSwitch: React.FC = () => {
-  const { t } = useTranslation('feature-ui');
+  const { t } = useTranslation('feature-components');
   const { toggleColorScheme } = useMantineColorScheme();
   const computedColorScheme = useComputedColorScheme('light', {
     getInitialValueInEffect: true,

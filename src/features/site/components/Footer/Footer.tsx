@@ -14,7 +14,7 @@ import { SiteLogo } from '../SiteLogo/SiteLogo';
 import { SocialMenu } from '../SocialMenu/SocialMenu';
 
 export const Footer: React.FC = () => {
-  const { t } = useTranslation('app');
+  const { t } = useTranslation('feature-site');
   const { pageLink } = usePageLink();
   const { secondaryMenuItems } = usePages();
 

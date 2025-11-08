@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { IoSend } from 'react-icons/io5';
 
 export const ChatComposer = () => {
-  const { t } = useTranslation('feature-chat');
+  const { t } = useTranslation('feature-ai-assistant');
   const composerRuntime = useComposerRuntime();
 
   return (

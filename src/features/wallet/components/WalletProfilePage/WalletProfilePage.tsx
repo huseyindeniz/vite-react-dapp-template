@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { Header } from './Header';
 
 export const WalletProfilePage: React.FC = () => {
-  const { t } = useTranslation('page-wallet-profile');
+  const { t } = useTranslation('feature-wallet');
   return (
     <Container>
       <Header />

@@ -14,7 +14,7 @@ export const AgentSelector: React.FC<AgentSelectorProps> = ({
   value,
   onChange,
 }) => {
-  const { t } = useTranslation('feature-chat');
+  const { t } = useTranslation('feature-ai-assistant');
 
   const options = Object.entries(CHAT_AGENTS).map(([key, config]) => ({
     value: key,

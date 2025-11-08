@@ -1,11 +1,11 @@
 {
-  "Demo AI Assistant": "",
-  "Demo Auth": "",
+  "Demo AI Assistant": "AI Chat",
+  "Demo Auth": "Authentication Demo",
   "Wallet - Basic": "Wallet - Basic",
   "Wallet - Protected": "Wallet - Protected",
   "OAuth - Basic": "OAuth - Basic",
   "OAuth - Protected": "OAuth - Protected",
   "Combined Auth": "Combined Auth",
-  "Demo Blog": "",
+  "Demo Blog": "Blog",
   "Home": "Home"
 }

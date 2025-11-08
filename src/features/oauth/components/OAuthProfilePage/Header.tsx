@@ -17,7 +17,7 @@ import { MdError } from 'react-icons/md';
 import { useOAuth } from '@/features/oauth/hooks/useOAuth';
 
 export const Header: React.FC = () => {
-  const { t } = useTranslation('page-oauth-profile');
+  const { t } = useTranslation('feature-oauth');
   const { user, currentProvider } = useOAuth();
 
   if (!user) {
