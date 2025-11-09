@@ -1,5 +1,6 @@
 import React from 'react';
 
+import type { TFunction } from 'i18next';
 import {
   IoWallet,
   IoWalletOutline,
@@ -117,9 +118,7 @@ const OAuthProfile = React.lazy(() =>
  * @param t - Translation function from useTranslation hook
  * @returns Array of PageType objects representing your application pages
  */
-export const getUserPageRoutes = (
-  t: (key: string, options?: { ns?: string }) => string
-): PageType[] => {
+export const getUserPageRoutes = (t: TFunction): PageType[] => {
   // AI Assistant Demo Route
   const DemoAIAssistantRoute: PageType = {
     id: 'demo-ai-assistant',

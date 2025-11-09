@@ -10,15 +10,13 @@ import {
   Text,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import { useTranslation } from 'react-i18next';
 import { MdExpandLess, MdExpandMore } from 'react-icons/md';
 
-import { SUGGESTION_CATEGORIES } from '../../config/suggestionCategories';
-import { CHAT_SUGGESTIONS } from '../../config/suggestions';
-import type { ChatSuggestion } from '../../types/ChatSuggestion';
+import { getSuggestionCategories } from '@/config/ai-assistant/suggestionCategories';
+import { getChatSuggestions } from '@/config/ai-assistant/suggestions';
 
-interface SuggestionsBarProps {
-  suggestions?: ChatSuggestion[];
-}
+import type { ChatSuggestion } from '../../types/ChatSuggestion';
 
 /**
  * Suggestions bar - displays quick action buttons grouped by category
@@ -27,17 +25,19 @@ interface SuggestionsBarProps {
  * - Category labels with configurable colors
  * - Horizontal layout per category
  */
-export const SuggestionsBar: React.FC<SuggestionsBarProps> = ({
-  suggestions = CHAT_SUGGESTIONS,
-}) => {
+export const SuggestionsBar: React.FC = () => {
+  const { t } = useTranslation('feature-ai-assistant');
   const [opened, { toggle }] = useDisclosure(false);
+
+  const suggestionCategories = useMemo(() => getSuggestionCategories(t), [t]);
+  const suggestions = useMemo(() => getChatSuggestions(t), [t]);
 
   // Group suggestions by category
   const groupedSuggestions = useMemo(() => {
     const groups: Record<string, ChatSuggestion[]> = {};
 
     suggestions.forEach(suggestion => {
-      const categoryKey = suggestion.category || 'default';
+      const categoryKey = suggestion.category;
       if (!groups[categoryKey]) {
         groups[categoryKey] = [];
       }
@@ -52,18 +52,21 @@ export const SuggestionsBar: React.FC<SuggestionsBarProps> = ({
   }
 
   const categoryKeys = Object.keys(groupedSuggestions);
+  const hasMultipleCategories = categoryKeys.length > 1;
 
   return (
     <Stack gap="xs">
       <Group gap="xs" align="center">
         <Text size="sm" fw={500} c="dimmed">
-          Suggestions
+          {t('Suggestions')}
         </Text>
         <ActionIcon
           variant="subtle"
           size="sm"
           onClick={toggle}
-          aria-label={opened ? 'Collapse suggestions' : 'Expand suggestions'}
+          aria-label={
+            opened ? t('Collapse suggestions') : t('Expand suggestions')
+          }
         >
           {opened ? <MdExpandLess size={16} /> : <MdExpandMore size={16} />}
         </ActionIcon>
@@ -73,15 +76,18 @@ export const SuggestionsBar: React.FC<SuggestionsBarProps> = ({
         <Stack gap="sm">
           {categoryKeys.map(categoryKey => {
             const category =
-              SUGGESTION_CATEGORIES[categoryKey] ||
-              SUGGESTION_CATEGORIES.default;
+              suggestionCategories[
+                categoryKey as keyof typeof suggestionCategories
+              ];
             const categorySuggestions = groupedSuggestions[categoryKey];
 
             return (
               <div key={categoryKey}>
-                <Text size="xs" c="dimmed" mb={4}>
-                  {category.name}
-                </Text>
+                {hasMultipleCategories && (
+                  <Text size="xs" c="dimmed" mb={4}>
+                    {category.name}
+                  </Text>
+                )}
                 <Group gap="xs">
                   {categorySuggestions.map(suggestion => (
                     <ThreadPrimitive.Suggestion
