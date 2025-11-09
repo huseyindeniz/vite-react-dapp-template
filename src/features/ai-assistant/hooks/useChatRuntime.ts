@@ -2,11 +2,10 @@ import { useMemo, useCallback, useEffect } from 'react';
 
 import { useLocalRuntime } from '@assistant-ui/react';
 
-import { chatService } from '@/config/services';
+import { chatService, attachmentAdapter } from '@/config/ai-assistant/services';
 import { useOAuth } from '@/features/oauth/hooks/useOAuth';
-import { SimpleAttachmentAdapter } from '@/services/chat/SimpleAttachmentAdapter';
 
-import type { AgentType } from '../config';
+import { AgentType } from '../config';
 
 /**
  * Hook to create a chat runtime for a specific agent type
@@ -33,11 +32,6 @@ export const useChatRuntime = (agentType: AgentType) => {
   const adapter = useMemo(() => {
     return chatService.getAdapter(agentType);
   }, [agentType]);
-
-  // Create attachment adapter instance
-  const attachmentAdapter = useMemo(() => {
-    return new SimpleAttachmentAdapter();
-  }, []);
 
   const runtime = useLocalRuntime(adapter, {
     initialMessages: [],

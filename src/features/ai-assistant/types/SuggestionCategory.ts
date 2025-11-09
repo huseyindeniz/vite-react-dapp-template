@@ -1,4 +1,4 @@
-import type { MantineColor } from '@mantine/core';
+import { MantineColor } from '@mantine/core';
 
 /**
  * Suggestion category configuration

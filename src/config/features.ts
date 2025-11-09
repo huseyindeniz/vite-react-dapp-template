@@ -1,13 +1,6 @@
-import { defineFeature } from '@/features/app/types/FeatureConfig';
-import { configureSlice as configureBlogDemoSlice } from '@/features/blog-demo/configureSlice';
-import { watchBlogDemoSaga } from '@/features/blog-demo/sagas';
-import { blogDemoReducer } from '@/features/blog-demo/slice';
-import { oauthSaga } from '@/features/oauth/sagas';
-import { oauthReducer } from '@/features/oauth/slice';
-import { watchWalletSaga } from '@/features/wallet/sagas';
-import { walletReducer } from '@/features/wallet/slice';
-
-import { oauthService, blogDemoApi, walletApi } from './services';
+import { blogDemoFeatureConfig } from './blog-demo/feature';
+import { oauthFeatureConfig } from './oauth/feature';
+import { walletFeatureConfig } from './wallet/feature';
 
 /**
  * Centralized feature registry
@@ -24,35 +17,7 @@ import { oauthService, blogDemoApi, walletApi } from './services';
  * - Clear dependency injection for sagas
  */
 export const features = {
-  wallet: defineFeature({
-    store: {
-      stateKey: 'wallet',
-      reducer: walletReducer,
-    },
-    saga: {
-      saga: watchWalletSaga,
-      dependencies: [walletApi],
-    },
-  }),
-  blogDemo: defineFeature({
-    store: {
-      stateKey: 'blogDemo',
-      reducer: blogDemoReducer,
-    },
-    saga: {
-      saga: watchBlogDemoSaga,
-      dependencies: [blogDemoApi],
-    },
-    configureSlice: configureBlogDemoSlice,
-  }),
-  oauth: defineFeature({
-    store: {
-      stateKey: 'oauth',
-      reducer: oauthReducer,
-    },
-    saga: {
-      saga: oauthSaga,
-      dependencies: [oauthService],
-    },
-  }),
+  wallet: walletFeatureConfig,
+  blogDemo: blogDemoFeatureConfig,
+  oauth: oauthFeatureConfig,
 };

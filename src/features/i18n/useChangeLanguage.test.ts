@@ -1,6 +1,7 @@
 import { cleanup } from '@test-utils';
 
-import { i18nConfig } from './config';
+import { i18nConfig } from '@/config/i18n/config';
+
 import { useChangeLanguage } from './useChangeLanguage';
 
 // Mock the navigate function

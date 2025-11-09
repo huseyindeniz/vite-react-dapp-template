@@ -3,9 +3,8 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useParams, useNavigate } from 'react-router-dom';
 
+import { i18nConfig } from '@/config/i18n/config';
 import { isHashRouter } from '@/features/router/config';
-
-import { i18nConfig } from './config';
 
 export const useI18nWatcher = () => {
   const { i18n } = useTranslation();

@@ -2,6 +2,7 @@ import React from 'react';
 
 import { AttachmentPrimitive, useAssistantState } from '@assistant-ui/react';
 import { ActionIcon, Image, Paper, Stack, Text } from '@mantine/core';
+import { useTranslation } from 'react-i18next';
 import { MdClose } from 'react-icons/md';
 
 /**
@@ -9,14 +10,21 @@ import { MdClose } from 'react-icons/md';
  * Displays image thumbnail with remove button
  */
 export const ImageAttachment: React.FC = () => {
+  const { t } = useTranslation('feature-ai-assistant');
   const attachment = useAssistantState(({ attachment }) => attachment);
-  const src = attachment.type === 'image' && attachment.file
-    ? URL.createObjectURL(attachment.file)
-    : undefined;
+  const src =
+    attachment.type === 'image' && attachment.file
+      ? URL.createObjectURL(attachment.file)
+      : undefined;
 
   return (
     <AttachmentPrimitive.Root>
-      <Paper withBorder p={4} radius="md" style={{ position: 'relative', width: 100 }}>
+      <Paper
+        withBorder
+        p={4}
+        radius="md"
+        style={{ position: 'relative', width: 100 }}
+      >
         <Stack gap={4}>
           {src && (
             <Image
@@ -25,7 +33,7 @@ export const ImageAttachment: React.FC = () => {
               h={92}
               radius="sm"
               fit="cover"
-              alt="Attachment preview"
+              alt={t('Attachment preview')}
             />
           )}
 

@@ -1,4 +1,4 @@
-import { Network } from '../models/network/types/Network';
+import { Network } from '@/features/wallet/models/network/types/Network';
 
 export const EthereumMainnetChain: Network = {
   chainId: 1,

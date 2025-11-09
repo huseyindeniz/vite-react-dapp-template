@@ -5,10 +5,8 @@ import { formatEther } from 'ethers/utils';
 import log from 'loglevel';
 import { eventChannel, EventChannel } from 'redux-saga';
 
-import {
-  DISABLE_WALLET_SIGN,
-  SUPPORTED_NETWORKS,
-} from '@/features/wallet/config';
+import { SUPPORTED_NETWORKS } from '@/config/wallet/config';
+import { DISABLE_WALLET_SIGN } from '@/features/wallet/config';
 import { AccountType } from '@/features/wallet/models/account/types/Account';
 import { InstalledWallets } from '@/features/wallet/models/provider/types/InstalledWallets';
 import { SupportedWallets } from '@/features/wallet/models/provider/types/SupportedWallets';

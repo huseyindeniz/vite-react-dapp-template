@@ -1,6 +1,10 @@
-import { I18NConfig } from './types/I18NConfig';
-import { LangCode } from './types/LangCode';
-import { SupportedLang } from './types/SupportedLang';
+import { I18NConfig } from '@/features/i18n/types/I18NConfig';
+import { SupportedLang } from '@/features/i18n/types/SupportedLang';
+
+export enum LangCode {
+  TR_TR = 'tr-TR',
+  EN_US = 'en-US',
+}
 
 const langENUS: SupportedLang = {
   code: LangCode.EN_US,

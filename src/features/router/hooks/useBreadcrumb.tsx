@@ -3,8 +3,8 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 
+import { i18nConfig } from '@/config/i18n/config';
 import { BreadcrumbItem } from '@/features/components/Breadcrumb/Breadcrumb';
-import { i18nConfig } from '@/features/i18n/config';
 
 import { MenuType } from '../types/MenuType';
 
@@ -17,7 +17,8 @@ export const useBreadcrumb = (allRoutes: MenuType[]): BreadcrumbItem[] => {
 
     // Always start with Home
     const currentLang = i18n.resolvedLanguage;
-    const homeHref = currentLang === i18nConfig.fallbackLang.code ? '/' : `/${currentLang}/`;
+    const homeHref =
+      currentLang === i18nConfig.fallbackLang.code ? '/' : `/${currentLang}/`;
     items.push({
       title: t('Home'),
       href: homeHref,
@@ -100,7 +101,9 @@ export const useBreadcrumb = (allRoutes: MenuType[]): BreadcrumbItem[] => {
             const staticPrefix = route.path.split(':')[0].replace(/\/$/, '');
 
             // Find parent route with this prefix
-            const foundParentRoute = allRoutes.find(r => r.path === staticPrefix);
+            const foundParentRoute = allRoutes.find(
+              r => r.path === staticPrefix
+            );
             if (foundParentRoute) {
               parentRoute = foundParentRoute;
             }
@@ -113,9 +116,10 @@ export const useBreadcrumb = (allRoutes: MenuType[]): BreadcrumbItem[] => {
     // Build breadcrumb items
     if (parentRoute) {
       const parentPath = parentRoute.path?.replace(/\/$/, '');
-      const parentHref = currentLang === i18nConfig.fallbackLang.code
-        ? `/${parentPath}`
-        : `/${currentLang}/${parentPath}`;
+      const parentHref =
+        currentLang === i18nConfig.fallbackLang.code
+          ? `/${parentPath}`
+          : `/${currentLang}/${parentPath}`;
 
       items.push({
         title: parentRoute.menuLabel || '',
@@ -128,14 +132,16 @@ export const useBreadcrumb = (allRoutes: MenuType[]): BreadcrumbItem[] => {
       if (parentRoute) {
         const parentPath = parentRoute.path?.replace(/\/$/, '');
         const currentPath = currentRoute.path?.replace(/\/$/, '');
-        currentHref = currentLang === i18nConfig.fallbackLang.code
-          ? `/${parentPath}/${currentPath}`
-          : `/${currentLang}/${parentPath}/${currentPath}`;
+        currentHref =
+          currentLang === i18nConfig.fallbackLang.code
+            ? `/${parentPath}/${currentPath}`
+            : `/${currentLang}/${parentPath}/${currentPath}`;
       } else {
         const currentPath = currentRoute.path?.replace(/\/$/, '');
-        currentHref = currentLang === i18nConfig.fallbackLang.code
-          ? `/${currentPath}`
-          : `/${currentLang}/${currentPath}`;
+        currentHref =
+          currentLang === i18nConfig.fallbackLang.code
+            ? `/${currentPath}`
+            : `/${currentLang}/${currentPath}`;
       }
 
       items.push({

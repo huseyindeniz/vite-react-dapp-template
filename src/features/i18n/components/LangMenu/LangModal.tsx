@@ -8,9 +8,10 @@ import {
   Text,
 } from '@mantine/core';
 
+import { LangCode } from '@/config/i18n/config';
+
 import imageTrFlag from '../../assets/images/flags/tr.webp';
 import imageUsFlag from '../../assets/images/flags/us.webp';
-import { LangCode } from '../../types/LangCode';
 import { SupportedLang } from '../../types/SupportedLang';
 
 import classes from './LangModal.module.css';

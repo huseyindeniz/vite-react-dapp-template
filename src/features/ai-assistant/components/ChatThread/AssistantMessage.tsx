@@ -27,10 +27,8 @@ export const AssistantMessage = () => {
         <MessagePrimitive.Parts
           components={{
             Text: MarkdownText,
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            Image: (props: any) => <ImageArtifact part={props} />,
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            File: (props: any) => (
+            Image: (props: { type: 'image'; image: string }) => <ImageArtifact part={props} />,
+            File: (props: { type: 'file'; filename?: string; data: string; mimeType: string }) => (
               <FileArtifact part={props} onMarkdownClick={openPanel} />
             ),
           }}

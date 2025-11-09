@@ -5,7 +5,8 @@ import { useDisclosure } from '@mantine/hooks';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 
-import { i18nConfig } from '../../config';
+import { i18nConfig } from '@/config/i18n/config';
+
 import { useChangeLanguage } from '../../useChangeLanguage';
 
 const LangModal = React.lazy(() =>

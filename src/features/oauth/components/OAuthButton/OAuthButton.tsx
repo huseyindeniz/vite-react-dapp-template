@@ -7,9 +7,9 @@ import { FaChevronDown, FaUser } from 'react-icons/fa';
 import { IoIosLogOut } from 'react-icons/io';
 import { Link } from 'react-router-dom';
 
+import { SUPPORTED_OAUTH_PROVIDERS } from '@/config/oauth/config';
 import { usePageLink } from '@/features/router/hooks/usePageLink';
 
-import { SUPPORTED_OAUTH_PROVIDERS } from '../../config';
 import { useOAuth } from '../../hooks/useOAuth';
 import { useOAuthActions } from '../../hooks/useOAuthActions';
 import { OAuthProviderName } from '../../models/provider/types/OAuthProviderName';

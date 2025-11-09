@@ -1,5 +1,5 @@
 // Button.stories.ts|tsx
-import type { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 
 import { Button } from './Button';
 

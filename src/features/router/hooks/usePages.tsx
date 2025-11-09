@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useTranslation } from 'react-i18next';
 
-import { i18nConfig } from '@/features/i18n/config';
+import { i18nConfig } from '@/config/i18n/config';
 
 import { MenuType } from '../types/MenuType';
 
@@ -58,5 +58,11 @@ export const usePages = () => {
       mainMenuItems,
       secondaryMenuItems,
     };
-  }, [i18n.resolvedLanguage, homeRoute, pageRoutes, mainMenuItems, secondaryMenuItems]);
+  }, [
+    i18n.resolvedLanguage,
+    homeRoute,
+    pageRoutes,
+    mainMenuItems,
+    secondaryMenuItems,
+  ]);
 };

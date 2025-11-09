@@ -1,6 +1,6 @@
-import type { ChatModelAdapter } from '@assistant-ui/react';
+import { ChatModelAdapter } from '@assistant-ui/react';
 
-import type { AgentType } from '../config';
+import { AgentType } from '../config';
 
 /**
  * Extended chat model adapter interface

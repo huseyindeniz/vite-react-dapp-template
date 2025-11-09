@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type { TFunction } from 'i18next';
+import { TFunction } from 'i18next';
 import {
   IoWallet,
   IoWalletOutline,

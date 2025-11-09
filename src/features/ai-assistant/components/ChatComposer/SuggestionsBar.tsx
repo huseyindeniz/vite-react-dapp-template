@@ -16,7 +16,7 @@ import { MdExpandLess, MdExpandMore } from 'react-icons/md';
 import { getSuggestionCategories } from '@/config/ai-assistant/suggestionCategories';
 import { getChatSuggestions } from '@/config/ai-assistant/suggestions';
 
-import type { ChatSuggestion } from '../../types/ChatSuggestion';
+import { ChatSuggestion } from '../../types/ChatSuggestion';
 
 /**
  * Suggestions bar - displays quick action buttons grouped by category

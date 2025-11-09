@@ -1,5 +1,5 @@
 // WalletProtectionWarning.stories.ts|tsx
-import type { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 

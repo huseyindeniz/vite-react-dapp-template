@@ -1,5 +1,5 @@
 // ConnectionModal.stories.ts|tsx
-import type { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 
 import { AccountLoadState } from '../../../models/account/types/AccountLoadState';
 

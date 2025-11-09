@@ -1,4 +1,4 @@
-import type { Reducer } from '@reduxjs/toolkit';
+import { Reducer } from '@reduxjs/toolkit';
 
 /**
  * Redux store configuration for a feature

@@ -1,11 +1,8 @@
-import type {
-  ChatModelRunOptions,
-  ChatModelRunResult,
-} from '@assistant-ui/react';
+import { ChatModelRunOptions, ChatModelRunResult } from '@assistant-ui/react';
 import log from 'loglevel';
 
-import type { AgentType } from '@/features/ai-assistant/config';
-import type { IChatModelAdapter } from '@/features/ai-assistant/interfaces/IChatModelAdapter';
+import { AgentType } from '@/features/ai-assistant/config';
+import { IChatModelAdapter } from '@/features/ai-assistant/interfaces/IChatModelAdapter';
 
 /**
  * Demo chat adapter that showcases chat capabilities without requiring a real AI backend
@@ -195,29 +192,39 @@ export class DemoChatModelAdapter implements IChatModelAdapter {
     content: string;
   } {
     // Image artifacts
-    if (/image|picture|show.*image|draw|create.*image|generate.*image/i.test(userMessage)) {
+    if (
+      /image|picture|show.*image|draw|create.*image|generate.*image/i.test(
+        userMessage
+      )
+    ) {
       return { type: 'image', content: '' };
     }
 
     // Markdown file artifacts
-    if (/markdown|document|create.*file|write.*file|generate.*document|make.*document/i.test(userMessage)) {
+    if (
+      /markdown|document|create.*file|write.*file|generate.*document|make.*document/i.test(
+        userMessage
+      )
+    ) {
       return { type: 'markdown', content: '' };
     }
 
     // JSON export artifacts
-    if (/export.*json|json.*export|export.*data|generate.*json/i.test(userMessage)) {
+    if (
+      /export.*json|json.*export|export.*data|generate.*json/i.test(userMessage)
+    ) {
       return { type: 'json', content: '' };
     }
 
     // CSV export artifacts
-    if (/export.*csv|csv.*export|generate.*csv|spreadsheet/i.test(userMessage)) {
+    if (
+      /export.*csv|csv.*export|generate.*csv|spreadsheet/i.test(userMessage)
+    ) {
       return { type: 'csv', content: '' };
     }
 
     // Greeting responses
-    if (
-      /^(hi|hello|hey|greetings|yo|sup|howdy)\b/i.test(userMessage.trim())
-    ) {
+    if (/^(hi|hello|hey|greetings|yo|sup|howdy)\b/i.test(userMessage.trim())) {
       return { type: 'text', content: this.getRandomItem(GREETING_RESPONSES) };
     }
 
@@ -236,12 +243,20 @@ export class DemoChatModelAdapter implements IChatModelAdapter {
     }
 
     // Code-related queries
-    if (/code|programming|function|bug|error|typescript|javascript/i.test(userMessage)) {
+    if (
+      /code|programming|function|issue|error|typescript|javascript/i.test(
+        userMessage
+      )
+    ) {
       return { type: 'text', content: this.getRandomItem(CODE_RESPONSES) };
     }
 
     // Web3/Blockchain queries
-    if (/web3|blockchain|ethereum|wallet|crypto|dapp|smart contract/i.test(userMessage)) {
+    if (
+      /web3|blockchain|ethereum|wallet|crypto|dapp|smart contract/i.test(
+        userMessage
+      )
+    ) {
       return { type: 'text', content: this.getRandomItem(WEB3_RESPONSES) };
     }
 
@@ -396,13 +411,13 @@ const GREETING_RESPONSES = [
 
 const HELP_RESPONSES = [
   "Great question! Here's what I can demonstrate:\n\n## Chat Features\n\n- **Streaming**: Watch responses appear in real-time\n- **Markdown**: Support for *formatting*, **emphasis**, `code`, and more\n- **Code blocks**: Perfect for sharing code snippets\n- **Lists**: Both numbered and bulleted\n- **Multi-turn**: I remember our conversation context\n\n## Try These\n\n- Ask me about Web3 or blockchain\n- Request a code example\n- Chat naturally - I'll respond contextually\n- Switch to other agents to see real AI in action!\n\nWhat interests you?",
-  "I'm designed to showcase this chat interface! Here's what you can do:\n\n### Features I Demonstrate\n\n1. **Streaming responses** - Text appears gradually, just like ChatGPT\n2. **Rich formatting** - Markdown, code blocks, lists\n3. **Contextual responses** - I try to understand what you're asking\n4. **Agent switching** - You can switch between me and real AI agents\n\n### Sample Questions\n\n```typescript\n// Ask me about:\n- \"Show me a TypeScript example\"\n- \"What is Web3?\"\n- \"How do smart contracts work?\"\n```\n\nGive it a try!",
+  'I\'m designed to showcase this chat interface! Here\'s what you can do:\n\n### Features I Demonstrate\n\n1. **Streaming responses** - Text appears gradually, just like ChatGPT\n2. **Rich formatting** - Markdown, code blocks, lists\n3. **Contextual responses** - I try to understand what you\'re asking\n4. **Agent switching** - You can switch between me and real AI agents\n\n### Sample Questions\n\n```typescript\n// Ask me about:\n- "Show me a TypeScript example"\n- "What is Web3?"\n- "How do smart contracts work?"\n```\n\nGive it a try!',
 ];
 
 const GOODBYE_RESPONSES = [
   "See you later! Feel free to come back anytime to explore the chat features.\n\nDon't forget to try the **real AI agents** (Agent 1 & 2) for actual intelligent conversations!",
   "Goodbye! It was fun chatting with you.\n\nRemember:\n- I'm just a **demo** to show the UI capabilities\n- The **other agents** are connected to real AI\n- You can **switch agents** anytime using the dropdown\n\nHappy building!",
-  "Farewell, friend!\n\nCome back when you want to:\n- Test the chat interface\n- See markdown formatting\n- Play with the streaming feature\n\nOr better yet, try the real AI agents!",
+  'Farewell, friend!\n\nCome back when you want to:\n- Test the chat interface\n- See markdown formatting\n- Play with the streaming feature\n\nOr better yet, try the real AI agents!',
 ];
 
 const CODE_RESPONSES = [
@@ -412,9 +427,9 @@ const CODE_RESPONSES = [
 ];
 
 const WEB3_RESPONSES = [
-  "Ah, Web3! Let me break it down:\n\n## What is Web3?\n\nWeb3 is the **decentralized internet** powered by blockchain technology.\n\n### Key Concepts\n\n1. **Wallets**\n   - Your identity on the blockchain\n   - Stores crypto and NFTs\n   - Signs transactions securely\n\n2. **Smart Contracts**\n   - Self-executing code on blockchain\n   - No middlemen needed\n   - Trustless and transparent\n\n3. **dApps**\n   - Decentralized applications\n   - Run on blockchain networks\n   - Users own their data\n\n### Example Flow\n\n```typescript\n// Connect wallet → Sign transaction → Interact with smart contract\nconst tx = await contract.transfer(toAddress, amount);\nawait tx.wait(); // Wait for blockchain confirmation\n```\n\nWant to know more about any specific concept?",
+  'Ah, Web3! Let me break it down:\n\n## What is Web3?\n\nWeb3 is the **decentralized internet** powered by blockchain technology.\n\n### Key Concepts\n\n1. **Wallets**\n   - Your identity on the blockchain\n   - Stores crypto and NFTs\n   - Signs transactions securely\n\n2. **Smart Contracts**\n   - Self-executing code on blockchain\n   - No middlemen needed\n   - Trustless and transparent\n\n3. **dApps**\n   - Decentralized applications\n   - Run on blockchain networks\n   - Users own their data\n\n### Example Flow\n\n```typescript\n// Connect wallet → Sign transaction → Interact with smart contract\nconst tx = await contract.transfer(toAddress, amount);\nawait tx.wait(); // Wait for blockchain confirmation\n```\n\nWant to know more about any specific concept?',
   "Web3 is awesome! Here's what makes it special:\n\n### Traditional Web (Web2) vs Web3\n\n| Web2 | Web3 |\n|------|------|\n| Company owns your data | You own your data |\n| Central servers | Decentralized networks |\n| Platform controls access | Permissionless access |\n| Trust the company | Trust the code |\n\n### Why dApps Matter\n\n- **Security**: Cryptographic verification\n- **Ownership**: True digital ownership\n- **Global**: No borders or restrictions\n- **Trustless**: Code, not companies\n\n### In This Template\n\nWe provide a **wallet feature** that handles:\n- Provider management (MetaMask, etc.)\n- Network switching\n- Account connection\n- Transaction signing\n\nCheck out the `/demo-wallet` page to try it!",
-  "Let me explain **smart contracts** in simple terms:\n\n## Smart Contracts\n\nThink of them as:\n- **Vending machines** for the blockchain\n- Put money in → Get product out\n- No human needed!\n\n### How They Work\n\n1. **Deploy** contract to blockchain\n2. **Users interact** by sending transactions\n3. **Code executes** automatically\n4. **Results recorded** permanently\n\n### Example Contract\n\n```solidity\n// Simple voting contract\ncontract Voting {\n  mapping(bytes32 => uint256) public votes;\n  \n  function vote(bytes32 proposal) public {\n    votes[proposal] += 1;\n  }\n}\n```\n\n### Real-World Uses\n\n- DeFi (lending, trading)\n- NFT marketplaces\n- Gaming items\n- DAOs (organizations)\n\nWant to dive deeper into any topic?",
+  'Let me explain **smart contracts** in simple terms:\n\n## Smart Contracts\n\nThink of them as:\n- **Vending machines** for the blockchain\n- Put money in → Get product out\n- No human needed!\n\n### How They Work\n\n1. **Deploy** contract to blockchain\n2. **Users interact** by sending transactions\n3. **Code executes** automatically\n4. **Results recorded** permanently\n\n### Example Contract\n\n```solidity\n// Simple voting contract\ncontract Voting {\n  mapping(bytes32 => uint256) public votes;\n  \n  function vote(bytes32 proposal) public {\n    votes[proposal] += 1;\n  }\n}\n```\n\n### Real-World Uses\n\n- DeFi (lending, trading)\n- NFT marketplaces\n- Gaming items\n- DAOs (organizations)\n\nWant to dive deeper into any topic?',
 ];
 
 const GENERAL_RESPONSES = [
@@ -430,25 +445,25 @@ const GENERAL_RESPONSES = [
 const IMAGE_INTRO_RESPONSES = [
   "Here's a demo image I created for you! You can download it or copy it to your clipboard.",
   "I've generated a sample image artifact. Click the download button to save it, or copy it directly!",
-  "Check out this image! This demonstrates how AI agents can generate visual content.",
+  'Check out this image! This demonstrates how AI agents can generate visual content.',
 ];
 
 const MARKDOWN_INTRO_RESPONSES = [
   "I've created a markdown document for you! Click the filename to view it in the side panel, or download it directly.",
   "Here's a sample markdown file. Click on it to open the preview panel on the right!",
-  "I generated a markdown document - click the filename to view the formatted content!",
+  'I generated a markdown document - click the filename to view the formatted content!',
 ];
 
 const JSON_INTRO_RESPONSES = [
   "Here's a JSON data export! You can download it or copy the content to your clipboard.",
   "I've generated sample JSON data for you. Feel free to download or copy it!",
-  "Check out this JSON export - perfect for data interchange and API responses!",
+  'Check out this JSON export - perfect for data interchange and API responses!',
 ];
 
 const CSV_INTRO_RESPONSES = [
   "Here's a CSV data export! Perfect for spreadsheets - download it or copy the data.",
   "I've generated a CSV file for you. Open it in Excel or any spreadsheet application!",
-  "Sample CSV data ready! This format is great for data analysis and reporting.",
+  'Sample CSV data ready! This format is great for data analysis and reporting.',
 ];
 
 // Markdown content templates
@@ -581,13 +596,15 @@ interface UserProfile {
 }
 \`\`\`
 
-❌ **DON'T**: Use \`any\` type
+❌ **DON'T**: Use the "any" type (disables type checking)
 
 \`\`\`typescript
-// Bad
-const data: any = fetchData();
+// Bad - loses all type safety
+function processData(input: unknown) {
+  return input; // No validation
+}
 
-// Good
+// Good - proper type checking
 interface ApiResponse {
   status: number;
   data: unknown;

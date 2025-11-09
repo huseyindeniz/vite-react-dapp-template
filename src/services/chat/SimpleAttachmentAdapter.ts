@@ -1,4 +1,4 @@
-import type {
+import {
   Attachment,
   CompleteAttachment,
   PendingAttachment,
@@ -13,7 +13,8 @@ import log from 'loglevel';
  * Supported document formats: PDF, TXT, MD, JSON, CSV, Word, Excel
  */
 export class SimpleAttachmentAdapter {
-  accept = 'image/png,image/jpeg,image/jpg,image/gif,image/webp,image/svg+xml,application/pdf,text/plain,text/markdown,application/json,text/csv,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+  accept =
+    'image/png,image/jpeg,image/jpg,image/gif,image/webp,image/svg+xml,application/pdf,text/plain,text/markdown,application/json,text/csv,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 
   async add({ file }: { file: File }): Promise<PendingAttachment> {
     log.debug('Adding attachment:', file.name, file.type);

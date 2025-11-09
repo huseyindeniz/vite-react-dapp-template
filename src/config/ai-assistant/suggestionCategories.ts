@@ -1,6 +1,6 @@
-import type { TFunction } from 'i18next';
+import { TFunction } from 'i18next';
 
-import type { SuggestionCategory } from '@/features/ai-assistant/types/SuggestionCategory';
+import { SuggestionCategory } from '@/features/ai-assistant/types/SuggestionCategory';
 
 /**
  * Suggestion categories configuration factory

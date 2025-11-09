@@ -4,7 +4,7 @@ import { throwError } from 'redux-saga-test-plan/providers';
 
 import { INetworkApi } from '@/features/wallet/models/network/interfaces/INetworkApi';
 
-import { HardhatChain } from '../../../chains/hardhat';
+import { HardhatChain } from '../../../../../config/wallet/chains/hardhat';
 import { SlowDown } from '../../../utils';
 import * as walletStateSliceActions from '../../slice';
 import * as slicesActions from '../slice';

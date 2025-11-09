@@ -6,6 +6,7 @@ import {
 } from 'react-router-dom';
 
 import { features } from '@/config/features';
+import { i18nConfig } from '@/config/i18n/config';
 import { AsideExtension } from '@/config/ui/layout-extensions/asideExtension';
 import { FooterExtension } from '@/config/ui/layout-extensions/footerExtension';
 import { HeaderExtension } from '@/config/ui/layout-extensions/headerExtension';
@@ -13,7 +14,6 @@ import { MainExtension } from '@/config/ui/layout-extensions/mainExtension';
 import { NavbarExtension } from '@/config/ui/layout-extensions/navbarExtension';
 import { ShellExtension } from '@/config/ui/layout-extensions/shellExtension';
 import { applyProtection } from '@/features/auth/utils/applyProtection';
-import { i18nConfig } from '@/features/i18n/config';
 import { useSliceManagerInit } from '@/features/slice-manager/hooks/useSliceManagerInit';
 
 import { isHashRouter } from './config';
@@ -35,21 +35,21 @@ const BrowserRouter = React.lazy(() =>
 );
 
 const Layout = React.lazy(() =>
-  import(
-    /* webpackChunkName: "Layout" */ '@/features/layout/LayoutBase'
-  ).then(module => ({
-    default: (props: Record<string, never>) => (
-      <module.LayoutBase
-        {...props}
-        shellExtension={ShellExtension}
-        headerExtension={HeaderExtension}
-        navbarExtension={NavbarExtension}
-        asideExtension={AsideExtension}
-        mainExtension={MainExtension}
-        footerExtension={FooterExtension}
-      />
-    ),
-  }))
+  import(/* webpackChunkName: "Layout" */ '@/features/layout/LayoutBase').then(
+    module => ({
+      default: (props: Record<string, never>) => (
+        <module.LayoutBase
+          {...props}
+          shellExtension={ShellExtension}
+          headerExtension={HeaderExtension}
+          navbarExtension={NavbarExtension}
+          asideExtension={AsideExtension}
+          mainExtension={MainExtension}
+          footerExtension={FooterExtension}
+        />
+      ),
+    })
+  )
 );
 
 const NotFoundPage = React.lazy(() =>

@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
-import { i18nConfig } from './config';
+import { i18nConfig } from '@/config/i18n/config';
 
 export const useChangeLanguage = (currentUrl: string, currentLang: string) => {
   const { i18n } = useTranslation();

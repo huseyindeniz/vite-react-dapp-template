@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
+import { DEFAULT_NETWORK, SUPPORTED_NETWORKS } from '@/config/wallet/config';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 
-import { SUPPORTED_NETWORKS, DEFAULT_NETWORK } from '../../config';
 import { useActions } from '../../hooks/useActions';
 import { AccountLoadState } from '../../models/account/types/AccountLoadState';
 import { AccountSignState } from '../../models/account/types/AccountSignState';

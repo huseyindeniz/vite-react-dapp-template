@@ -1,4 +1,4 @@
-import type { SuggestionCategoryKey } from '@/config/ai-assistant/suggestionCategories';
+import { SuggestionCategoryKey } from '@/config/ai-assistant/suggestionCategories';
 
 /**
  * Chat suggestion interface

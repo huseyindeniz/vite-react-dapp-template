@@ -1,11 +1,8 @@
-import type {
-  ChatModelRunOptions,
-  ChatModelRunResult,
-} from '@assistant-ui/react';
+import { ChatModelRunOptions, ChatModelRunResult } from '@assistant-ui/react';
 import log from 'loglevel';
 
-import type { AgentType } from '@/features/ai-assistant/config';
-import type { IChatModelAdapter } from '@/features/ai-assistant/interfaces/IChatModelAdapter';
+import { AgentType } from '@/features/ai-assistant/config';
+import { IChatModelAdapter } from '@/features/ai-assistant/interfaces/IChatModelAdapter';
 
 import { ChatService } from './ChatService';
 

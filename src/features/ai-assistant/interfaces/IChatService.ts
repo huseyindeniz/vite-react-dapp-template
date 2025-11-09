@@ -1,6 +1,6 @@
-import type { AgentType } from '../config';
+import { AgentType } from '../config';
 
-import type { IChatModelAdapter } from './IChatModelAdapter';
+import { IChatModelAdapter } from './IChatModelAdapter';
 
 /**
  * Chat service interface for dependency injection

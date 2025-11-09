@@ -1,14 +1,16 @@
-import type { Reducer } from '@reduxjs/toolkit';
+import { Reducer } from '@reduxjs/toolkit';
 
 /**
  * Complete feature configuration for centralized feature registration
  * Used in src/config/features.ts
  */
-export interface FeatureConfig<
-  TStateKey extends string,
-  TState,
-  TSagaFn
-> {
+export interface FeatureConfig<TStateKey extends string, TState, TSagaFn> {
+  /**
+   * Unique feature identifier
+   * e.g., 'wallet', 'oauth', 'blogDemo', etc.
+   */
+  id: string;
+
   /**
    * Redux store configuration (state key + reducer)
    */
@@ -54,10 +56,6 @@ export interface FeatureConfig<
  * Helper to create type-safe feature config
  * Infers all generic types automatically from provided values
  */
-export const defineFeature = <
-  TStateKey extends string,
-  TState,
-  TSagaFn
->(
+export const defineFeature = <TStateKey extends string, TState, TSagaFn>(
   config: FeatureConfig<TStateKey, TState, TSagaFn>
 ): FeatureConfig<TStateKey, TState, TSagaFn> => config;

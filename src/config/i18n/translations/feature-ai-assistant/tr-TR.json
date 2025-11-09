@@ -11,9 +11,13 @@
   "export data as csv": "veriyi csv olarak dışa aktar",
   "Select AI Agent": "AI Agent Seç",
   "Choose an agent": "Bir agent seçin",
+  "Download file": "Dosyayı indir",
+  "Generated image": "Oluşturulan görsel",
+  "Download image": "Görseli indir",
   "Attach files": "Dosya ekle",
   "Type your message... (Shift+Enter for new line)": "Mesajınızı yazın... (Yeni satır için Shift+Enter)",
   "Send": "Gönder",
+  "Attachment preview": "Ek önizlemesi",
   "Suggestions": "Öneriler",
   "Collapse suggestions": "Önerileri daralt",
   "Expand suggestions": "Önerileri genişlet",
@@ -22,6 +26,5 @@
   "No messages yet. Start a conversation!": "Henüz mesaj yok. Bir sohbet başlatın!",
   "Copied!": "Kopyalandı!",
   "Copy content": "İçeriği kopyala",
-  "Download file": "Dosyayı indir",
   "Close": "Kapat"
 }

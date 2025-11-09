@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import { ActionIcon, Group, Image, Paper, Stack, Tooltip } from '@mantine/core';
+import { useTranslation } from 'react-i18next';
 import { MdContentCopy, MdDownload } from 'react-icons/md';
 
 interface ImageArtifactProps {
@@ -15,6 +16,7 @@ interface ImageArtifactProps {
  * Shows image inline with download and copy capabilities
  */
 export const ImageArtifact: React.FC<ImageArtifactProps> = ({ part }) => {
+  const { t } = useTranslation('feature-ai-assistant');
   const [copied, setCopied] = useState(false);
 
   const handleDownload = () => {
@@ -51,7 +53,7 @@ export const ImageArtifact: React.FC<ImageArtifactProps> = ({ part }) => {
       <Stack gap="sm">
         <Image
           src={part.image}
-          alt="Generated image"
+          alt={t('Generated image')}
           fit="contain"
           radius="sm"
           style={{ maxHeight: '400px' }}
@@ -68,7 +70,7 @@ export const ImageArtifact: React.FC<ImageArtifactProps> = ({ part }) => {
             </ActionIcon>
           </Tooltip>
 
-          <Tooltip label="Download image">
+          <Tooltip label={t('Download image')}>
             <ActionIcon variant="subtle" onClick={handleDownload} color="gray">
               <MdDownload size={18} />
             </ActionIcon>

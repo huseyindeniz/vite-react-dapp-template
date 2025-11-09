@@ -27,11 +27,14 @@ This is NOT a feature - it's a **special top-level architectural layer** above a
 - Cross-feature dependency composition
 
 **Files:**
-- `services.ts` - Service instantiation (ONLY place to import `@/services/*`)
+- `services.ts` - Root service instantiation (optional, if needed)
+- `{feature}/services.ts` - Feature-specific service files (e.g., `oauth/services.ts`, `wallet/services.ts`)
 - `features.ts` - Feature registration (slices, sagas)
 - `routes.tsx` - Route configuration
 - `auth/` - Auth provider registration
 - `ui/` - UI configuration (theme, Mantine props)
+
+**Service Import Pattern:** Any file within `src/config/` directory can import from `@/services/*`. This allows organizing service instantiation by feature.
 
 **Key Point:** This is where ALL architecture rules are ALLOWED to be broken, because it's the composition layer.
 
@@ -79,10 +82,13 @@ Users create their own domain features (products, orders, users, etc.)
 **Services MUST ONLY be imported in the composition root.**
 
 **Allowed:**
-- ✅ `src/config/services.ts` - ONLY place to import services
+- ✅ Any file within `src/config/` directory (composition root)
+  - `src/config/services.ts` (root services, if needed)
+  - `src/config/{feature}/services.ts` (feature-specific services)
+  - Example: `src/config/oauth/services.ts`, `src/config/wallet/services.ts`
 
 **Violations:**
-- ❌ Any other file importing from `@/services/*`
+- ❌ Any file OUTSIDE `src/config/` importing from `@/services/*`
 
 **Why:** This enforces the dependency injection pattern. Features receive service implementations through interfaces.
 
@@ -220,16 +226,24 @@ This directory sits ABOVE the feature layer and is responsible for wiring the en
 **Architectural Position:**
 ```
 src/
-├── config/              ← Composition Root (THIS LAYER)
-│   ├── services.ts      ← Service instantiation
-│   ├── features.ts      ← Feature registration
-│   ├── routes.tsx       ← Route definitions
-│   ├── auth/            ← Auth configuration
-│   └── ui/              ← UI configuration
-├── features/            ← Feature Layer (Core + Domain)
-├── services/            ← Service Layer (Implementations)
-├── pages/               ← Presentation Layer
-└── hooks/               ← Shared Hooks
+├── config/                      ← Composition Root (THIS LAYER)
+│   ├── services.ts              ← Root services (optional)
+│   ├── features.ts              ← Feature registration
+│   ├── routes.tsx               ← Route definitions
+│   ├── auth/                    ← Auth configuration
+│   ├── ui/                      ← UI configuration
+│   ├── oauth/
+│   │   └── services.ts          ← OAuth service instantiation
+│   ├── wallet/
+│   │   └── services.ts          ← Wallet service instantiation
+│   ├── ai-assistant/
+│   │   └── services.ts          ← AI assistant service instantiation
+│   └── {feature}/
+│       └── services.ts          ← Feature-specific services
+├── features/                    ← Feature Layer (Core + Domain)
+├── services/                    ← Service Layer (Implementations)
+├── pages/                       ← Presentation Layer
+└── hooks/                       ← Shared Hooks
 ```
 
 **Allowed in `src/config/*` (ALL rules suspended):**
@@ -403,7 +417,9 @@ Summary: 3 violation(s)
 - Features don't depend on concrete service implementations
 - Easy to swap implementations (EthersV5 → EthersV6)
 - Easy to test (mock interfaces)
-- All wiring happens in `src/config/services.ts`
+- All wiring happens in `src/config/` directory
+  - Can use root `services.ts` or feature-specific `{feature}/services.ts`
+  - Allows organizing service instantiation by feature
 
 ## Composition Root Pattern
 - Single top-level place (`src/config/`) where everything is wired together

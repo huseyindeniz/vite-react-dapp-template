@@ -9,6 +9,7 @@ import {
   Text,
   Tooltip,
 } from '@mantine/core';
+import { useTranslation } from 'react-i18next';
 import { MdContentCopy, MdDownload, MdInsertDriveFile } from 'react-icons/md';
 
 interface FileArtifactProps {
@@ -30,6 +31,7 @@ export const FileArtifact: React.FC<FileArtifactProps> = ({
   part,
   onMarkdownClick,
 }) => {
+  const { t } = useTranslation('feature-ai-assistant');
   const [copied, setCopied] = useState(false);
   const { filename = 'file', data, mimeType } = part;
 
@@ -139,7 +141,7 @@ export const FileArtifact: React.FC<FileArtifactProps> = ({
             </ActionIcon>
           </Tooltip>
 
-          <Tooltip label="Download file">
+          <Tooltip label={t('Download file')}>
             <ActionIcon variant="subtle" onClick={handleDownload} color="gray">
               <MdDownload size={18} />
             </ActionIcon>

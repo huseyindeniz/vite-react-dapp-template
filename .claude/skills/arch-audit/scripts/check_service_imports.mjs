@@ -119,7 +119,8 @@ function checkServiceImports() {
       for (const v of viols) {
         console.log(`     Line ${v.line}: ${v.import}`);
       }
-      console.log('     Fix: Move service instantiation to src/config/services.ts');
+      console.log('     Fix: Move service instantiation to src/config/ directory');
+      console.log('          (e.g., src/config/services.ts or src/config/{feature}/services.ts)');
       console.log('          Use dependency injection - features receive services through interfaces');
       console.log('');
     }

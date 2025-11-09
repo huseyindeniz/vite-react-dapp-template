@@ -1,7 +1,8 @@
 // ConnectionModal.stories.ts|tsx
-import type { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 
-import { SUPPORTED_NETWORKS, DEFAULT_NETWORK } from '../../../config';
+import { DEFAULT_NETWORK, SUPPORTED_NETWORKS } from '@/config/wallet/config';
+
 import { NetworkLoadState } from '../../../models/network/types/NetworkLoadState';
 
 import { CheckNetwork } from './CheckNetwork';

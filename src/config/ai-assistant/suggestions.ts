@@ -1,6 +1,6 @@
-import type { TFunction } from 'i18next';
+import { TFunction } from 'i18next';
 
-import type { ChatSuggestion } from '@/features/ai-assistant/types/ChatSuggestion';
+import { ChatSuggestion } from '@/features/ai-assistant/types/ChatSuggestion';
 
 /**
  * Chat suggestions configuration factory

@@ -1,4 +1,4 @@
-import type { Saga } from 'redux-saga';
+import { Saga } from 'redux-saga';
 
 /**
  * Saga configuration for a feature
