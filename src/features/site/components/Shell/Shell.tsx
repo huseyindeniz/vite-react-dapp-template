@@ -31,6 +31,7 @@ export const Shell: React.FC<ShellProps> = ({
       }}
       footer={{ height: 90 }}
       padding="md"
+      pb={0}
     >
       {children}
     </AppShell>

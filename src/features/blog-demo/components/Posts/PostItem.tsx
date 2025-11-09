@@ -15,7 +15,7 @@ export interface PostItemProps {
 export const PostItem: React.FC<PostItemProps> = ({ post }) => {
   const { pageLink } = usePageLink();
   return (
-    <Card key={post.id} shadow="sm" padding="lg" withBorder mb="sm">
+    <Card key={post.id} shadow="sm" padding="lg" withBorder>
       <ThemeIcon color="teal" size={24} radius="xl">
         <FaCheckCircle size={16} />
       </ThemeIcon>

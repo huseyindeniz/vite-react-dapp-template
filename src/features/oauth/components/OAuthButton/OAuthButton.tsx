@@ -83,14 +83,14 @@ export const OAuthButton: React.FC<OAuthButtonProps> = ({
               {user.avatarUrl && (
                 <Avatar src={user.avatarUrl} size={24} radius="xl" />
               )}
-              <div>
+              <>
                 <Text size="sm" fw={500}>
                   {user.given_name || user.name}
                 </Text>
                 <Text size="xs" c="dimmed">
                   {t('Signed in with')} {currentProvider}
                 </Text>
-              </div>
+              </>
             </Group>
           </Menu.Label>
           <Menu.Item>{user.email}</Menu.Item>

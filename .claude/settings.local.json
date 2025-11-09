@@ -35,7 +35,9 @@
       "Skill(test-audit)",
       "Skill(docs-generator)",
       "Bash(npm run extract:*)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "WebFetch(domain:www.assistant-ui.com)",
+      "WebFetch(domain:r.assistant-ui.com)"
     ],
     "deny": [],
     "ask": []

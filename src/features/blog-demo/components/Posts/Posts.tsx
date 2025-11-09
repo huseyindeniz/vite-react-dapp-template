@@ -1,4 +1,4 @@
-import { List } from '@mantine/core';
+import { SimpleGrid } from '@mantine/core';
 
 import { useBlogPosts } from '../../hooks/useBlogPosts';
 
@@ -26,11 +26,11 @@ export const Posts: React.FC = () => {
       {/* ✅ Data List */}
       {!error && !initialLoading && data.length > 0 && (
         <>
-          <List spacing="md" size="md" center>
+          <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md">
             {data.map(post => (
               <PostItem key={post.id} post={post} />
             ))}
-          </List>
+          </SimpleGrid>
           {/* ✅ Load More Button */}
           <PostLoadMoreButton loading={moreLoading} onClick={fetchMore} />
         </>

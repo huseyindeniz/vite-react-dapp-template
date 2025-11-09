@@ -1,7 +1,14 @@
 {
   "Select AI Agent": "AI Agent Seç",
   "Choose an agent": "Bir agent seçin",
+  "Attach files": "Dosya ekle",
   "Type your message... (Shift+Enter for new line)": "Mesajınızı yazın... (Yeni satır için Shift+Enter)",
   "Send": "Gönder",
-  "No messages yet. Start a conversation!": "Henüz mesaj yok. Bir sohbet başlatın!"
+  "AI Assistant": "AI Asistan",
+  "This section demonstrates how you can integrate your AI agents into the dApp template.": "",
+  "No messages yet. Start a conversation!": "Henüz mesaj yok. Bir sohbet başlatın!",
+  "Copied!": "",
+  "Copy content": "",
+  "Download file": "",
+  "Close": ""
 }

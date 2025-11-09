@@ -223,9 +223,9 @@ export const getUserPageRoutes = (
 
   // Add your page routes to this array
   return [
-    DemoAIAssistantRoute,
     DemoAuthRoute,
     DemoBlogRoute,
+    DemoAIAssistantRoute,
     WalletProfileRoute,
     OAuthProfileRoute,
   ];

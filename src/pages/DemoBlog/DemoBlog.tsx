@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Container, Divider, Stack, Title } from '@mantine/core';
+import { Stack, Title, Text } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 
 import { Posts } from '@/features/blog-demo/components/Posts/Posts';
@@ -10,16 +10,20 @@ export const DemoBlogPage: React.FC = () => {
   const { t } = useTranslation('page-demoblog');
   return (
     <>
-      <PageMeta title={t('Blog Demo')} url="/demo-blog" description={t('Blog demo page')} />
-      <Container ta="center">
-        <Stack>
-          <Title mb={2}>Posts</Title>
-          <Divider />
-        </Stack>
-        <Stack>
-          <Posts />
-        </Stack>
-      </Container>
+      <PageMeta
+        title={t('Blog Demo')}
+        url="/demo-blog"
+        description={t('Blog demo page')}
+      />
+      <Stack gap="md">
+        <Title order={1}>{t('Posts')}</Title>
+        <Text size="lg" c="dimmed">
+          {t(
+            'This section demonstrates slice-manager feature cache capabilities.'
+          )}
+        </Text>
+        <Posts />
+      </Stack>
     </>
   );
 };

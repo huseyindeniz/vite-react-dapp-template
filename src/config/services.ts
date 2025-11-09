@@ -1,4 +1,5 @@
 import { ChatService } from '@/services/chat/ChatService';
+import { DemoChatModelAdapter } from '@/services/chat/DemoChatModelAdapter';
 import { GoogleADKChatModelAdapter } from '@/services/chat/GoogleADKChatModelAdapter';
 import { LangGraphChatModelAdapter } from '@/services/chat/LangGraphChatModelAdapter';
 import { EthersV6WalletAPI } from '@/services/ethersV6/wallet/WalletAPI';
@@ -17,5 +18,6 @@ oauthService.registerProvider(new GoogleOAuthProvider());
 oauthService.registerProvider(new GitHubOAuthProvider());
 
 // Register chat adapters
+chatService.registerAdapter(new DemoChatModelAdapter());
 chatService.registerAdapter(new GoogleADKChatModelAdapter());
 chatService.registerAdapter(new LangGraphChatModelAdapter());

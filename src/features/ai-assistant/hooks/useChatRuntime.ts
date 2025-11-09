@@ -4,6 +4,7 @@ import { useLocalRuntime } from '@assistant-ui/react';
 
 import { chatService } from '@/config/services';
 import { useOAuth } from '@/features/oauth/hooks/useOAuth';
+import { SimpleAttachmentAdapter } from '@/services/chat/SimpleAttachmentAdapter';
 
 import type { AgentType } from '../config';
 
@@ -33,8 +34,16 @@ export const useChatRuntime = (agentType: AgentType) => {
     return chatService.getAdapter(agentType);
   }, [agentType]);
 
+  // Create attachment adapter instance
+  const attachmentAdapter = useMemo(() => {
+    return new SimpleAttachmentAdapter();
+  }, []);
+
   const runtime = useLocalRuntime(adapter, {
     initialMessages: [],
+    adapters: {
+      attachments: attachmentAdapter,
+    },
   });
 
   return runtime;

@@ -3,7 +3,7 @@ import React from 'react';
 import { Select } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 
-import { CHAT_AGENTS, type AgentType } from '../config';
+import { CHAT_AGENTS, type AgentType } from '../../config';
 
 interface AgentSelectorProps {
   value: AgentType;
@@ -19,6 +19,7 @@ export const AgentSelector: React.FC<AgentSelectorProps> = ({
   const options = Object.entries(CHAT_AGENTS).map(([key, config]) => ({
     value: key,
     label: config.label,
+    disabled: !config.enabled,
   }));
 
   return (

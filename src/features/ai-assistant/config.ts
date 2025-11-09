@@ -5,16 +5,22 @@
 
 export const CHAT_AGENTS = {
   langgraph: {
-    label: 'LangGraph',
+    label: 'Agent 1 (with Langgraph)',
+    enabled: false,
   },
   'google-adk': {
-    label: 'Google ADK',
+    label: 'Agent 2 (with Google ADK)',
+    enabled: false,
+  },
+  demo: {
+    label: 'Agent 3 (demo)',
+    enabled: true,
   },
 } as const;
 
 export type AgentType = keyof typeof CHAT_AGENTS;
 
-export const DEFAULT_AGENT_TYPE: AgentType = 'langgraph';
+export const DEFAULT_AGENT_TYPE: AgentType = 'demo';
 
 /**
  * Get chat agent configuration by type
