@@ -36,12 +36,12 @@ function extractImports(content) {
 }
 
 function isAllowedFeatureImport(importPath) {
-  // Pattern: @/features/{feature}/...
-  const match = importPath.match(/^@\/features\/([^/]+)\/(.+)$/);
+  // Pattern: @/(core|domain)/features/{feature}/...
+  const match = importPath.match(/^@\/(core|domain)\/features\/([^/]+)\/(.+)$/);
 
   if (!match) return true; // Not a feature import, allow it
 
-  const [, feature, restPath] = match;
+  const [, layer, feature, restPath] = match;
 
   // ALLOWED: components, hooks, hocs (anywhere in the path)
   // Examples:
@@ -97,21 +97,21 @@ function checkPagesBoundaries() {
   console.log('='.repeat(80));
   console.log('');
   console.log('Rule: Pages can ONLY import:');
-  console.log('  ✅ @/features/{feature}/components/* - Feature components');
-  console.log('  ✅ @/features/{feature}/hooks/* - Feature hooks');
-  console.log('  ✅ @/features/{feature}/hocs/* - Feature HOCs');
-  console.log('  ✅ @/features/{feature}/config - Feature configuration');
+  console.log('  ✅ @/(core|domain)/features/{feature}/components/* - Feature components');
+  console.log('  ✅ @/(core|domain)/features/{feature}/hooks/* - Feature hooks');
+  console.log('  ✅ @/(core|domain)/features/{feature}/hocs/* - Feature HOCs');
+  console.log('  ✅ @/(core|domain)/features/{feature}/config - Feature configuration');
   console.log('  ✅ @/hooks/* - Root hooks');
   console.log('  ✅ External libraries (React, etc.)');
   console.log('');
   console.log('Pages CANNOT import:');
   console.log('  ❌ @/services/*');
-  console.log('  ❌ @/features/{feature}/models/*');
-  console.log('  ❌ @/features/{feature}/types/*');
-  console.log('  ❌ @/features/{feature}/slice.ts');
-  console.log('  ❌ @/features/{feature}/sagas.ts');
-  console.log('  ❌ @/features/{feature}/I{Feature}Api.ts');
-  console.log('  ❌ @/features/{feature}/routes');
+  console.log('  ❌ @/(core|domain)/features/{feature}/models/*');
+  console.log('  ❌ @/(core|domain)/features/{feature}/types/*');
+  console.log('  ❌ @/(core|domain)/features/{feature}/slice.ts');
+  console.log('  ❌ @/(core|domain)/features/{feature}/sagas.ts');
+  console.log('  ❌ @/(core|domain)/features/{feature}/I{Feature}Api.ts');
+  console.log('  ❌ @/(core|domain)/features/{feature}/routes');
   console.log('');
 
   if (!fs.existsSync(pagesDir)) {
@@ -144,7 +144,7 @@ function checkPagesBoundaries() {
           type: 'services',
           message: 'Pages cannot import services',
         });
-      } else if (importPath.startsWith('@/features/')) {
+      } else if (importPath.startsWith('@/core/features/') || importPath.startsWith('@/domain/features/')) {
         // Check if it's an allowed feature import (components, hooks, hocs only)
         if (!isAllowedFeatureImport(importPath)) {
           violations.push({
@@ -187,10 +187,10 @@ function checkPagesBoundaries() {
         console.log(`     Issue: ${v.message}`);
       }
       console.log('     Fix: Pages should only import:');
-      console.log('          - Feature components: @/features/{feature}/components/*');
-      console.log('          - Feature hooks: @/features/{feature}/hooks/*');
-      console.log('          - Feature HOCs: @/features/{feature}/hocs/*');
-      console.log('          - Feature config: @/features/{feature}/config');
+      console.log('          - Feature components: @/(core|domain)/features/{feature}/components/*');
+      console.log('          - Feature hooks: @/(core|domain)/features/{feature}/hooks/*');
+      console.log('          - Feature HOCs: @/(core|domain)/features/{feature}/hocs/*');
+      console.log('          - Feature config: @/(core|domain)/features/{feature}/config');
       console.log('          - Root hooks: @/hooks/*');
       console.log('');
     }

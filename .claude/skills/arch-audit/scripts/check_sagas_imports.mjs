@@ -8,7 +8,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const projectRoot = path.resolve(__dirname, '../../../..');
-const featuresDir = path.join(projectRoot, 'src', 'features');
+const coreFeaturesDir = path.join(projectRoot, 'src', 'core', 'features');
+const domainFeaturesDir = path.join(projectRoot, 'src', 'domain', 'features');
 
 const ALLOWED_FILE = 'src/config/features.ts';
 const validExtensions = ['.ts', '.tsx', '.js', '.jsx'];
@@ -28,8 +29,8 @@ function extractSagasImports(content) {
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
-    // Match: @/features/{feature}/sagas
-    const match = line.match(/import\s+.*\s+from\s+['"](@\/features\/[^/]+\/sagas)['"]/);
+    // Match: @/(core|domain)/features/{feature}/sagas
+    const match = line.match(/import\s+.*\s+from\s+['"](@\/(core|domain)\/features\/[^/]+\/sagas)['"]/);
 
     if (match) {
       imports.push({
@@ -76,10 +77,14 @@ function checkSagasImports() {
   console.log('Why: Sagas are registered in composition root for Redux Saga middleware setup');
   console.log('');
 
-  const files = getAllFiles(featuresDir);
+  // Scan both core and domain features
+  const allFiles = [
+    ...getAllFiles(coreFeaturesDir),
+    ...getAllFiles(domainFeaturesDir)
+  ];
   const violations = [];
 
-  for (const file of files) {
+  for (const file of allFiles) {
     const relativePath = normalizePath(path.relative(projectRoot, file));
 
     // Skip the allowed file

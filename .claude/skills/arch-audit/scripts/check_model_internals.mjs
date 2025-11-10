@@ -8,7 +8,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const projectRoot = path.resolve(__dirname, '../../../..');
-const featuresDir = path.join(projectRoot, 'src', 'features');
+const coreFeaturesDir = path.join(projectRoot, 'src', 'core', 'features');
+const domainFeaturesDir = path.join(projectRoot, 'src', 'domain', 'features');
 
 const COMPOSITION_ROOT = 'src/config/';
 const validExtensions = ['.ts', '.tsx', '.js', '.jsx'];
@@ -24,17 +25,17 @@ function isCompositionRoot(filePath) {
 
 function getFeatureFromFile(filePath) {
   const normalized = normalizePath(filePath);
-  const match = normalized.match(/src\/features\/([^/]+)/);
-  return match ? match[1] : null;
+  const match = normalized.match(/src\/(core|domain)\/features\/([^/]+)/);
+  return match ? match[2] : null;
 }
 
 function isModelInternalImport(importPath) {
-  // Pattern: @/features/{feature}/models/{model}/{file}
-  const match = importPath.match(/@\/features\/([^/]+)\/models\/([^/]+)\/(.+)/);
+  // Pattern: @/(core|domain)/features/{feature}/models/{model}/{file}
+  const match = importPath.match(/@\/(core|domain)\/features\/([^/]+)\/models\/([^/]+)\/(.+)/);
 
   if (!match) return null;
 
-  const [, feature, model, restPath] = match;
+  const [, layer, feature, model, restPath] = match;
 
   // ALLOWED: types/ directory
   if (restPath.startsWith('types/') || restPath === 'types') {
@@ -55,7 +56,7 @@ function extractModelInternalImports(content) {
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
-    const match = line.match(/import\s+.*\s+from\s+['"](@\/features\/[^'"]+)['"]/);
+    const match = line.match(/import\s+.*\s+from\s+['"](@\/(core|domain)\/features\/[^'"]+)['"]/);
 
     if (match) {
       const importPath = match[1];
@@ -107,24 +108,28 @@ function checkModelInternals() {
   console.log('Rule: Features MUST NOT import model internals from other features');
   console.log('');
   console.log('Allowed cross-feature imports:');
-  console.log('  ✅ @/features/{feature}/models/{model}/types/*  - Model types');
-  console.log('  ✅ @/features/{feature}/hooks/*                 - Feature hooks');
-  console.log('  ✅ @/features/{feature}/components/*            - Components');
-  console.log('  ✅ @/features/{feature}/hocs/*                  - HOCs');
+  console.log('  ✅ @/(core|domain)/features/{feature}/models/{model}/types/*  - Model types');
+  console.log('  ✅ @/(core|domain)/features/{feature}/hooks/*                 - Feature hooks');
+  console.log('  ✅ @/(core|domain)/features/{feature}/components/*            - Components');
+  console.log('  ✅ @/(core|domain)/features/{feature}/hocs/*                  - HOCs');
   console.log('');
   console.log('Forbidden cross-feature imports:');
-  console.log('  ❌ @/features/{feature}/models/{model}/actions.ts');
-  console.log('  ❌ @/features/{feature}/models/{model}/slice.ts');
-  console.log('  ❌ @/features/{feature}/models/{model}/actionEffects/*');
-  console.log('  ❌ @/features/{feature}/models/{model}/IModelApi.ts');
+  console.log('  ❌ @/(core|domain)/features/{feature}/models/{model}/actions.ts');
+  console.log('  ❌ @/(core|domain)/features/{feature}/models/{model}/slice.ts');
+  console.log('  ❌ @/(core|domain)/features/{feature}/models/{model}/actionEffects/*');
+  console.log('  ❌ @/(core|domain)/features/{feature}/models/{model}/IModelApi.ts');
   console.log('');
   console.log('Exception: src/config/ (composition root) can import anything');
   console.log('');
 
-  const files = getAllFiles(featuresDir);
+  // Scan both core and domain features
+  const allFiles = [
+    ...getAllFiles(coreFeaturesDir),
+    ...getAllFiles(domainFeaturesDir)
+  ];
   const violations = [];
 
-  for (const file of files) {
+  for (const file of allFiles) {
     const relativePath = normalizePath(path.relative(projectRoot, file));
 
     // Skip composition root

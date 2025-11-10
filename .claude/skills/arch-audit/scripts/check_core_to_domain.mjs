@@ -8,9 +8,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const projectRoot = path.resolve(__dirname, '../../../..');
-const featuresDir = path.join(projectRoot, 'src', 'features');
+const coreFeaturesDir = path.join(projectRoot, 'src', 'core', 'features');
+const domainFeaturesDir = path.join(projectRoot, 'src', 'domain', 'features');
 
-const CORE_FEATURES = ['app', 'auth', 'components', 'i18n', 'layout', 'router', 'slice-manager'];
 const COMPOSITION_ROOT = 'src/config/';
 const validExtensions = ['.ts', '.tsx', '.js', '.jsx'];
 
@@ -18,8 +18,14 @@ function normalizePath(p) {
   return p.replace(/\\/g, '/');
 }
 
-function isCoreFeature(featureName) {
-  return CORE_FEATURES.includes(featureName);
+function isCoreFeatureImport(importPath) {
+  // Check if import is from core features: @/core/features/*
+  return importPath.startsWith('@/core/features/');
+}
+
+function isDomainFeatureImport(importPath) {
+  // Check if import is from domain features: @/domain/features/*
+  return importPath.startsWith('@/domain/features/');
 }
 
 function isCompositionRoot(filePath) {
@@ -32,9 +38,10 @@ function extractFeatureImports(content) {
   const lines = content.split('\n');
 
   for (const line of lines) {
-    const importMatch = line.match(/import\s+.*\s+from\s+['"]@\/features\/([^/'"]+)/);
+    // Match both @/core/features/* and @/domain/features/*
+    const importMatch = line.match(/import\s+.*\s+from\s+['"](@\/(core|domain)\/features\/[^'"]+)['"]/);
     if (importMatch) {
-      imports.push(importMatch[1]);
+      imports.push(importMatch[1]); // Full path like @/core/features/xxx or @/domain/features/xxx
     }
   }
 
@@ -74,11 +81,20 @@ function checkCoreToDomain() {
 
   const violations = [];
 
-  // Check each core feature
-  for (const coreFeature of CORE_FEATURES) {
-    const featureDir = path.join(featuresDir, coreFeature);
-    if (!fs.existsSync(featureDir)) continue;
+  // Check all core features
+  if (!fs.existsSync(coreFeaturesDir)) {
+    console.log('⚠️  Core features directory not found: src/core/features/');
+    console.log('');
+    return 0;
+  }
 
+  const coreFeatures = fs.readdirSync(coreFeaturesDir).filter(item => {
+    const itemPath = path.join(coreFeaturesDir, item);
+    return fs.statSync(itemPath).isDirectory();
+  });
+
+  for (const coreFeature of coreFeatures) {
+    const featureDir = path.join(coreFeaturesDir, coreFeature);
     const files = getAllFiles(featureDir);
 
     for (const file of files) {
@@ -90,12 +106,12 @@ function checkCoreToDomain() {
       const content = fs.readFileSync(file, 'utf-8');
       const imports = extractFeatureImports(content);
 
-      for (const importedFeature of imports) {
+      for (const importPath of imports) {
         // Check if core feature imports domain feature
-        if (!isCoreFeature(importedFeature) && importedFeature !== coreFeature) {
+        if (isDomainFeatureImport(importPath)) {
           violations.push({
             coreFeature,
-            domainFeature: importedFeature,
+            domainFeatureImport: importPath,
             file: relativePath,
           });
         }
@@ -126,10 +142,10 @@ function checkCoreToDomain() {
     for (const [coreFeature, viols] of Object.entries(byCore)) {
       console.log(`  ❌ ${coreFeature} (core) → domain features:`);
 
-      const uniqueDomains = [...new Set(viols.map(v => v.domainFeature))];
-      for (const domain of uniqueDomains) {
-        const files = viols.filter(v => v.domainFeature === domain).map(v => v.file);
-        console.log(`     → ${domain} (domain)`);
+      const uniqueImports = [...new Set(viols.map(v => v.domainFeatureImport))];
+      for (const importPath of uniqueImports) {
+        const files = viols.filter(v => v.domainFeatureImport === importPath).map(v => v.file);
+        console.log(`     → ${importPath}`);
         for (const file of files) {
           console.log(`        File: ${file}`);
         }
