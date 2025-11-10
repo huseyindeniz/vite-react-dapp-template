@@ -19,8 +19,8 @@ const ALLOWED_SERVICE_IMPORT_FILES = [
   'src/config/services.ts', // Root services file (if exists)
 ];
 
-// Pattern for feature-specific service files: src/config/{feature}/services.ts
-const ALLOWED_SERVICE_IMPORT_PATTERN = /^src\/config\/[^/]+\/services\.ts$/;
+// Pattern for feature-specific service files: src/config/(core|domain)/{feature}/services.ts
+const ALLOWED_SERVICE_IMPORT_PATTERN = /^src\/config\/(core|domain)\/[^/]+\/services\.ts$/;
 
 /**
  * Normalize path for consistent comparison (forward slashes)
@@ -150,7 +150,7 @@ function runServiceImportCheck() {
     console.log('');
     console.log('All service imports are properly isolated in composition root:');
     console.log('  - src/config/services.ts (root, if exists)');
-    console.log('  - src/config/{feature}/services.ts (feature-specific)');
+    console.log('  - src/config/(core|domain)/{feature}/services.ts (feature-specific)');
   } else {
     console.log(`❌ Found ${violations.length} service import violation(s)`);
     console.log('');
@@ -176,7 +176,7 @@ function runServiceImportCheck() {
         console.log(`     Import: ${violation.import}`);
       }
 
-      console.log(`     Rule: Services must ONLY be imported in composition root (src/config/*/services.ts)`);
+      console.log(`     Rule: Services must ONLY be imported in composition root (src/config/(core|domain)/*/services.ts)`);
       console.log(`     Fix: Use dependency injection - receive service through interface`);
       console.log('');
     }
@@ -196,7 +196,7 @@ function runServiceImportCheck() {
     console.log('Dependency Injection Pattern:');
     console.log('  - Services are ONLY imported in composition root:');
     console.log('    - src/config/services.ts (root, if exists)');
-    console.log('    - src/config/{feature}/services.ts (feature-specific)');
+    console.log('    - src/config/(core|domain)/{feature}/services.ts (feature-specific)');
     console.log('  - Features receive services through interfaces (IFeatureApi)');
     console.log('  - This allows easy service swapping and testing');
     console.log('');

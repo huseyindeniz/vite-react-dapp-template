@@ -26,8 +26,8 @@ function normalizePath(p) {
  */
 function isUseActionsFile(filePath) {
   const normalized = normalizePath(filePath);
-  // Pattern: src/features/*/hooks/useActions.ts
-  return /src\/features\/[^/]+\/hooks\/useActions\.(ts|tsx|js|jsx)$/.test(normalized);
+  // Pattern: src/(core|domain)/features/*/hooks/useActions.ts
+  return /src\/(core|domain)\/features\/[^/]+\/hooks\/useActions\.(ts|tsx|js|jsx)$/.test(normalized);
 }
 
 /**
@@ -35,8 +35,8 @@ function isUseActionsFile(filePath) {
  */
 function isFeatureHookFile(filePath) {
   const normalized = normalizePath(filePath);
-  // Pattern: src/features/*/hooks/*.ts
-  return /src\/features\/[^/]+\/hooks\/.*\.(ts|tsx|js|jsx)$/.test(normalized);
+  // Pattern: src/(core|domain)/features/*/hooks/*.ts
+  return /src\/(core|domain)\/features\/[^/]+\/hooks\/.*\.(ts|tsx|js|jsx)$/.test(normalized);
 }
 
 /**
@@ -53,8 +53,8 @@ function isRootHookFile(filePath) {
  */
 function isActionEffectFile(filePath) {
   const normalized = normalizePath(filePath);
-  // Pattern: src/features/*/models/*/actionEffects/*.ts
-  return /src\/features\/[^/]+\/models\/[^/]+\/actionEffects\/.*\.(ts|tsx|js|jsx)$/.test(normalized);
+  // Pattern: src/(core|domain)/features/*/models/*/actionEffects/*.ts
+  return /src\/(core|domain)\/features\/[^/]+\/models\/[^/]+\/actionEffects\/.*\.(ts|tsx|js|jsx)$/.test(normalized);
 }
 
 /**
@@ -353,9 +353,9 @@ function runReduxAbstractionCheck() {
     console.log('  3. Components should use useTypedSelector for cross-feature state access');
     console.log('');
     console.log('Allowed:');
-    console.log('  - features/*/hooks/*.ts can use useDispatch, useSelector, RootState');
+    console.log('  - (core|domain)/features/*/hooks/*.ts can use useDispatch, useSelector, RootState');
     console.log('  - src/hooks/*.ts can use useSelector, RootState');
-    console.log('  - features/*/models/*/actionEffects/*.ts can use RootState');
+    console.log('  - (core|domain)/features/*/models/*/actionEffects/*.ts can use RootState');
     console.log('');
     console.log('Pattern:');
     console.log('  Components → Feature Hooks → Redux');

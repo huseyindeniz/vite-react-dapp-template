@@ -47,7 +47,7 @@ function shouldExcludeFile(filePath) {
   const excludedFiles = [
     'src/services/ethersV6/types/common.ts', // Ethers.js type utilities
     'src/services/oauth/providers/google/types.ts', // Google OAuth external library types
-    'src/features/components/Breadcrumb/Breadcrumb.tsx', // React component with props interfaces
+    'src/domain/layout/components/Breadcrumb/Breadcrumb.tsx', // React component with props interfaces
   ];
 
   if (excludedFiles.includes(normalizedPath)) {
