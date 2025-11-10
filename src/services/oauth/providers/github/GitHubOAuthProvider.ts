@@ -1,7 +1,7 @@
 import log from 'loglevel';
 
-import { IOAuthProvider } from '@/features/oauth/models/provider/interfaces/IOAuthProvider';
-import { OAuthProviderCredentials } from '@/features/oauth/models/provider/types/OAuthProviderCredentials';
+import { IOAuthProvider } from '@/domain/features/oauth/models/provider/interfaces/IOAuthProvider';
+import { OAuthProviderCredentials } from '@/domain/features/oauth/models/provider/types/OAuthProviderCredentials';
 
 import {
   getGitHubClientId,

@@ -1,9 +1,9 @@
 import axios, { AxiosError } from 'axios';
 import log from 'loglevel';
 
-import { IBlogDemoApi } from '@/features/blog-demo/interfaces/IBlogDemoApi';
-import { Author } from '@/features/blog-demo/models/author/types/Author';
-import { Post } from '@/features/blog-demo/models/post/types/Post';
+import { IBlogDemoApi } from '@/domain/features/blog-demo/interfaces/IBlogDemoApi';
+import { Author } from '@/domain/features/blog-demo/models/author/types/Author';
+import { Post } from '@/domain/features/blog-demo/models/post/types/Post';
 
 const BASE_URL = 'https://jsonplaceholder.typicode.com';
 

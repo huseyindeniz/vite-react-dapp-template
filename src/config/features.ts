@@ -1,6 +1,6 @@
-import { blogDemoFeatureConfig } from './blog-demo/feature';
-import { oauthFeatureConfig } from './oauth/feature';
-import { walletFeatureConfig } from './wallet/feature';
+import { blogDemoFeatureConfig } from './domain/blog-demo/feature';
+import { oauthFeatureConfig } from './domain/oauth/feature';
+import { walletFeatureConfig } from './domain/wallet/feature';
 
 /**
  * Centralized feature registry

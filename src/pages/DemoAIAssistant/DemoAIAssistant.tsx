@@ -2,8 +2,8 @@ import React from 'react';
 
 import { useTranslation } from 'react-i18next';
 
-import { ChatInterface } from '@/features/ai-assistant/components/ChatInterface';
-import { PageMeta } from '@/features/components/PageMeta/PageMeta';
+import { ChatInterface } from '@/domain/features/ai-assistant/components/ChatInterface';
+import { PageMeta } from '@/domain/layout/components/PageMeta/PageMeta';
 
 export const DemoAIAssistantPage: React.FC = () => {
   const { t } = useTranslation('page-demoaiassistant');

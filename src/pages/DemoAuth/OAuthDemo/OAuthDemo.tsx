@@ -4,8 +4,8 @@ import { Stack, Title, Text, Alert } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import { IoIosWarning } from 'react-icons/io';
 
-import { PageMeta } from '@/features/components/PageMeta/PageMeta';
-import { withOAuthProtection } from '@/features/oauth/hocs/withOAuthProtection';
+import { withOAuthProtection } from '@/domain/features/oauth/hocs/withOAuthProtection';
+import { PageMeta } from '@/domain/layout/components/PageMeta/PageMeta';
 
 export const OAuthDemoPage: React.FC = () => {
   const { t } = useTranslation('page-demoauth-oauthdemo');

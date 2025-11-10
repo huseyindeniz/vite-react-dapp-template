@@ -7,7 +7,7 @@ const path = require('path');
  * Structure: i18n/translations/{namespace}/{locale}.json
  */
 
-const translationsDir = './src/config/i18n/translations';
+const translationsDir = './src/config/core/i18n/translations';
 const languages = ['en-US', 'tr-TR'];
 
 /**

@@ -5,11 +5,11 @@ import { formatEther } from 'ethers/utils';
 import log from 'loglevel';
 import { eventChannel, EventChannel } from 'redux-saga';
 
-import { SUPPORTED_NETWORKS } from '@/config/wallet/config';
-import { DISABLE_WALLET_SIGN } from '@/features/wallet/config';
-import { AccountType } from '@/features/wallet/models/account/types/Account';
-import { InstalledWallets } from '@/features/wallet/models/provider/types/InstalledWallets';
-import { SupportedWallets } from '@/features/wallet/models/provider/types/SupportedWallets';
+import { SUPPORTED_NETWORKS } from '@/config/domain/wallet/config';
+import { DISABLE_WALLET_SIGN } from '@/domain/features/wallet/config';
+import { AccountType } from '@/domain/features/wallet/models/account/types/Account';
+import { InstalledWallets } from '@/domain/features/wallet/models/provider/types/InstalledWallets';
+import { SupportedWallets } from '@/domain/features/wallet/models/provider/types/SupportedWallets';
 
 import { IWalletEthersV6ProviderApi } from '../interfaces/IWalletEthersV6ProviderApi';
 

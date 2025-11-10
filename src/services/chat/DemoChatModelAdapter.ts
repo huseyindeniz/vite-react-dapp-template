@@ -1,8 +1,8 @@
 import { ChatModelRunOptions, ChatModelRunResult } from '@assistant-ui/react';
 import log from 'loglevel';
 
-import { AgentType } from '@/features/ai-assistant/config';
-import { IChatModelAdapter } from '@/features/ai-assistant/interfaces/IChatModelAdapter';
+import { AgentType } from '@/domain/features/ai-assistant/config';
+import { IChatModelAdapter } from '@/domain/features/ai-assistant/interfaces/IChatModelAdapter';
 
 /**
  * Demo chat adapter that showcases chat capabilities without requiring a real AI backend

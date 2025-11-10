@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 
 const App = React.lazy(() =>
-  import(/* webpackChunkName: "App" */ '@/features/app/App').then(module => ({
+  import(/* webpackChunkName: "App" */ '@/core/features/app/App').then(module => ({
     default: module.App,
   }))
 );

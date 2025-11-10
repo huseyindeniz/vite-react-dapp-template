@@ -3,8 +3,8 @@ import React from 'react';
 import { Stack, Title, Text } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 
-import { Posts } from '@/features/blog-demo/components/Posts/Posts';
-import { PageMeta } from '@/features/components/PageMeta/PageMeta';
+import { Posts } from '@/domain/features/blog-demo/components/Posts/Posts';
+import { PageMeta } from '@/domain/layout/components/PageMeta/PageMeta';
 
 export const DemoBlogPage: React.FC = () => {
   const { t } = useTranslation('page-demoblog');

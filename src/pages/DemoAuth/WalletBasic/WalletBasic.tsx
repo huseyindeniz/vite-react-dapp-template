@@ -4,8 +4,8 @@ import { Stack, Title, Text, Alert } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import { IoIosWarning } from 'react-icons/io';
 
-import { PageMeta } from '@/features/components/PageMeta/PageMeta';
-import { withWalletProtection } from '@/features/wallet/hocs/withWalletProtection';
+import { withWalletProtection } from '@/domain/features/wallet/hocs/withWalletProtection';
+import { PageMeta } from '@/domain/layout/components/PageMeta/PageMeta';
 
 export const WalletBasicPage: React.FC = () => {
   const { t } = useTranslation('page-demoauth-walletbasic');

@@ -3,7 +3,7 @@ import React from 'react';
 import { Stack, Title, Text, Alert, Code, List } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 
-import { PageMeta } from '@/features/components/PageMeta/PageMeta';
+import { PageMeta } from '@/domain/layout/components/PageMeta/PageMeta';
 
 export const CombinedAuthPage: React.FC = () => {
   const { t } = useTranslation('page-demoauth-combinedauth');
