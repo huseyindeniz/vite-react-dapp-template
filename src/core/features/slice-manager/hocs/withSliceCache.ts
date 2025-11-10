@@ -1,11 +1,11 @@
 import log from 'loglevel';
 import { call, CallEffect } from 'redux-saga/effects';
 
-import { getSliceManager } from '../SliceLifecycleManager';
 import { getCachedData } from '../cache/getCachedData';
 import { setCachedData } from '../cache/setCachedData';
 import { CacheOptions } from '../cache/types/CacheOptions';
 import { updateSliceAccessTime } from '../slice-integration/updateSliceAccessTime';
+import { getSliceManager } from '../SliceLifecycleManager';
 import { ApiCallGenerator } from '../types/ApiCallGenerator';
 
 export function* withSliceCache<T>(

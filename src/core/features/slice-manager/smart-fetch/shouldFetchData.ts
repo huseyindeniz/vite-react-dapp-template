@@ -1,8 +1,8 @@
 import log from 'loglevel';
 import { call, select, CallEffect, SelectEffect } from 'redux-saga/effects';
 
-import { getSliceManager } from '../SliceLifecycleManager';
 import { getSliceLastAccessed } from '../slice-integration/getSliceLastAccessed';
+import { getSliceManager } from '../SliceLifecycleManager';
 import { StateSelector } from '../types/StateSelector';
 import { areParamsEqual } from '../utils/areParamsEqual';
 
@@ -28,12 +28,14 @@ export function* shouldFetchData<T>(
   // Check if params changed (if params tracking is enabled)
   if (params && lastFetchParamsSelector) {
     const lastFetchParamsRaw: unknown = yield select(lastFetchParamsSelector);
-    const lastFetchParams = lastFetchParamsRaw as Record<string, unknown> | undefined;
+    const lastFetchParams = lastFetchParamsRaw as
+      | Record<string, unknown>
+      | undefined;
     if (!areParamsEqual(lastFetchParams, params)) {
-      log.debug(
-        `🔄 Params changed for ${sliceName}:`,
-        { previous: lastFetchParams, current: params }
-      );
+      log.debug(`🔄 Params changed for ${sliceName}:`, {
+        previous: lastFetchParams,
+        current: params,
+      });
       return true; // Params changed, fetch fresh data
     }
   }

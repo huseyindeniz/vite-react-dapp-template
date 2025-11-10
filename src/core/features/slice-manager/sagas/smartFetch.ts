@@ -2,12 +2,12 @@ import log from 'loglevel';
 import { call, select, CallEffect, SelectEffect } from 'redux-saga/effects';
 
 import { withSliceCache } from '../hocs/withSliceCache';
+import { getSliceManager } from '../SliceLifecycleManager';
 import { shouldFetchData } from '../smart-fetch/shouldFetchData';
 import { ApiCallGenerator } from '../types/ApiCallGenerator';
+import { SmartFetchOptions } from '../types/SmartFetchOptions';
 import { StateSelector } from '../types/StateSelector';
 import { createCacheKey } from '../utils/createCacheKey';
-import { getSliceManager } from '../SliceLifecycleManager';
-import { SmartFetchOptions } from '../types/SmartFetchOptions';
 
 export function* smartFetch<T>(
   sliceName: string,
@@ -16,7 +16,11 @@ export function* smartFetch<T>(
   apiCall: () => ApiCallGenerator<T>,
   options: SmartFetchOptions = {}
 ): Generator<CallEffect<unknown> | SelectEffect, T | null, unknown> {
-  const { forceRefresh = false, languageSelector, lastFetchParamsSelector } = options;
+  const {
+    forceRefresh = false,
+    languageSelector,
+    lastFetchParamsSelector,
+  } = options;
 
   // Extract language from params if present
   const requestedLanguage = params.language as string | undefined;
