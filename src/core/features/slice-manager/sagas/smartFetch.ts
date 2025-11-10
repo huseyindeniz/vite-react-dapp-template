@@ -1,11 +1,11 @@
 import log from 'loglevel';
 import { call, select, CallEffect, SelectEffect } from 'redux-saga/effects';
 
-import { withSliceCache } from '../lib/hocs/withSliceCache';
-import { shouldFetchData } from '../lib/smart-fetch/shouldFetchData';
-import { ApiCallGenerator } from '../lib/types/ApiCallGenerator';
-import { StateSelector } from '../lib/types/StateSelector';
-import { createCacheKey } from '../lib/utils/createCacheKey';
+import { withSliceCache } from '../hocs/withSliceCache';
+import { shouldFetchData } from '../smart-fetch/shouldFetchData';
+import { ApiCallGenerator } from '../types/ApiCallGenerator';
+import { StateSelector } from '../types/StateSelector';
+import { createCacheKey } from '../utils/createCacheKey';
 import { getSliceManager } from '../SliceLifecycleManager';
 import { SmartFetchOptions } from '../types/SmartFetchOptions';
 

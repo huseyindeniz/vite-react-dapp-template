@@ -1,4 +1,4 @@
-import { StateSelector } from '../lib/types/StateSelector';
+import { StateSelector } from './StateSelector';
 
 export interface SmartFetchOptions {
   maxAge?: number;

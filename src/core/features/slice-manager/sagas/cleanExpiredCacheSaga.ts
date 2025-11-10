@@ -1,6 +1,6 @@
 import log from 'loglevel';
 
-import { cleanExpiredCache } from '../lib/cache/cleanExpiredCache';
+import { cleanExpiredCache } from '../cache/cleanExpiredCache';
 
 export function cleanExpiredCacheSaga(): number {
   const cleanedCount = cleanExpiredCache();

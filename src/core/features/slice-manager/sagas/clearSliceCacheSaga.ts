@@ -1,6 +1,6 @@
 import log from 'loglevel';
 
-import { clearSliceCache } from '../lib/cache/clearSliceCache';
+import { clearSliceCache } from '../cache/clearSliceCache';
 
 export function clearSliceCacheSaga(action: { payload: { sliceName: string } }): void {
   clearSliceCache(action.payload.sliceName);

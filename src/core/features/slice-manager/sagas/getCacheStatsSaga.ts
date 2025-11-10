@@ -1,7 +1,7 @@
 import log from 'loglevel';
 
-import { getCacheStats } from '../lib/cache/getCacheStats';
-import { CacheStats } from '../lib/cache/types/CacheStats';
+import { getCacheStats } from '../cache/getCacheStats';
+import { CacheStats } from '../cache/types/CacheStats';
 
 export function getCacheStatsSaga(): CacheStats {
   const stats = getCacheStats();
