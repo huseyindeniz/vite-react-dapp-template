@@ -54,8 +54,8 @@ const Layout = React.lazy(() =>
 
 const NotFoundPage = React.lazy(() =>
   import(
-    /* webpackChunkName: "NotFoundPage" */ '@/config/pages/notFoundExtension'
-  ).then(module => ({ default: module.NotFoundExtension }))
+    /* webpackChunkName: "NotFoundPage" */ '@/pages/NotFound/NotFound'
+  ).then(module => ({ default: module.NotFoundPage }))
 );
 
 const Routes: React.FC = () => {

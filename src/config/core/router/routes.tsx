@@ -92,17 +92,17 @@ const DemoBlogPostPage = React.lazy(() =>
 
 const WalletProfile = React.lazy(() =>
   import(
-    /* webpackChunkName: "WalletProfilePage" */ '@/config/pages/walletProfileExtension'
+    /* webpackChunkName: "WalletProfilePage" */ '@/pages/WalletProfile/WalletProfile'
   ).then(module => ({
-    default: module.WalletProfileExtension,
+    default: module.WalletProfilePage,
   }))
 );
 
 const OAuthProfile = React.lazy(() =>
   import(
-    /* webpackChunkName: "OAuthProfilePage" */ '@/config/pages/oauthProfileExtension'
+    /* webpackChunkName: "OAuthProfilePage" */ '@/pages/OAuthProfile/OAuthProfile'
   ).then(module => ({
-    default: module.OAuthProfileExtension,
+    default: module.OAuthProfilePage,
   }))
 );
 
