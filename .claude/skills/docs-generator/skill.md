@@ -263,7 +263,7 @@ The analysis scripts should detect both **common patterns** and **exceptions/out
 - Example: `oauth/` has only `session` model
 
 ### Composition Root
-- `src/features/app/config/` is special exception
+- `src/config/` is special exception
 - Can import anything (services, model internals, etc.)
 - This is intentional for dependency injection
 

@@ -47,7 +47,9 @@ function shouldExcludeFile(filePath) {
   const excludedFiles = [
     'src/services/ethersV6/types/common.ts', // Ethers.js type utilities
     'src/services/oauth/providers/google/types.ts', // Google OAuth external library types
-    'src/features/ui/mantine/components/Breadcrumb/Breadcrumb.tsx', // React component with props interfaces
+    'src/domain/layout/components/Breadcrumb/Breadcrumb.tsx', // React component with props interfaces
+    'src/services/chat/DemoChatModelAdapter.ts', // Contains TypeScript code examples in markdown strings (false positive)
+    'src/core/features/app/store/store.ts', // Core Redux store with related types (FeatureReducers, RootState)
   ];
 
   if (excludedFiles.includes(normalizedPath)) {
@@ -59,19 +61,18 @@ function shouldExcludeFile(filePath) {
 
 /**
  * Find all entities (interfaces, types, classes, enums) in content
+ * NOW CATCHES BOTH EXPORTED AND NON-EXPORTED ENTITIES!
  */
 function findEntities(content) {
   const lines = content.split('\n');
   const entities = [];
 
-  // Patterns to detect exported entities
+  // Patterns to detect ALL entities (exported or not)
   const entityPatterns = [
-    { pattern: /^export\s+interface\s+(\w+)/, type: 'interface' },
-    { pattern: /^export\s+type\s+(\w+)\s*=/, type: 'type' },
-    { pattern: /^export\s+class\s+(\w+)/, type: 'class' },
-    { pattern: /^export\s+enum\s+(\w+)/, type: 'enum' },
-    { pattern: /^export\s+const\s+enum\s+(\w+)/, type: 'const enum' },
-    { pattern: /^export\s+abstract\s+class\s+(\w+)/, type: 'abstract class' },
+    { pattern: /^(?:export\s+)?interface\s+(\w+)/, type: 'interface' },
+    { pattern: /^(?:export\s+)?type\s+(\w+)\s*=/, type: 'type' },
+    { pattern: /^(?:export\s+)?(?:abstract\s+)?class\s+(\w+)/, type: 'class' },
+    { pattern: /^(?:export\s+)?(?:const\s+)?enum\s+(\w+)/, type: 'enum' },
   ];
 
   for (let i = 0; i < lines.length; i++) {

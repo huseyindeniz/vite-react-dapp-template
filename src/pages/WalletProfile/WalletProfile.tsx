@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { WalletProfilePage } from '@/features/wallet/components/WalletProfilePage/WalletProfilePage';
+import { WalletProfilePage as WalletProfileContent } from '@/domain/features/wallet/components/WalletProfilePage/WalletProfilePage';
 
-export const WalletProfile: React.FC = () => {
-  return <WalletProfilePage />;
+export const WalletProfilePage: React.FC = () => {
+  return <WalletProfileContent />;
 };

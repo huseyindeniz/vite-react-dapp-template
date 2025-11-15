@@ -36,12 +36,12 @@ function extractImports(content) {
 }
 
 function isAllowedFeatureImport(importPath) {
-  // Pattern: @/features/{feature}/...
-  const match = importPath.match(/^@\/features\/([^/]+)\/(.+)$/);
+  // Pattern: @/(core|domain)/features/{feature}/...
+  const match = importPath.match(/^@\/(core|domain)\/features\/([^/]+)\/(.+)$/);
 
   if (!match) return true; // Not a feature import, allow it
 
-  const [, feature, restPath] = match;
+  const [, layer, feature, restPath] = match;
 
   // ALLOWED: Interfaces from feature-level or model-level interfaces/ folders
   // Examples:
@@ -98,22 +98,22 @@ function checkServiceBoundaries() {
   console.log('='.repeat(80));
   console.log('');
   console.log('Rule: Services can ONLY import:');
-  console.log('  ✅ @/features/{feature}/interfaces/* - Feature-level interfaces');
-  console.log('  ✅ @/features/{feature}/models/{model}/interfaces/* - Model-level interfaces');
-  console.log('  ✅ @/features/{feature}/types/* - Feature types');
-  console.log('  ✅ @/features/{feature}/models/{model}/types/* - Model types');
-  console.log('  ✅ @/features/{feature}/config - Feature configuration');
+  console.log('  ✅ @/(core|domain)/features/{feature}/interfaces/* - Feature-level interfaces');
+  console.log('  ✅ @/(core|domain)/features/{feature}/models/{model}/interfaces/* - Model-level interfaces');
+  console.log('  ✅ @/(core|domain)/features/{feature}/types/* - Feature types');
+  console.log('  ✅ @/(core|domain)/features/{feature}/models/{model}/types/* - Model types');
+  console.log('  ✅ @/(core|domain)/features/{feature}/config - Feature configuration');
   console.log('  ✅ External libraries');
   console.log('');
   console.log('Services CANNOT import:');
   console.log('  ❌ @/services/* - Other services (depend on feature interfaces instead)');
   console.log('  ❌ @/pages/*');
   console.log('  ❌ @/hooks/*');
-  console.log('  ❌ @/features/{feature}/models/{model}/actions.ts');
-  console.log('  ❌ @/features/{feature}/models/{model}/slice.ts');
-  console.log('  ❌ @/features/{feature}/models/{model}/actionEffects/*');
-  console.log('  ❌ @/features/{feature}/hooks/*');
-  console.log('  ❌ @/features/{feature}/components/*');
+  console.log('  ❌ @/(core|domain)/features/{feature}/models/{model}/actions.ts');
+  console.log('  ❌ @/(core|domain)/features/{feature}/models/{model}/slice.ts');
+  console.log('  ❌ @/(core|domain)/features/{feature}/models/{model}/actionEffects/*');
+  console.log('  ❌ @/(core|domain)/features/{feature}/hooks/*');
+  console.log('  ❌ @/(core|domain)/features/{feature}/components/*');
   console.log('');
 
   if (!fs.existsSync(servicesDir)) {
@@ -164,7 +164,7 @@ function checkServiceBoundaries() {
           type: 'hooks',
           message: 'Services cannot import root hooks',
         });
-      } else if (importPath.startsWith('@/features/')) {
+      } else if (importPath.startsWith('@/core/features/') || importPath.startsWith('@/domain/features/')) {
         // Check if it's an allowed feature import (interfaces or types from feature/model folders)
         if (!isAllowedFeatureImport(importPath)) {
           violations.push({
@@ -207,11 +207,11 @@ function checkServiceBoundaries() {
         console.log(`     Issue: ${v.message}`);
       }
       console.log('     Fix: Services should only import:');
-      console.log('          - Feature interfaces: @/features/{feature}/interfaces/*');
-      console.log('          - Model interfaces: @/features/{feature}/models/{model}/interfaces/*');
-      console.log('          - Feature types: @/features/{feature}/types/*');
-      console.log('          - Model types: @/features/{feature}/models/{model}/types/*');
-      console.log('          - Feature config: @/features/{feature}/config');
+      console.log('          - Feature interfaces: @/(core|domain)/features/{feature}/interfaces/*');
+      console.log('          - Model interfaces: @/(core|domain)/features/{feature}/models/{model}/interfaces/*');
+      console.log('          - Feature types: @/(core|domain)/features/{feature}/types/*');
+      console.log('          - Model types: @/(core|domain)/features/{feature}/models/{model}/types/*');
+      console.log('          - Feature config: @/(core|domain)/features/{feature}/config');
       console.log('          - External libraries');
       console.log('');
     }

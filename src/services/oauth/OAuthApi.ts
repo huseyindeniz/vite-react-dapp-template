@@ -1,8 +1,8 @@
 import log from 'loglevel';
 
-import { ISessionApi } from '@/features/oauth/models/session/interfaces/ISessionApi';
-import { OAuthTokenExchangeRequest } from '@/features/oauth/models/session/types/OAuthTokenExchangeRequest';
-import { OAuthUser } from '@/features/oauth/models/session/types/OAuthUser';
+import { ISessionApi } from '@/domain/features/oauth/models/session/interfaces/ISessionApi';
+import { OAuthTokenExchangeRequest } from '@/domain/features/oauth/models/session/types/OAuthTokenExchangeRequest';
+import { OAuthUser } from '@/domain/features/oauth/models/session/types/OAuthUser';
 
 // const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
 

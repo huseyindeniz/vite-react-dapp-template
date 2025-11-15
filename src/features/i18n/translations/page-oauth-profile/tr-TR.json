@@ -1,7 +1,0 @@
-{
-  "Error": "Hata",
-  "Failed to retrieve user data. Please try logging in again.": "Kullanıcı verileri alınamadı. Lütfen tekrar giriş yapmayı deneyin.",
-  "User Dashboard": "Kullanıcı Panosu",
-  "Signed in with {{provider}}": "{{provider}} ile giriş yapıldı",
-  "Your OAuth profile content...": "OAuth profil içeriğiniz..."
-}

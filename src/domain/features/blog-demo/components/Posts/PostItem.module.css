@@ -1,0 +1,25 @@
+.card {
+  background-color: var(--mantine-color-body);
+  transition: transform 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+}
+
+.title {
+  font-weight: 500;
+  margin-top: var(--mantine-spacing-xs);
+  line-height: 1.4;
+}
+
+.content {
+  flex: 1;
+}
+
+.author {
+  margin-top: auto;
+}

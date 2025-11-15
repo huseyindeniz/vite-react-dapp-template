@@ -34,17 +34,17 @@ const EXCLUSIONS = {
 
   // Debug/developer tools (not user-facing)
   paths: [
-    'features/slice-manager/components/SliceDebugPanel', // Redux slice debug panel
-    'features/i18n/components/LangMenu/LangModal',       // Language selection modal (i18n infrastructure)
-    'features/ui/mantine/components/ErrorFallback',      // Error boundary fallback (infrastructure)
-    'pages/Home/components/Environment',                 // Environment variables display (developer tool)
+    'core/features/slice-manager/components/SliceDebugPanel', // Redux slice debug panel
+    'core/features/i18n/components/LangMenu/LangModal',       // Language selection modal (i18n infrastructure)
+    'domain/layout/ErrorFallback',                            // Error boundary fallback (infrastructure)
+    'pages/Home/components/Environment',                      // Environment variables display (developer tool)
   ],
 
   // OAuth callback handlers (redirect handlers, not user-facing UI)
   oauth: [
-    'features/oauth/pages/GithubCallback',
-    'features/oauth/pages/GoogleCallback',
-    'features/oauth/routes',                           // Callback route definitions
+    'domain/features/oauth/pages/GithubCallback',
+    'domain/features/oauth/pages/GoogleCallback',
+    'domain/features/oauth/routes',                           // Callback route definitions
   ],
 };
 
@@ -196,6 +196,11 @@ function findJSXTextContent(content) {
 
       // Skip if it's a variable/expression (would be in {})
       if (beforeText.endsWith('{') || line.substring(match.index + match[0].length).startsWith('}')) {
+        continue;
+      }
+
+      // Skip if it's inside a <Code> block (code examples, not user-facing text)
+      if (/<Code\b/.test(beforeText)) {
         continue;
       }
 

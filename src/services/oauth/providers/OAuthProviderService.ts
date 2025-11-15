@@ -1,8 +1,8 @@
 import log from 'loglevel';
 
-import { IOAuthProvider } from '@/features/oauth/models/provider/interfaces/IOAuthProvider';
-import { IOAuthProviderService } from '@/features/oauth/models/provider/interfaces/IOAuthProviderService';
-import { OAuthProviderName } from '@/features/oauth/models/provider/types/OAuthProviderName';
+import { IOAuthProvider } from '@/domain/features/oauth/models/provider/interfaces/IOAuthProvider';
+import { IOAuthProviderService } from '@/domain/features/oauth/models/provider/interfaces/IOAuthProviderService';
+import { OAuthProviderName } from '@/domain/features/oauth/models/provider/types/OAuthProviderName';
 
 /**
  * Service for managing OAuth provider instances

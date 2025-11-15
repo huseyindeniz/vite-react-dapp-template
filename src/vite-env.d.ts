@@ -32,3 +32,4 @@ declare module '@metamask/jazzicon' {
 }
 
 declare const __VITE_REACT_DAPP_TEMPLATE_VERSION__: string;
+declare const __VITE_REACT_APP_VERSION__: string;

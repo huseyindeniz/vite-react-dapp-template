@@ -1,12 +1,12 @@
 import log from 'loglevel';
 
-import { getOAuthProviderByName } from '@/features/oauth/config';
-import { IOAuthApi } from '@/features/oauth/interfaces/IOAuthApi';
-import { IOAuthProvider } from '@/features/oauth/models/provider/interfaces/IOAuthProvider';
-import { OAuthProviderCredentials } from '@/features/oauth/models/provider/types/OAuthProviderCredentials';
-import { OAuthProviderName } from '@/features/oauth/models/provider/types/OAuthProviderName';
-import { OAuthTokenExchangeRequest } from '@/features/oauth/models/session/types/OAuthTokenExchangeRequest';
-import { OAuthUser } from '@/features/oauth/models/session/types/OAuthUser';
+import { getOAuthProviderByName } from '@/domain/features/oauth/config';
+import { IOAuthApi } from '@/domain/features/oauth/interfaces/IOAuthApi';
+import { IOAuthProvider } from '@/domain/features/oauth/models/provider/interfaces/IOAuthProvider';
+import { OAuthProviderCredentials } from '@/domain/features/oauth/models/provider/types/OAuthProviderCredentials';
+import { OAuthProviderName } from '@/domain/features/oauth/models/provider/types/OAuthProviderName';
+import { OAuthTokenExchangeRequest } from '@/domain/features/oauth/models/session/types/OAuthTokenExchangeRequest';
+import { OAuthUser } from '@/domain/features/oauth/models/session/types/OAuthUser';
 
 import { OAuthApi } from './OAuthApi';
 import { OAuthProviderService } from './providers/OAuthProviderService';

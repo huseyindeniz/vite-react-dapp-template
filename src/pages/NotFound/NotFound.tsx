@@ -13,7 +13,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 
-import { usePageLink } from '@/features/router/hooks/usePageLink';
+import { usePageLink } from '@/core/features/router/hooks/usePageLink';
 
 import imageBackToHomePage from './assets/images/backToTheHomepage.webp';
 import imageDelorean from './assets/images/delorean.webp';

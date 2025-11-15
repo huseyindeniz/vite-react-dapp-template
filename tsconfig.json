@@ -20,7 +20,9 @@
     "noFallthroughCasesInSwitch": true,
     "baseUrl": ".",
     "paths": {
-      "@/features/*": ["./src/features/*"],
+      "@/core/*": ["./src/core/*"],
+      "@/domain/*": ["./src/domain/*"],
+      "@/config/*": ["./src/config/*"],
       "@/services/*": ["./src/services/*"],
       "@/pages/*": ["./src/pages/*"],
       "@/hooks/*": ["./src/hooks/*"],

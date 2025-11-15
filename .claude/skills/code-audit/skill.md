@@ -5,684 +5,605 @@ description: Comprehensive static code analysis to enforce architectural pattern
 
 # Purpose
 
-Perform **comprehensive static code analysis** on the codebase to ensure:
-- ALL imports to aliased directories use absolute path aliases (`@/...`)
-- NO relative imports that cross into aliased directories
-- NO default exports or index files
-- NO direct Redux usage in components (use abstraction hooks)
-- Services ONLY imported in composition root (dependency injection pattern)
-- NO raw text in UI (all text must use i18n `t()` function)
-- NO usage of TypeScript "any" type (use proper types or "unknown")
-- NO linter or TypeScript suppression comments
-- NO god files - 1 entity per file (interface, type, class, enum)
-- Code quality standards are maintained
+Enforce code quality and consistency standards across the entire codebase through automated checks.
 
-**Note:** Feature-to-feature dependency rules (core → domain violations) are enforced by the `arch-audit` skill.
+**What it checks (18 checks, each with its own script):**
+1. Path alias usage (no relative imports to aliased dirs)
+2. Export patterns (no default exports, no index files)
+3. Redux abstraction (components use hooks, not direct Redux)
+4. Service isolation (dependency injection pattern)
+5. i18n coverage (all UI text wrapped in t())
+6. Type safety (no "any" type)
+7. No linter/TypeScript suppressions
+8. No god files (1 entity per file)
+9. No TODO/FIXME/HACK comments
+10. No console usage (use loglevel instead)
+11. Redux saga patterns (efficient parallelism)
+12. No type assertions (no "as const", no "satisfies")
+13. No re-exports (import directly from source)
+14. No "type" keyword in imports (plain imports only)
+15. No dangerouslySetInnerHTML (XSS vulnerability)
+16. React key patterns (no array index as key, no missing keys)
+17. No magic numbers (use named constants)
+18. TypeScript strict mode enabled (tsconfig.json)
 
-# Scope
+**What it doesn't check:**
+- Feature dependency rules (core → domain) - see `arch-audit` skill
 
-- Scans entire codebase
-- Checks all aliased directories:
-  - `src/features/` → `@/features/*`
-  - `src/services/` → `@/services/*`
-  - `src/pages/` → `@/pages/*`
-  - `src/hooks/` → `@/hooks/*`
-- Checks TypeScript/JavaScript files (`.ts`, `.tsx`, `.js`, `.jsx`)
-- Reports violations with file paths and line numbers
+# Architecture Context
 
-# Quality Checks
+This template uses a **core/domain separation**:
+- **core/features/*** - Infrastructure features (app, i18n, router, slice-manager, ui, auth, components, layout)
+- **domain/features/*** - Business features (wallet, oauth, blog-demo, ai-assistant, site)
 
-## 1. Path Alias Import Rule (CRITICAL)
+Both follow the same patterns and rules. New features you create will be domain features.
 
-**RULE**: Any relative import that resolves to an aliased directory MUST use the absolute alias instead.
+# Running Checks
 
-**Aliased Directories:**
-```typescript
-{
-  "@/features/*": ["./src/features/*"],
-  "@/services/*": ["./src/services/*"],
-  "@/pages/*": ["./src/pages/*"],
-  "@/hooks/*": ["./src/hooks/*"]
-}
+**All checks:**
+```bash
+node ./.claude/skills/code-audit/scripts/run_all_checks.mjs
 ```
 
-**Exception**: Internal imports within the SAME aliased directory are allowed:
-- Feature: `./slice.ts`, `../models/session/actions.ts` within same feature
-- Page: `./Home.tsx`, `./components/Header.tsx` within same page
-- Service: `./AuthApi.ts`, `./providers/GoogleAuth.ts` within same service
-- Hook: `./useCustomHook.ts` within same hook directory
-
-## Violations Detected
-
-### From Features:
-- ❌ Feature → Other Feature (relative)
-- ❌ Feature → Services (relative)
-- ❌ Feature → Pages (relative)
-- ❌ Feature → Hooks (relative)
-- ✅ Feature → Same Feature (relative) - ALLOWED
-
-### From Services:
-- ❌ Service → Features (relative)
-- ❌ Service → Other Services (relative)
-- ❌ Service → Pages (relative)
-- ❌ Service → Hooks (relative)
-- ✅ Service → Same Service (relative) - ALLOWED
-
-### From Pages:
-- ❌ Page → Features (relative)
-- ❌ Page → Services (relative)
-- ❌ Page → Other Pages (relative)
-- ❌ Page → Hooks (relative)
-- ✅ Page → Same Page (relative) - ALLOWED
-
-### From Hooks:
-- ❌ Hook → Features (relative)
-- ❌ Hook → Services (relative)
-- ❌ Hook → Pages (relative)
-- ❌ Hook → Other Hooks (relative)
-- ✅ Hook → Same Hook directory (relative) - ALLOWED
-
-### From Anywhere:
-- ❌ ANY file → ANY aliased directory (relative, except internal feature imports)
-
-## Examples
-
-```typescript
-// ❌ WRONG - Relative import to aliased directory
-import { useAuth } from '../../features/oauth/hooks/useAuth'
-import { api } from '../services/api'
-import { Home } from '../../pages/Home'
-import { useTypedSelector } from '../hooks/useTypedSelector'
-
-// ✅ CORRECT - Absolute alias
-import { useAuth } from '@/features/oauth/hooks/useAuth'
-import { api } from '@/services/api'
-import { Home } from '@/pages/Home'
-import { useTypedSelector } from '@/hooks/useTypedSelector'
-
-// ✅ CORRECT - Internal feature import (allowed)
-import { sessionReducer } from './models/session/slice'  // within same feature
-import { actions } from '../models/account/actions'      // within same feature
+**Generate report:**
+```bash
+node ./.claude/skills/code-audit/scripts/generate_report.mjs
 ```
 
-## 2. Export Pattern Rules (CRITICAL)
-
-**RULES**:
-1. **Never use index files** (`index.ts`, `index.tsx`, etc.) to export from directories
-2. **Never use default exports** (especially for components)
-3. **Always use named exports**
-
-### Rule 2a: No Index Files
-
-**Why**: Index files create ambiguity and make it harder to understand module structure.
-
-**Violations:**
-```typescript
-// ❌ WRONG - index.ts that re-exports everything
-// src/features/wallet/index.ts
-export * from './components/Wallet';
-export * from './hooks/useWallet';
-
-// ✅ CORRECT - Import directly from source
-import { Wallet } from '@/features/wallet/components/Wallet';
-import { useWallet } from '@/features/wallet/hooks/useWallet';
+**Individual checks:**
+```bash
+node ./.claude/skills/code-audit/scripts/check_imports.mjs
+node ./.claude/skills/code-audit/scripts/check_exports.mjs
+node ./.claude/skills/code-audit/scripts/check_redux_abstraction.mjs
+node ./.claude/skills/code-audit/scripts/check_service_imports.mjs
+node ./.claude/skills/code-audit/scripts/check_i18n_coverage.mjs
+node ./.claude/skills/code-audit/scripts/check_any_usage.mjs
+node ./.claude/skills/code-audit/scripts/check_suppressions.mjs
+node ./.claude/skills/code-audit/scripts/check_god_files.mjs
+node ./.claude/skills/code-audit/scripts/check_todos.mjs
+node ./.claude/skills/code-audit/scripts/check_logs.mjs
+node ./.claude/skills/code-audit/scripts/check_saga_patterns.mjs
+node ./.claude/skills/code-audit/scripts/check_type_assertions.mjs
+node ./.claude/skills/code-audit/scripts/check_reexports.mjs
+node ./.claude/skills/code-audit/scripts/check_type_imports.mjs
+node ./.claude/skills/code-audit/scripts/check_dangerous_html.mjs
+node ./.claude/skills/code-audit/scripts/check_react_keys.mjs
+node ./.claude/skills/code-audit/scripts/check_magic_numbers.mjs
+node ./.claude/skills/code-audit/scripts/check_strict_mode.mjs
 ```
 
-### Rule 2b: No Default Exports
+# Quality Rules
 
-**Why**: Default exports make refactoring harder and create inconsistency in imports.
+## 1. Path Alias Imports
 
-**Violations:**
-```typescript
-// ❌ WRONG - Default export
-export default function MyComponent() { ... }
-export default store;
-export default useCustomHook;
+**RULE**: Use absolute path aliases (`@/features/*`, `@/services/*`, etc.) instead of relative imports when crossing directory boundaries.
 
-// ✅ CORRECT - Named export
-export const MyComponent: React.FC = () => { ... }
-export const store = configureStore({ ... });
-export const useCustomHook = () => { ... }
-```
+**Why**: Makes imports clear, prevents broken paths when moving files, enables IDE navigation.
+
+**Allowed**:
+- ✅ Internal imports within same feature: `./slice.ts`, `../models/session/actions.ts`
+- ✅ Imports within same service/page/hook directory
+
+**Violations**:
+- ❌ `import { useAuth } from '../../features/oauth/hooks/useAuth'`
+- ❌ `import { api } from '../services/api'`
+
+**Fix**:
+- ✅ `import { useAuth } from '@/core/features/oauth/hooks/useAuth'`
+- ✅ `import { api } from '@/services/api'`
+
+---
+
+## 2. Export Patterns
+
+**RULE**: Use named exports only. No default exports, no index.ts barrel files.
+
+**Why**: Makes refactoring safer, imports explicit, no ambiguity.
+
+**Violations**:
+- ❌ `export default function MyComponent() { ... }`
+- ❌ `index.ts` files that re-export from other files
+
+**Fix**:
+- ✅ `export const MyComponent: React.FC = () => { ... }`
+- ✅ Import directly from source file
 
 **Exceptions**:
-- Storybook files (`*.stories.tsx`) require default exports
-- Type definition files (`*.d.ts`) may use default exports
+- Storybook files (`*.stories.tsx`) - require default exports
+- Type definition files (`*.d.ts`) - may use default
 
-## 3. Redux Abstraction Rules (CRITICAL)
+---
 
-**RULE**: React components must NEVER access Redux directly. They must use abstraction layers.
+## 3. Redux Abstraction
 
-### Rule 3a: No Direct useDispatch in Components
+**RULE**: Components NEVER import `useDispatch`, `useSelector`, or `RootState` directly. They use feature hooks.
 
-**Why**: Components should not know about Redux. Action dispatching should go through feature hooks.
+**Why**: Abstracts Redux implementation, components don't know about state management.
 
-**Violations:**
-```typescript
-// ❌ WRONG - Component using useDispatch directly
-import { useDispatch } from 'react-redux';
-
-function MyComponent() {
-  const dispatch = useDispatch();
-  dispatch(walletActions.connectWallet());
-}
-
-// ✅ CORRECT - Component using feature hook
-import { useWalletActions } from '@/features/wallet/hooks/useWalletActions';
-
-function MyComponent() {
-  const walletActions = useWalletActions();
-  walletActions.connectWallet();
-}
+**Pattern**:
+```
+Components → Feature Hooks → Redux
+(NEVER: Components → Redux directly)
 ```
 
-### Rule 3b: No Direct RootState/useSelector in Components
+**Violations**:
+- ❌ Component imports `useDispatch` from `react-redux`
+- ❌ Component imports `RootState`
+- ❌ Component uses `useSelector`
 
-**Why**: Components should not know about Redux state structure.
+**Fix**:
+- ✅ Use feature action hooks: `useWalletActions()`, `useBlogActions()`
+- ✅ Use feature state hooks: `useWallet()`, `useAuth()`
+- ✅ Use `useTypedSelector` from `@/hooks/useTypedSelector` for cross-feature state
 
-**Violations:**
-```typescript
-// ❌ WRONG - Component using useSelector and RootState directly
-import { useSelector } from 'react-redux';
-import { RootState } from '@/features/app/store/store';
+**Allowed files** (these ARE the abstraction layer):
+- `(core|domain)/features/*/hooks/*.ts` - can use useDispatch, useSelector, RootState
+- `src/hooks/*.ts` - can use useSelector, RootState
+- `(core|domain)/features/*/models/*/actionEffects/*.ts` - can use RootState
 
-function MyComponent() {
-  const wallet = useSelector((state: RootState) => state.wallet);
-}
+---
 
-// ✅ CORRECT - Component using feature hook or useTypedSelector
-import { useWallet } from '@/features/wallet/hooks/useWallet';
-// OR
-import useTypedSelector from '@/hooks/useTypedSelector';
+## 4. Service Import Boundaries
 
-function MyComponent() {
-  const wallet = useWallet(); // Feature hook
-  // OR
-  const wallet = useTypedSelector(state => state.wallet); // Typed selector
-}
-```
+**RULE**: Services (`@/services/*`) are ONLY imported in composition root (`src/config/(core|domain)/*/services.ts`).
 
-### Allowed Files
+**Why**: Dependency injection pattern - features receive services through interfaces, easy to swap implementations.
 
-These files MUST access Redux directly (they are the abstraction layer):
-- `features/*/hooks/*.ts` - Feature hooks (can use useDispatch, useSelector, RootState)
-- `src/hooks/*.ts` - Root hooks like useTypedSelector (can use useSelector, RootState)
-- `features/*/models/*/actionEffects/*.ts` - Business logic (can use RootState)
+**Violations**:
+- ❌ Feature imports `@/services/ethersV6/wallet/WalletAPI`
+- ❌ Page imports `@/services/oauth/OAuthService`
 
-### Architecture Pattern
+**Fix**:
+- ✅ Feature defines `IFeatureApi` interface
+- ✅ Service instantiated in `src/config/(core|domain)/{feature}/services.ts`
+- ✅ Feature receives service through interface
 
-```
-React Components
-    ↓ (use)
-Feature Hooks (useWallet, useAuth, useWalletActions, etc.)
-    ↓ (use)
-Redux (useDispatch, useSelector, RootState)
-```
+**Allowed files**:
+- `src/config/services.ts` (root composition, if exists)
+- `src/config/(core|domain)/*/services.ts` (feature-specific composition)
 
-**Never:** Components → Redux directly
+---
 
-## 4. i18n Coverage Rules (CRITICAL)
+## 5. i18n Coverage
 
-**RULE**: All user-facing text must be wrapped in `t()` function for internationalization.
+**RULE**: All user-facing text must be wrapped in `t()` function for translation.
 
-### Rule 4: No Raw Text in UI
+**Why**: Enables multi-language support, i18next tooling extracts text.
 
-**Why**: Hard-coded text can't be translated and won't be detected by i18n tooling.
+**Violations**:
+- ❌ `<Button>Click me</Button>`
+- ❌ `const message = "Error occurred"`
 
-**Violations:**
-```typescript
-// ❌ WRONG - Raw text in JSX
-<Button>Click me</Button>
-<div>Hello world</div>
-<Menu.Label>Choose auth provider</Menu.Label>
+**Fix**:
+- ✅ `<Button>{t('Click me')}</Button>`
+- ✅ `const message = t('Error occurred')`
 
-// ✅ CORRECT - Text wrapped in t()
-<Button>{t('Click me')}</Button>
-<div>{t('Hello world')}</div>
-<Menu.Label>{t('Choose auth provider')}</Menu.Label>
-
-// ❌ WRONG - Raw text in string literals
-const message = "Error occurred";
-const title = "Loading...";
-
-// ✅ CORRECT - Text wrapped in t()
-const message = t('Error occurred');
-const title = t('Loading...');
-```
-
-### What is Detected
-
-- JSX text content: `<div>text</div>`
-- String literals that look like user-facing text
-- Error messages, labels, titles
-- Multi-word phrases
-
-### What is Excluded (Not User-Facing)
-
+**Excluded** (not user-facing):
 - Log statements: `log.debug('...')`, `console.log('...')`
-- Import/export statements
-- HTML attributes: `className`, `id`, `href`, `src`, `alt`, `rel`
-- CSS values: `rgba(...)`, `calc(...)`, `#fff`, `1px solid`
-- Variable names and paths
-- Template literal variables: `${...}`
-- Regex patterns
+- HTML attributes: `className`, `id`, `href`, `src`
+- CSS values, variable names, paths
+- Infrastructure files (main.tsx, error boundaries, debug panels)
 
-## 5. TypeScript "any" Type Rules (CRITICAL)
+**Exception paths** (developer tools, not user UI):
+- `core/features/slice-manager/components/SliceDebugPanel`
+- `core/features/i18n/components/LangMenu/LangModal`
+- `domain/layout/ErrorFallback`
+- OAuth callback handlers
 
-**RULE**: Never use the TypeScript "any" type. It defeats type safety and leads to runtime errors.
+---
 
-### Rule 5: No "any" Type Usage
+## 6. TypeScript "any" Type
 
-**Why**: The "any" type disables TypeScript's type checking, making your code as unsafe as plain JavaScript.
+**RULE**: Never use `any` type. Use proper types, generics, or `unknown`.
 
-**Violations:**
-```typescript
-// ❌ WRONG - Using "any" type
-function processData(data: any) {
-  return data.value; // No type checking, runtime error if data has no value
-}
+**Why**: Defeats TypeScript's type safety, allows runtime errors.
 
-const items: any[] = [1, 2, 3]; // No type checking on array items
-const result = someFunction() as any; // Defeats type checking
+**Violations**:
+- ❌ `function process(data: any) { ... }`
+- ❌ `const items: any[] = [...]`
 
-// ✅ CORRECT - Use proper types
-interface Data {
-  value: string;
-}
+**Fix**:
+- ✅ Define proper interfaces/types
+- ✅ Use generics: `<T>` for reusable code
+- ✅ Use `unknown` for truly dynamic types (forces type guards)
 
-function processData(data: Data) {
-  return data.value; // Type-safe
-}
+**Exceptions**:
+- Type definition files (`*.d.ts`) for external libraries
+- Test files (`*.test.ts`) for mocking (prefer typed mocks)
 
-const items: number[] = [1, 2, 3]; // Type-safe array
-const result = someFunction() as string; // Type-safe assertion
+---
 
-// ✅ CORRECT - Use "unknown" for truly dynamic types
-function processUnknown(data: unknown) {
-  if (typeof data === 'object' && data !== null && 'value' in data) {
-    return (data as Data).value; // Forces type checking
-  }
-  throw new Error('Invalid data');
-}
+## 7. Linter/TypeScript Suppressions
 
-// ✅ CORRECT - Use generics for reusable type-safe code
-function identity<T>(value: T): T {
-  return value;
-}
-```
+**RULE**: Never suppress errors with comments. Fix the underlying issue.
 
-**Better Alternatives:**
-- **Specific types**: `string`, `number`, `boolean`, interfaces, type aliases
-- **Generics**: `<T>` for reusable type-safe functions and components
-- **Unknown type**: `unknown` for truly dynamic types (forces type guards)
-- **Union types**: `string | number | null` for multiple possible types
-- **Conditional types**: For complex type transformations
-- **Record types**: `Record<string, SomeType>` instead of `Record<string, any>`
+**Why**: Suppressions hide real bugs, accumulate technical debt.
 
-**Exceptions:**
-- Type definition files (`*.d.ts`) for external libraries may legitimately use `any`
-- Test files (`*.test.ts`, `*.spec.ts`) may use `any` for mocking (but prefer typed mocks)
+**Violations**:
+- ❌ `// @ts-ignore`
+- ❌ `// @ts-nocheck`
+- ❌ `// eslint-disable`
+- ❌ `// prettier-ignore`
 
-**Impact:**
-- ❌ Disables compile-time type checking
-- ❌ Allows runtime errors that could be caught at compile time
-- ❌ Makes refactoring dangerous
-- ❌ Reduces code documentation value
-- ❌ Makes IDE autocomplete less useful
+**Fix**: Address the root cause, don't hide it.
 
-## 6. Linter/TypeScript Suppression Rules (CRITICAL)
+**Exceptions**:
+- Test files may have legitimate suppressions
+- If absolutely necessary, use `@ts-expect-error` (fails if error is fixed) with detailed comment
 
-**RULE**: Never suppress linter or TypeScript errors using comments. Fix the underlying issue instead.
+---
 
-### Rule 6: No Suppression Comments
+## 8. God Files (1 Entity Per File)
 
-**Why**: Suppression comments hide real problems and accumulate technical debt. They make code harder to maintain and refactor.
+**RULE**: Each file exports exactly ONE entity (interface, type, class, enum). File name matches entity name.
 
-**Violations:**
-```typescript
-// ❌ WRONG - Suppressing TypeScript errors
-// @ts-ignore
-const value = someFunction();
+**Why**: Easy to find, clear purpose, follows Single Responsibility Principle.
 
-// @ts-nocheck
-function unsafeFunction() {
-  // entire file ignored by TypeScript
-}
+**Violations**:
+- ❌ File with multiple `export interface` declarations
+- ❌ File with multiple `export type` declarations
 
-// ❌ WRONG - Suppressing ESLint errors
-// eslint-disable-next-line
-const unused = 'this variable is never used';
+**Fix**: Split into separate files.
 
-/* eslint-disable */
-// Multiple lines of code that violate ESLint rules
-/* eslint-enable */
-
-// ❌ WRONG - Suppressing Prettier
-// prettier-ignore
-const obj={a:1,b:2}; // Unformatted code
-
-// ✅ CORRECT - Fix the underlying issue
-const value = someFunction() as ExpectedType; // Proper type assertion
-
-function safeFunction() {
-  // Properly typed function
-}
-
-const used = 'this variable is used';
-console.log(used);
-
-const obj = { a: 1, b: 2 }; // Properly formatted
-```
-
-**Detected Suppressions:**
-- **Critical Severity:**
-  - `// @ts-ignore` - Completely ignores TypeScript errors (dangerous)
-  - `// @ts-nocheck` - Disables TypeScript for entire file (very dangerous)
-  - `// eslint-disable` - Disables ESLint rules (accumulates tech debt)
-  - `/* eslint-disable */` - Block-level ESLint disable
-
-- **High Severity:**
-  - `// eslint-disable-next-line` - Disables ESLint for one line
-  - `// @ts-expect-error` - Better than @ts-ignore but still a code smell
-
-- **Medium Severity:**
-  - `// prettier-ignore` - Suppresses formatting
-
-**If Suppressions Are Truly Necessary:**
-1. Prefer `@ts-expect-error` over `@ts-ignore` (fails if error is fixed)
-2. Add a detailed comment explaining WHY it's necessary
-3. Consider if the suppression indicates a design problem
-4. Plan to remove it in the future
-
-**Exceptions:**
-- Test files (`*.test.ts`, `*.spec.ts`) may have legitimate suppressions for test utilities
-- Configuration files for build tools may need some suppressions
-
-**Impact:**
-- ❌ Hides real bugs and type errors
-- ❌ Accumulates technical debt
-- ❌ Makes refactoring dangerous
-- ❌ Reduces code quality over time
-- ❌ Makes it harder to catch regressions
-
-## 7. God File Rules (CRITICAL)
-
-**RULE**: One entity per file. No god files with multiple interfaces, types, classes, or enums.
-
-### Rule 7: 1 Entity Per File
-
-**Why**: God files become hard to navigate, violate Single Responsibility Principle, and make code harder to maintain.
-
-**Violations:**
-```typescript
-// ❌ WRONG - Multiple entities in one file (FeatureConfig.ts)
-export interface FeatureStore<TState = unknown> {
-  stateKey: string;
-  reducer: Reducer<TState>;
-}
-
-export interface FeatureSaga {
-  saga: Saga;
-  dependencies?: unknown[];
-}
-
-export interface FeatureConfig<TState = unknown> {
-  enabled: boolean;
-  store: FeatureStore<TState>;
-  saga: FeatureSaga;
-}
-
-// ✅ CORRECT - Each entity in its own file
-
-// FeatureStore.ts
-export interface FeatureStore<TState = unknown> {
-  stateKey: string;
-  reducer: Reducer<TState>;
-}
-
-// FeatureSaga.ts
-export interface FeatureSaga {
-  saga: Saga;
-  dependencies?: unknown[];
-}
-
-// FeatureConfig.ts
-export interface FeatureConfig<TState = unknown> {
-  enabled: boolean;
-  store: FeatureStore<TState>;
-  saga: FeatureSaga;
-}
-```
-
-**What Counts as an Entity:**
-- `export interface` - Interface declaration
-- `export type` - Type alias
-- `export class` - Class declaration
-- `export abstract class` - Abstract class
-- `export enum` - Enum declaration
-- `export const enum` - Const enum
-
-**Naming Convention:**
-- File name MUST match entity name
+**Examples**:
 - `UserService.ts` → `export class UserService`
 - `FeatureConfig.ts` → `export interface FeatureConfig`
 - `ConnectionState.ts` → `export type ConnectionState`
 
-**Exceptions:**
-- Test files (`*.test.ts`, `*.spec.ts`) - can have multiple test entities
-- Type definition files (`*.d.ts`) - external library typings
-- Storybook files (`*.stories.tsx`) - component stories
-- React component files - can have props interfaces (e.g., `BreadcrumbItem`, `BreadcrumbProps` with `Breadcrumb` component)
-- External library type files - for third-party SDK types (e.g., Google OAuth types)
-
-**Impact:**
-- ❌ God files are hard to navigate and understand
-- ❌ Difficult to find specific entities
-- ❌ Encourages poor code organization
-- ❌ Violates Single Responsibility Principle
-- ❌ Makes imports less clear
-- ❌ Harder to reuse individual entities
-- ✅ 1 entity per file = clear, focused, easy to find
+**Exceptions**:
+- Test files (`*.test.ts`, `*.spec.ts`)
+- Type definitions (`*.d.ts`) for external libraries
+- Storybook files (`*.stories.tsx`)
+- React component files with props interfaces (e.g., `Breadcrumb.tsx` can have `BreadcrumbProps`)
+- Specific exception paths (see script for list)
 
 ---
 
-# Process
+## 9. TODO/FIXME/HACK Comments
 
-## Running All Checks
+**RULE**: No technical debt markers in code. Track work in issue tracker instead.
 
-Run the comprehensive code audit:
-```bash
-node ./.claude/skills/code-audit/scripts/run_all_checks.mjs
+**Why**: Markers indicate incomplete work, forgotten tasks, or known bugs.
+
+**Detected**:
+- `TODO`, `FIXME`, `HACK`, `XXX`, `BUG`
+
+**Fix**: Create GitHub issues, complete work, remove comments.
+
+---
+
+## 10. Console Usage
+
+**RULE**: No `console.*` statements in production code. Use `log.*` from loglevel.
+
+**Why**: Console statements can't be controlled in production, expose debug info.
+
+**Violations**:
+- ❌ `console.log()`, `console.error()`, `console.warn()`
+
+**Fix**:
+- ✅ `log.debug()` - auto-disabled in production
+- ✅ `log.info()`, `log.warn()`, `log.error()` - controlled log levels
+
+---
+
+## 11. Redux Saga Patterns
+
+**RULE**: Use single `yield all([...])` for parallel operations. Multiple `yield all` in same function is inefficient.
+
+**Why**: True parallelism requires combining effects into one `yield all`.
+
+**Violation**:
+```typescript
+yield all([effect1, effect2]);
+yield all([effect3, effect4]); // Sequential, not parallel!
 ```
 
-Or run individual checks:
-
-### 1. Import Quality Check
-```bash
-node ./.claude/skills/code-audit/scripts/check_imports.mjs
-```
-- Scans all TypeScript/JavaScript files
-- Checks for relative imports to aliased directories
-- Reports violations with suggested fixes
-
-### 2. Export Quality Check
-```bash
-node ./.claude/skills/code-audit/scripts/check_exports.mjs
-```
-- Scans all TypeScript/JavaScript files
-- Checks for index files
-- Checks for default exports
-- Reports violations with suggested fixes
-
-### 3. Redux Abstraction Check
-```bash
-node ./.claude/skills/code-audit/scripts/check_redux_abstraction.mjs
-```
-- Scans React components
-- Checks for direct useDispatch usage
-- Checks for direct RootState imports
-- Checks for direct useSelector usage
-- Reports violations with suggested fixes
-
-### 4. Service Import Check
-```bash
-node ./.claude/skills/code-audit/scripts/check_service_imports.mjs
-```
-- Scans ALL source files in src/ (features, pages, hooks, everywhere)
-- Checks for service imports from @/services/*
-- Ensures services are ONLY imported in src/features/app/config/services.ts
-- Reports violations with explanation
-
-### 5. i18n Coverage Check
-```bash
-node ./.claude/skills/code-audit/scripts/check_i18n_coverage.mjs
-```
-- Scans React component files (.tsx, .jsx)
-- Checks for raw text not wrapped in t()
-- Detects JSX text content and string literals
-- Excludes log statements, CSS values, HTML attributes
-- Reports violations with suggested fixes
-
-### 6. TypeScript "any" Usage Check
-```bash
-node ./.claude/skills/code-audit/scripts/check_any_usage.mjs
-```
-- Scans all TypeScript files (.ts, .tsx)
-- Checks for usage of the "any" type
-- Detects patterns: `: any`, `as any`, `any[]`, `Array<any>`, `Record<any, ...>`, etc.
-- Excludes type definition files (*.d.ts) and test files
-- Reports violations with suggested alternatives
-
-### 7. Linter/TypeScript Suppression Check
-```bash
-node ./.claude/skills/code-audit/scripts/check_suppressions.mjs
-```
-- Scans all source files (.ts, .tsx, .js, .jsx)
-- Checks for suppression comments: `@ts-ignore`, `@ts-nocheck`, `eslint-disable`, etc.
-- Categorizes by severity: Critical, High, Medium, Low
-- Excludes test files (*.test.ts, *.spec.ts)
-- Reports violations grouped by severity level
-
-### 8. God File Check (1 Entity Per File)
-```bash
-node ./.claude/skills/code-audit/scripts/check_god_files.mjs
-```
-- Scans all TypeScript files (.ts, .tsx)
-- Checks for multiple exported entities (interface, type, class, enum) in one file
-- Detects: `export interface`, `export type`, `export class`, `export enum`
-- Excludes test files, type definitions (*.d.ts), and Storybook files
-- Reports violations with suggested file splits
-
-### 9. TODO/FIXME/HACK Comments Check
-```bash
-node ./.claude/skills/code-audit/scripts/check_todos.mjs
-```
-- Scans all source files for technical debt markers
-- Detects: TODO, FIXME, HACK, XXX, BUG comments
-- Categorizes by severity: FIXME (critical), HACK (warning), TODO (info)
-- Reports violations with line numbers and context
-- Helps track incomplete features and technical debt
-
-### 10. Console Usage Check
-```bash
-node ./.claude/skills/code-audit/scripts/check_logs.mjs
-```
-- Scans production code for `console.*` statements (FORBIDDEN in this project)
-- Detects: `console.log()`, `console.error()`, `console.warn()`, etc.
-- **Note**: `log.debug()` from loglevel is perfectly fine (disabled in production)
-- Excludes test files and story files
-- Reports violations by file with occurrence counts
-- Recommends replacing console.* with log.* from loglevel
-
-### 11. Redux Saga Patterns Check
-```bash
-node ./.claude/skills/code-audit/scripts/check_saga_patterns.mjs
-```
-- Scans saga files for inefficient patterns
-- Detects: Multiple `yield all` statements in same function
-- Recommends combining into single `yield all` for true parallelism
-- Reports violations with line numbers and recommendations
-- Improves saga performance and structure
-
-# Generating Reports (Optional)
-
-To save a comprehensive markdown report of all checks:
-
-```bash
-node ./.claude/skills/code-audit/scripts/generate_report.mjs
+**Fix**:
+```typescript
+yield all([effect1, effect2, effect3, effect4]); // Truly parallel
 ```
 
-**Output:** `reports/{YYYY-MM-DD_HH-MM}/code-audit-report.md`
+---
 
-**Report includes:**
-- Executive summary with pass/fail counts
-- Results table for all checks
-- Detailed violations for failed checks (collapsible)
-- Summary of passed checks
-- Prioritized recommendations
+## 12. No Type Assertions
 
-**Environment variable:**
-```bash
-# Custom report directory
-export REPORT_DIR="reports/my-custom-timestamp"
-node ./.claude/skills/code-audit/scripts/generate_report.mjs
-```
+**RULE**: Never use `as const` or `satisfies`. Use proper types, interfaces, or enums instead.
 
-**Usage patterns:**
+**Why**: Type assertions are shortcuts that reduce code clarity, reusability, and maintainability. Proper type definitions are self-documenting and enforce better architecture.
 
-```bash
-# Option 1: Console output only (default)
-node ./.claude/skills/code-audit/scripts/run_all_checks.mjs
+**Violations**:
+- ❌ `const colors = ["red", "blue"] as const`
+- ❌ `const config = { ... } satisfies Config`
+- ❌ `const options = { mode: "light" } as const`
 
-# Option 2: Console output + Save report
-node ./.claude/skills/code-audit/scripts/generate_report.mjs
+**Fix**:
+- ✅ Define proper types:
+  ```typescript
+  type Color = "red" | "blue";
+  const colors: Color[] = ["red", "blue"];
+  ```
+- ✅ Use explicit type annotations:
+  ```typescript
+  const config: Config = { ... };
+  ```
+- ✅ Use enums for constant sets:
+  ```typescript
+  enum Mode {
+    Light = "light",
+    Dark = "dark"
+  }
+  const options = { mode: Mode.Light };
+  ```
 
-# Option 3: Specific check only
-node ./.claude/skills/code-audit/scripts/check_imports.mjs
-```
+**Why This Matters**:
+- `as const` and `satisfies` are lazy shortcuts
+- They bypass proper type definition and reusability
+- Makes code harder to understand and maintain
+- Prevents type reuse across the codebase
+- Reduces IDE autocomplete effectiveness
 
-**Report structure:**
-```
-reports/
-└── 2025-11-01_14-30/               # Includes hours and minutes for multiple runs per day
-    ├── code-audit-report.md        # This skill's report
-    ├── arch-audit-report.md        # Architecture audit (separate)
-    └── ...                         # Other reports
-```
+**Better alternatives**:
+- `interface` for object shapes
+- `type` for unions, intersections, and aliases
+- `enum` for constant sets of values
+- `const` with explicit type annotations
+- Proper TypeScript types that are reusable and self-documenting
+
+---
+
+## 13. No Re-exports
+
+**RULE**: Never use re-export statements. Import directly from source files instead of re-exporting from intermediate files.
+
+**Why**: Re-exports create indirection, make code harder to navigate, and obscure actual dependencies. Direct imports make the codebase more transparent and easier to refactor.
+
+**Violations**:
+- ❌ `export { Something } from './somewhere'`
+- ❌ `export * from './somewhere'`
+- ❌ `export * as namespace from './somewhere'`
+- ❌ `export type { TypeName } from './somewhere'`
+- ❌ Index files that re-export: `index.ts` with re-exports
+
+**Fix**:
+- ✅ Import directly from source files:
+  ```typescript
+  // Instead of re-exporting in index.ts
+  // ❌ export { UserService } from './UserService';
+
+  // Import directly from source
+  // ✅ import { UserService } from './path/to/UserService';
+  ```
+
+**Why This Matters**:
+- Re-exports create unnecessary layers of indirection
+- Makes it harder to find where code is actually defined
+- IDE "Go to Definition" jumps to re-export, not actual source
+- Refactoring becomes harder (must update re-export files)
+- Violates "import from source" principle
+
+**The Rule**:
+- Import directly from the file where entity is defined
+- No barrel files (index.ts with re-exports)
+- No re-export statements anywhere in codebase
+
+---
+
+## 14. No "type" Keyword in Imports
+
+**RULE**: Never use the `type` keyword in import statements. TypeScript automatically removes type-only imports during compilation.
+
+**Why**: The `type` keyword is redundant visual noise. TypeScript's compiler can automatically detect and remove type-only imports without the keyword, making code cleaner and simpler.
+
+**Violations**:
+- ❌ `import type { User } from './types'`
+- ❌ `import { type User } from './types'`
+- ❌ `import { Data, type User } from './types'` (mixed)
+
+**Fix**:
+- ✅ Plain imports for everything:
+  ```typescript
+  import { User, Data } from './types';
+  ```
+
+**Why This Matters**:
+- `type` keyword adds visual clutter without benefit
+- TypeScript compiler handles type erasure automatically
+- Simpler, cleaner import statements
+- Consistent import style across entire codebase
+- One less thing to think about when writing imports
+
+**The Rule**:
+- Always use plain import syntax
+- Let TypeScript handle type-only import optimization
+- No `import type { X }`
+- No `import { type X }`
+- Just use `import { X }`
+
+---
+
+## 15. No dangerouslySetInnerHTML
+
+**RULE**: Never use `dangerouslySetInnerHTML` - it bypasses React's XSS protection.
+
+**Why**: Opens XSS vulnerabilities, allows arbitrary HTML injection, user-controlled content can execute malicious scripts.
+
+**Violations**:
+- ❌ `<div dangerouslySetInnerHTML={{ __html: userContent }} />`
+- ❌ Any use of dangerouslySetInnerHTML prop
+
+**Fix**:
+- ✅ Use React's default rendering (auto-escapes):
+  ```typescript
+  <div>{content}</div>
+  ```
+- ✅ If HTML rendering is absolutely required, sanitize first:
+  ```typescript
+  import DOMPurify from 'dompurify';
+  <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(content) }} />
+  ```
+
+**Why This Matters**:
+- React automatically escapes all content by default (XSS protection)
+- dangerouslySetInnerHTML bypasses this protection
+- Critical security vulnerability if user input is rendered
+- Name literally says "dangerous" for a reason
+
+**The Rule**:
+- Avoid dangerouslySetInnerHTML entirely if possible
+- If absolutely necessary, sanitize with DOMPurify
+- Never use with user-controlled content without sanitization
+
+---
+
+## 16. React Key Patterns
+
+**RULE**: Always use stable, unique identifiers as keys in lists. Never use array index or omit keys.
+
+**Why**: Using array index as key causes bugs when list order changes. Missing keys cause React warnings and unpredictable re-renders.
+
+**Violations**:
+- ❌ Array index as key:
+  ```typescript
+  items.map((item, index) => <Item key={index} />)
+  ```
+- ❌ Missing key entirely:
+  ```typescript
+  items.map(item => <Item {...item} />)
+  ```
+
+**Fix**:
+- ✅ Use stable unique identifier from data:
+  ```typescript
+  items.map(item => <Item key={item.id} {...item} />)
+  ```
+
+**Why This Matters**:
+- **Index as key**: When list order changes (sort, filter, reorder), React cannot track which element is which
+- Leads to wrong elements being re-rendered or updated
+- Can cause state to be attached to wrong elements
+- Performance issues from unnecessary re-renders
+- **Missing key**: React shows warnings, unpredictable behavior, poor reconciliation
+
+**The Rule**:
+- Always provide a `key` prop when rendering lists with `.map()`
+- Use a stable, unique identifier (usually `item.id`)
+- Never use array index as key
+- Key must be unique among siblings
+
+---
+
+## 17. No Magic Numbers
+
+**RULE**: Never use magic numbers - use named constants instead.
+
+**Why**: Magic numbers make code harder to understand, difficult to maintain and update, no semantic meaning without context.
+
+**Focus**: Time-related values (setTimeout, setInterval, delays)
+
+**Violations**:
+- ❌ Magic number in setTimeout:
+  ```typescript
+  setTimeout(callback, 3600000); // What is 3600000?
+  ```
+- ❌ Magic number in delay/retry logic:
+  ```typescript
+  await delay(5000); // 5000 what?
+  ```
+
+**Fix**:
+- ✅ Named constant:
+  ```typescript
+  const ONE_HOUR_MS = 3600000;
+  setTimeout(callback, ONE_HOUR_MS);
+
+  const FIVE_SECONDS_MS = 5000;
+  await delay(FIVE_SECONDS_MS);
+  ```
+
+**Why This Matters**:
+- Self-documenting code
+- Easy to find and update all usages
+- Clear intent and meaning
+- Prevents errors from typos
+- Easier maintenance
+
+**Detection Focus**:
+- setTimeout/setInterval with values >= 1000ms (1 second)
+- Delay/wait/retry functions with large values
+- Config files are exempted (often contain configuration numbers)
+
+**The Rule**:
+- Use named constants for time values
+- Format: `{VALUE}_{UNIT}_MS` (e.g., `ONE_HOUR_MS`, `30_SECONDS_MS`)
+- Exception: Very small, obvious values (e.g., `setTimeout(fn, 0)`)
+
+---
+
+## 18. TypeScript Strict Mode
+
+**RULE**: TypeScript's `strict` mode must be enabled in tsconfig.json.
+
+**Why**: Enables 8+ critical type safety checks, catches errors at compile time, industry best practice.
+
+**Violation**:
+- ❌ `tsconfig.json` missing `"strict": true`
+- ❌ `"strict": false` in compilerOptions
+- ❌ No compilerOptions in tsconfig.json
+
+**Fix**:
+- ✅ In tsconfig.json, add or update:
+  ```json
+  {
+    "compilerOptions": {
+      "strict": true
+    }
+  }
+  ```
+
+**What Strict Mode Includes**:
+1. **noImplicitAny** - Prevents implicit "any" types
+2. **noImplicitThis** - Requires explicit "this" typing
+3. **alwaysStrict** - ECMAScript strict mode in all files
+4. **strictBindCallApply** - Validates call/bind/apply arguments
+5. **strictNullChecks** - Enforces null/undefined checking
+6. **strictFunctionTypes** - Stricter function type checking
+7. **strictPropertyInitialization** - Ensures class properties are initialized
+8. **useUnknownInCatchVariables** - Catch variables are "unknown" not "any"
+
+**Why This Matters**:
+- Catches type errors at compile time instead of runtime
+- Better IDE autocomplete and intellisense
+- Self-documenting code with explicit types
+- Easier refactoring with type safety
+- Industry best practice for professional TypeScript projects
+
+**The Rule**:
+- Always enable `"strict": true` in tsconfig.json
+- Required for production-ready TypeScript code
+- Cannot be disabled or set to false
+
+---
 
 # Output Format
 
-```
-Code Audit Results
-==================
+Each check reports:
+- File path and line number
+- Violation description
+- Suggested fix
+- Count of total violations
 
-Path Alias Violations: X found
-
-FROM: features/wallet
-  ❌ src/features/wallet/components/Wallet.tsx:5
-     import { useAuth } from '../../oauth/hooks/useAuth'
-     → Violates: Feature → Feature (cross-feature)
-     Fix: import { useAuth } from '@/features/oauth/hooks/useAuth'
-
-FROM: pages/Home
-  ❌ src/pages/Home/Home.tsx:3
-     import { Wallet } from '../../features/wallet/components/Wallet'
-     → Violates: Page → Feature
-     Fix: import { Wallet } from '@/features/wallet/components/Wallet'
-
-Summary: X violations found
-```
+Reports are saved to `reports/{date}/code-audit-report.md` when using `generate_report.mjs`.
 
 # Tools
 
-- **Bash**: run Node.js scripts
-- **Read**: inspect source files
-- **Write**: `reports/{timestamp}/code-audit-report.md` (only when generating reports)
+- **Bash**: Run Node.js scripts
+- **Read**: Inspect source files
+- **Write**: Generate reports (optional)
 
 # Safety
 
 - Read-only operation (unless generating reports)
 - No source file modifications
 - No external network calls
-- Comprehensive scan of all imports
-- Reports are saved to isolated `reports/` directory
+- Comprehensive scan of entire `src/` directory

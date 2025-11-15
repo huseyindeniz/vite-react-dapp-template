@@ -1,7 +1,8 @@
 import log from 'loglevel';
 
-import { IOAuthProvider } from '@/features/oauth/models/provider/interfaces/IOAuthProvider';
-import { OAuthProviderCredentials } from '@/features/oauth/models/provider/types/OAuthProviderCredentials';
+import { IOAuthProvider } from '@/domain/features/oauth/models/provider/interfaces/IOAuthProvider';
+import { OAuthProviderCredentials } from '@/domain/features/oauth/models/provider/types/OAuthProviderCredentials';
+import { OAuthProviderName } from '@/domain/features/oauth/models/provider/types/OAuthProviderName';
 
 import {
   getGitHubClientId,
@@ -10,7 +11,7 @@ import {
 } from './utils/env';
 
 export class GitHubOAuthProvider implements IOAuthProvider {
-  name = 'github' as const;
+  name: OAuthProviderName = 'github';
   label = 'GitHub';
   icon =
     'https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png';

@@ -1,12 +1,12 @@
 import { Table } from '@mantine/core';
 
-import { isHashRouter } from '@/features/router/config';
+import { isHashRouter } from '@/core/features/router/config';
 import {
   DISABLE_WALLET_SIGN,
   SIGN_TIMEOUT_IN_SEC,
   SLOW_DOWN_IN_MS,
   POST_LOGIN_REDIRECT_PATH,
-} from '@/features/wallet/config';
+} from '@/domain/features/wallet/config';
 
 export const Environment = () => {
   return (

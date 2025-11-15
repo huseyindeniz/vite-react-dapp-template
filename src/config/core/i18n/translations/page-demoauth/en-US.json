@@ -1,0 +1,18 @@
+{
+  "Authentication Demo": "Authentication Demo",
+  "Authentication demo page": "Authentication demo page",
+  "This section demonstrates different authentication scenarios in the dApp template.": "This section demonstrates different authentication scenarios in the dApp template.",
+  "Overview": "Overview",
+  "Use the side navigation to explore different authentication patterns:": "Use the side navigation to explore different authentication patterns:",
+  "Wallet - Basic:": "Wallet - Basic:",
+  "Demonstrates Web3 wallet authentication using conditional rendering": "Demonstrates Web3 wallet authentication using conditional rendering",
+  "Wallet - Protected:": "Wallet - Protected:",
+  "Route-level protection requiring wallet connection": "Route-level protection requiring wallet connection",
+  "OAuth - Basic:": "OAuth - Basic:",
+  "Demonstrates OAuth authentication (Google, GitHub) using conditional rendering": "Demonstrates OAuth authentication (Google, GitHub) using conditional rendering",
+  "OAuth - Protected:": "OAuth - Protected:",
+  "Route-level protection requiring OAuth login": "Route-level protection requiring OAuth login",
+  "Combined Auth:": "Combined Auth:",
+  "Requires both OAuth and Web3 wallet authentication": "Requires both OAuth and Web3 wallet authentication",
+  "This parent page serves as an introduction while the side navigation provides quick access to specific examples.": "This parent page serves as an introduction while the side navigation provides quick access to specific examples."
+}

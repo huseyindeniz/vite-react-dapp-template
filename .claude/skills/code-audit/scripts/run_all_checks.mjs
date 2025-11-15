@@ -126,6 +126,62 @@ function extractSummary(output, checkName) {
     return 'No pattern issues';
   }
 
+  if (checkName.includes('Type Assertion')) {
+    const totalMatch = output.match(/Type assertion usages: (\d+) violation\(s\)/);
+    if (totalMatch) return `${totalMatch[1]} assertion(s)`;
+    return 'No assertions';
+  }
+
+  if (checkName.includes('Re-export')) {
+    const filesMatch = output.match(/Files with re-exports: (\d+)/);
+    const statementsMatch = output.match(/Total re-export statements: (\d+)/);
+    const files = filesMatch ? filesMatch[1] : '?';
+    const statements = statementsMatch ? statementsMatch[1] : '?';
+    return `${files} file(s), ${statements} re-export(s)`;
+  }
+
+  if (checkName.includes('Type Import')) {
+    const filesMatch = output.match(/Files with type imports: (\d+)/);
+    const statementsMatch = output.match(/Total type import statements: (\d+)/);
+    const files = filesMatch ? filesMatch[1] : '?';
+    const statements = statementsMatch ? statementsMatch[1] : '?';
+    return `${files} file(s), ${statements} type import(s)`;
+  }
+
+  if (checkName.includes('Dangerous HTML')) {
+    const filesMatch = output.match(/Files with dangerouslySetInnerHTML: (\d+)/);
+    const totalMatch = output.match(/Total violations: (\d+)/);
+    const files = filesMatch ? filesMatch[1] : '?';
+    const total = totalMatch ? totalMatch[1] : '?';
+    return `${files} file(s), ${total} violation(s)`;
+  }
+
+  if (checkName.includes('React Key')) {
+    const filesMatch = output.match(/Files with key violations: (\d+)/);
+    const indexMatch = output.match(/Index as key violations: (\d+)/);
+    const missingMatch = output.match(/Missing key violations: (\d+)/);
+    const files = filesMatch ? filesMatch[1] : '?';
+    const index = indexMatch ? indexMatch[1] : '?';
+    const missing = missingMatch ? missingMatch[1] : '?';
+    return `${files} file(s), Index: ${index}, Missing: ${missing}`;
+  }
+
+  if (checkName.includes('Magic Number')) {
+    const filesMatch = output.match(/Files with magic numbers: (\d+)/);
+    const totalMatch = output.match(/Total violations: (\d+)/);
+    const files = filesMatch ? filesMatch[1] : '?';
+    const total = totalMatch ? totalMatch[1] : '?';
+    return `${files} file(s), ${total} violation(s)`;
+  }
+
+  if (checkName.includes('Strict Mode')) {
+    if (output.includes('✅')) {
+      return 'strict: true (enabled)';
+    } else {
+      return 'strict mode NOT enabled';
+    }
+  }
+
   return 'Check output';
 }
 
@@ -182,6 +238,34 @@ async function runAllChecks() {
     {
       name: 'Redux Saga Patterns Check',
       script: path.join(__dirname, 'check_saga_patterns.mjs'),
+    },
+    {
+      name: 'Type Assertion Check (as const, satisfies)',
+      script: path.join(__dirname, 'check_type_assertions.mjs'),
+    },
+    {
+      name: 'Re-export Check (No Re-exports)',
+      script: path.join(__dirname, 'check_reexports.mjs'),
+    },
+    {
+      name: 'Type Import Check (No "type" Keyword)',
+      script: path.join(__dirname, 'check_type_imports.mjs'),
+    },
+    {
+      name: 'Dangerous HTML Check (No dangerouslySetInnerHTML)',
+      script: path.join(__dirname, 'check_dangerous_html.mjs'),
+    },
+    {
+      name: 'React Key Patterns Check',
+      script: path.join(__dirname, 'check_react_keys.mjs'),
+    },
+    {
+      name: 'Magic Numbers Check',
+      script: path.join(__dirname, 'check_magic_numbers.mjs'),
+    },
+    {
+      name: 'TypeScript Strict Mode Check',
+      script: path.join(__dirname, 'check_strict_mode.mjs'),
     },
   ];
 
