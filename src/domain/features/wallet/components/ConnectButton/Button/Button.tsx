@@ -11,6 +11,7 @@ export interface ButtonProps {
 
 export const Button: React.FC<ButtonProps> = ({ onClick, isLoading }) => {
   const { t } = useTranslation('feature-wallet');
+  // TODO: Remove this test comment for workflow testing
   return (
     <MantineButton
       ml={2}

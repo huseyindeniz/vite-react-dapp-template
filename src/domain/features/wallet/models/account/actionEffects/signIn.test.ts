@@ -83,7 +83,7 @@ describe('Feature: Wallet', () => {
           [call(HandleStateSignTimedout), null],
           [put(slicesActions.decSignCounter()), null],
           [put(slicesActions.resetSignCounter()), null],
-          [delay(1000), null],
+          [delay(SIGN_TIMEOUT_IN_SEC * 1000), null],
         ])
         .withState(getState())
         .call(HandleStateSignTimedout)

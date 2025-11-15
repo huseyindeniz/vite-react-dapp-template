@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 
 import { i18nConfig } from '@/config/core/i18n/config';
+import { useWallet } from '@/domain/features/wallet/hooks/useWallet';
 
 import { useChangeLanguage } from '../../useChangeLanguage';
 
