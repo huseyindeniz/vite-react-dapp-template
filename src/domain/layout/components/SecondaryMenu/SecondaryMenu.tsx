@@ -18,9 +18,9 @@ export const SecondaryMenu: React.FC<SecondaryMenuProps> = ({
     <div className={classes.inner}>
       <Group gap={6} justify="center">
         {secondaryMenuItems?.length > 0
-          ? secondaryMenuItems.map((link, index) => (
+          ? secondaryMenuItems.map(link => (
               <NavLink
-                key={index}
+                key={link.menuLabel}
                 to={link.path ?? ''}
                 end
                 className={({ isActive }) =>

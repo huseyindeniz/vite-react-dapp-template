@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import {
   ActionIcon,
@@ -9,6 +9,7 @@ import {
   Text,
   Tooltip,
 } from '@mantine/core';
+import { notifications } from '@mantine/notifications';
 import { useTranslation } from 'react-i18next';
 import { MdContentCopy, MdDownload, MdInsertDriveFile } from 'react-icons/md';
 
@@ -32,7 +33,6 @@ export const FileArtifact: React.FC<FileArtifactProps> = ({
   onMarkdownClick,
 }) => {
   const { t } = useTranslation('feature-ai-assistant');
-  const [copied, setCopied] = useState(false);
   const { filename = 'file', data, mimeType } = part;
 
   const isMarkdown = mimeType === 'text/markdown';
@@ -53,8 +53,10 @@ export const FileArtifact: React.FC<FileArtifactProps> = ({
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(data);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    notifications.show({
+      title: t('Content copied'),
+      message: t('File content has been copied to clipboard'),
+    });
   };
 
   const handleMarkdownClick = () => {
@@ -131,12 +133,8 @@ export const FileArtifact: React.FC<FileArtifactProps> = ({
         </Group>
 
         <Group gap="xs">
-          <Tooltip label={copied ? 'Copied!' : 'Copy content'}>
-            <ActionIcon
-              variant="subtle"
-              onClick={handleCopy}
-              color={copied ? 'green' : 'gray'}
-            >
+          <Tooltip label={t('Copy content')}>
+            <ActionIcon variant="subtle" onClick={handleCopy} color="gray">
               <MdContentCopy size={18} />
             </ActionIcon>
           </Tooltip>

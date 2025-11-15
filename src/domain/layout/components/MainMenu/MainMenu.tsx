@@ -24,9 +24,9 @@ export const MainMenu: React.FC<MainMenuProps> = ({
     <div className={classes.inner}>
       <Container gap={vertical ? 'xs' : 6}>
         {mainMenuItems?.length > 0
-          ? mainMenuItems.map((link, index) => (
+          ? mainMenuItems.map(link => (
               <NavLink
-                key={index}
+                key={link.menuLabel}
                 to={link.path ?? ''}
                 end={!link.subRoutes || link.subRoutes.length === 0}
                 onClick={onClick}

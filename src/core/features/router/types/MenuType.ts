@@ -6,7 +6,7 @@ import { ProtectionType } from '@/config/core/auth/ProtectionType';
 
 export type MenuType = {
   path?: string;
-  menuLabel: string | null;
+  menuLabel: string;
   isShownInMainMenu?: boolean;
   isShownInSecondaryMenu?: boolean;
   protectionType?: ProtectionType;

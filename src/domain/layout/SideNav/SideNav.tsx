@@ -18,26 +18,24 @@ export const SideNav: React.FC<SideNavProps> = ({
   collapsed = false,
   onClick,
 }) => {
-  const renderNavItem = (item: MenuType, index: number) => {
+  const renderNavItem = (item: MenuType) => {
     if (item.subRoutes && item.subRoutes.length > 0) {
       return (
         <NavLink
-          key={index}
+          key={item.menuLabel}
           label={collapsed ? undefined : item.menuLabel}
           leftSection={item.icon}
           childrenOffset={collapsed ? 0 : 28}
           styles={{ root: { paddingLeft: 5 } }}
         >
-          {item.subRoutes.map((child, childIndex) =>
-            renderNavItem(child, childIndex)
-          )}
+          {item.subRoutes.map(child => renderNavItem(child))}
         </NavLink>
       );
     }
 
     return (
       <NavLink
-        key={index}
+        key={item.menuLabel}
         component={RouterNavLink}
         to={item.path ?? ''}
         label={collapsed ? undefined : item.menuLabel}
@@ -50,7 +48,7 @@ export const SideNav: React.FC<SideNavProps> = ({
 
   return (
     <Stack gap="xs" className={classes.container}>
-      {items.map((item, index) => renderNavItem(item, index))}
+      {items.map(item => renderNavItem(item))}
     </Stack>
   );
 };

@@ -143,6 +143,31 @@ function parseCheckResult(output, checkName) {
     if (filesMatch) {
       result.summary = `${filesMatch[1]} file(s), ${statementsMatch?.[1] || '?'} type import(s)`;
     }
+  } else if (checkName.includes('Dangerous HTML')) {
+    const filesMatch = output.match(/Files with dangerouslySetInnerHTML: (\d+)/);
+    const totalMatch = output.match(/Total violations: (\d+)/);
+    if (filesMatch) {
+      result.summary = `${filesMatch[1]} file(s), ${totalMatch?.[1] || '?'} violation(s)`;
+    }
+  } else if (checkName.includes('React Key')) {
+    const filesMatch = output.match(/Files with key violations: (\d+)/);
+    const indexMatch = output.match(/Index as key violations: (\d+)/);
+    const missingMatch = output.match(/Missing key violations: (\d+)/);
+    if (filesMatch) {
+      result.summary = `${filesMatch[1]} file(s), Index: ${indexMatch?.[1] || 0}, Missing: ${missingMatch?.[1] || 0}`;
+    }
+  } else if (checkName.includes('Magic Number')) {
+    const filesMatch = output.match(/Files with magic numbers: (\d+)/);
+    const totalMatch = output.match(/Total violations: (\d+)/);
+    if (filesMatch) {
+      result.summary = `${filesMatch[1]} file(s), ${totalMatch?.[1] || '?'} violation(s)`;
+    }
+  } else if (checkName.includes('Strict Mode')) {
+    if (output.includes('✅')) {
+      result.summary = 'strict: true (enabled)';
+    } else {
+      result.summary = 'strict mode NOT enabled';
+    }
   }
 
   return result;
@@ -172,6 +197,10 @@ async function generateReport() {
     { name: 'Type Assertion (as const, satisfies)', script: path.join(__dirname, 'check_type_assertions.mjs') },
     { name: 'Re-export Check (No Re-exports)', script: path.join(__dirname, 'check_reexports.mjs') },
     { name: 'Type Import Check (No "type" Keyword)', script: path.join(__dirname, 'check_type_imports.mjs') },
+    { name: 'Dangerous HTML (No dangerouslySetInnerHTML)', script: path.join(__dirname, 'check_dangerous_html.mjs') },
+    { name: 'React Key Patterns', script: path.join(__dirname, 'check_react_keys.mjs') },
+    { name: 'Magic Numbers', script: path.join(__dirname, 'check_magic_numbers.mjs') },
+    { name: 'TypeScript Strict Mode', script: path.join(__dirname, 'check_strict_mode.mjs') },
   ];
 
   const results = [];

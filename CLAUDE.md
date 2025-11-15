@@ -49,9 +49,13 @@ This file provides guidance to Claude Code when working with this React dApp tem
 - Service dependency injection (services only imported in composition root)
 - i18n coverage (all UI text must use t() function)
 - TypeScript type safety (no "any" type usage)
+- TypeScript strict mode enabled (tsconfig.json)
 - No type assertions (no "as const", no "satisfies" - use proper types/interfaces/enums)
 - No re-exports (import directly from source files, no barrel files)
 - No "type" keyword in imports (TypeScript handles type-only imports automatically)
+- No dangerouslySetInnerHTML (XSS security vulnerability)
+- React key patterns (no array index as key, no missing keys in lists)
+- No magic numbers (use named constants for time values)
 - No linter/TypeScript suppressions
 - 1 entity per file (no god files)
 
@@ -161,7 +165,7 @@ You MUST write this statement and show it to the user BEFORE touching any code:
 - Shortcuts to resist: [What lazy paths you need to avoid]
 
 **Verification Plan**:
-- [ ] Skill: code-audit (11 checks for code quality/style)
+- [ ] Skill: code-audit (18 checks for code quality/style)
 - [ ] Skill: arch-audit (8 checks for architecture dependencies)
 - [ ] npm run lint (0 warnings required)
 - [ ] npm run build (TypeScript + Vite)
@@ -200,9 +204,13 @@ Before making ANY code change, you MUST complete this checklist:
 - [ ] Services only imported in src/config/services.ts
 - [ ] All UI text uses t() function for i18n
 - [ ] No "any" type usage
+- [ ] TypeScript strict mode enabled in tsconfig.json
 - [ ] No type assertions (no "as const", no "satisfies" - use proper types/interfaces/enums)
 - [ ] No re-exports (import directly from source, no export { X } from './somewhere')
 - [ ] No "type" keyword in imports (no import type { X }, no import { type X })
+- [ ] No dangerouslySetInnerHTML (XSS vulnerability)
+- [ ] React keys use stable IDs (not array index, no missing keys)
+- [ ] No magic numbers (use named constants like ONE_HOUR_MS)
 - [ ] No linter suppressions (eslint-disable, @ts-ignore, @ts-nocheck)
 - [ ] 1 entity per file (no god files)
 - [ ] react-icons library (NOT @tabler/icons-react)
@@ -230,7 +238,7 @@ Before making ANY code change, you MUST complete this checklist:
 After EVERY code change, you MUST complete this review:
 
 ### 1. Run All Verifications
-- Use Skill tool: `code-audit` (14 code quality checks)
+- Use Skill tool: `code-audit` (19 code quality checks)
 - Use Skill tool: `arch-audit` (8 architecture checks)
 - Run: `npm run lint` (0 warnings required)
 - Run: `npm run build` (TypeScript + Vite)
@@ -256,6 +264,9 @@ Examples:
 - Default exports instead of named
 - Re-exports in index.ts instead of direct imports
 - Using import type { X } instead of import { X }
+- Using dangerouslySetInnerHTML without sanitization
+- Array index as key in .map()
+- Magic numbers like setTimeout(fn, 3600000)
 - Hardcoded text instead of t()
 - useSelector directly instead of feature hooks
 - Business logic in component instead of actionEffects
@@ -268,7 +279,7 @@ Examples:
 
 Document at least TWO lessons learned (one architecture, one code quality):
 - **Architecture lesson**: [What I learned about layers, patterns, dependencies]
-- **Code quality lesson**: [What I learned about imports, exports, re-exports, type imports, i18n, typing, etc.]
+- **Code quality lesson**: [What I learned about imports, exports, re-exports, type imports, React keys, performance, security, i18n, typing, etc.]
 - **Pattern I now understand better**: [Specific pattern or rule]
 - **Mistake I avoided**: [Specific violation I could have made]
 

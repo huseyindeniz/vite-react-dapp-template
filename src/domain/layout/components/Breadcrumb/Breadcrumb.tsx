@@ -30,14 +30,14 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({ items }) => {
 
         if (isLast && isCurrentPage) {
           return (
-            <Text key={index} c="dimmed">
+            <Text key={item.href} c="dimmed">
               {item.title}
             </Text>
           );
         }
 
         return (
-          <Anchor key={index} component={NavLink} to={item.href}>
+          <Anchor key={item.href} component={NavLink} to={item.href}>
             {item.title}
           </Anchor>
         );

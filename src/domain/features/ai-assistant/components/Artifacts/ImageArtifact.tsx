@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { ActionIcon, Group, Image, Paper, Stack, Tooltip } from '@mantine/core';
+import { notifications } from '@mantine/notifications';
 import { useTranslation } from 'react-i18next';
 import { MdContentCopy, MdDownload } from 'react-icons/md';
 
@@ -17,7 +18,6 @@ interface ImageArtifactProps {
  */
 export const ImageArtifact: React.FC<ImageArtifactProps> = ({ part }) => {
   const { t } = useTranslation('feature-ai-assistant');
-  const [copied, setCopied] = useState(false);
 
   const handleDownload = () => {
     const link = document.createElement('a');
@@ -38,13 +38,17 @@ export const ImageArtifact: React.FC<ImageArtifactProps> = ({ part }) => {
         new ClipboardItem({ [blob.type]: blob }),
       ]);
 
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      notifications.show({
+        title: t('Image copied'),
+        message: t('Image has been copied to clipboard'),
+      });
     } catch (error) {
       // Fallback: copy the data URL
       await navigator.clipboard.writeText(part.image);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      notifications.show({
+        title: t('Image URL copied'),
+        message: t('Image URL has been copied to clipboard'),
+      });
     }
   };
 
@@ -60,12 +64,8 @@ export const ImageArtifact: React.FC<ImageArtifactProps> = ({ part }) => {
         />
 
         <Group justify="flex-end" gap="xs">
-          <Tooltip label={copied ? 'Copied!' : 'Copy image'}>
-            <ActionIcon
-              variant="subtle"
-              onClick={handleCopy}
-              color={copied ? 'green' : 'gray'}
-            >
+          <Tooltip label={t('Copy image')}>
+            <ActionIcon variant="subtle" onClick={handleCopy} color="gray">
               <MdContentCopy size={18} />
             </ActionIcon>
           </Tooltip>

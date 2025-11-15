@@ -1,13 +1,5 @@
 import { END, EventChannel, Task } from 'redux-saga';
-import {
-  put,
-  spawn,
-  call,
-  delay,
-  select,
-  cancel,
-  take,
-} from 'redux-saga/effects';
+import { put, spawn, call, select, cancel, take } from 'redux-saga/effects';
 
 import { RootState } from '@/core/features/app/store/store';
 import { IAccountApi } from '@/domain/features/wallet/models/account/interfaces/IAccountApi';
@@ -115,7 +107,7 @@ export function* HandleStateSignRequested(
 
 export function* CheckSignTimeout() {
   for (let i = SIGN_TIMEOUT_IN_SEC; i > 0; i--) {
-    yield delay(1000);
+    yield call(SlowDown);
     yield put(slicesActions.decSignCounter());
     const walletState: WalletState = yield select(
       (state: RootState) => state.wallet.state.state

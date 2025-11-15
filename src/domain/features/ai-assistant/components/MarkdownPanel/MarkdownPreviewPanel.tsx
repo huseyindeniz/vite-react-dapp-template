@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import {
   ActionIcon,
@@ -9,6 +9,7 @@ import {
   Text,
   Tooltip,
 } from '@mantine/core';
+import { notifications } from '@mantine/notifications';
 import { useTranslation } from 'react-i18next';
 import { MdClose, MdContentCopy, MdDownload } from 'react-icons/md';
 import ReactMarkdown from 'react-markdown';
@@ -31,7 +32,6 @@ export const MarkdownPreviewPanel: React.FC<MarkdownPreviewPanelProps> = ({
   onClose,
 }) => {
   const { t } = useTranslation('feature-ai-assistant');
-  const [copied, setCopied] = useState(false);
 
   const handleDownload = () => {
     const blob = new Blob([content], { type: 'text/markdown' });
@@ -47,8 +47,10 @@ export const MarkdownPreviewPanel: React.FC<MarkdownPreviewPanelProps> = ({
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(content);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    notifications.show({
+      title: t('Content copied'),
+      message: t('Markdown content has been copied to clipboard'),
+    });
   };
 
   return (
@@ -85,11 +87,11 @@ export const MarkdownPreviewPanel: React.FC<MarkdownPreviewPanelProps> = ({
         </Text>
 
         <Group gap="xs">
-          <Tooltip label={copied ? t('Copied!') : t('Copy content')}>
+          <Tooltip label={t('Copy content')}>
             <ActionIcon
               variant="subtle"
               onClick={handleCopy}
-              color={copied ? 'green' : 'gray'}
+              color="gray"
               size="lg"
             >
               <MdContentCopy size={20} />

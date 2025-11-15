@@ -7,7 +7,7 @@ description: Comprehensive static code analysis to enforce architectural pattern
 
 Enforce code quality and consistency standards across the entire codebase through automated checks.
 
-**What it checks (14 checks, each with its own script):**
+**What it checks (18 checks, each with its own script):**
 1. Path alias usage (no relative imports to aliased dirs)
 2. Export patterns (no default exports, no index files)
 3. Redux abstraction (components use hooks, not direct Redux)
@@ -22,6 +22,10 @@ Enforce code quality and consistency standards across the entire codebase throug
 12. No type assertions (no "as const", no "satisfies")
 13. No re-exports (import directly from source)
 14. No "type" keyword in imports (plain imports only)
+15. No dangerouslySetInnerHTML (XSS vulnerability)
+16. React key patterns (no array index as key, no missing keys)
+17. No magic numbers (use named constants)
+18. TypeScript strict mode enabled (tsconfig.json)
 
 **What it doesn't check:**
 - Feature dependency rules (core → domain) - see `arch-audit` skill
@@ -62,6 +66,10 @@ node ./.claude/skills/code-audit/scripts/check_saga_patterns.mjs
 node ./.claude/skills/code-audit/scripts/check_type_assertions.mjs
 node ./.claude/skills/code-audit/scripts/check_reexports.mjs
 node ./.claude/skills/code-audit/scripts/check_type_imports.mjs
+node ./.claude/skills/code-audit/scripts/check_dangerous_html.mjs
+node ./.claude/skills/code-audit/scripts/check_react_keys.mjs
+node ./.claude/skills/code-audit/scripts/check_magic_numbers.mjs
+node ./.claude/skills/code-audit/scripts/check_strict_mode.mjs
 ```
 
 # Quality Rules
@@ -411,6 +419,169 @@ yield all([effect1, effect2, effect3, effect4]); // Truly parallel
 - No `import type { X }`
 - No `import { type X }`
 - Just use `import { X }`
+
+---
+
+## 15. No dangerouslySetInnerHTML
+
+**RULE**: Never use `dangerouslySetInnerHTML` - it bypasses React's XSS protection.
+
+**Why**: Opens XSS vulnerabilities, allows arbitrary HTML injection, user-controlled content can execute malicious scripts.
+
+**Violations**:
+- ❌ `<div dangerouslySetInnerHTML={{ __html: userContent }} />`
+- ❌ Any use of dangerouslySetInnerHTML prop
+
+**Fix**:
+- ✅ Use React's default rendering (auto-escapes):
+  ```typescript
+  <div>{content}</div>
+  ```
+- ✅ If HTML rendering is absolutely required, sanitize first:
+  ```typescript
+  import DOMPurify from 'dompurify';
+  <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(content) }} />
+  ```
+
+**Why This Matters**:
+- React automatically escapes all content by default (XSS protection)
+- dangerouslySetInnerHTML bypasses this protection
+- Critical security vulnerability if user input is rendered
+- Name literally says "dangerous" for a reason
+
+**The Rule**:
+- Avoid dangerouslySetInnerHTML entirely if possible
+- If absolutely necessary, sanitize with DOMPurify
+- Never use with user-controlled content without sanitization
+
+---
+
+## 16. React Key Patterns
+
+**RULE**: Always use stable, unique identifiers as keys in lists. Never use array index or omit keys.
+
+**Why**: Using array index as key causes bugs when list order changes. Missing keys cause React warnings and unpredictable re-renders.
+
+**Violations**:
+- ❌ Array index as key:
+  ```typescript
+  items.map((item, index) => <Item key={index} />)
+  ```
+- ❌ Missing key entirely:
+  ```typescript
+  items.map(item => <Item {...item} />)
+  ```
+
+**Fix**:
+- ✅ Use stable unique identifier from data:
+  ```typescript
+  items.map(item => <Item key={item.id} {...item} />)
+  ```
+
+**Why This Matters**:
+- **Index as key**: When list order changes (sort, filter, reorder), React cannot track which element is which
+- Leads to wrong elements being re-rendered or updated
+- Can cause state to be attached to wrong elements
+- Performance issues from unnecessary re-renders
+- **Missing key**: React shows warnings, unpredictable behavior, poor reconciliation
+
+**The Rule**:
+- Always provide a `key` prop when rendering lists with `.map()`
+- Use a stable, unique identifier (usually `item.id`)
+- Never use array index as key
+- Key must be unique among siblings
+
+---
+
+## 17. No Magic Numbers
+
+**RULE**: Never use magic numbers - use named constants instead.
+
+**Why**: Magic numbers make code harder to understand, difficult to maintain and update, no semantic meaning without context.
+
+**Focus**: Time-related values (setTimeout, setInterval, delays)
+
+**Violations**:
+- ❌ Magic number in setTimeout:
+  ```typescript
+  setTimeout(callback, 3600000); // What is 3600000?
+  ```
+- ❌ Magic number in delay/retry logic:
+  ```typescript
+  await delay(5000); // 5000 what?
+  ```
+
+**Fix**:
+- ✅ Named constant:
+  ```typescript
+  const ONE_HOUR_MS = 3600000;
+  setTimeout(callback, ONE_HOUR_MS);
+
+  const FIVE_SECONDS_MS = 5000;
+  await delay(FIVE_SECONDS_MS);
+  ```
+
+**Why This Matters**:
+- Self-documenting code
+- Easy to find and update all usages
+- Clear intent and meaning
+- Prevents errors from typos
+- Easier maintenance
+
+**Detection Focus**:
+- setTimeout/setInterval with values >= 1000ms (1 second)
+- Delay/wait/retry functions with large values
+- Config files are exempted (often contain configuration numbers)
+
+**The Rule**:
+- Use named constants for time values
+- Format: `{VALUE}_{UNIT}_MS` (e.g., `ONE_HOUR_MS`, `30_SECONDS_MS`)
+- Exception: Very small, obvious values (e.g., `setTimeout(fn, 0)`)
+
+---
+
+## 18. TypeScript Strict Mode
+
+**RULE**: TypeScript's `strict` mode must be enabled in tsconfig.json.
+
+**Why**: Enables 8+ critical type safety checks, catches errors at compile time, industry best practice.
+
+**Violation**:
+- ❌ `tsconfig.json` missing `"strict": true`
+- ❌ `"strict": false` in compilerOptions
+- ❌ No compilerOptions in tsconfig.json
+
+**Fix**:
+- ✅ In tsconfig.json, add or update:
+  ```json
+  {
+    "compilerOptions": {
+      "strict": true
+    }
+  }
+  ```
+
+**What Strict Mode Includes**:
+1. **noImplicitAny** - Prevents implicit "any" types
+2. **noImplicitThis** - Requires explicit "this" typing
+3. **alwaysStrict** - ECMAScript strict mode in all files
+4. **strictBindCallApply** - Validates call/bind/apply arguments
+5. **strictNullChecks** - Enforces null/undefined checking
+6. **strictFunctionTypes** - Stricter function type checking
+7. **strictPropertyInitialization** - Ensures class properties are initialized
+8. **useUnknownInCatchVariables** - Catch variables are "unknown" not "any"
+
+**Why This Matters**:
+- Catches type errors at compile time instead of runtime
+- Better IDE autocomplete and intellisense
+- Self-documenting code with explicit types
+- Easier refactoring with type safety
+- Industry best practice for professional TypeScript projects
+
+**The Rule**:
+- Always enable `"strict": true` in tsconfig.json
+- Required for production-ready TypeScript code
+- Cannot be disabled or set to false
 
 ---
 
