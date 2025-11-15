@@ -1,16 +1,8 @@
 import React, { useState } from 'react';
 
 import { MarkdownPanelContext } from './markdownPanelContext';
-
-interface MarkdownPanelState {
-  isOpen: boolean;
-  filename: string;
-  content: string;
-}
-
-interface MarkdownPanelProviderProps {
-  children: React.ReactNode;
-}
+import { MarkdownPanelProviderProps } from './types/MarkdownPanelProviderProps';
+import { MarkdownPanelState } from './types/MarkdownPanelState';
 
 /**
  * Provider for markdown preview panel state

@@ -13,15 +13,9 @@ import { SupportedWallets } from '@/domain/features/wallet/models/provider/types
 
 import { IWalletEthersV6ProviderApi } from '../interfaces/IWalletEthersV6ProviderApi';
 
+import { MetamaskError } from './types/MetamaskError';
+import { MetamaskRPCErrors } from './types/MetamaskRPCErrors';
 import { WalletProvider } from './types/WalletProvider';
-
-enum MetamaskRPCErrors {
-  ACTION_REJECTED = 'ACTION_REJECTED',
-}
-
-class MetamaskError extends Error {
-  code: string | undefined;
-}
 
 export class EthersV6WalletAPI implements IWalletEthersV6ProviderApi {
   private static _instance: IWalletEthersV6ProviderApi | null = null;

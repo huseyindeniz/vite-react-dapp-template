@@ -2,6 +2,7 @@ import log from 'loglevel';
 
 import { IOAuthProvider } from '@/domain/features/oauth/models/provider/interfaces/IOAuthProvider';
 import { OAuthProviderCredentials } from '@/domain/features/oauth/models/provider/types/OAuthProviderCredentials';
+import { OAuthProviderName } from '@/domain/features/oauth/models/provider/types/OAuthProviderName';
 
 // Types not needed for redirect mode - removed unused imports
 import {
@@ -11,7 +12,7 @@ import {
 } from './utils/env';
 
 export class GoogleOAuthProvider implements IOAuthProvider {
-  name = 'google' as const;
+  name: OAuthProviderName = 'google';
   label = 'Google';
   icon = 'https://developers.google.com/identity/images/g-logo.png';
   color = '#4285f4';

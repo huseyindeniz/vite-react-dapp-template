@@ -2,13 +2,21 @@ import { getSliceManager } from '@/core/features/slice-manager/SliceLifecycleMan
 import { FeatureRouteConfig } from '@/core/features/slice-manager/types/FeatureRouteConfig';
 import { SliceConfig } from '@/core/features/slice-manager/types/SliceConfig';
 
-export const BlogSlices = {
+interface BlogSlicesConfig {
+  POSTS: string;
+  AUTHORS: string;
+  CATEGORIES: string;
+  COMMENTS: string;
+  BLOG_SETTINGS: string;
+}
+
+export const BlogSlices: BlogSlicesConfig = {
   POSTS: 'posts',
   AUTHORS: 'authors',
   CATEGORIES: 'categories',
   COMMENTS: 'comments',
   BLOG_SETTINGS: 'blogSettings',
-} as const;
+};
 
 // Configuration for your blog feature
 export const configureSlice = () => {

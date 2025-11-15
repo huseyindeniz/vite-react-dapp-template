@@ -1,15 +1,7 @@
 import { createContext } from 'react';
 
-interface MarkdownPanelState {
-  isOpen: boolean;
-  filename: string;
-  content: string;
-}
+import { MarkdownPanelContextValue } from './types/MarkdownPanelContextValue';
 
-export interface MarkdownPanelContextValue {
-  panelState: MarkdownPanelState;
-  openPanel: (filename: string, content: string) => void;
-  closePanel: () => void;
-}
+export type { MarkdownPanelContextValue };
 
 export const MarkdownPanelContext = createContext<MarkdownPanelContextValue | undefined>(undefined);

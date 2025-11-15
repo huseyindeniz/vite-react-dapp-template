@@ -8,6 +8,9 @@ import log from 'loglevel';
 
 import { FILE_ATTACHMENT_CONFIG } from '@/config/domain/ai-assistant/config';
 
+import { FileAttachmentContent } from './types/FileAttachmentContent';
+import { ImageAttachmentContent } from './types/ImageAttachmentContent';
+
 /**
  * Simple attachment adapter with validation
  * Converts files to base64 data URLs for inline use
@@ -89,17 +92,17 @@ export class SimpleAttachmentAdapter implements AttachmentAdapter {
         attachment.type === 'image'
           ? [
               {
-                type: 'image' as const,
+                type: 'image',
                 image: dataUrl,
-              },
+              } as ImageAttachmentContent,
             ]
           : [
               {
-                type: 'file' as const,
+                type: 'file',
                 filename: attachment.name,
                 data: dataUrl,
                 mimeType: attachment.contentType,
-              },
+              } as FileAttachmentContent,
             ];
 
       return {

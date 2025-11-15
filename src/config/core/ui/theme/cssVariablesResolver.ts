@@ -1,4 +1,4 @@
-import { type CSSVariablesResolver } from '@mantine/core';
+import { CSSVariablesResolver } from '@mantine/core';
 // CSS Variables Resolver for light/dark mode specific values
 export const cssVariablesResolver: CSSVariablesResolver = () => ({
   variables: {},

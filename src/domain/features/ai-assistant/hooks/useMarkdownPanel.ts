@@ -1,9 +1,7 @@
 import { useContext } from 'react';
 
-import {
-  MarkdownPanelContext,
-  type MarkdownPanelContextValue,
-} from '../components/MarkdownPanel/markdownPanelContext';
+import { MarkdownPanelContext } from '../components/MarkdownPanel/markdownPanelContext';
+import { MarkdownPanelContextValue } from '../components/MarkdownPanel/types/MarkdownPanelContextValue';
 
 /**
  * Hook to access markdown panel context

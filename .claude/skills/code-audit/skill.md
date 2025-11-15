@@ -7,7 +7,7 @@ description: Comprehensive static code analysis to enforce architectural pattern
 
 Enforce code quality and consistency standards across the entire codebase through automated checks.
 
-**What it checks (11 checks, each with its own script):**
+**What it checks (14 checks, each with its own script):**
 1. Path alias usage (no relative imports to aliased dirs)
 2. Export patterns (no default exports, no index files)
 3. Redux abstraction (components use hooks, not direct Redux)
@@ -19,6 +19,9 @@ Enforce code quality and consistency standards across the entire codebase throug
 9. No TODO/FIXME/HACK comments
 10. No console usage (use loglevel instead)
 11. Redux saga patterns (efficient parallelism)
+12. No type assertions (no "as const", no "satisfies")
+13. No re-exports (import directly from source)
+14. No "type" keyword in imports (plain imports only)
 
 **What it doesn't check:**
 - Feature dependency rules (core → domain) - see `arch-audit` skill
@@ -56,6 +59,9 @@ node ./.claude/skills/code-audit/scripts/check_god_files.mjs
 node ./.claude/skills/code-audit/scripts/check_todos.mjs
 node ./.claude/skills/code-audit/scripts/check_logs.mjs
 node ./.claude/skills/code-audit/scripts/check_saga_patterns.mjs
+node ./.claude/skills/code-audit/scripts/check_type_assertions.mjs
+node ./.claude/skills/code-audit/scripts/check_reexports.mjs
+node ./.claude/skills/code-audit/scripts/check_type_imports.mjs
 ```
 
 # Quality Rules
@@ -289,6 +295,122 @@ yield all([effect3, effect4]); // Sequential, not parallel!
 ```typescript
 yield all([effect1, effect2, effect3, effect4]); // Truly parallel
 ```
+
+---
+
+## 12. No Type Assertions
+
+**RULE**: Never use `as const` or `satisfies`. Use proper types, interfaces, or enums instead.
+
+**Why**: Type assertions are shortcuts that reduce code clarity, reusability, and maintainability. Proper type definitions are self-documenting and enforce better architecture.
+
+**Violations**:
+- ❌ `const colors = ["red", "blue"] as const`
+- ❌ `const config = { ... } satisfies Config`
+- ❌ `const options = { mode: "light" } as const`
+
+**Fix**:
+- ✅ Define proper types:
+  ```typescript
+  type Color = "red" | "blue";
+  const colors: Color[] = ["red", "blue"];
+  ```
+- ✅ Use explicit type annotations:
+  ```typescript
+  const config: Config = { ... };
+  ```
+- ✅ Use enums for constant sets:
+  ```typescript
+  enum Mode {
+    Light = "light",
+    Dark = "dark"
+  }
+  const options = { mode: Mode.Light };
+  ```
+
+**Why This Matters**:
+- `as const` and `satisfies` are lazy shortcuts
+- They bypass proper type definition and reusability
+- Makes code harder to understand and maintain
+- Prevents type reuse across the codebase
+- Reduces IDE autocomplete effectiveness
+
+**Better alternatives**:
+- `interface` for object shapes
+- `type` for unions, intersections, and aliases
+- `enum` for constant sets of values
+- `const` with explicit type annotations
+- Proper TypeScript types that are reusable and self-documenting
+
+---
+
+## 13. No Re-exports
+
+**RULE**: Never use re-export statements. Import directly from source files instead of re-exporting from intermediate files.
+
+**Why**: Re-exports create indirection, make code harder to navigate, and obscure actual dependencies. Direct imports make the codebase more transparent and easier to refactor.
+
+**Violations**:
+- ❌ `export { Something } from './somewhere'`
+- ❌ `export * from './somewhere'`
+- ❌ `export * as namespace from './somewhere'`
+- ❌ `export type { TypeName } from './somewhere'`
+- ❌ Index files that re-export: `index.ts` with re-exports
+
+**Fix**:
+- ✅ Import directly from source files:
+  ```typescript
+  // Instead of re-exporting in index.ts
+  // ❌ export { UserService } from './UserService';
+
+  // Import directly from source
+  // ✅ import { UserService } from './path/to/UserService';
+  ```
+
+**Why This Matters**:
+- Re-exports create unnecessary layers of indirection
+- Makes it harder to find where code is actually defined
+- IDE "Go to Definition" jumps to re-export, not actual source
+- Refactoring becomes harder (must update re-export files)
+- Violates "import from source" principle
+
+**The Rule**:
+- Import directly from the file where entity is defined
+- No barrel files (index.ts with re-exports)
+- No re-export statements anywhere in codebase
+
+---
+
+## 14. No "type" Keyword in Imports
+
+**RULE**: Never use the `type` keyword in import statements. TypeScript automatically removes type-only imports during compilation.
+
+**Why**: The `type` keyword is redundant visual noise. TypeScript's compiler can automatically detect and remove type-only imports without the keyword, making code cleaner and simpler.
+
+**Violations**:
+- ❌ `import type { User } from './types'`
+- ❌ `import { type User } from './types'`
+- ❌ `import { Data, type User } from './types'` (mixed)
+
+**Fix**:
+- ✅ Plain imports for everything:
+  ```typescript
+  import { User, Data } from './types';
+  ```
+
+**Why This Matters**:
+- `type` keyword adds visual clutter without benefit
+- TypeScript compiler handles type erasure automatically
+- Simpler, cleaner import statements
+- Consistent import style across entire codebase
+- One less thing to think about when writing imports
+
+**The Rule**:
+- Always use plain import syntax
+- Let TypeScript handle type-only import optimization
+- No `import type { X }`
+- No `import { type X }`
+- Just use `import { X }`
 
 ---
 

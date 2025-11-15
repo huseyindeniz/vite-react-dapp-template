@@ -126,6 +126,28 @@ function extractSummary(output, checkName) {
     return 'No pattern issues';
   }
 
+  if (checkName.includes('Type Assertion')) {
+    const totalMatch = output.match(/Type assertion usages: (\d+) violation\(s\)/);
+    if (totalMatch) return `${totalMatch[1]} assertion(s)`;
+    return 'No assertions';
+  }
+
+  if (checkName.includes('Re-export')) {
+    const filesMatch = output.match(/Files with re-exports: (\d+)/);
+    const statementsMatch = output.match(/Total re-export statements: (\d+)/);
+    const files = filesMatch ? filesMatch[1] : '?';
+    const statements = statementsMatch ? statementsMatch[1] : '?';
+    return `${files} file(s), ${statements} re-export(s)`;
+  }
+
+  if (checkName.includes('Type Import')) {
+    const filesMatch = output.match(/Files with type imports: (\d+)/);
+    const statementsMatch = output.match(/Total type import statements: (\d+)/);
+    const files = filesMatch ? filesMatch[1] : '?';
+    const statements = statementsMatch ? statementsMatch[1] : '?';
+    return `${files} file(s), ${statements} type import(s)`;
+  }
+
   return 'Check output';
 }
 
@@ -182,6 +204,18 @@ async function runAllChecks() {
     {
       name: 'Redux Saga Patterns Check',
       script: path.join(__dirname, 'check_saga_patterns.mjs'),
+    },
+    {
+      name: 'Type Assertion Check (as const, satisfies)',
+      script: path.join(__dirname, 'check_type_assertions.mjs'),
+    },
+    {
+      name: 'Re-export Check (No Re-exports)',
+      script: path.join(__dirname, 'check_reexports.mjs'),
+    },
+    {
+      name: 'Type Import Check (No "type" Keyword)',
+      script: path.join(__dirname, 'check_type_imports.mjs'),
     },
   ];
 

@@ -3,7 +3,9 @@
  * Defines supported AI agents and their properties
  */
 
-import { AgentType, CHAT_AGENTS } from '@/config/domain/ai-assistant/config';
+import { CHAT_AGENTS } from '@/config/domain/ai-assistant/config';
+
+import { AgentType } from './types/AgentType';
 
 /**
  * Get chat agent configuration by type

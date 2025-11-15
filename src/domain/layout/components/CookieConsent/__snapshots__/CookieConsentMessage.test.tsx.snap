@@ -7,9 +7,9 @@ exports[`Feature: UI > Component: Layout/CookieConsentMessage > should render wi
   >
     :root{--mantine-font-family: Open Sans, sans-serif;--mantine-font-family-headings: Open Sans, sans-serif;}
 
-:root[data-mantine-color-scheme="dark"]{--app-shell-bg: #020202;--app-shell-box-shadow: inset 0px 0px 40px -10px #efefef;}
+:root[data-mantine-color-scheme="dark"]{--app-shell-bg: #020202;--app-shell-box-shadow: inset 0px 0px 40px -10px #efefef;--app-shell-header-bg: #0D0D0D;--app-shell-footer-bg: #0D0D0D;--paper-bg: #0D0D0D;--card-bg: #0D0D0D;}
 
-:root[data-mantine-color-scheme="light"]{--app-shell-bg: #efefef;--app-shell-box-shadow: inset 0px 0px 20px -10px #020202;}
+:root[data-mantine-color-scheme="light"]{--app-shell-bg: #efefef;--app-shell-box-shadow: inset 0px 0px 20px -10px #020202;--app-shell-header-bg: #f5f5f5;--app-shell-footer-bg: #f5f5f5;--paper-bg: #f5f5f5;--card-bg: #f5f5f5;}
   </style>
   <style
     data-mantine-styles="classes"
@@ -79,9 +79,9 @@ exports[`Feature: UI > Component: Layout/CookieConsentMessage > should render wi
   >
     :root{--mantine-font-family: Open Sans, sans-serif;--mantine-font-family-headings: Open Sans, sans-serif;}
 
-:root[data-mantine-color-scheme="dark"]{--app-shell-bg: #020202;--app-shell-box-shadow: inset 0px 0px 40px -10px #efefef;}
+:root[data-mantine-color-scheme="dark"]{--app-shell-bg: #020202;--app-shell-box-shadow: inset 0px 0px 40px -10px #efefef;--app-shell-header-bg: #0D0D0D;--app-shell-footer-bg: #0D0D0D;--paper-bg: #0D0D0D;--card-bg: #0D0D0D;}
 
-:root[data-mantine-color-scheme="light"]{--app-shell-bg: #efefef;--app-shell-box-shadow: inset 0px 0px 20px -10px #020202;}
+:root[data-mantine-color-scheme="light"]{--app-shell-bg: #efefef;--app-shell-box-shadow: inset 0px 0px 20px -10px #020202;--app-shell-header-bg: #f5f5f5;--app-shell-footer-bg: #f5f5f5;--paper-bg: #f5f5f5;--card-bg: #f5f5f5;}
   </style>
   <style
     data-mantine-styles="classes"

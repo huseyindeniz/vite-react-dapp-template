@@ -4,13 +4,11 @@ import { AssistantRuntimeProvider } from '@assistant-ui/react';
 import { Group, Paper, Stack, Title } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 
-import {
-  DEFAULT_AGENT_TYPE,
-  AgentType,
-} from '@/config/domain/ai-assistant/config';
+import { DEFAULT_AGENT_TYPE } from '@/config/domain/ai-assistant/config';
 
 import { useChatRuntime } from '../hooks/useChatRuntime';
 import { useMarkdownPanel } from '../hooks/useMarkdownPanel';
+import { AgentType } from '../types/AgentType';
 
 import { AgentSelector } from './AgentSelector/AgentSelector';
 import { ChatThread } from './ChatThread/ChatThread';

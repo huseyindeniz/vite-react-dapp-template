@@ -128,6 +128,21 @@ function parseCheckResult(output, checkName) {
   } else if (checkName.includes('Saga')) {
     const match = output.match(/Found (\d+) file.*inefficient/);
     result.summary = match ? `${match[1]} file(s) with patterns` : 'No pattern issues';
+  } else if (checkName.includes('Type Assertion')) {
+    const match = output.match(/Type assertion usages: (\d+) violation\(s\)/);
+    result.summary = match ? `${match[1]} assertion(s)` : 'No assertions';
+  } else if (checkName.includes('Re-export')) {
+    const filesMatch = output.match(/Files with re-exports: (\d+)/);
+    const statementsMatch = output.match(/Total re-export statements: (\d+)/);
+    if (filesMatch) {
+      result.summary = `${filesMatch[1]} file(s), ${statementsMatch?.[1] || '?'} re-export(s)`;
+    }
+  } else if (checkName.includes('Type Import')) {
+    const filesMatch = output.match(/Files with type imports: (\d+)/);
+    const statementsMatch = output.match(/Total type import statements: (\d+)/);
+    if (filesMatch) {
+      result.summary = `${filesMatch[1]} file(s), ${statementsMatch?.[1] || '?'} type import(s)`;
+    }
   }
 
   return result;
@@ -154,6 +169,9 @@ async function generateReport() {
     { name: 'TODO/FIXME/HACK Comments', script: path.join(__dirname, 'check_todos.mjs') },
     { name: 'Console Usage', script: path.join(__dirname, 'check_logs.mjs') },
     { name: 'Redux Saga Patterns', script: path.join(__dirname, 'check_saga_patterns.mjs') },
+    { name: 'Type Assertion (as const, satisfies)', script: path.join(__dirname, 'check_type_assertions.mjs') },
+    { name: 'Re-export Check (No Re-exports)', script: path.join(__dirname, 'check_reexports.mjs') },
+    { name: 'Type Import Check (No "type" Keyword)', script: path.join(__dirname, 'check_type_imports.mjs') },
   ];
 
   const results = [];

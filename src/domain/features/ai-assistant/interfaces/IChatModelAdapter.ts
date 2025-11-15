@@ -1,6 +1,6 @@
 import { ChatModelAdapter } from '@assistant-ui/react';
 
-import { AgentType } from '@/config/domain/ai-assistant/config';
+import { AgentType } from '../types/AgentType';
 
 /**
  * Extended chat model adapter interface

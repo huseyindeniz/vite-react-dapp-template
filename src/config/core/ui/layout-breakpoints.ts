@@ -1,8 +1,11 @@
+import { MantineBreakpoint } from '@mantine/core';
+
 /**
  * Centralized breakpoint configuration for layout components
  * Ensures navbar, aside, and header visibility breakpoints stay in sync
  */
-export const LAYOUT_BREAKPOINTS = {
+
+interface LayoutBreakpoints {
   /**
    * Single breakpoint where:
    * - Navbar becomes mobile drawer
@@ -12,5 +15,9 @@ export const LAYOUT_BREAKPOINTS = {
    *
    * Change this one value to adjust all layout responsiveness
    */
-  MOBILE: 'xl' as const,
-} as const;
+  MOBILE: MantineBreakpoint;
+}
+
+export const LAYOUT_BREAKPOINTS: LayoutBreakpoints = {
+  MOBILE: 'xl',
+};

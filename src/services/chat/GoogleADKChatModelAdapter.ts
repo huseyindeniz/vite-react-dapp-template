@@ -1,10 +1,13 @@
 import { ChatModelRunOptions, ChatModelRunResult } from '@assistant-ui/react';
 import log from 'loglevel';
 
-import { AgentType } from '@/config/domain/ai-assistant/config';
 import { IChatModelAdapter } from '@/domain/features/ai-assistant/interfaces/IChatModelAdapter';
+import { AgentType } from '@/domain/features/ai-assistant/types/AgentType';
 
 import { ChatService } from './ChatService';
+import { CompleteStatus } from './types/CompleteStatus';
+import { IncompleteStatus } from './types/IncompleteStatus';
+import { TextContent } from './types/TextContent';
 
 const BASE_URL = 'http://localhost:8011';
 
@@ -85,13 +88,14 @@ export class GoogleADKChatModelAdapter implements IChatModelAdapter {
                   // Handle text token streaming
                   accumulatedText += event.content;
                   log.debug('Token received:', event.content);
+
+                  const textContent: TextContent = {
+                    type: 'text',
+                    text: accumulatedText,
+                  };
+
                   yield {
-                    content: [
-                      {
-                        type: 'text' as const,
-                        text: accumulatedText,
-                      },
-                    ],
+                    content: [textContent],
                   };
                 } else if (event.type === 'end') {
                   // Stream ended
@@ -109,25 +113,33 @@ export class GoogleADKChatModelAdapter implements IChatModelAdapter {
         reader.releaseLock();
       }
 
+      const textContent: TextContent = {
+        type: 'text',
+        text: accumulatedText,
+      };
+
+      const completeStatus: CompleteStatus = {
+        type: 'complete',
+        reason: 'stop',
+      };
+
       return {
-        content: [
-          {
-            type: 'text' as const,
-            text: accumulatedText,
-          },
-        ],
-        status: { type: 'complete' as const, reason: 'stop' as const },
+        content: [textContent],
+        status: completeStatus,
       };
     } catch (error) {
       log.error('GoogleADKChatModelAdapter error:', error);
+
+      const incompleteStatus: IncompleteStatus = {
+        type: 'incomplete',
+        reason: 'error',
+        error:
+          error instanceof Error ? error.message : 'Network error occurred',
+      };
+
       return {
         content: [],
-        status: {
-          type: 'incomplete' as const,
-          reason: 'error' as const,
-          error:
-            error instanceof Error ? error.message : 'Network error occurred',
-        },
+        status: incompleteStatus,
       };
     }
   }

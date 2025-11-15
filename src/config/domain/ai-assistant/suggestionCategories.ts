@@ -1,6 +1,6 @@
 import { TFunction } from 'i18next';
 
-import { SuggestionCategory } from '@/domain/features/ai-assistant/types/SuggestionCategory';
+import { SuggestionCategories } from '@/domain/features/ai-assistant/types/SuggestionCategories';
 
 /**
  * Suggestion categories configuration factory
@@ -11,7 +11,7 @@ import { SuggestionCategory } from '@/domain/features/ai-assistant/types/Suggest
  */
 export const getSuggestionCategories = (
   t: TFunction<'feature-ai-assistant'>
-) => {
+): SuggestionCategories => {
   return {
     default: {
       name: t('Quick Actions'),
@@ -21,13 +21,5 @@ export const getSuggestionCategories = (
       name: t('Data Export'),
       color: 'orange',
     },
-  } as const satisfies Record<string, SuggestionCategory>;
+  };
 };
-
-/**
- * Type-safe category keys derived from config
- * Automatically updates when categories are added/removed
- */
-export type SuggestionCategoryKey = keyof ReturnType<
-  typeof getSuggestionCategories
->;

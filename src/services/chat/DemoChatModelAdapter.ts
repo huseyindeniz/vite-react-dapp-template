@@ -1,8 +1,13 @@
 import { ChatModelRunOptions, ChatModelRunResult } from '@assistant-ui/react';
 import log from 'loglevel';
 
-import { AgentType } from '@/config/domain/ai-assistant/config';
 import { IChatModelAdapter } from '@/domain/features/ai-assistant/interfaces/IChatModelAdapter';
+import { AgentType } from '@/domain/features/ai-assistant/types/AgentType';
+
+import { CompleteStatus } from './types/CompleteStatus';
+import { ImageContent } from './types/ImageContent';
+import { IncompleteStatus } from './types/IncompleteStatus';
+import { TextContent } from './types/TextContent';
 
 /**
  * Demo chat adapter that showcases chat capabilities without requiring a real AI backend
@@ -40,14 +45,19 @@ export class DemoChatModelAdapter implements IChatModelAdapter {
         // Simulate streaming response
         yield* this.streamResponse(response.content);
 
+        const textContent: TextContent = {
+          type: 'text',
+          text: response.content,
+        };
+
+        const completeStatus: CompleteStatus = {
+          type: 'complete',
+          reason: 'stop',
+        };
+
         return {
-          content: [
-            {
-              type: 'text' as const,
-              text: response.content,
-            },
-          ],
-          status: { type: 'complete' as const, reason: 'stop' as const },
+          content: [textContent],
+          status: completeStatus,
         };
       }
 
@@ -58,20 +68,29 @@ export class DemoChatModelAdapter implements IChatModelAdapter {
 
         const imageData = this.generateImageArtifact();
 
+        const textContent: TextContent = {
+          type: 'text',
+          text: introText,
+        };
+
+        const imageContent: ImageContent = {
+          type: 'image',
+          image: imageData,
+        };
+
+        const completeStatus: CompleteStatus = {
+          type: 'complete',
+          reason: 'stop',
+        };
+
         // Yield the artifact
         yield {
-          content: [
-            { type: 'text' as const, text: introText },
-            { type: 'image' as const, image: imageData },
-          ],
+          content: [textContent, imageContent],
         };
 
         return {
-          content: [
-            { type: 'text' as const, text: introText },
-            { type: 'image' as const, image: imageData },
-          ],
-          status: { type: 'complete' as const, reason: 'stop' as const },
+          content: [textContent, imageContent],
+          status: completeStatus,
         };
       }
 
@@ -81,12 +100,22 @@ export class DemoChatModelAdapter implements IChatModelAdapter {
 
         const markdownFile = this.generateMarkdownArtifact();
 
+        const textContent: TextContent = {
+          type: 'text',
+          text: introText,
+        };
+
+        const completeStatus: CompleteStatus = {
+          type: 'complete',
+          reason: 'stop',
+        };
+
         // Yield the artifact
         yield {
           content: [
-            { type: 'text' as const, text: introText },
+            textContent,
             {
-              type: 'file' as const,
+              type: 'file',
               ...markdownFile,
             },
           ],
@@ -94,13 +123,13 @@ export class DemoChatModelAdapter implements IChatModelAdapter {
 
         return {
           content: [
-            { type: 'text' as const, text: introText },
+            textContent,
             {
-              type: 'file' as const,
+              type: 'file',
               ...markdownFile,
             },
           ],
-          status: { type: 'complete' as const, reason: 'stop' as const },
+          status: completeStatus,
         };
       }
 
@@ -110,12 +139,22 @@ export class DemoChatModelAdapter implements IChatModelAdapter {
 
         const jsonFile = this.generateJsonArtifact();
 
+        const textContent: TextContent = {
+          type: 'text',
+          text: introText,
+        };
+
+        const completeStatus: CompleteStatus = {
+          type: 'complete',
+          reason: 'stop',
+        };
+
         // Yield the artifact
         yield {
           content: [
-            { type: 'text' as const, text: introText },
+            textContent,
             {
-              type: 'file' as const,
+              type: 'file',
               ...jsonFile,
             },
           ],
@@ -123,13 +162,13 @@ export class DemoChatModelAdapter implements IChatModelAdapter {
 
         return {
           content: [
-            { type: 'text' as const, text: introText },
+            textContent,
             {
-              type: 'file' as const,
+              type: 'file',
               ...jsonFile,
             },
           ],
-          status: { type: 'complete' as const, reason: 'stop' as const },
+          status: completeStatus,
         };
       }
 
@@ -139,12 +178,22 @@ export class DemoChatModelAdapter implements IChatModelAdapter {
 
         const csvFile = this.generateCsvArtifact();
 
+        const textContent: TextContent = {
+          type: 'text',
+          text: introText,
+        };
+
+        const completeStatus: CompleteStatus = {
+          type: 'complete',
+          reason: 'stop',
+        };
+
         // Yield the artifact
         yield {
           content: [
-            { type: 'text' as const, text: introText },
+            textContent,
             {
-              type: 'file' as const,
+              type: 'file',
               ...csvFile,
             },
           ],
@@ -152,33 +201,41 @@ export class DemoChatModelAdapter implements IChatModelAdapter {
 
         return {
           content: [
-            { type: 'text' as const, text: introText },
+            textContent,
             {
-              type: 'file' as const,
+              type: 'file',
               ...csvFile,
             },
           ],
-          status: { type: 'complete' as const, reason: 'stop' as const },
+          status: completeStatus,
         };
       }
 
       // Fallback
+      const completeStatusFallback: CompleteStatus = {
+        type: 'complete',
+        reason: 'stop',
+      };
+
       return {
         content: [],
-        status: { type: 'complete' as const, reason: 'stop' as const },
+        status: completeStatusFallback,
       };
     } catch (error) {
       log.error('DemoChatModelAdapter error:', error);
+
+      const incompleteStatus: IncompleteStatus = {
+        type: 'incomplete',
+        reason: 'error',
+        error:
+          error instanceof Error
+            ? error.message
+            : 'Demo agent error occurred',
+      };
+
       return {
         content: [],
-        status: {
-          type: 'incomplete' as const,
-          reason: 'error' as const,
-          error:
-            error instanceof Error
-              ? error.message
-              : 'Demo agent error occurred',
-        },
+        status: incompleteStatus,
       };
     }
   }
@@ -279,13 +336,13 @@ export class DemoChatModelAdapter implements IChatModelAdapter {
       // Add word and space (except for last word)
       accumulatedText += words[i] + (i < words.length - 1 ? ' ' : '');
 
+      const textContent: TextContent = {
+        type: 'text',
+        text: accumulatedText,
+      };
+
       yield {
-        content: [
-          {
-            type: 'text' as const,
-            text: accumulatedText,
-          },
-        ],
+        content: [textContent],
       };
 
       // Simulate typing delay (30-50ms per word)

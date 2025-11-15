@@ -1,4 +1,4 @@
-import { AgentType } from '@/config/domain/ai-assistant/config';
+import { AgentType } from '../types/AgentType';
 
 import { IChatModelAdapter } from './IChatModelAdapter';
 

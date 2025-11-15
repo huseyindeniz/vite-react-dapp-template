@@ -1,4 +1,9 @@
-export const CHAT_AGENTS = {
+import { AgentType } from '@/domain/features/ai-assistant/types/AgentType';
+import { ChatAgents } from '@/domain/features/ai-assistant/types/ChatAgents';
+import { FileAttachmentConfig } from '@/domain/features/ai-assistant/types/FileAttachmentConfig';
+import { MessageValidationConfig } from '@/domain/features/ai-assistant/types/MessageValidationConfig';
+
+export const CHAT_AGENTS: ChatAgents = {
   langgraph: {
     label: 'Agent 1 (with Langgraph)',
     enabled: false,
@@ -11,23 +16,22 @@ export const CHAT_AGENTS = {
     label: 'Agent 3 (demo)',
     enabled: true,
   },
-} as const;
-
-export type AgentType = keyof typeof CHAT_AGENTS;
+};
 
 export const DEFAULT_AGENT_TYPE: AgentType = 'demo';
 
 /**
  * Message validation configuration
  */
-export const MESSAGE_VALIDATION_CONFIG = {
+export const MESSAGE_VALIDATION_CONFIG: MessageValidationConfig = {
   maxLength: 1000,
-} as const;
+};
 
 /**
  * File attachment validation configuration
  */
-export const FILE_ATTACHMENT_CONFIG = {
+
+export const FILE_ATTACHMENT_CONFIG: FileAttachmentConfig = {
   maxFiles: 5,
   maxFileSize: 10 * 1024 * 1024, // 10MB in bytes
   allowedTypes: [
@@ -85,4 +89,4 @@ export const FILE_ATTACHMENT_CONFIG = {
     '.html',
     '.css',
   ],
-} as const;
+};
