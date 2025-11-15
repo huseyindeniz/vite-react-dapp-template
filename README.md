@@ -6,8 +6,8 @@
 
 A sophisticated, production-ready React application template with enterprise-grade architecture. Build **traditional Web2 apps**, **Web3 dApps**, or **AI-powered applications** - all with the same robust foundation.
 
-> **🚀 Version 1.0.0 - Universal Template**
-> This release represents a fundamental architectural evolution. The template is now **truly universal** - Web3 wallet integration, OAuth, and AI chat are all **optional domain features** that can be easily removed. Build anything from a traditional SaaS app to a cutting-edge AI agent platform.
+> **🚀 Version 1.1.0 - Architecture Refinement & Enhanced Features**
+> Complete directory restructuring with clearer Core vs Domain separation (578+ files reorganized), enhanced AI Assistant with suggestions and artifacts, improved Blog Demo with single post viewing, comprehensive theme/UI refinements, plus built-in quality enforcement tooling with 26 automated checks.
 
 🚀 **[Live Demo](https://snazzy-sorbet-15dcef.netlify.app)** | 📚 **[Documentation](https://huseyindeniz.github.io/react-dapp-template-documentation/)**
 
@@ -33,23 +33,25 @@ Build ANY web application architecture:
 
 ### 🏗️ Core vs Domain Architecture
 
-**Core Features** (Infrastructure - Keep these):
+**Core Features** (`src/core/features/` - Infrastructure, keep these):
 
 - React 19, TypeScript 5, Vite 7
-- Redux Toolkit + Redux Saga
-- Mantine UI component library
-- i18next internationalization
-- React Router with lazy loading
-- Automatic slice lifecycle management
+- Redux Toolkit + Redux Saga with automatic lifecycle management
+- Mantine UI component library with customizable theming
+- i18next internationalization with automatic key extraction
+- React Router with lazy loading and code splitting
+- Reusable design components (ErrorFallback, PageLoading, Breadcrumb)
+- Flexible layout system (AppShell with header, footer, navbar, aside)
 
-**Domain Features** (Examples - Remove/Replace as needed):
+**Domain Features** (`src/domain/features/`):
 
-- `wallet/` - Web3 integration (MetaMask, Core, Coinbase, Rabby)
-- `oauth/` - OAuth 2.0 authentication (Google, GitHub)
-- `chat/` - AI agent chat interface (LangGraph/Google ADK)
-- `blog-demo/` - REST API integration example (JSONPlaceholder)
+- `ai-assistant/` - AI chat interface with LangGraph/Google ADK support (optional, removable)
+- `blog-demo/` - REST API integration example (optional, removable)
+- `oauth/` - OAuth 2.0 authentication (optional, removable)
+- `site/` - **Your site branding** (customize: logo, social links, copyright)
+- `wallet/` - Web3 integration (optional, removable)
 
-Each domain feature is completely self-contained and removable.
+Optional features are self-contained and removable. Site branding should be customized for your app.
 
 ### ⚡ Key Capabilities
 
@@ -57,6 +59,7 @@ Each domain feature is completely self-contained and removable.
 - **Enterprise State Management**: Redux Toolkit + Redux Saga with automatic lifecycle management
 - **Feature-Based Architecture**: Clear boundaries, dependency injection, interface-driven design
 - **UI/UX**: Mantine components, responsive design, dark/light mode, accessibility
+- **Built-in CI/CD**: GitHub Actions workflows for automated code quality & architecture checks (26 checks total)
 - **Testing & Quality**: Vitest, React Testing Library, Storybook, ESLint, Prettier
 - **AI-Ready**: Pre-built chat interface with LangGraph and Google ADK support
 
@@ -64,36 +67,61 @@ Each domain feature is completely self-contained and removable.
 
 ### 🏗️ Core Features (Infrastructure - Required)
 
+Located in `src/core/features/` - These are foundational features that all applications need.
+
 #### Application Bootstrap (`app/`)
 
-- Centralized configuration system (`src/config/`)
-- Provider composition and service dependency injection
-- Lazy loading and code splitting
+- Centralized configuration system via composition root (`src/config/`)
+- Provider composition with automatic dependency injection
+- Redux store configuration and feature registration
+- Lazy loading and code splitting support
+
+#### Reusable Components (`components/`)
+
+- Error boundaries and fallback components (`ErrorFallback`)
+- Loading states (`PageLoading`)
+- Navigation aids (`Breadcrumb`)
+- Consistent design patterns across the application
 
 #### Internationalization (`i18n/`)
 
 - Multi-language support (English, Turkish - easily extensible)
-- Browser language detection and feature-based namespaces
-- Automatic key extraction from components
+- Browser language detection and locale switching
+- Feature-based translation namespaces
+- Automatic key extraction from components (`npm run extract`)
+
+#### Layout System (`layout/`)
+
+- Mantine AppShell-based structure (header, footer, navbar, aside, main)
+- Responsive layout with breakpoint-aware design
+- Customizable layout extensions via composition root
+- Dark/light mode support
 
 #### Routing (`router/`)
 
 - React Router with lazy loading and code splitting
 - Automatic menu generation from route configuration
-- Flexible protection system for authenticated routes
-
-#### UI System (`ui/`)
-
-- Mantine component library with customizable theme
-- Responsive layout components and dark/light mode support
+- Flexible route protection system for authenticated routes
+- Type-safe route definitions
 
 #### Slice Manager (`slice-manager/`)
 
 - Automatic Redux slice lifecycle management
 - 5 cleanup strategies: Component, Route, Cached, Persistent, Manual
-- Memory leak prevention
+- Memory leak prevention with automatic cleanup
+- Feature slice registration and teardown
 
-### 🎯 Domain Features (Optional - Examples)
+#### UI System (`ui/`)
+
+- Mantine v8 component library
+- Customizable theme with CSS variables
+- Responsive design with mobile-first approach
+- Dark/light mode with system preference detection
+- Accessible components (WCAG compliant)
+
+### 🎯 Domain Features
+
+Located in `src/domain/features/` - Business domain features. Most are optional examples you can remove. Site branding is where you customize your app's identity.
 
 #### Web3 Wallet Integration (`wallet/`)
 
@@ -108,49 +136,63 @@ Each domain feature is completely self-contained and removable.
 - Token management and profile pages
 - Works independently or alongside wallet auth
 
-#### AI Chat Interface (`chat/`) - New in v1.0
+#### AI Chat Interface (`ai-assistant/`) - Enhanced in v1.1
 
-- Complete chat UI with message threading
+- Complete chat UI with message threading and empty state
 - LangGraph and Google ADK adapters
+- Suggestion system with categorized quick actions
+- Artifact support (images, files, markdown) with copy/paste
 - Python backend examples in `dev/backend/`
 
-#### Blog Demo (`blog-demo/`)
+#### Blog Demo (`blog-demo/`) - Enhanced in v1.1
 
 - REST API integration example (JSONPlaceholder)
 - Two-model architecture: Posts and Authors
+- Single post viewing with dedicated `useBlogPost` hook
+- Improved styling and navigation between list and detail views
 - Reference implementation for building new features
+
+#### Site Branding (`site/`)
+
+- **Customize this for your own branding!**
+- Replace logo, social media links, copyright text with your own
+- Default implementations provided as examples
+- Components used in layout extensions (header, footer)
 
 ### 🧪 Development & Testing
 
-- Vitest + React Testing Library
-- Storybook for component documentation
-- Claude Code Skills for automated audits
-- ESLint + Prettier with pre-commit hooks
+- **Testing**: Vitest + React Testing Library for unit/integration tests
+- **Documentation**: Storybook for interactive component development
+- **CI/CD**: GitHub Actions workflows (code-audit.yml + arch-audit.yml) - runs automatically on PRs
+- **Local Audits**: Claude Code Skills (`/skill code-audit`, `/skill arch-audit`)
+- **Code Quality**: ESLint + Prettier with pre-commit hooks (zero warnings tolerance)
 
 ## Technology Stack
 
-| Technology                    | Purpose                 |
-| ----------------------------- | ----------------------- |
-| **React (19.x)**              | UI framework            |
-| **TypeScript (5.x)**          | Type safety             |
-| **Vite (7.x)**                | Build tool              |
-| **Mantine (8.x)**             | UI component library    |
-| **Redux Toolkit (2.x)**       | State management        |
-| **Redux Saga (1.x)**          | Side effect management  |
-| **React Router (7.x)**        | Client-side routing     |
-| **i18next (25.x)**            | Internationalization    |
-| **Vitest (3.x)**              | Testing framework       |
-| **Storybook (8.x)**           | Component documentation |
-| **React Testing Lib (16.x)**  | Component testing       |
-| **ESLint (9.x)**              | Code linting            |
-| **Prettier (3.x)**            | Code formatting         |
+| Technology                   | Purpose                 |
+| ---------------------------- | ----------------------- |
+| **React (19.x)**             | UI framework            |
+| **TypeScript (5.x)**         | Type safety             |
+| **Vite (7.x)**               | Build tool              |
+| **Mantine (8.x)**            | UI component library    |
+| **Redux Toolkit (2.x)**      | State management        |
+| **Redux Saga (1.x)**         | Side effect management  |
+| **React Router (7.x)**       | Client-side routing     |
+| **i18next (25.x)**           | Internationalization    |
+| **Vitest (3.x)**             | Testing framework       |
+| **Storybook (8.x)**          | Component documentation |
+| **React Testing Lib (16.x)** | Component testing       |
+| **ESLint (9.x)**             | Code linting            |
+| **Prettier (3.x)**           | Code formatting         |
 
 **Optional Domain Dependencies** (only if you keep the features):
 
-| Technology           | Feature      | Purpose                     |
-| -------------------- | ------------ | --------------------------- |
-| **Ethers.js (6.x)**  | `wallet/`    | Web3/blockchain integration |
-| **Axios (1.x)**      | `blog-demo/` | REST API integration        |
+| Technology                       | Feature         | Purpose                     |
+| -------------------------------- | --------------- | --------------------------- |
+| **Ethers.js (6.x)**              | `wallet/`       | Web3/blockchain integration |
+| **Axios (1.x)**                  | `blog-demo/`    | REST API integration        |
+| **@assistant-ui/react**          | `ai-assistant/` | AI chat UI components       |
+| **@assistant-ui/react-markdown** | `ai-assistant/` | Markdown rendering in chat  |
 
 ## Project Structure
 
@@ -161,25 +203,42 @@ src/
 ├── config/            # 🏛️ COMPOSITION ROOT (top-level layer)
 │   ├── services.ts    # Service instantiation & dependency injection
 │   ├── features.ts    # Feature registration with Redux store
-│   ├── routes.tsx     # Application route definitions
-│   ├── auth/          # Auth provider registration
-│   ├── ui/            # UI configuration (theme, layout)
-│   └── i18n/          # Translation files
+│   ├── pages/         # Page component extensions
+│   ├── core/          # Core infrastructure configuration
+│   │   ├── auth/      # Auth provider registration
+│   │   ├── i18n/      # Translations for core features
+│   │   ├── router/    # Route definitions
+│   │   └── ui/        # UI configuration (theme, layout)
+│   └── domain/        # Domain feature configuration
+│       ├── ai-assistant/  # AI assistant config & services
+│       ├── blog-demo/     # Blog demo config & services
+│       ├── oauth/         # OAuth config & services
+│       └── wallet/        # Wallet config & services
 │
-├── features/          # ⚙️ FEATURE LAYER
-│   ├── app/           # Application bootstrap
-│   ├── i18n/          # Internationalization infrastructure
-│   ├── router/        # Routing infrastructure
-│   ├── ui/            # Mantine-based design system
-│   ├── slice-manager/ # Redux lifecycle management
-│   ├── wallet/        # 📦 Web3 wallet (optional domain feature)
-│   ├── oauth/         # 📦 OAuth auth (optional domain feature)
-│   └── blog-demo/     # 📦 REST API example (optional domain feature)
+├── core/              # ⚙️ CORE FEATURE LAYER (Infrastructure)
+│   └── features/
+│       ├── app/           # Application bootstrap
+│       ├── components/    # Reusable design components
+│       ├── i18n/          # Internationalization infrastructure
+│       ├── layout/        # Page structure (header, footer, navbar, etc.)
+│       ├── router/        # Routing infrastructure
+│       ├── slice-manager/ # Redux lifecycle management
+│       └── ui/            # Mantine-based design system
+│
+├── domain/            # 🎯 DOMAIN FEATURE LAYER (Business Logic)
+│   └── features/
+│       ├── ai-assistant/  # 📦 AI chat interface (optional)
+│       ├── blog-demo/     # 📦 REST API example (optional)
+│       ├── oauth/         # 📦 OAuth auth (optional)
+│       ├── site/          # 📦 Site branding (optional)
+│       └── wallet/        # 📦 Web3 wallet (optional)
 │
 ├── services/          # 🔌 SERVICE LAYER
+│   ├── chat/          # Chat service implementations (optional)
 │   ├── ethersV6/      # Web3 service implementation (optional)
-│   ├── oauth/         # OAuth service implementation (optional)
-│   └── jsonplaceholder/ # REST API service (optional)
+│   ├── http/          # HTTP service utilities
+│   ├── jsonplaceholder/ # REST API service (optional)
+│   └── oauth/         # OAuth service implementation (optional)
 │
 ├── pages/             # 🎨 PRESENTATION LAYER
 └── hooks/             # 🪝 Global React hooks
@@ -187,9 +246,10 @@ src/
 
 **Layer Responsibilities:**
 
-- **Composition Root** (`src/config/`): Wires the entire application together. ONLY place where services are imported and features are registered.
-- **Feature Layer** (`src/features/`): Business logic and infrastructure features. Define interfaces, receive services via dependency injection.
-- **Service Layer** (`src/services/`): Implement feature interfaces. Integrate with external libraries (ethers.js, axios, etc.).
+- **Composition Root** (`src/config/`): Wires the entire application together. ONLY place where services are imported and features are registered. Split into `core/` (infrastructure config) and `domain/` (business feature config).
+- **Core Features** (`src/core/features/`): Infrastructure features required by all applications (app bootstrap, i18n, routing, UI system, layout, components, slice manager).
+- **Domain Features** (`src/domain/features/`): Business domain features that are optional and removable (wallet, oauth, ai-assistant, blog-demo, site). Define interfaces, receive services via dependency injection.
+- **Service Layer** (`src/services/`): Implement domain feature interfaces. Integrate with external libraries (ethers.js, axios, etc.).
 - **Presentation Layer** (`src/pages/`): Route entry points. Orchestrate UI using feature components and hooks.
 
 ## Development Commands
@@ -211,10 +271,46 @@ npm run build-storybook   # Build static Storybook
 npm run extract             # Extract translation keys
 npm run check-translations  # Validate translations
 
+# Quality Audits (requires Claude Code)
+/skill code-audit    # Run 18 code quality checks
+/skill arch-audit    # Run 8 architecture dependency checks
+
 # Release
 npm run release      # Version bump and release
 npm run prepare      # Setup git hooks
 ```
+
+## Code Quality & Architecture Enforcement
+
+This template enforces enterprise-grade quality standards with **26 automated checks**:
+
+**🔍 Code Quality (18 checks):**
+
+- Import/export patterns, Redux abstraction, service boundaries
+- i18n coverage, TypeScript safety, code organization
+- React best practices, code cleanliness
+
+**🏗️ Architecture (8 checks):**
+
+- Feature isolation, composition root pattern
+- Service layer boundaries, circular dependency detection
+
+**How to Run:**
+
+- **Locally**: `/skill code-audit` and `/skill arch-audit` (Claude Code)
+- **CI/CD**: Automatically on every PR via included GitHub Actions workflows
+  - `.github/workflows/code-audit.yml`
+  - `.github/workflows/arch-audit.yml`
+
+**Quality Standards (Zero Tolerance):**
+
+- ✅ ESLint: 0 warnings (not just errors)
+- ✅ TypeScript: No "any", no suppressions
+- ✅ i18n: All UI text uses `t()`
+- ✅ Redux: Components use feature hooks (not RTK directly)
+- ✅ Services: Only imported in composition root
+- ✅ Architecture: No boundary violations
+- ✅ React: Proper keys (stable, unique identifiers)
 
 ## Configuration
 
@@ -225,6 +321,7 @@ The `src/config/` directory is the **Composition Root** - a top-level architectu
 **What is the Composition Root?**
 
 This is NOT just a config folder - it's a **fundamental architectural pattern** where:
+
 - ALL services are instantiated and injected into features
 - ALL features are registered with the Redux store
 - ALL routes are defined and configured
@@ -237,20 +334,31 @@ This is NOT just a config folder - it's a **fundamental architectural pattern** 
 src/config/
 ├── services.ts             # Service instantiation (ONLY place to import services)
 ├── features.ts             # Feature registration (Redux store + sagas)
-├── routes.tsx              # Application route definitions
-├── auth/                   # Authentication configuration
-│   ├── auth.ts             # Auth provider registration
-│   └── ProtectionType.ts   # Protection type definitions
-├── ui/                     # UI configuration
-│   ├── mantineProviderProps.ts    # Mantine provider configuration
-│   └── layout-extensions/         # Header/navbar customization
-└── i18n/                   # Internationalization
-    └── translations/       # Translation files by namespace
+├── pages/                  # Page component extensions
+├── core/                   # Core infrastructure configuration
+│   ├── auth/               # Authentication configuration
+│   │   ├── auth.ts         # Auth provider registration
+│   │   └── ProtectionType.ts  # Protection type definitions
+│   ├── i18n/               # Internationalization
+│   │   ├── config.ts       # i18n configuration
+│   │   └── translations/   # Translation files by namespace
+│   ├── router/             # Routing configuration
+│   │   └── routes.tsx      # Application route definitions
+│   └── ui/                 # UI configuration
+│       ├── mantineProviderProps.ts    # Mantine provider configuration
+│       ├── theme/          # Theme customization
+│       └── layout-extensions/  # Header/navbar/footer customization
+└── domain/                 # Domain feature configuration
+    ├── ai-assistant/       # AI assistant feature config
+    ├── blog-demo/          # Blog demo feature config
+    ├── oauth/              # OAuth feature config
+    └── wallet/             # Wallet feature config
 ```
 
 **Why This Matters:**
 
 By centralizing all wiring in one place:
+
 - Features remain isolated and don't know about each other
 - Services are injected rather than hard-coded
 - Easy to swap implementations (e.g., EthersV5 → EthersV6)
@@ -278,12 +386,13 @@ VITE_OAUTH_POST_LOGIN_REDIRECT_PATH=/oauth-profile
 
 ```typescript
 "paths": {
-  "@/config/*": ["./src/config/*"],
-  "@/features/*": ["./src/features/*"],
-  "@/services/*": ["./src/services/*"],
-  "@/pages/*": ["./src/pages/*"],
-  "@/hooks/*": ["./src/hooks/*"],
-  "@test-utils": ["./src/test-utils/index.ts"]
+  "@/core/*": ["./src/core/*"],           // Core features and infrastructure
+  "@/domain/*": ["./src/domain/*"],       // Domain features (business logic)
+  "@/config/*": ["./src/config/*"],       // Configuration and composition root
+  "@/services/*": ["./src/services/*"],   // Service implementations
+  "@/pages/*": ["./src/pages/*"],         // Page components
+  "@/hooks/*": ["./src/hooks/*"],         // Global React hooks
+  "@test-utils": ["./src/test-utils/index.ts"]  // Test utilities
 }
 ```
 
@@ -291,40 +400,120 @@ VITE_OAUTH_POST_LOGIN_REDIRECT_PATH=/oauth-profile
 
 ### Remove Wallet Feature
 
-1. Delete `src/features/wallet/` directory
+1. Delete `src/domain/features/wallet/` directory
 2. Delete `src/services/ethersV6/` directory
-3. Remove wallet routes from `src/config/routes.tsx`
-4. Remove wallet service from `src/config/services.ts`
-5. Remove wallet auth from `src/config/auth/auth.ts`
-6. Uninstall: `npm uninstall ethers @metamask/jazzicon`
+3. Delete `src/config/domain/wallet/` directory
+4. Remove wallet routes from `src/config/core/router/routes.tsx`
+5. Remove wallet feature from `src/config/features.ts`
+6. Remove wallet service from `src/config/services.ts`
+7. Remove wallet auth from `src/config/core/auth/auth.ts`
+8. Remove wallet page extension from `src/config/pages/`
+9. Uninstall: `npm uninstall ethers @metamask/jazzicon`
 
 ### Remove OAuth Feature
 
-1. Delete `src/features/oauth/` directory
+1. Delete `src/domain/features/oauth/` directory
 2. Delete `src/services/oauth/` directory
-3. Remove OAuth routes from `src/config/routes.tsx`
-4. Remove OAuth service from `src/config/services.ts`
-5. Remove OAuth auth from `src/config/auth/auth.ts`
+3. Delete `src/config/domain/oauth/` directory
+4. Remove OAuth routes from `src/config/core/router/routes.tsx`
+5. Remove OAuth feature from `src/config/features.ts`
+6. Remove OAuth service from `src/config/services.ts`
+7. Remove OAuth auth from `src/config/core/auth/auth.ts`
+8. Remove OAuth page extension from `src/config/pages/`
 
-### Remove Chat Feature
+### Remove AI Assistant Feature
 
-1. Delete `src/features/chat/` directory
+1. Delete `src/domain/features/ai-assistant/` directory
 2. Delete `src/services/chat/` directory
-3. Remove chat routes from `src/config/routes.tsx`
-4. Remove chat service from `src/config/services.ts`
-5. Uninstall: `npm uninstall axios` (if not used by other features)
+3. Delete `src/config/domain/ai-assistant/` directory
+4. Remove AI assistant routes from `src/config/core/router/routes.tsx`
+5. Remove AI assistant feature from `src/config/features.ts`
+6. Remove chat service from `src/config/services.ts`
+7. Uninstall: `npm uninstall @assistant-ui/react @assistant-ui/react-markdown axios` (if not used by other features)
 
 ### Remove Blog Demo Feature
 
-1. Delete `src/features/blog-demo/` directory
+1. Delete `src/domain/features/blog-demo/` directory
 2. Delete `src/services/jsonplaceholder/` directory
-3. Remove blog routes from `src/config/routes.tsx`
-4. Remove blog service from `src/config/services.ts`
-5. Uninstall: `npm uninstall axios` (if not used by other features)
+3. Delete `src/config/domain/blog-demo/` directory
+4. Remove blog routes from `src/config/core/router/routes.tsx`
+5. Remove blog feature from `src/config/features.ts`
+6. Remove blog service from `src/config/services.ts`
+7. Uninstall: `npm uninstall axios` (if not used by other features)
 
-## Breaking Changes from v0.x
+## Customizing Your Application
 
-### v1.0.0 - Major Architectural Changes
+### Site Branding
+
+The `src/domain/features/site/` directory contains branding components you should customize:
+
+1. **SiteLogo** - Replace with your own logo component
+2. **SocialMenu** - Update social media links (GitHub, Twitter, LinkedIn, etc.)
+3. **Copyright** - Update copyright text and year
+
+These components are referenced in layout extensions:
+- `src/config/core/ui/layout-extensions/headerExtension.tsx` (SiteLogo)
+- `src/config/core/ui/layout-extensions/footerExtension.tsx` (SocialMenu, Copyright)
+
+## Release Notes
+
+### v1.1.0 - Architecture Refinement & Enhanced Features (Current)
+
+**🏗️ Major Architecture Refactoring:**
+
+1. **Core vs Domain Separation** - Complete directory restructuring for clearer boundaries
+   - `src/core/features/` - Infrastructure features (app, i18n, router, ui, components, layout, slice-manager)
+   - `src/domain/features/` - Business domain features (wallet, oauth, ai-assistant, blog-demo, site)
+   - `src/config/core/` - Core infrastructure configuration (auth, i18n, router, ui, translations)
+   - `src/config/domain/` - Domain feature configuration (wallet, oauth, ai-assistant, blog-demo)
+   - Much better isolation between infrastructure and business logic
+   - Clearer responsibilities and easier feature management
+
+**✨ Feature Enhancements:**
+
+2. **AI Assistant Improvements**
+   - Empty state component with categorized suggestions
+   - Enhanced chat interface with better UX and agent selection
+   - Improved artifact handling (image, file, markdown) with copy/paste notifications
+   - Assistant branding support (logo image)
+   - Consistent notification patterns across all artifact types
+
+3. **Blog Demo Enhancements**
+   - Single post viewing capability (new `GetPost` action effect)
+   - Dedicated `useBlogPost` hook for individual post access
+   - Improved post item styling with custom CSS modules
+   - Better navigation between posts list and detail views
+   - Enhanced author integration
+
+4. **Theme & UI Refinements**
+   - Enhanced CSS variables resolver for better theming
+   - Improved Mantine provider configuration
+   - Redesigned language selection modal with better UX
+   - Better responsive design patterns and layout customization
+   - HTTP service abstraction (`IHttpService` type)
+
+**🔒 Code Quality & Type Safety:**
+
+5. **Quality Enforcement Tooling**
+   - Claude Code skills for automated audits (`code-audit`, `arch-audit`)
+   - GitHub Actions workflows included in template (runs on PRs automatically)
+   - 26 automated checks total (18 code quality + 8 architecture)
+
+6. **Type Safety Improvements**
+   - MenuType architecture refined (menuLabel now required, better keys)
+   - Proper React key patterns (stable, unique identifiers throughout)
+   - Stricter TypeScript enforcement across entire codebase
+   - Better type definitions for HTTP services and configurations
+
+**Migration Notes:**
+
+- **Breaking**: Directory structure changed - features split into `core/` and `domain/` subdirectories
+- **Breaking**: Config structure changed - configs split into `config/core/` and `config/domain/`
+- **Breaking**: Path aliases changed - `@/features/*` replaced with `@/core/*` and `@/domain/*`
+- Import paths must be updated to new aliases (e.g., `@/core/features/app/*`, `@/domain/features/wallet/*`)
+- All files reorganized - affects 578+ files across the template
+
+### v1.0.0 - Universal Template (Major Architectural Changes)
 
 1. **Auth Feature Split**: The `auth` feature split into two separate features:
    - `oauth/` - OAuth 2.0 authentication (Google, GitHub)
@@ -332,24 +521,27 @@ VITE_OAUTH_POST_LOGIN_REDIRECT_PATH=/oauth-profile
    - Both are now **optional** and removable independently
 
 2. **Centralized Configuration**: All configuration moved to `src/config/`
-   - Route definitions: `config/routes.tsx`
-   - Service injection: `config/services.ts`
-   - Feature registration: `config/features.ts`
+   - Route definitions: `src/config/routes.tsx`
+   - Service injection: `src/config/services.ts`
+   - Feature registration: `src/config/features.ts`
 
 3. **Protection Provider System**: New pluggable authentication
    - `withWalletProtection` HOC for wallet-protected routes
    - `withOAuthProtection` HOC for OAuth-protected routes
-   - Register custom auth providers in `config/auth/auth.ts`
+   - Register custom auth providers in `src/config/auth/auth.ts`
 
-4. **Chat Feature Added**: New optional AI chat feature
-   - Complete chat UI with LangGraph and Google ADK adapters
+4. **AI Chat Feature Added**: New optional AI-powered chat interface
+   - Complete chat UI (`ai-assistant/` feature)
+   - LangGraph and Google ADK adapters
    - Python backend examples in `dev/backend/`
 
-5. **Store Configuration**: Redux store now in `src/features/app/store/store.ts`
+5. **Store Configuration**: Redux store moved to `src/features/app/store/store.ts`
    - Removed centralized `src/store/` directory
 
 6. **Translation Files**: Reorganized to `src/config/i18n/translations/{namespace}/{lang}.json`
    - Feature-based namespaces for better organization
+
+**Note**: v1.1.0 further refined this structure by splitting features into `core/` and `domain/` subdirectories.
 
 ## Alternative Versions
 
