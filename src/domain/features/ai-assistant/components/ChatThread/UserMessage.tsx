@@ -1,6 +1,8 @@
 import { AttachmentPrimitive, MessagePrimitive } from '@assistant-ui/react';
-import { Paper, Text } from '@mantine/core';
+import { Avatar, Group, Paper, Text } from '@mantine/core';
 import { MdAttachFile } from 'react-icons/md';
+
+import { useOAuth } from '@/domain/features/oauth/hooks/useOAuth';
 
 const UserMessageAttachment = () => (
   <AttachmentPrimitive.Root>
@@ -15,30 +17,44 @@ const UserMessageAttachment = () => (
   </AttachmentPrimitive.Root>
 );
 
-export const UserMessage = () => (
-  <MessagePrimitive.Root
-    style={{
-      marginBottom: '0.5rem',
-      display: 'flex',
-      justifyContent: 'flex-end',
-    }}
-  >
-    <Paper
-      bg="blue.6"
-      c="white"
-      px={8}
-      py={4}
-      radius="md"
+export const UserMessage = () => {
+  const { user } = useOAuth();
+
+  return (
+    <MessagePrimitive.Root
       style={{
-        maxWidth: '70%',
-        display: 'inline-block',
-        lineHeight: 1.2,
+        marginBottom: '0.5rem',
+        display: 'flex',
+        justifyContent: 'flex-end',
       }}
     >
-      <MessagePrimitive.Content />
-      <MessagePrimitive.Attachments
-        components={{ Attachment: UserMessageAttachment }}
-      />
-    </Paper>
-  </MessagePrimitive.Root>
-);
+      <Group align="flex-start" gap="xs" wrap="nowrap">
+        <Paper
+          bg="blue.6"
+          px={8}
+          py={4}
+          radius="md"
+          style={{
+            maxWidth: '70%',
+            display: 'inline-block',
+            lineHeight: 1.2,
+          }}
+        >
+          <MessagePrimitive.Content />
+          <MessagePrimitive.Attachments
+            components={{ Attachment: UserMessageAttachment }}
+          />
+        </Paper>
+        <Avatar
+          src={user?.avatarUrl}
+          alt={user?.name}
+          size="md"
+          radius="xl"
+          color="blue"
+        >
+          {user?.name?.charAt(0).toUpperCase()}
+        </Avatar>
+      </Group>
+    </MessagePrimitive.Root>
+  );
+};

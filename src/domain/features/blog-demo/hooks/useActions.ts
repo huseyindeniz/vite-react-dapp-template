@@ -1,7 +1,7 @@
 import { bindActionCreators } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
 
-import { fetchPosts } from '../models/post/actions';
+import { fetchPost, fetchPosts } from '../models/post/actions';
 
 export const useActions = () => {
   const dispatch = useDispatch();
@@ -9,6 +9,7 @@ export const useActions = () => {
   return bindActionCreators(
     {
       fetchPosts,
+      fetchPost,
     },
     dispatch
   );

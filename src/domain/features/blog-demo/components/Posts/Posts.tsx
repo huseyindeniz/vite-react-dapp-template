@@ -26,7 +26,7 @@ export const Posts: React.FC = () => {
       {/* ✅ Data List */}
       {!error && !initialLoading && data.length > 0 && (
         <>
-          <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md">
+          <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="lg">
             {data.map(post => (
               <PostItem key={post.id} post={post} />
             ))}

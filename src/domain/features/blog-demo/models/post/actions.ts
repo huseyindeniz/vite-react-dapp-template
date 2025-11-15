@@ -5,3 +5,7 @@ export const fetchPosts = createAction<{
   limit: number;
   start: number;
 }>('BLOG_DEMO/POST/FETCH_POSTS');
+
+export const fetchPost = createAction<{
+  id: number;
+}>('BLOG_DEMO/POST/FETCH_POST');

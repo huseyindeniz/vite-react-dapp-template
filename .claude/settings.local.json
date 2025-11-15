@@ -37,7 +37,8 @@
       "Bash(npm run extract:*)",
       "Bash(cat:*)",
       "WebFetch(domain:www.assistant-ui.com)",
-      "WebFetch(domain:r.assistant-ui.com)"
+      "WebFetch(domain:r.assistant-ui.com)",
+      "WebFetch(domain:ui.mantine.dev)"
     ],
     "deny": [],
     "ask": []

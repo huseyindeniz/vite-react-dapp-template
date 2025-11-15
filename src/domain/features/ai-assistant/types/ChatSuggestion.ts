@@ -9,5 +9,6 @@ export interface ChatSuggestion {
   label: string;
   prompt: string;
   category: SuggestionCategoryKey;
+  color: string; // Mantine color name (e.g., 'blue', 'green', 'orange')
   send?: boolean; // If true, auto-sends; if false, just fills composer
 }

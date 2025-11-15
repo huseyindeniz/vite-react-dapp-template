@@ -46,7 +46,7 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
   return (
     <Menu position="bottom-end">
       <Menu.Target>
-        <Button bg="gray" variant="outline" ml={2}>
+        <Button variant="outline" ml={2}>
           <Group>
             {connectedWallet ? (
               <WalletLogo

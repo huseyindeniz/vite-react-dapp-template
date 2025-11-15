@@ -29,7 +29,7 @@ export const Shell: React.FC<ShellProps> = ({
         breakpoint: LAYOUT_BREAKPOINTS.MOBILE,
         collapsed: { desktop: !asideVisible, mobile: true },
       }}
-      footer={{ height: 90 }}
+      footer={{ height: 150 }}
       padding="md"
       pb={0}
     >

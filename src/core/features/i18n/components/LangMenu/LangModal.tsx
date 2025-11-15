@@ -38,38 +38,40 @@ export const LangModal: React.FC<LangModalProps> = ({
 }) => {
   return (
     <Modal opened={isOpen} onClose={onClose} title="Language Selection">
-      <RadioGroup
-        defaultValue={defaultValue}
-        onChange={onChange}
-        onClick={() => null}
-      >
-        <Stack>
-          {supportedLanguages.map(l => (
-            <Radio.Card
-              radius="md"
-              value={l.code}
-              key={l.code}
-              className={classes.root}
-            >
-              <Group wrap="nowrap" align="flex-start">
-                <Radio.Indicator />
-                <Text>
-                  <Image
-                    src={imagesFlag[l.code]}
-                    style={{
-                      margin: '0.4em',
-                      width: '1.6em',
-                      display: 'inline-block',
-                      verticalAlign: 'middle',
-                    }}
-                  />
-                  {l.label}
-                </Text>
-              </Group>
-            </Radio.Card>
-          ))}
-        </Stack>
-      </RadioGroup>
+      <Modal.Body>
+        <RadioGroup
+          defaultValue={defaultValue}
+          onChange={onChange}
+          onClick={() => null}
+        >
+          <Stack>
+            {supportedLanguages.map(l => (
+              <Radio.Card
+                radius="md"
+                value={l.code}
+                key={l.code}
+                className={classes.root}
+              >
+                <Group wrap="nowrap" align="flex-start">
+                  <Radio.Indicator />
+                  <Text>
+                    <Image
+                      src={imagesFlag[l.code]}
+                      style={{
+                        margin: '0.4em',
+                        width: '1.6em',
+                        display: 'inline-block',
+                        verticalAlign: 'middle',
+                      }}
+                    />
+                    {l.label}
+                  </Text>
+                </Group>
+              </Radio.Card>
+            ))}
+          </Stack>
+        </RadioGroup>
+      </Modal.Body>
     </Modal>
   );
 };

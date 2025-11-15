@@ -1,23 +1,46 @@
 import {
+  AttachmentAdapter,
   Attachment,
   CompleteAttachment,
   PendingAttachment,
 } from '@assistant-ui/react';
 import log from 'loglevel';
 
+import { FILE_ATTACHMENT_CONFIG } from '@/config/domain/ai-assistant/config';
+
 /**
- * Simple attachment adapter for demo purposes
+ * Simple attachment adapter with validation
  * Converts files to base64 data URLs for inline use
  *
- * Supported image formats: PNG, JPEG, JPG, GIF, WebP, SVG
- * Supported document formats: PDF, TXT, MD, JSON, CSV, Word, Excel
+ * Validation rules from config:
+ * - Max file size limit
+ * - Allowed file types
+ * - Allowed file extensions
  */
-export class SimpleAttachmentAdapter {
-  accept =
-    'image/png,image/jpeg,image/jpg,image/gif,image/webp,image/svg+xml,application/pdf,text/plain,text/markdown,application/json,text/csv,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+export class SimpleAttachmentAdapter implements AttachmentAdapter {
+  accept = FILE_ATTACHMENT_CONFIG.allowedTypes.join(',');
 
   async add({ file }: { file: File }): Promise<PendingAttachment> {
     log.debug('Adding attachment:', file.name, file.type);
+
+    // Validate file size
+    if (file.size > FILE_ATTACHMENT_CONFIG.maxFileSize) {
+      const maxSizeMB = FILE_ATTACHMENT_CONFIG.maxFileSize / (1024 * 1024);
+      throw new Error(`File size exceeds ${maxSizeMB}MB limit`);
+    }
+
+    // Validate file type
+    const fileExtension = `.${file.name.split('.').pop()?.toLowerCase()}`;
+    const isTypeAllowed = (
+      FILE_ATTACHMENT_CONFIG.allowedTypes as readonly string[]
+    ).includes(file.type);
+    const isExtAllowed = (
+      FILE_ATTACHMENT_CONFIG.allowedExtensions as readonly string[]
+    ).includes(fileExtension);
+
+    if (!isTypeAllowed && !isExtAllowed) {
+      throw new Error('File type not supported');
+    }
 
     const id = `attachment-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 

@@ -2,10 +2,12 @@ import { useMemo, useCallback, useEffect } from 'react';
 
 import { useLocalRuntime } from '@assistant-ui/react';
 
-import { chatService, attachmentAdapter } from '@/config/domain/ai-assistant/services';
+import { AgentType } from '@/config/domain/ai-assistant/config';
+import {
+  chatService,
+  attachmentAdapter,
+} from '@/config/domain/ai-assistant/services';
 import { useOAuth } from '@/domain/features/oauth/hooks/useOAuth';
-
-import { AgentType } from '../config';
 
 /**
  * Hook to create a chat runtime for a specific agent type

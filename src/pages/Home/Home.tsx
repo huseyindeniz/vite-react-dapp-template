@@ -1,21 +1,22 @@
 import React from 'react';
 
 import {
-  Container,
-  Stack,
-  Title,
-  Text,
-  Image,
-  Center,
-  Anchor,
   Badge,
+  Button,
+  Center,
+  Container,
+  Image,
+  Stack,
+  Text,
+  Title,
 } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
-import { FaExternalLinkAlt } from 'react-icons/fa';
+import { FaGithub } from 'react-icons/fa';
 
 import { PageMeta } from '@/domain/layout/components/PageMeta/PageMeta';
 
 import logo from './assets/images/logo.svg';
+import classes from './Home.module.css';
 
 export const HomePage: React.FC = () => {
   const { t } = useTranslation('page-home');
@@ -23,73 +24,71 @@ export const HomePage: React.FC = () => {
   const description: string = t(
     'React dApp Template (Vite) is a Vite React template specifically designed for decentralized application (dApp) frontend development.'
   );
+
   return (
     <>
-      <style>
-        {`         
-          @media (prefers-reduced-motion: no-preference) {
-            .App-logo {
-              animation: App-logo-spin infinite 20s linear;
-            }
-          }
-          @keyframes App-logo-spin {
-            from {
-              transform: rotate(0deg);
-            }
-            to {
-              transform: rotate(360deg);
-            }
-          }
-      `}
-      </style>
       <PageMeta title={title} description={description} url="" />
-      <Container maw="3xl">
-        <Stack ta="center" py={{ base: 10, md: 16 }}>
+      <Container size={700}>
+        <Stack ta="center" gap="lg" py={{ base: 60, md: 80 }}>
           <Center>
-            <Image src={logo} className="App-logo" w={100} />
+            <Image src={logo} className={classes.logo} w={100} />
           </Center>
+
           <Title
-            fw={600}
-            fs={{ base: '1xl', sm: '2xl', md: '3xl' }}
-            ta="center"
+            order={1}
+            style={{
+              fontSize: '48px',
+              fontWeight: 800,
+              lineHeight: 1.2,
+            }}
           >
-            {t('experience the full power of React for dApp development')}
-            <br />
-            <Text component="span" c="blue">
-              {title}
-            </Text>
+            Build Modern{' '}
+            <Text
+              component="span"
+              variant="gradient"
+              gradient={{ from: 'blue', to: 'cyan' }}
+              inherit
+            >
+              Web, dApp & AI Assistant
+            </Text>{' '}
+            User Interfaces
           </Title>
-          <Text>{description}</Text>
+
+          <Text size="lg" c="dimmed">
+            A production-ready React template for building modern web
+            applications, decentralized apps, and AI assistant interfaces with
+            best practices and scalable architecture
+          </Text>
+
           <Center>
-            <Badge size="lg" color="orange.2" radius="sm" autoContrast>
+            <Badge
+              size="lg"
+              variant="gradient"
+              gradient={{ from: 'blue', to: 'cyan' }}
+              radius="md"
+            >
               {t('Edit {{path}} and save to reload.', {
                 path: 'src/pages/Home/Home.tsx',
                 interpolation: { escapeValue: false },
               })}
             </Badge>
           </Center>
-          <Stack gap={6}>
-            <Anchor
-              href="https://reactjs.org"
-              rel="noopener noreferrer"
-              target="_blank"
-              variant="default"
-              size="xs"
-            >
-              {t('Learn React')}&nbsp;
-              <FaExternalLinkAlt />
-            </Anchor>
-            <Anchor
+
+          <Center>
+            <Button
+              size="lg"
+              variant="gradient"
+              gradient={{ from: 'blue', to: 'cyan' }}
+              radius="md"
+              component="a"
               href="https://github.com/huseyindeniz/vite-react-dapp-template"
-              rel="noopener noreferrer"
               target="_blank"
-              variant="default"
-              size="xs"
+              rel="noopener noreferrer"
+              leftSection={<FaGithub size={20} />}
             >
-              {t('Learn React dApp Template (Vite)')}&nbsp;
-              <FaExternalLinkAlt />
-            </Anchor>
-          </Stack>
+              View on GitHub
+            </Button>
+          </Center>
         </Stack>
       </Container>
     </>

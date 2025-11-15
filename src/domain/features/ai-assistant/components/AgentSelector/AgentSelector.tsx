@@ -3,7 +3,7 @@ import React from 'react';
 import { Select } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 
-import { CHAT_AGENTS, type AgentType } from '../../config';
+import { CHAT_AGENTS, AgentType } from '@/config/domain/ai-assistant/config';
 
 interface AgentSelectorProps {
   value: AgentType;

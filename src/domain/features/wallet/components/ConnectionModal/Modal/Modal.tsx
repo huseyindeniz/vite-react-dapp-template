@@ -100,7 +100,7 @@ export const Modal: React.FC<ModalProps> = ({
       title={t('Connecting to Web3 Wallet')}
       size="lg"
     >
-      {connectionSteps}
+      <MantineModal.Body>{connectionSteps}</MantineModal.Body>
     </MantineModal>
   );
 };

@@ -17,6 +17,7 @@ export const getChatSuggestions = (
     label: t('Generate a sample image'),
     prompt: t('show me an image'),
     category: 'default',
+    color: 'blue',
     send: false, // Fill composer, let user send
   },
   {
@@ -24,6 +25,7 @@ export const getChatSuggestions = (
     label: t('Create a sample document'),
     prompt: t('create a markdown document'),
     category: 'default',
+    color: 'blue',
     send: false,
   },
   {
@@ -31,6 +33,7 @@ export const getChatSuggestions = (
     label: t('Export sample data as JSON'),
     prompt: t('export data as json'),
     category: 'data',
+    color: 'orange',
     send: false,
   },
   {
@@ -38,6 +41,7 @@ export const getChatSuggestions = (
     label: t('Export sample data as CSV'),
     prompt: t('export data as csv'),
     category: 'data',
+    color: 'orange',
     send: false,
   },
 ];

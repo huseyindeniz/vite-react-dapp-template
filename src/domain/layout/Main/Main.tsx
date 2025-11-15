@@ -25,7 +25,7 @@ export const Main: React.FC<MainProps> = ({ fullWidth }) => {
   );
 
   return (
-    <AppShell.Main>
+    <AppShell.Main pb={0}>
       {fullWidth ? content : <Container>{content}</Container>}
     </AppShell.Main>
   );

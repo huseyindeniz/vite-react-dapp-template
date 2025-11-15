@@ -1,6 +1,6 @@
 import log from 'loglevel';
 
-import { AgentType } from '@/domain/features/ai-assistant/config';
+import { AgentType } from '@/config/domain/ai-assistant/config';
 import { IChatModelAdapter } from '@/domain/features/ai-assistant/interfaces/IChatModelAdapter';
 import { IChatService } from '@/domain/features/ai-assistant/interfaces/IChatService';
 

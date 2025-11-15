@@ -2,6 +2,7 @@ import React from 'react';
 
 import { AppShell, Divider, Stack } from '@mantine/core';
 
+import { uiConfig } from '@/config/core/ui/mantineProviderProps';
 import { LangMenu } from '@/core/features/i18n/components/LangMenu/LangMenu';
 import { MenuType } from '@/core/features/router/types/MenuType';
 import { OAuth } from '@/domain/features/oauth/components/OAuth';
@@ -36,7 +37,7 @@ export const Navbar: React.FC<NavbarProps> = ({
       <Divider my="sm" />
       <Stack align="center" gap="sm">
         <LangMenu />
-        <ColorSchemeSwitch />
+        {uiConfig.showColorSchemeSwitch && <ColorSchemeSwitch />}
         <OAuth size="sm" fullWidth />
         <Wallet />
       </Stack>

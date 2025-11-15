@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Stack, Title, Text } from '@mantine/core';
+import { Container, Stack, Text, Title } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 
 import { Posts } from '@/domain/features/blog-demo/components/Posts/Posts';
@@ -15,15 +15,27 @@ export const DemoBlogPage: React.FC = () => {
         url="/demo-blog"
         description={t('Blog demo page')}
       />
-      <Stack gap="md">
-        <Title order={1}>{t('Posts')}</Title>
-        <Text size="lg" c="dimmed">
-          {t(
-            'This section demonstrates slice-manager feature cache capabilities.'
-          )}
-        </Text>
-        <Posts />
-      </Stack>
+      <Container size="xl" px={0}>
+        <Stack gap="xl">
+          <Stack gap="xs">
+            <Title
+              order={1}
+              style={{
+                fontSize: '42px',
+                fontWeight: 700,
+              }}
+            >
+              {t('Posts')}
+            </Title>
+            <Text size="lg" c="dimmed">
+              {t(
+                'This section demonstrates slice-manager feature cache capabilities.'
+              )}
+            </Text>
+          </Stack>
+          <Posts />
+        </Stack>
+      </Container>
     </>
   );
 };

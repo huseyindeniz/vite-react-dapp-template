@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 
 import { AssistantRuntimeProvider } from '@assistant-ui/react';
-import { Group, Paper, Stack, Title, Text } from '@mantine/core';
+import { Group, Paper, Stack, Title } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 
-import { DEFAULT_AGENT_TYPE, type AgentType } from '../config';
+import {
+  DEFAULT_AGENT_TYPE,
+  AgentType,
+} from '@/config/domain/ai-assistant/config';
+
 import { useChatRuntime } from '../hooks/useChatRuntime';
 import { useMarkdownPanel } from '../hooks/useMarkdownPanel';
 
@@ -26,9 +30,9 @@ const ChatInterfaceContent: React.FC = () => {
         align="stretch"
         gap={0}
         style={{
-          height: 'calc(100vh - 250px)',
+          height:
+            'calc(100vh - var(--app-shell-footer-height, 0px) - var(--app-shell-header-height, 0px) - var(--mantine-spacing-md))',
           width: '100%',
-          marginBottom: -100,
         }}
         wrap="nowrap"
       >
@@ -45,11 +49,11 @@ const ChatInterfaceContent: React.FC = () => {
         >
           <Group justify="space-between" align="center" mb="md">
             <Title order={3}>{t('AI Assistant')}</Title>
-            <Text size="sm" c="dimmed" ta="center">
+            <Stack gap={0}>
               {t(
                 'This section demonstrates how you can integrate your AI agents into the dApp template.'
               )}
-            </Text>
+            </Stack>
             <AgentSelector value={selectedAgent} onChange={setSelectedAgent} />
           </Group>
           <Paper
