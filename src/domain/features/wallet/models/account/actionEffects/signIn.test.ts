@@ -4,7 +4,7 @@ import { throwError } from 'redux-saga-test-plan/providers';
 
 import { IAccountApi } from '@/domain/features/wallet/models/account/interfaces/IAccountApi';
 
-import { SIGN_TIMEOUT_IN_SEC } from '../../../config';
+import { SIGN_TIMEOUT_IN_SEC, SLOW_DOWN_IN_MS } from '../../../config';
 import { SlowDown } from '../../../utils';
 import * as walletStateSliceActions from '../../slice';
 import { WalletState } from '../../types/WalletState';
@@ -83,7 +83,7 @@ describe('Feature: Wallet', () => {
           [call(HandleStateSignTimedout), null],
           [put(slicesActions.decSignCounter()), null],
           [put(slicesActions.resetSignCounter()), null],
-          [delay(SIGN_TIMEOUT_IN_SEC * 1000), null],
+          [delay(SLOW_DOWN_IN_MS), null],
         ])
         .withState(getState())
         .call(HandleStateSignTimedout)
