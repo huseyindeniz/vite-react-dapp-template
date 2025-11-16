@@ -11,7 +11,7 @@ export const UnlockWaiting = () => {
           {t("You haven't unlocked your wallet yet.")}
           <br />
           {t(
-            'Please close this dialog, open your Web3 wallet, unlock it, and click connect button again.'
+            'Please close this dialog, open your Web3 wallet, unlock it, and click the Connect button again.'
           )}
         </Text>
       </Alert>

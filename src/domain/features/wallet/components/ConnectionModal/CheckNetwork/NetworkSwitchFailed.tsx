@@ -14,7 +14,7 @@ export const NetworkSwitchFailed: React.FC<NetworkSwitchFailedProps> = ({
   return (
     <Alert icon={<IoIosWarning />} title={t('Unexpected Error')} color="red">
       <Text size="sm">
-        {t('An error has occured during the network switch request.')}
+        {t('An error has occurred during the network switch request.')}
         <br />
         {t('Please try again later.')}
         <br />

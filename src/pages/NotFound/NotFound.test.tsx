@@ -19,7 +19,7 @@ describe.skip('NotFoundPage', () => {
 
     // Assert
     expect(getByText('404 Page Not Found')).toBeInTheDocument();
-    expect(getByText('Back To Home?')).toBeInTheDocument();
+    expect(getByText('Back to Home?')).toBeInTheDocument();
     expect(getByText('Yes')).toBeInTheDocument();
     expect(getByText('No')).toBeInTheDocument();
   });

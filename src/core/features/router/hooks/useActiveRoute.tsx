@@ -11,6 +11,8 @@ interface ActiveRouteInfo {
   currentRoute?: MenuType;
   hasSubRoutes: boolean;
   subRoutes: MenuType[];
+  subMenu: MenuType[];
+  subRouteHasMenuItems: boolean;
   fullWidth: boolean;
 }
 
@@ -79,10 +81,19 @@ export const useActiveRoute = (allRoutes: MenuType[]): ActiveRouteInfo => {
 
     const fullWidth = matchedRoute?.fullWidth || false;
 
+    const subRouteHasMenuItems =
+      subRoutes.filter(r => r.path && !r.path.includes(':')).length > 0;
+
+    const subMenu = subRoutes.filter(
+      route => route.path && !route.path.includes(':')
+    );
+
     return {
       currentRoute: matchedRoute,
       hasSubRoutes,
       subRoutes,
+      subRouteHasMenuItems,
+      subMenu,
       fullWidth,
     };
   }, [location.pathname, i18n.resolvedLanguage]);

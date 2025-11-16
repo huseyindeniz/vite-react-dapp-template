@@ -14,7 +14,7 @@ export const NetworkDetectionFailed: React.FC<NetworkDetectionFailedProps> = ({
   return (
     <Alert icon={<IoIosWarning />} title={t('Unexpected Error')} color="red">
       <Text size="sm">
-        {t('An error has occured during the network check.')}
+        {t('An error has occurred during the network check.')}
         <br />
         {t('Please try again later.')}
         <br />

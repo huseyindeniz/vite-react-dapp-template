@@ -1,5 +1,11 @@
 import { OAuthProviderMetadata } from '@/domain/features/oauth/config';
 
+/**
+ * Enable or disable the OAuth feature
+ * When disabled, OAuth login will not be shown in header and navbar
+ */
+export const FEATURE_ENABLED = true;
+
 // Supported providers metadata (configuration only)
 export const SUPPORTED_OAUTH_PROVIDERS: OAuthProviderMetadata[] = [
   {

@@ -1,30 +1,42 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom';
+
+import { features } from '@/config/features';
 
 import {
   initializeSliceManager,
   SliceLifecycleManager,
 } from '../SliceLifecycleManager';
 
-// Hook for initializing slice manager (use in App.tsx)
+// Hook for initializing slice manager (use in Router.tsx)
 export const useSliceManagerInit = () => {
   const dispatch = useDispatch();
   const location = useLocation();
-  const managerRef = useRef<SliceLifecycleManager | null>(null);
 
+  // Synchronous initialization using lazy state initialization
+  // This ensures manager is available immediately on first render
+  const [manager] = useState<SliceLifecycleManager>(() => {
+    const sliceManager = initializeSliceManager(dispatch);
+
+    // Configure all features synchronously before first render completes
+    Object.values(features).forEach(feature => {
+      if (
+        'configureSlice' in feature &&
+        typeof feature.configureSlice === 'function'
+      ) {
+        feature.configureSlice();
+      }
+    });
+
+    return sliceManager;
+  });
+
+  // Handle route changes
   useEffect(() => {
-    if (!managerRef.current) {
-      managerRef.current = initializeSliceManager(dispatch);
-    }
-  }, [dispatch]);
+    manager.handleRouteChange(location.pathname);
+  }, [location.pathname, manager]);
 
-  useEffect(() => {
-    if (managerRef.current) {
-      managerRef.current.handleRouteChange(location.pathname);
-    }
-  }, [location.pathname]);
-
-  return managerRef.current;
+  return manager;
 };

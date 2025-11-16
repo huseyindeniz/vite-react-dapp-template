@@ -4,28 +4,18 @@ import { ActionIcon, Drawer, Stack } from '@mantine/core';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
 
-import { MenuType } from '@/core/features/router/types/MenuType';
+import { useActiveRoute } from '@/core/features/router/hooks/useActiveRoute';
+import { usePages } from '@/core/features/router/hooks/usePages';
 
 import { SideNav } from '../SideNav/SideNav';
 
-interface AsideProps {
-  hasSubRoutes: boolean;
-  subRoutes: MenuType[];
-}
-
-export const Aside: React.FC<AsideProps> = ({ hasSubRoutes, subRoutes }) => {
+export const Aside: React.FC = () => {
+  const { pageRoutes } = usePages();
+  const { subRouteHasMenuItems, subMenu } = useActiveRoute(pageRoutes);
   const [collapsed, { toggle }] = useDisclosure(false); // Default: expanded
   const isMobile = useMediaQuery('(max-width: 87.5em)'); // xl breakpoint
 
-  if (!hasSubRoutes) {
-    return null;
-  }
-
-  // Filter to only show routes with menuLabel (excludes dynamic routes like blog posts)
-  const menuRoutes = subRoutes.filter(route => route.menuLabel !== null);
-
-  // Don't render if no menu-worthy routes
-  if (menuRoutes.length === 0) {
+  if (!subRouteHasMenuItems) {
     return null;
   }
 
@@ -65,7 +55,7 @@ export const Aside: React.FC<AsideProps> = ({ hasSubRoutes, subRoutes }) => {
             <MdKeyboardArrowRight size={20} />
           )}
         </ActionIcon>
-        <SideNav items={menuRoutes} collapsed={collapsed} />
+        <SideNav items={subMenu} collapsed={collapsed} />
       </Stack>
     </Drawer>
   );

@@ -8,7 +8,7 @@ export const WalletAccountLoaded = () => {
     <Alert icon={<IoIosWarning />} title={t('Load Account')}>
       <Stack>
         <Box>
-          {t('Your wallet account connected successfuly.')}
+          {t('Your wallet account connected successfully.')}
           <br />
           {t('Redirecting to app...')}
         </Box>

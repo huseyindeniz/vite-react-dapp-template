@@ -44,9 +44,9 @@ export class EthersV6WalletAPI implements IWalletEthersV6ProviderApi {
   public detectWallets = async () => {
     this._detectedWallets = {} as InstalledWallets;
     if (window.ethereum) {
-      log.debug('ethereum dedected', window.ethereum);
+      log.debug('ethereum detected', window.ethereum);
       if (window.ethereum.providers && window.ethereum.providers.length > 0) {
-        log.debug('multiple provider dedected');
+        log.debug('multiple provider detected');
         window.ethereum.providers.map((p: Eip1193Provider) => {
           const detectedWallet = this._identifyWallet(p as WalletProvider);
           if (detectedWallet !== null) {
@@ -55,7 +55,7 @@ export class EthersV6WalletAPI implements IWalletEthersV6ProviderApi {
           return null;
         });
       } else {
-        log.debug('single provider dedected');
+        log.debug('single provider detected');
         const detectedWallet = this._identifyWallet(
           window.ethereum as WalletProvider
         );
@@ -186,12 +186,12 @@ export class EthersV6WalletAPI implements IWalletEthersV6ProviderApi {
   public prepareSignMessage = async (message: string) => {
     const signer = await this._provider?.getSigner();
     if (!signer) {
-      throw new Error('signer not dedected');
+      throw new Error('signer not detected');
     }
     log.debug('signer', signer);
     const address: string = await signer?.getAddress();
     if (!address) {
-      throw new Error('address not dedected');
+      throw new Error('address not detected');
     }
     this._accessToken = await this._newUUID(address);
     const messageWithToken = message + this._accessToken;
@@ -208,7 +208,7 @@ export class EthersV6WalletAPI implements IWalletEthersV6ProviderApi {
   public sign = async (message: string) => {
     const signer = await this._provider?.getSigner();
     if (!signer) {
-      throw new Error('signer not dedected');
+      throw new Error('signer not detected');
     }
     const address: string = await signer?.getAddress();
     let signature: string = '';

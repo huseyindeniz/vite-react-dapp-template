@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 
 import { LAYOUT_BREAKPOINTS } from '@/config/core/ui/layout-breakpoints';
 import { uiConfig } from '@/config/core/ui/mantineProviderProps';
+import { FEATURE_ENABLED as OAUTH_ENABLED } from '@/config/domain/oauth/config';
 import { LangMenu } from '@/core/features/i18n/components/LangMenu/LangMenu';
 import { usePageLink } from '@/core/features/router/hooks/usePageLink';
 import { usePages } from '@/core/features/router/hooks/usePages';
@@ -47,7 +48,7 @@ export const Header: React.FC<HeaderProps> = ({ opened, toggle, close }) => {
         <Group visibleFrom={LAYOUT_BREAKPOINTS.MOBILE}>
           <LangMenu />
           {uiConfig.showColorSchemeSwitch && <ColorSchemeSwitch />}
-          <OAuth size="sm" />
+          {OAUTH_ENABLED && <OAuth size="sm" />}
           <Wallet />
         </Group>
       </Group>
