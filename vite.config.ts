@@ -7,7 +7,7 @@ import pkg from './package.json';
 export default defineConfig({
   plugins: [react(), tsconfigPaths()],
   define: {
-    __VITE_REACT_DAPP_TEMPLATE_VERSION__: JSON.stringify('1.1.0'),
+    __VITE_REACT_DAPP_TEMPLATE_VERSION__: JSON.stringify('1.1.1'),
     __VITE_REACT_APP_VERSION__: JSON.stringify(pkg.version),
   },
   build: {
