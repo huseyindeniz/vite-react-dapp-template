@@ -18,19 +18,19 @@ export const useSliceManagerInit = () => {
   // Synchronous initialization using lazy state initialization
   // This ensures manager is available immediately on first render
   const [manager] = useState<SliceLifecycleManager>(() => {
-    const sliceManager = initializeSliceManager(dispatch);
+    // Configure features callback - will only run once due to singleton flag
+    const configureAllFeatures = () => {
+      Object.values(features).forEach(feature => {
+        if (
+          'configureSlice' in feature &&
+          typeof feature.configureSlice === 'function'
+        ) {
+          feature.configureSlice();
+        }
+      });
+    };
 
-    // Configure all features synchronously before first render completes
-    Object.values(features).forEach(feature => {
-      if (
-        'configureSlice' in feature &&
-        typeof feature.configureSlice === 'function'
-      ) {
-        feature.configureSlice();
-      }
-    });
-
-    return sliceManager;
+    return initializeSliceManager(dispatch, configureAllFeatures);
   });
 
   // Handle route changes

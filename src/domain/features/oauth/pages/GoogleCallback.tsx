@@ -29,15 +29,20 @@ export const GoogleCallback = () => {
         state = fragmentParams.get('state');
       }
 
-      log.debug('Google OAuth callback received:', { code: !!code, state: !!state, error, idToken: !!idToken });
+      log.debug('Google OAuth callback received:', {
+        code: !!code,
+        state: !!state,
+        error,
+        idToken: !!idToken,
+      });
 
       if (error) {
         log.error('Google OAuth error:', error, errorDescription);
         navigate('/auth/error', {
           state: {
             error: 'Google login failed',
-            description: errorDescription || error
-          }
+            description: errorDescription || error,
+          },
         });
         return;
       }
@@ -68,8 +73,8 @@ export const GoogleCallback = () => {
         navigate('/auth/error', {
           state: {
             error: 'Invalid callback',
-            description: 'Missing required parameters'
-          }
+            description: 'Missing required parameters',
+          },
         });
         return;
       }
@@ -81,22 +86,22 @@ export const GoogleCallback = () => {
           state: {
             authCode: code,
             authState: state,
-            provider: 'google'
-          }
+            provider: 'google',
+          },
         });
       } else {
         // We're in the main window with invalid callback
         navigate('/auth/error', {
           state: {
             error: 'Invalid callback',
-            description: 'Missing required parameters'
-          }
+            description: 'Missing required parameters',
+          },
         });
       }
     };
 
     handleCallback();
-  }, [searchParams, navigate]);
+  }, [searchParams]);
 
   return (
     <Center h="100vh">

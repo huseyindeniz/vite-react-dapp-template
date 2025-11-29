@@ -72,7 +72,7 @@ export const GithubCallback = () => {
     };
 
     handleCallback();
-  }, [searchParams, navigate]);
+  }, [searchParams]);
 
   return (
     <Center h="100vh">

@@ -1,6 +1,7 @@
 import { SuggestionCategory } from './SuggestionCategory';
 
-export interface SuggestionCategories {
-  default: SuggestionCategory;
-  data: SuggestionCategory;
-}
+/**
+ * Flexible suggestion categories
+ * Each agent can define its own category keys
+ */
+export type SuggestionCategories = Record<string, SuggestionCategory>;

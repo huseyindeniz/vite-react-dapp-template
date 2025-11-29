@@ -10,8 +10,8 @@ import { Link } from 'react-router-dom';
 import { SUPPORTED_OAUTH_PROVIDERS } from '@/config/domain/oauth/config';
 import { usePageLink } from '@/core/features/router/hooks/usePageLink';
 
+import { useActions } from '../../hooks/useActions';
 import { useOAuth } from '../../hooks/useOAuth';
-import { useOAuthActions } from '../../hooks/useOAuthActions';
 import { OAuthProviderName } from '../../models/provider/types/OAuthProviderName';
 import { OAuthState } from '../../models/session/types/OAuthState';
 
@@ -29,12 +29,11 @@ export const OAuthButton: React.FC<OAuthButtonProps> = ({
   const { t } = useTranslation('feature-oauth');
   const { pageLink } = usePageLink();
   const { state, user, currentProvider, isLoading } = useOAuth();
-  const { loginWith, logout } = useOAuthActions();
+  const actions = useActions();
 
   const handleProviderLogin = (providerName: string) => {
     log.debug(`Starting login with provider: ${providerName}`);
-    // Use the Redux saga flow which handles the entire process through AuthService
-    loginWith(providerName as OAuthProviderName);
+    actions.loginWithProvider({ provider: providerName as OAuthProviderName });
   };
 
   // Loading state
@@ -103,7 +102,7 @@ export const OAuthButton: React.FC<OAuthButtonProps> = ({
             {t('My Profile')}
           </Menu.Item>
           <Menu.Divider />
-          <Menu.Item leftSection={<IoIosLogOut size={14} />} onClick={logout}>
+          <Menu.Item leftSection={<IoIosLogOut size={14} />} onClick={() => actions.logout()}>
             {t('Sign out')}
           </Menu.Item>
         </Menu.Dropdown>

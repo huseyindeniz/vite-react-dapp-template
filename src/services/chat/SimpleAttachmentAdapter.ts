@@ -6,7 +6,8 @@ import {
 } from '@assistant-ui/react';
 import log from 'loglevel';
 
-import { FILE_ATTACHMENT_CONFIG } from '@/config/domain/ai-assistant/config';
+import { DEFAULT_FILE_ATTACHMENT } from '@/config/domain/ai-assistant/config';
+import { FileAttachmentConfig } from '@/domain/features/ai-assistant/types/FileAttachmentConfig';
 
 import { FileAttachmentContent } from './types/FileAttachmentContent';
 import { ImageAttachmentContent } from './types/ImageAttachmentContent';
@@ -19,27 +20,37 @@ import { ImageAttachmentContent } from './types/ImageAttachmentContent';
  * - Max file size limit
  * - Allowed file types
  * - Allowed file extensions
+ *
+ * Uses setter injection for config updates when agent changes
  */
 export class SimpleAttachmentAdapter implements AttachmentAdapter {
-  accept = FILE_ATTACHMENT_CONFIG.allowedTypes.join(',');
+  private config: FileAttachmentConfig = DEFAULT_FILE_ATTACHMENT;
+
+  /**
+   * Update config when agent changes (setter injection)
+   * Same adapter instance, updated config values
+   */
+  setConfig(config: FileAttachmentConfig): void {
+    this.config = config;
+  }
+
+  get accept(): string {
+    return this.config.allowedTypes.join(',');
+  }
 
   async add({ file }: { file: File }): Promise<PendingAttachment> {
     log.debug('Adding attachment:', file.name, file.type);
 
     // Validate file size
-    if (file.size > FILE_ATTACHMENT_CONFIG.maxFileSize) {
-      const maxSizeMB = FILE_ATTACHMENT_CONFIG.maxFileSize / (1024 * 1024);
+    if (file.size > this.config.maxFileSize) {
+      const maxSizeMB = this.config.maxFileSize / (1024 * 1024);
       throw new Error(`File size exceeds ${maxSizeMB}MB limit`);
     }
 
     // Validate file type
     const fileExtension = `.${file.name.split('.').pop()?.toLowerCase()}`;
-    const isTypeAllowed = (
-      FILE_ATTACHMENT_CONFIG.allowedTypes as readonly string[]
-    ).includes(file.type);
-    const isExtAllowed = (
-      FILE_ATTACHMENT_CONFIG.allowedExtensions as readonly string[]
-    ).includes(fileExtension);
+    const isTypeAllowed = this.config.allowedTypes.includes(file.type);
+    const isExtAllowed = this.config.allowedExtensions.includes(fileExtension);
 
     if (!isTypeAllowed && !isExtAllowed) {
       throw new Error('File type not supported');

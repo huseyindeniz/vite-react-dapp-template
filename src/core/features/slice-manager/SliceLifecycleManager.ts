@@ -388,13 +388,22 @@ export class SliceLifecycleManager {
 // ============================================================================
 
 let sliceManagerInstance: SliceLifecycleManager | null = null;
+let featuresConfigured = false;
 
 export const initializeSliceManager = (
-  dispatch: (action: { type: string; payload?: unknown }) => void
+  dispatch: (action: { type: string; payload?: unknown }) => void,
+  configureFeatures?: () => void
 ): SliceLifecycleManager => {
   if (!sliceManagerInstance) {
     sliceManagerInstance = new SliceLifecycleManager(dispatch);
   }
+
+  // Configure features only once, even if initializeSliceManager is called multiple times
+  if (!featuresConfigured && configureFeatures) {
+    configureFeatures();
+    featuresConfigured = true;
+  }
+
   return sliceManagerInstance;
 };
 
