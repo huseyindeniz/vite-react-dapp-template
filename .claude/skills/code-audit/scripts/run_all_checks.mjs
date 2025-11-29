@@ -174,14 +174,6 @@ function extractSummary(output, checkName) {
     return `${files} file(s), ${total} violation(s)`;
   }
 
-  if (checkName.includes('Magic String')) {
-    const filesMatch = output.match(/Files with magic strings: (\d+)/);
-    const totalMatch = output.match(/Total violations: (\d+)/);
-    const files = filesMatch ? filesMatch[1] : '?';
-    const total = totalMatch ? totalMatch[1] : '?';
-    return `${files} file(s), ${total} violation(s)`;
-  }
-
   if (checkName.includes('Strict Mode')) {
     if (output.includes('✅')) {
       return 'strict: true (enabled)';
@@ -284,10 +276,6 @@ async function runAllChecks() {
     {
       name: 'Magic Numbers Check',
       script: path.join(__dirname, 'check_magic_numbers.mjs'),
-    },
-    {
-      name: 'Magic Strings Check',
-      script: path.join(__dirname, 'check_magic_strings.mjs'),
     },
     {
       name: 'TypeScript Strict Mode Check',

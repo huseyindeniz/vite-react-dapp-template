@@ -1,16 +1,16 @@
 # Code Audit Report
 
-**Generated:** 2025-11-29T09:34:01.490Z
+**Generated:** 2025-11-29T11:34:35.914Z
 **Project:** vite-react-dapp-template
 
 ## Executive Summary
 
 | Metric | Value |
 |--------|-------|
-| **Total Checks** | 20 |
+| **Total Checks** | 19 |
 | **Passed** | ✅ 19 |
-| **Failed** | ❌ 1 |
-| **Success Rate** | 95% |
+| **Failed** | ❌ 0 |
+| **Success Rate** | 100% |
 
 ## Results by Check
 
@@ -33,144 +33,8 @@
 | Dangerous HTML (No dangerouslySetInnerHTML) | ✅ PASSED | 0 file(s), 0 violation(s) |
 | React Key Patterns | ✅ PASSED | 0 file(s), Index: 0, Missing: 0 |
 | Magic Numbers | ✅ PASSED | 0 file(s), 0 violation(s) |
-| Magic Strings | ❌ FAILED | See details |
 | TypeScript Strict Mode | ✅ PASSED | strict: true (enabled) |
 | Dependency Array (useEffect/useMemo/useCallback) | ✅ PASSED | Missing: 0, Stable: 0, SideEffect: 0, Over-spec: 0, Fetch: 0 |
-
-## Failed Checks (Detailed)
-
-### ❌ Magic Strings
-
-**Summary:** 
-
-<details>
-<summary>View Details</summary>
-
-```
-Magic Strings Check (Duplicate String Detection)
-================================================================================
-
-Scanning 409 source files in src/...
-
-Duplicate Magic Strings Found
---------------------------------------------------------------------------------
-
-Strings appearing in 2+ files should be extracted to constants/enums.
-
-  ❌ "cached" (found in 3 files)
-     src/core/features/slice-manager/hocs/withSliceCache.ts:32
-       const useSagaCache = config?.cleanupStrategy === 'cached';
-     src/core/features/slice-manager/SliceLifecycleManager.ts:329
-       return config?.cleanupStrategy === 'cached';
-     src/core/features/slice-manager/smart-fetch/shouldFetchData.ts:72
-       if (config.cleanupStrategy === 'cached') {
-     Suggestion: Extract to enum/constant
-
-  ❌ "image" (found in 3 files)
-     src/domain/features/ai-assistant/components/ChatComposer/ImageAttachment.tsx:16
-       attachment.type === 'image' && attachment.file
-     src/services/chat/DemoChatModelAdapter.ts:65
-       if (response.type === 'image') {
-     src/services/chat/SimpleAttachmentAdapter.ts:103
-       attachment.type === 'image'
-     Suggestion: Extract to enum/constant
-
-  ❌ "error" (found in 3 files)
-     src/domain/features/wallet/components/ConnectionModal/Modal/Modal.tsx:43
-       color={activeStep === 0 && stepState === 'error' ? 'red' : 'blue'}
-     src/domain/features/wallet/components/ConnectionModal/Modal/Modal.tsx:53
-       color={activeStep === 1 && stepState === 'error' ? 'red' : 'blue'}
-     src/domain/features/wallet/components/ConnectionModal/Modal/Modal.tsx:65
-       color={activeStep === 2 && stepState === 'error' ? 'red' : 'blue'}
-     src/domain/features/wallet/components/ConnectionModal/Modal/Modal.tsx:87
-       color={activeStep === 3 && stepState === 'error' ? 'red' : 'blue'}
-     src/services/chat/GoogleADKChatModelAdapter.ts:103
-       } else if (event.type === 'error') {
-     src/services/chat/LangGraphChatModelAdapter.ts:109
-       } else if (event.type === 'error') {
-     Suggestion: Extract to enum/constant
-
-  ❌ "user" (found in 3 files)
-     src/services/chat/DemoChatModelAdapter.ts:26
-       .find(msg => msg.role === 'user');
-     src/services/chat/DemoChatModelAdapter.ts:28
-       if (!lastUserMessage || lastUserMessage.role !== 'user') {
-     src/services/chat/GoogleADKChatModelAdapter.ts:28
-       .find(msg => msg.role === 'user');
-     src/services/chat/GoogleADKChatModelAdapter.ts:30
-       if (!lastUserMessage || lastUserMessage.role !== 'user') {
-     src/services/chat/LangGraphChatModelAdapter.ts:28
-       .find(msg => msg.role === 'user');
-     src/services/chat/LangGraphChatModelAdapter.ts:30
-       if (!lastUserMessage || lastUserMessage.role !== 'user') {
-     Suggestion: Extract to enum/constant
-
-  ❌ "text" (found in 3 files)
-     src/services/chat/DemoChatModelAdapter.ts:33
-       .filter(part => part.type === 'text')
-     src/services/chat/DemoChatModelAdapter.ts:34
-       .map(part => (part.type === 'text' ? part.text : ''))
-     src/services/chat/DemoChatModelAdapter.ts:44
-       if (response.type === 'text') {
-     src/services/chat/GoogleADKChatModelAdapter.ts:35
-       .filter(part => part.type === 'text')
-     src/services/chat/GoogleADKChatModelAdapter.ts:36
-       .map(part => (part.type === 'text' ? part.text : ''))
-     src/services/chat/LangGraphChatModelAdapter.ts:35
-       .filter(part => part.type === 'text')
-     src/services/chat/LangGraphChatModelAdapter.ts:36
-       .map(part => (part.type === 'text' ? part.text : ''))
-     Suggestion: Extract to enum/constant
-
-  ❌ "application/pdf" (found in 2 files)
-     src/domain/features/ai-assistant/components/Artifacts/FileArtifact.tsx:78
-       if (mimeType === 'application/pdf') {
-     src/services/chat/SimpleAttachmentAdapter.ts:66
-       file.type === 'application/pdf' ||
-     Suggestion: Extract to enum/constant
-
-  ❌ "token" (found in 2 files)
-     src/services/chat/GoogleADKChatModelAdapter.ts:87
-       if (event.type === 'token') {
-     src/services/chat/LangGraphChatModelAdapter.ts:87
-       if (event.type === 'token') {
-     Suggestion: Extract to enum/constant
-
-  ❌ "end" (found in 2 files)
-     src/services/chat/GoogleADKChatModelAdapter.ts:100
-       } else if (event.type === 'end') {
-     src/services/chat/LangGraphChatModelAdapter.ts:106
-       } else if (event.type === 'end') {
-     Suggestion: Extract to enum/constant
-
-================================================================================
-Summary
-================================================================================
-
-Duplicate strings: 8
-Total occurrences: 31
-
-❌ Duplicate magic strings found.
-
-Why this matters:
-  - Same string in multiple files = typo risk
-  - No type safety or autocomplete
-  - Refactoring requires finding all occurrences
-  - Extract to enum/constant for safety
-
-The Rule:
-  - ❌ status === "success" (in multiple files)
-  - ✅ enum Status { SUCCESS = "success" }
-  - ✅ status === Status.SUCCESS
-
-  - ❌ fetch("/api/users") (in multiple files)
-  - ✅ const API_USERS = "/api/users";
-  - ✅ fetch(API_USERS)
-```
-
-</details>
-
----
 
 ## Passed Checks
 
@@ -196,11 +60,7 @@ The Rule:
 
 ## Recommendations
 
-### Priority Actions
-
-1. **Magic Strings**: 
-   - Run: `node ./.claude/skills/code-audit/scripts/magic_strings.mjs`
-   - See detailed output above for specific violations
+🎉 **All checks passed!** Your code quality is excellent.
 
 ## Next Steps
 

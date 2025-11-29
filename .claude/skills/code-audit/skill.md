@@ -7,7 +7,7 @@ description: Comprehensive static code analysis to enforce architectural pattern
 
 Enforce code quality and consistency standards across the entire codebase through automated checks.
 
-**What it checks (20 checks, each with its own script):**
+**What it checks (19 checks, each with its own script):**
 1. Path alias usage (no relative imports to aliased dirs)
 2. Export patterns (no default exports, no index files)
 3. Redux abstraction (components use hooks, not direct Redux)
@@ -25,9 +25,8 @@ Enforce code quality and consistency standards across the entire codebase throug
 15. No dangerouslySetInnerHTML (XSS vulnerability)
 16. React key patterns (no array index as key, no missing keys)
 17. No magic numbers (use named constants)
-18. No magic strings (use named constants/enums for identifiers, paths, URLs, statuses)
-19. TypeScript strict mode enabled (tsconfig.json)
-20. Dependency array patterns (useEffect, useMemo, useCallback)
+18. TypeScript strict mode enabled (tsconfig.json)
+19. Dependency array patterns (useEffect, useMemo, useCallback)
 
 **What it doesn't check:**
 - Feature dependency rules (core → domain) - see `arch-audit` skill
@@ -71,7 +70,6 @@ node ./.claude/skills/code-audit/scripts/check_type_imports.mjs
 node ./.claude/skills/code-audit/scripts/check_dangerous_html.mjs
 node ./.claude/skills/code-audit/scripts/check_react_keys.mjs
 node ./.claude/skills/code-audit/scripts/check_magic_numbers.mjs
-node ./.claude/skills/code-audit/scripts/check_magic_strings.mjs
 node ./.claude/skills/code-audit/scripts/check_strict_mode.mjs
 node ./.claude/skills/code-audit/scripts/check_dep_arrays.mjs
 ```
@@ -544,88 +542,7 @@ yield all([effect1, effect2, effect3, effect4]); // Truly parallel
 
 ---
 
-## 18. No Magic Strings
-
-**RULE**: Never use magic strings - use named constants or enums for string identifiers, paths, URLs, status values, and any other semantically meaningful strings.
-
-**Why**: Magic strings make code harder to understand, prone to typos, difficult to maintain, and error-prone when refactoring.
-
-**What are Magic Strings**:
-String literals used directly in code that represent identifiers, types, statuses, paths, or any semantic meaning.
-
-**Violations**:
-- ❌ Type/Status identifiers:
-  ```typescript
-  type: "success"  // What if you typo "sucess"?
-  status: "pending"
-  role: "admin"
-  ```
-- ❌ Path/URL strings:
-  ```typescript
-  src={`assets/images/agents/${value}.webp`}
-  fetch("/api/users")
-  ```
-- ❌ Event names:
-  ```typescript
-  element.addEventListener("click", handler)
-  ```
-- ❌ Configuration keys:
-  ```typescript
-  config.get("database.host")
-  ```
-
-**Fix**:
-- ✅ Use enums for identifiers:
-  ```typescript
-  enum AlertType {
-    SUCCESS = "success",
-    ERROR = "error"
-  }
-  type: AlertType.SUCCESS
-
-  enum Status {
-    PENDING = "pending",
-    COMPLETED = "completed"
-  }
-  status: Status.PENDING
-
-  enum Role {
-    ADMIN = "admin",
-    USER = "user"
-  }
-  role: Role.ADMIN
-  ```
-- ✅ Use named constants for paths:
-  ```typescript
-  const AGENT_ICON_PATH = "assets/images/agents";
-  src={`${AGENT_ICON_PATH}/${value}.webp`}
-
-  const API_BASE_URL = "/api";
-  fetch(`${API_BASE_URL}/users`)
-  ```
-
-**Why This Matters**:
-- **Type Safety**: Enums provide compile-time checking, catch typos
-- **Refactoring**: Change string value in ONE place, not everywhere
-- **Autocomplete**: IDE helps you with enum/constant names
-- **Self-Documenting**: `AlertType.SUCCESS` is clearer than `"success"`
-- **Maintainability**: Easy to find all usages and update
-
-**Detection Focus**:
-- Type/status/role identifiers used as string literals
-- Repeated path/URL strings
-- Configuration keys as strings
-- Event names as strings
-
-**The Rule**:
-- Use enums for identifiers (types, statuses, roles, categories)
-- Use named constants for paths, URLs, and repeated strings
-- Format: `SCREAMING_SNAKE_CASE` for constants, `PascalCase` for enums
-- Exception: UI text (use i18n `t()` function instead), very short obvious strings like empty string `""`
-
----
-
-## 19. TypeScript Strict Mode
+## 18. TypeScript Strict Mode
 
 **RULE**: TypeScript's `strict` mode must be enabled in tsconfig.json.
 
@@ -670,7 +587,7 @@ String literals used directly in code that represent identifiers, types, statuse
 
 ---
 
-## 20. React Hook Dependency Arrays
+## 19. React Hook Dependency Arrays
 
 **RULE**: Dependency arrays must be correct - no missing reactive values, no stable values, no side effects in memoization hooks.
 

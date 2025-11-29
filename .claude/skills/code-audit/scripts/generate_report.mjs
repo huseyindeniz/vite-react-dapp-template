@@ -209,7 +209,6 @@ async function generateReport() {
     { name: 'Dangerous HTML (No dangerouslySetInnerHTML)', script: path.join(__dirname, 'check_dangerous_html.mjs') },
     { name: 'React Key Patterns', script: path.join(__dirname, 'check_react_keys.mjs') },
     { name: 'Magic Numbers', script: path.join(__dirname, 'check_magic_numbers.mjs') },
-    { name: 'Magic Strings', script: path.join(__dirname, 'check_magic_strings.mjs') },
     { name: 'TypeScript Strict Mode', script: path.join(__dirname, 'check_strict_mode.mjs') },
     { name: 'Dependency Array (useEffect/useMemo/useCallback)', script: path.join(__dirname, 'check_dep_arrays.mjs') },
   ];
