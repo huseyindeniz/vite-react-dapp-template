@@ -33,11 +33,11 @@ export const WaitingSelection: React.FC<WaitingSelectionProps> = ({
     <Container mb={4}>
       <Alert
         icon={<IoIosInformationCircle />}
-        title={t('Multiple Web3 Wallet Detected')}
+        title={t('Multiple Web3 Wallets Detected')}
       >
         <Text size="sm">
           {t(
-            'The following Web3 wallet extensions dedected in your browser. You can select the wallet you want to connect.'
+            'The following Web3 wallet extensions were detected in your browser. You can select the wallet you want to connect.'
           )}
         </Text>
         <Table.ScrollContainer minWidth={300}>

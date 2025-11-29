@@ -182,6 +182,20 @@ function extractSummary(output, checkName) {
     }
   }
 
+  if (checkName.includes('Dependency Array')) {
+    const missingMatch = output.match(/Missing dependencies: (\d+)/);
+    const stableMatch = output.match(/Stable values in deps: (\d+)/);
+    const sideEffectMatch = output.match(/Side effects in memo hooks: (\d+)/);
+    const tooManyMatch = output.match(/Over-specified arrays: (\d+)/);
+    const fetchMatch = output.match(/Direct fetch in useEffect: (\d+)/);
+    const missing = missingMatch ? missingMatch[1] : '?';
+    const stable = stableMatch ? stableMatch[1] : '?';
+    const sideEffect = sideEffectMatch ? sideEffectMatch[1] : '?';
+    const tooMany = tooManyMatch ? tooManyMatch[1] : '?';
+    const fetch = fetchMatch ? fetchMatch[1] : '?';
+    return `Missing: ${missing}, Stable: ${stable}, SideEffect: ${sideEffect}, Over-spec: ${tooMany}, Fetch: ${fetch}`;
+  }
+
   return 'Check output';
 }
 
@@ -266,6 +280,10 @@ async function runAllChecks() {
     {
       name: 'TypeScript Strict Mode Check',
       script: path.join(__dirname, 'check_strict_mode.mjs'),
+    },
+    {
+      name: 'Dependency Array Check (useEffect/useMemo/useCallback)',
+      script: path.join(__dirname, 'check_dep_arrays.mjs'),
     },
   ];
 

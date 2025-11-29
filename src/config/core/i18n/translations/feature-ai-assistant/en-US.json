@@ -1,6 +1,4 @@
 {
-  "Quick Actions": "Quick Actions",
-  "Data Export": "Data Export",
   "Generate a sample image": "Generate a sample image",
   "show me an image": "show me an image",
   "Create a sample document": "Create a sample document",
@@ -9,6 +7,11 @@
   "export data as json": "export data as json",
   "Export sample data as CSV": "Export sample data as CSV",
   "export data as csv": "export data as csv",
+  "Quick Actions": "Quick Actions",
+  "Data Export": "Data Export",
+  "Agent 1 (with Langgraph)": "Agent 1 (with Langgraph)",
+  "Agent 2 (with Google ADK)": "Agent 2 (with Google ADK)",
+  "Agent 3 (demo)": "Agent 3 (demo)",
   "Select AI Agent": "Select AI Agent",
   "Choose an agent": "Choose an agent",
   "Content copied": "Content copied",

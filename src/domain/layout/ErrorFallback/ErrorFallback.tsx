@@ -9,11 +9,11 @@ export const ErrorFallback: React.FC<ErrorFallbackProps> = ({ error }) => {
     <div id="errorFallback">
       <div className="alert">
         <p>
-          <strong>Opps!</strong> An unexpected error occured!
+          <strong>Opps!</strong> An unexpected error occurred!
         </p>
       </div>
       <div className="errorlinks">
-        <p>Back To Home?</p>
+        <p>Back to Home?</p>
         <p>
           <a className="errorlink" href="/">
             Yes

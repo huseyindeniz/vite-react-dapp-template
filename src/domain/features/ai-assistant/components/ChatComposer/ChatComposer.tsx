@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { IoSend } from 'react-icons/io5';
 import { MdAttachFile } from 'react-icons/md';
 
-import { MESSAGE_VALIDATION_CONFIG } from '@/config/domain/ai-assistant/config';
+import { useAgent } from '../../hooks/useAgent';
 
 import { DocumentAttachment } from './DocumentAttachment';
 import { FileAttachment } from './FileAttachment';
@@ -13,6 +13,7 @@ import { ImageAttachment } from './ImageAttachment';
 export const ChatComposer = () => {
   const { t } = useTranslation('feature-ai-assistant');
   const api = useAssistantApi();
+  const { messageValidation } = useAgent();
 
   return (
     <ComposerPrimitive.Root>
@@ -53,7 +54,7 @@ export const ChatComposer = () => {
               placeholder={t('Type your message... (Shift+Enter for new line)')}
               minRows={1}
               maxRows={6}
-              maxLength={MESSAGE_VALIDATION_CONFIG.maxLength}
+              maxLength={messageValidation.maxLength}
               autosize
               variant="unstyled"
               style={{ flex: 1 }}

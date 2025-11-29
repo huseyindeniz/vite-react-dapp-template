@@ -168,6 +168,15 @@ function parseCheckResult(output, checkName) {
     } else {
       result.summary = 'strict mode NOT enabled';
     }
+  } else if (checkName.includes('Dependency Array')) {
+    const missingMatch = output.match(/Missing dependencies: (\d+)/);
+    const stableMatch = output.match(/Stable values in deps: (\d+)/);
+    const sideEffectMatch = output.match(/Side effects in memo hooks: (\d+)/);
+    const tooManyMatch = output.match(/Over-specified arrays: (\d+)/);
+    const fetchMatch = output.match(/Direct fetch in useEffect: (\d+)/);
+    if (stableMatch || missingMatch || sideEffectMatch) {
+      result.summary = `Missing: ${missingMatch?.[1] || 0}, Stable: ${stableMatch?.[1] || 0}, SideEffect: ${sideEffectMatch?.[1] || 0}, Over-spec: ${tooManyMatch?.[1] || 0}, Fetch: ${fetchMatch?.[1] || 0}`;
+    }
   }
 
   return result;
@@ -201,6 +210,7 @@ async function generateReport() {
     { name: 'React Key Patterns', script: path.join(__dirname, 'check_react_keys.mjs') },
     { name: 'Magic Numbers', script: path.join(__dirname, 'check_magic_numbers.mjs') },
     { name: 'TypeScript Strict Mode', script: path.join(__dirname, 'check_strict_mode.mjs') },
+    { name: 'Dependency Array (useEffect/useMemo/useCallback)', script: path.join(__dirname, 'check_dep_arrays.mjs') },
   ];
 
   const results = [];

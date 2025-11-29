@@ -13,9 +13,7 @@ import { useDisclosure } from '@mantine/hooks';
 import { useTranslation } from 'react-i18next';
 import { MdExpandLess, MdExpandMore } from 'react-icons/md';
 
-import { getSuggestionCategories } from '@/config/domain/ai-assistant/suggestionCategories';
-import { getChatSuggestions } from '@/config/domain/ai-assistant/suggestions';
-
+import { useAgent } from '../../hooks/useAgent';
 import { ChatSuggestion } from '../../types/ChatSuggestion';
 
 /**
@@ -28,9 +26,7 @@ import { ChatSuggestion } from '../../types/ChatSuggestion';
 export const SuggestionsBar: React.FC = () => {
   const { t } = useTranslation('feature-ai-assistant');
   const [opened, { toggle }] = useDisclosure(false);
-
-  const suggestionCategories = useMemo(() => getSuggestionCategories(t), [t]);
-  const suggestions = useMemo(() => getChatSuggestions(t), [t]);
+  const { suggestions, suggestionCategories } = useAgent();
 
   // Group suggestions by category
   const groupedSuggestions = useMemo(() => {
@@ -75,10 +71,7 @@ export const SuggestionsBar: React.FC = () => {
       <Collapse in={opened}>
         <Stack gap="sm">
           {categoryKeys.map(categoryKey => {
-            const category =
-              suggestionCategories[
-                categoryKey as keyof typeof suggestionCategories
-              ];
+            const category = suggestionCategories[categoryKey];
             const categorySuggestions = groupedSuggestions[categoryKey];
 
             return (

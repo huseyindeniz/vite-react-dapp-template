@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
-import { Select } from '@mantine/core';
+import { Group, Image, Select } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 
-import { CHAT_AGENTS } from '@/config/domain/ai-assistant/config';
-import { AgentType } from '@/domain/features/ai-assistant/types/AgentType';
+import {
+  AgentType,
+  getChatAgents,
+} from '@/config/domain/ai-assistant/config';
 
 interface AgentSelectorProps {
   value: AgentType;
@@ -15,13 +17,16 @@ export const AgentSelector: React.FC<AgentSelectorProps> = ({
   value,
   onChange,
 }) => {
-  const { t } = useTranslation('feature-ai-assistant');
+  const { t, i18n } = useTranslation('feature-ai-assistant');
 
-  const options = Object.entries(CHAT_AGENTS).map(([key, config]) => ({
-    value: key,
-    label: config.label,
-    disabled: !config.enabled,
-  }));
+  const options = useMemo(() => {
+    const agents = getChatAgents(t);
+    return Object.entries(agents).map(([key, config]) => ({
+      value: key,
+      label: config.label,
+      disabled: !config.enabled,
+    }));
+  }, [i18n.resolvedLanguage]);
 
   return (
     <Select
@@ -32,6 +37,25 @@ export const AgentSelector: React.FC<AgentSelectorProps> = ({
       data={options}
       allowDeselect={false}
       comboboxProps={{ withinPortal: false }}
+      leftSection={
+        <Image
+          w={20}
+          h={20}
+          src={`assets/images/agents/${value}.webp`}
+          alt={value}
+        />
+      }
+      renderOption={({ option }) => (
+        <Group gap="sm">
+          <Image
+            w={20}
+            h={20}
+            src={`assets/images/agents/${option.value}.webp`}
+            alt={option.label}
+          />
+          {option.label}
+        </Group>
+      )}
       styles={{
         root: {
           minWidth: '200px',

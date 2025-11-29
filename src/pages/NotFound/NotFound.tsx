@@ -37,19 +37,19 @@ export const NotFoundPage: React.FC = () => {
           >
             <Image
               src={imageBackToHomePage}
-              alt={t('not found')}
+              alt={t('404 Page Not Found')}
               style={{ width: '50%' }}
             />
             <Image
               src={imageDelorean}
-              alt={t('not found')}
+              alt={t('404 Page Not Found')}
               style={{ width: '50%' }}
             />
           </Stack>
         </Center>
         <Center>
           <Stack ta="center">
-            <Text>{t('Back To Home?')}</Text>
+            <Text>{t('Back to Home?')}</Text>
             <Group gap={4} justify="center">
               <Anchor
                 component={RouterLink}

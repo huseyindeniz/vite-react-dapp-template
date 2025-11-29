@@ -9,7 +9,7 @@ describe('Feature: UI', () => {
       const error = new Error('Mock error message');
       const { asFragment, getByText } = render(<ErrorFallback error={error} />);
       // Assert
-      expect(getByText('An unexpected error occured!')).toBeVisible();
+      expect(getByText('An unexpected error occurred!')).toBeVisible();
       expect(getByText('Mock error message')).toBeVisible();
       expect(asFragment).toMatchSnapshot();
     });

@@ -1,8 +1,8 @@
 import log from 'loglevel';
 
+import { AgentType } from '@/config/domain/ai-assistant/config';
 import { IChatModelAdapter } from '@/domain/features/ai-assistant/interfaces/IChatModelAdapter';
 import { IChatService } from '@/domain/features/ai-assistant/interfaces/IChatService';
-import { AgentType } from '@/domain/features/ai-assistant/types/AgentType';
 
 /**
  * Chat service that manages chat adapters and token provider

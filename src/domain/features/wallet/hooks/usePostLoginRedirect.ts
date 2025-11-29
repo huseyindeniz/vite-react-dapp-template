@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 
@@ -15,27 +15,6 @@ export const usePostLoginRedirect = () => {
   const { pageLink } = usePageLink();
   const { homeRoute, pageRoutes } = usePages();
   const prevAuthenticatedRef = useRef(isAuthenticated);
-  const isMountedRef = useRef(true);
-
-  const isValidRoute = useCallback(
-    (path: string) => {
-      const allRoutes = [homeRoute, ...pageRoutes];
-      return allRoutes.some(route => {
-        if (route.index && path === '/') {
-          return true;
-        }
-        return route.path === path?.replace(/^\//, '');
-      });
-    },
-    [homeRoute, pageRoutes]
-  );
-
-  useEffect(() => {
-    isMountedRef.current = true;
-    return () => {
-      isMountedRef.current = false;
-    };
-  }, []);
 
   useEffect(() => {
     const prevAuthenticated = prevAuthenticatedRef.current;
@@ -47,11 +26,17 @@ export const usePostLoginRedirect = () => {
       !prevAuthenticated &&
       isAuthenticated &&
       POST_LOGIN_REDIRECT_PATH &&
-      POST_LOGIN_REDIRECT_PATH.trim() !== '' &&
-      isValidRoute(POST_LOGIN_REDIRECT_PATH)
+      POST_LOGIN_REDIRECT_PATH.trim() !== ''
     ) {
-      // Check if component is still mounted before navigating
-      if (!isMountedRef.current) {
+      const allRoutes = [homeRoute, ...pageRoutes];
+      const isValidRoute = allRoutes.some(route => {
+        if (route.index && POST_LOGIN_REDIRECT_PATH === '/') {
+          return true;
+        }
+        return route.path === POST_LOGIN_REDIRECT_PATH?.replace(/^\//, '');
+      });
+
+      if (!isValidRoute) {
         return;
       }
 
@@ -59,5 +44,5 @@ export const usePostLoginRedirect = () => {
       const redirectPath = pageLink(POST_LOGIN_REDIRECT_PATH);
       navigate(redirectPath);
     }
-  }, [isAuthenticated, navigate, pageLink, homeRoute, pageRoutes]);
+  }, [isAuthenticated]);
 };

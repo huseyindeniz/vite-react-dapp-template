@@ -13,7 +13,7 @@ export const UnlockFailed: React.FC<UnlockFailedProps> = ({ errorMessage }) => {
     <Container>
       <Alert icon={<IoIosWarning />} title={t('Unexpected Error')} color="red">
         <Text size="sm">
-          {t('An error has occured during the unlock wallet check.')}
+          {t('An error has occurred during the unlock wallet check.')}
           <br />
           {t('Please try again later.')}
           <br />

@@ -1,4 +1,4 @@
-import React, { JSX, useEffect } from 'react';
+import React, { JSX } from 'react';
 
 import {
   RouteObject,
@@ -12,7 +12,6 @@ import { HeaderExtension } from '@/config/core/ui/layout-extensions/headerExtens
 import { MainExtension } from '@/config/core/ui/layout-extensions/mainExtension';
 import { NavbarExtension } from '@/config/core/ui/layout-extensions/navbarExtension';
 import { ShellExtension } from '@/config/core/ui/layout-extensions/shellExtension';
-import { features } from '@/config/features';
 import { applyProtection } from '@/core/features/auth/utils/applyProtection';
 import { useSliceManagerInit } from '@/core/features/slice-manager/hooks/useSliceManagerInit';
 
@@ -35,21 +34,21 @@ const BrowserRouter = React.lazy(() =>
 );
 
 const Layout = React.lazy(() =>
-  import(/* webpackChunkName: "Layout" */ '@/core/features/ui/layout/LayoutBase').then(
-    module => ({
-      default: (props: Record<string, never>) => (
-        <module.LayoutBase
-          {...props}
-          shellExtension={ShellExtension}
-          headerExtension={HeaderExtension}
-          navbarExtension={NavbarExtension}
-          asideExtension={AsideExtension}
-          mainExtension={MainExtension}
-          footerExtension={FooterExtension}
-        />
-      ),
-    })
-  )
+  import(
+    /* webpackChunkName: "Layout" */ '@/core/features/ui/layout/LayoutBase'
+  ).then(module => ({
+    default: (props: Record<string, never>) => (
+      <module.LayoutBase
+        {...props}
+        shellExtension={ShellExtension}
+        headerExtension={HeaderExtension}
+        navbarExtension={NavbarExtension}
+        asideExtension={AsideExtension}
+        mainExtension={MainExtension}
+        footerExtension={FooterExtension}
+      />
+    ),
+  }))
 );
 
 const NotFoundPage = React.lazy(() =>
@@ -61,22 +60,8 @@ const NotFoundPage = React.lazy(() =>
 const Routes: React.FC = () => {
   // Note: Auth providers handle their own redirects internally
 
-  // Initialize the slice manager
-  const sliceManager = useSliceManagerInit();
-
-  useEffect(() => {
-    if (sliceManager) {
-      // Configure slice manager for all features that need it
-      Object.values(features).forEach(feature => {
-        if (
-          'configureSlice' in feature &&
-          typeof feature.configureSlice === 'function'
-        ) {
-          feature.configureSlice();
-        }
-      });
-    }
-  }, [sliceManager]);
+  // Initialize the slice manager (also configures all feature slices)
+  useSliceManagerInit();
 
   // Get all routes (system + user routes combined)
   const routes = useRoutes();

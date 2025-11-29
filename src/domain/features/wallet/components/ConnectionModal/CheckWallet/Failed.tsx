@@ -13,7 +13,7 @@ export const Failed: React.FC<FailedProps> = ({ errorMessage }) => {
     <Container>
       <Alert icon={<IoIosWarning />} title={t('Unexpected Error')} color="red">
         <Text size="sm">
-          {t('An error has occured during the wallet extension check.')}
+          {t('An error has occurred during the wallet extension check.')}
           <br />
           {t('Please try again later.')}
           <br />

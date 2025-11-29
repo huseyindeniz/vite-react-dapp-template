@@ -1,8 +1,8 @@
 import { ChatModelRunOptions, ChatModelRunResult } from '@assistant-ui/react';
 import log from 'loglevel';
 
+import { AgentType } from '@/config/domain/ai-assistant/config';
 import { IChatModelAdapter } from '@/domain/features/ai-assistant/interfaces/IChatModelAdapter';
-import { AgentType } from '@/domain/features/ai-assistant/types/AgentType';
 
 import { ChatService } from './ChatService';
 import { CompleteStatus } from './types/CompleteStatus';
@@ -12,7 +12,7 @@ import { TextContent } from './types/TextContent';
 const BASE_URL = 'http://localhost:8011';
 
 export class GoogleADKChatModelAdapter implements IChatModelAdapter {
-  readonly type: AgentType = 'google-adk';
+  readonly type: AgentType = AgentType.GOOGLE_ADK;
   private baseUrl: string = BASE_URL;
 
   async *run(options: ChatModelRunOptions): AsyncGenerator<ChatModelRunResult> {

@@ -4,17 +4,12 @@ import { ThreadPrimitive } from '@assistant-ui/react';
 import { Avatar, Button, Group, Stack, Text } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 
-import { getSuggestionCategories } from '@/config/domain/ai-assistant/suggestionCategories';
-import { getChatSuggestions } from '@/config/domain/ai-assistant/suggestions';
-
-import assistantAvatar from '../../assets/images/assistant-logo.png';
+import { useAgent } from '../../hooks/useAgent';
 import { ChatSuggestion } from '../../types/ChatSuggestion';
 
 export const EmptyState: React.FC = () => {
   const { t } = useTranslation('feature-ai-assistant');
-
-  const suggestionCategories = useMemo(() => getSuggestionCategories(t), [t]);
-  const suggestions = useMemo(() => getChatSuggestions(t), [t]);
+  const { iconPath, suggestions, suggestionCategories } = useAgent();
 
   // Group suggestions by category
   const groupedSuggestions = useMemo(() => {
@@ -40,7 +35,7 @@ export const EmptyState: React.FC = () => {
       justify="center"
       style={{ height: '100%', padding: '2rem' }}
     >
-      <Avatar src={assistantAvatar} size={120} radius="xl" />
+      <Avatar src={iconPath} size={120} radius="xl" />
 
       <Stack gap="xs" align="center">
         <Text size="lg" fw={600} c="dimmed">
@@ -56,10 +51,7 @@ export const EmptyState: React.FC = () => {
       {suggestions.length > 0 && (
         <Group gap="lg" align="flex-start" wrap="nowrap">
           {categoryKeys.map(categoryKey => {
-            const category =
-              suggestionCategories[
-                categoryKey as keyof typeof suggestionCategories
-              ];
+            const category = suggestionCategories[categoryKey];
             const categorySuggestions = groupedSuggestions[categoryKey];
 
             return (

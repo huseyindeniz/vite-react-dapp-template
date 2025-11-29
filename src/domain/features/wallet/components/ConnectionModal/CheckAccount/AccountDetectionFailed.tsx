@@ -15,7 +15,7 @@ export const AccountDetectionFailed: React.FC<AccountDetectionFailedProps> = ({
     <Container>
       <Alert icon={<IoIosWarning />} title={t('Unexpected Error')} color="red">
         <Text size="sm">
-          {t('An error has occured during the wallet status check.')}
+          {t('An error has occurred during the wallet status check.')}
           <br />
           {t('Please try again later.')}
           <br />

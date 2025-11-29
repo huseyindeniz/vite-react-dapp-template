@@ -1,13 +1,14 @@
 import { MessagePrimitive } from '@assistant-ui/react';
 import { Avatar, Group, Paper } from '@mantine/core';
 
-import assistantAvatar from '../../assets/images/assistant-logo.png';
+import { useAgent } from '../../hooks/useAgent';
 import { useMarkdownPanel } from '../../hooks/useMarkdownPanel';
 import { FileArtifact } from '../Artifacts/FileArtifact';
 import { ImageArtifact } from '../Artifacts/ImageArtifact';
 import { MarkdownText } from '../Artifacts/MarkdownText';
 
 export const AssistantMessage = () => {
+  const { iconPath } = useAgent();
   const { openPanel } = useMarkdownPanel();
 
   return (
@@ -19,7 +20,7 @@ export const AssistantMessage = () => {
       }}
     >
       <Group align="flex-start" gap="xs" wrap="nowrap">
-        <Avatar src={assistantAvatar} size="md" radius="xl" />
+        <Avatar src={iconPath} size="md" radius="xl" />
         <Paper
           px="xs"
           py={2}

@@ -2,13 +2,14 @@ import { useMemo, useCallback, useEffect } from 'react';
 
 import { useLocalRuntime } from '@assistant-ui/react';
 
+import { AgentType } from '@/config/domain/ai-assistant/config';
 import {
   chatService,
   attachmentAdapter,
 } from '@/config/domain/ai-assistant/services';
 import { useOAuth } from '@/domain/features/oauth/hooks/useOAuth';
 
-import { AgentType } from '../types/AgentType';
+import { useAgent } from './useAgent';
 
 /**
  * Hook to create a chat runtime for a specific agent type
@@ -18,6 +19,9 @@ import { AgentType } from '../types/AgentType';
  * @returns Assistant UI runtime instance
  */
 export const useChatRuntime = (agentType: AgentType) => {
+  // Get file attachment config from agent context
+  const { fileAttachment } = useAgent();
+
   // Get user ID from auth for session tracking
   const { user } = useOAuth();
 
@@ -30,6 +34,11 @@ export const useChatRuntime = (agentType: AgentType) => {
   useEffect(() => {
     chatService.setTokenProvider(getToken);
   }, [getToken]);
+
+  // Update attachment adapter config when agent changes
+  useEffect(() => {
+    attachmentAdapter.setConfig(fileAttachment);
+  }, [fileAttachment]);
 
   // Get adapter from service (singleton)
   const adapter = useMemo(() => {

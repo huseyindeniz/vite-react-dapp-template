@@ -11,7 +11,6 @@ import { HelmetProvider } from 'react-helmet-async';
 import { useI18nWatcher } from '@/core/features/i18n/useI18nWatchers';
 import { useActiveRoute } from '@/core/features/router/hooks/useActiveRoute';
 import { usePages } from '@/core/features/router/hooks/usePages';
-import { MenuType } from '@/core/features/router/types/MenuType';
 import { ErrorFallback } from '@/domain/layout/ErrorFallback/ErrorFallback';
 
 const myErrorHandler = (error: Error, info: ErrorInfo) => {
@@ -34,15 +33,9 @@ interface LayoutBaseProps {
     close: () => void;
   }>;
   navbarExtension?: React.FC<{
-    mainMenuItems: MenuType[];
-    hasSubRoutes: boolean;
-    subRoutes: MenuType[];
     close: () => void;
   }>;
-  asideExtension?: React.FC<{
-    hasSubRoutes: boolean;
-    subRoutes: MenuType[];
-  }>;
+  asideExtension?: React.FC;
   mainExtension?: React.FC<{ fullWidth: boolean }>;
   footerExtension?: React.FC;
 }
@@ -57,11 +50,8 @@ export const LayoutBase: React.FC<LayoutBaseProps> = ({
 }) => {
   useI18nWatcher();
   const [opened, { toggle, close }] = useDisclosure();
-  const { mainMenuItems, pageRoutes } = usePages();
-
-  // Detect active route and check if it has subRoutes
-  const { hasSubRoutes, subRoutes, fullWidth } = useActiveRoute(pageRoutes);
-  const asideVisible = subRoutes.filter(r => r.menuLabel !== null).length > 0;
+  const { pageRoutes } = usePages();
+  const { subRouteHasMenuItems, fullWidth } = useActiveRoute(pageRoutes);
   return (
     <HelmetProvider>
       <ErrorBoundary FallbackComponent={ErrorFallback} onError={myErrorHandler}>
@@ -69,28 +59,16 @@ export const LayoutBase: React.FC<LayoutBaseProps> = ({
         {ShellExtension && (
           <ShellExtension
             navbarCollapsed={opened}
-            asideVisible={asideVisible}
+            asideVisible={subRouteHasMenuItems}
             asideCollapsed={false}
           >
             {HeaderExtension && (
               <HeaderExtension opened={opened} toggle={toggle} close={close} />
             )}
 
-            {NavbarExtension && (
-              <NavbarExtension
-                mainMenuItems={mainMenuItems}
-                hasSubRoutes={hasSubRoutes}
-                subRoutes={subRoutes}
-                close={close}
-              />
-            )}
+            {NavbarExtension && <NavbarExtension close={close} />}
 
-            {AsideExtension && (
-              <AsideExtension
-                hasSubRoutes={hasSubRoutes}
-                subRoutes={subRoutes}
-              />
-            )}
+            {AsideExtension && <AsideExtension />}
 
             {MainExtension && <MainExtension fullWidth={fullWidth} />}
 

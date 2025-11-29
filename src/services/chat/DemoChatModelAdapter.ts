@@ -1,8 +1,8 @@
 import { ChatModelRunOptions, ChatModelRunResult } from '@assistant-ui/react';
 import log from 'loglevel';
 
+import { AgentType } from '@/config/domain/ai-assistant/config';
 import { IChatModelAdapter } from '@/domain/features/ai-assistant/interfaces/IChatModelAdapter';
-import { AgentType } from '@/domain/features/ai-assistant/types/AgentType';
 
 import { CompleteStatus } from './types/CompleteStatus';
 import { ImageContent } from './types/ImageContent';
@@ -14,7 +14,7 @@ import { TextContent } from './types/TextContent';
  * Provides funny, helpful responses demonstrating streaming, markdown, and code formatting
  */
 export class DemoChatModelAdapter implements IChatModelAdapter {
-  readonly type: AgentType = 'demo';
+  readonly type: AgentType = AgentType.DEMO;
 
   async *run(options: ChatModelRunOptions): AsyncGenerator<ChatModelRunResult> {
     const { messages } = options;

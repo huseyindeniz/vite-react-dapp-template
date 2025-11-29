@@ -10,13 +10,13 @@ export const WhySignNeeded: React.FC = () => {
   return (
     <>
       <Button size="xs" color="yellow" autoContrast onClick={open}>
-        {t("Why On Earth I'd Sign With My Wallet? Is it safe?")}
+        {t('Why on earth would I sign with my wallet? Is it safe?')}
       </Button>
 
       <Modal
         opened={opened}
         onClose={close}
-        title={t('Why Sign Needed? Is it Safe?')}
+        title={t('Why is signing needed? Is it safe?')}
       >
         <Stack>
           <Title order={5} c="yellow">

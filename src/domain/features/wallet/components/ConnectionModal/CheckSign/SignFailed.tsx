@@ -13,7 +13,7 @@ export const SignFailed: React.FC<SignFailedProps> = ({ errorMessage }) => {
     <Container>
       <Alert icon={<IoIosWarning />} title={t('Unexpected Error')} color="red">
         <Text size="sm">
-          {t('An error has occured during the sign check.')}
+          {t('An error has occurred during the sign check.')}
           <br />
           {t('Please try again later.')}
           <br />

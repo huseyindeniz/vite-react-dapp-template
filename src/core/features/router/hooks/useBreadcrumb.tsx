@@ -10,7 +10,7 @@ import { MenuType } from '../types/MenuType';
 
 export const useBreadcrumb = (allRoutes: MenuType[]): BreadcrumbItem[] => {
   const location = useLocation();
-  const { i18n, t } = useTranslation('feature-router');
+  const { i18n, t } = useTranslation('menu');
 
   return useMemo(() => {
     const items: BreadcrumbItem[] = [];

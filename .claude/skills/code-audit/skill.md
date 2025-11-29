@@ -7,7 +7,7 @@ description: Comprehensive static code analysis to enforce architectural pattern
 
 Enforce code quality and consistency standards across the entire codebase through automated checks.
 
-**What it checks (18 checks, each with its own script):**
+**What it checks (19 checks, each with its own script):**
 1. Path alias usage (no relative imports to aliased dirs)
 2. Export patterns (no default exports, no index files)
 3. Redux abstraction (components use hooks, not direct Redux)
@@ -26,6 +26,7 @@ Enforce code quality and consistency standards across the entire codebase throug
 16. React key patterns (no array index as key, no missing keys)
 17. No magic numbers (use named constants)
 18. TypeScript strict mode enabled (tsconfig.json)
+19. Dependency array patterns (useEffect, useMemo, useCallback)
 
 **What it doesn't check:**
 - Feature dependency rules (core → domain) - see `arch-audit` skill
@@ -70,6 +71,7 @@ node ./.claude/skills/code-audit/scripts/check_dangerous_html.mjs
 node ./.claude/skills/code-audit/scripts/check_react_keys.mjs
 node ./.claude/skills/code-audit/scripts/check_magic_numbers.mjs
 node ./.claude/skills/code-audit/scripts/check_strict_mode.mjs
+node ./.claude/skills/code-audit/scripts/check_dep_arrays.mjs
 ```
 
 # Quality Rules
@@ -582,6 +584,147 @@ yield all([effect1, effect2, effect3, effect4]); // Truly parallel
 - Always enable `"strict": true` in tsconfig.json
 - Required for production-ready TypeScript code
 - Cannot be disabled or set to false
+
+---
+
+## 19. React Hook Dependency Arrays
+
+**RULE**: Dependency arrays must be correct - no missing reactive values, no stable values, no side effects in memoization hooks.
+
+**Why**: Incorrect dependency arrays cause stale closures, unnecessary re-renders, memory leaks, and bugs that are hard to debug.
+
+### 5 Sub-Checks:
+
+#### CHECK 1: Missing Dependencies (HIGH)
+Empty `[]` but reactive values are used inside - will cause stale closures.
+
+**Violations**:
+- ❌ Using `i18n.resolvedLanguage` with empty array:
+  ```typescript
+  useEffect(() => {
+    actions.fetchPosts({ language: i18n.resolvedLanguage });
+  }, []); // i18n.resolvedLanguage is used but not in deps!
+  ```
+
+**Fix**:
+- ✅ Add reactive values to dependency array:
+  ```typescript
+  useEffect(() => {
+    actions.fetchPosts({ language: i18n.resolvedLanguage });
+  }, [i18n.resolvedLanguage]); // Will re-run when language changes
+  ```
+
+**Reactive Patterns Detected**:
+- `i18n.resolvedLanguage`, `i18n.language` (language changes)
+- `props.*` (prop access)
+
+**Note**: `t` function is stable and should NOT be in deps. If you need to react to language changes, use `i18n.resolvedLanguage`.
+
+#### CHECK 2: Stable Values in Dependencies (HIGH)
+These values are guaranteed stable by React/libraries and should NOT be in dependency arrays.
+
+**Violations**:
+- ❌ Stable values in deps:
+  ```typescript
+  useEffect(() => {
+    navigate('/home');
+  }, [isAuthenticated, navigate]); // navigate is stable!
+  ```
+
+**Fix**:
+- ✅ Remove stable values:
+  ```typescript
+  useEffect(() => {
+    navigate('/home');
+  }, [isAuthenticated]); // Only reactive values
+  ```
+
+**Known Stable Values**:
+- `useState` setters: `setX`, `setState`, etc.
+- `useReducer` dispatch
+- `useNavigate()` from react-router: `navigate`
+- `useTranslation()` from i18next: `t`
+- Redux dispatch: `dispatch`
+- Custom action hooks: `actions` (from `useActions()`)
+- Route hooks: `pageLink`, `homeRoute`, `pageRoutes`
+- Refs: any variable ending with `Ref`
+
+#### CHECK 3: Side Effects in useMemo/useCallback (HIGH)
+These hooks must be PURE - no side effects allowed.
+
+**Violations**:
+- ❌ Fetch in useMemo:
+  ```typescript
+  const data = useMemo(() => {
+    fetch('/api/data'); // WRONG! Side effect in useMemo
+    return processData();
+  }, [deps]);
+  ```
+- ❌ Console.log in useCallback:
+  ```typescript
+  const handler = useCallback(() => {
+    console.log('clicked'); // Side effect
+    doSomething();
+  }, []);
+  ```
+
+**Fix**:
+- ✅ Move side effects to useEffect or Redux Saga:
+  ```typescript
+  // useMemo should be pure
+  const processed = useMemo(() => processData(rawData), [rawData]);
+
+  // Side effects go in useEffect
+  useEffect(() => {
+    fetch('/api/data').then(setData);
+  }, []);
+  ```
+
+**Side Effects Detected**:
+- `fetch()`, `axios.*` calls
+- `console.log/warn/error/info`
+- `localStorage.*`, `sessionStorage.*`
+- `document.*`, `window.location`
+
+#### CHECK 4: Over-specified Arrays (WARNING)
+4+ dependencies may indicate over-specification or a need to refactor.
+
+**Warning**:
+- ⚠️ 4+ deps:
+  ```typescript
+  useEffect(() => {
+    // Complex logic
+  }, [a, b, c, d, e]); // Too many deps - review
+  ```
+
+**Fix**:
+- Consider extracting logic to a custom hook
+- Consider using `useReducer` for complex state
+- Review if all deps are truly needed
+
+#### CHECK 5: Direct Fetch in useEffect (INFO)
+Direct API calls in useEffect miss caching, deduplication, and proper error handling.
+
+**Info**:
+- ℹ️ Direct fetch detected:
+  ```typescript
+  useEffect(() => {
+    fetch('/api/users').then(setUsers); // Direct fetch
+  }, []);
+  ```
+
+**Consider**:
+- React Query or SWR for data fetching
+- Redux Saga for side effects (project pattern)
+
+**Note**: `actions.fetchX()` via Redux Saga is OK - it triggers saga, not direct API call.
+
+**Why Avoid Direct Fetch**:
+- No automatic caching or deduplication
+- Race conditions on fast navigation
+- No automatic retry on failure
+- Manual loading/error state management
+- No SSR/SSG support
 
 ---
 

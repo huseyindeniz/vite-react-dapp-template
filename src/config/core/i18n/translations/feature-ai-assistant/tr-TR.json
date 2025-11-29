@@ -1,6 +1,4 @@
 {
-  "Quick Actions": "Hızlı İşlemler",
-  "Data Export": "Veri Dışa Aktarma",
   "Generate a sample image": "Örnek bir görsel oluştur",
   "show me an image": "bana bir görsel göster",
   "Create a sample document": "Örnek bir belge oluştur",
@@ -9,6 +7,11 @@
   "export data as json": "veriyi json olarak dışa aktar",
   "Export sample data as CSV": "Örnek veriyi CSV olarak dışa aktar",
   "export data as csv": "veriyi csv olarak dışa aktar",
+  "Quick Actions": "Hızlı İşlemler",
+  "Data Export": "Veri Dışa Aktarma",
+  "Agent 1 (with Langgraph)": "Agent 1 (with Langgraph)",
+  "Agent 2 (with Google ADK)": "Agent 2 (with Google ADK)",
+  "Agent 3 (demo)": "Agent 3 (demo)",
   "Select AI Agent": "AI Agent Seç",
   "Choose an agent": "Bir agent seçin",
   "Content copied": "İçerik kopyalandı",

@@ -58,11 +58,5 @@ export const usePages = () => {
       mainMenuItems,
       secondaryMenuItems,
     };
-  }, [
-    i18n.resolvedLanguage,
-    homeRoute,
-    pageRoutes,
-    mainMenuItems,
-    secondaryMenuItems,
-  ]);
+  }, [i18n.resolvedLanguage]);
 };
